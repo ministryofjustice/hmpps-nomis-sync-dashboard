@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import VisitMigrationService, {Context} from "../../services/visitMigrationService";
+import VisitMigrationService, { Context } from '../../services/visitMigrationService'
 
 function context(res: Response): Context {
   return {
@@ -12,7 +12,6 @@ export default class VisitMigrationController {
   constructor(private readonly visitMigrationService: VisitMigrationService) {}
 
   async getVisitMigrations(req: Request, res: Response): Promise<void> {
-
     const visitMigrations = await this.visitMigrationService.getVisitMigrations(context(res))
 
     const errors: any[] = []
@@ -21,5 +20,4 @@ export default class VisitMigrationController {
       errors,
     })
   }
-
 }

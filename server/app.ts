@@ -18,7 +18,10 @@ import setUpHealthChecks from './middleware/setUpHealthChecks'
 import setUpWebRequestParsing from './middleware/setupRequestParsing'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 
-export default function createApp(userService: UserService, visitMigrationService: VisitMigrationService): express.Application {
+export default function createApp(
+  userService: UserService,
+  visitMigrationService: VisitMigrationService
+): express.Application {
   const app = express()
 
   app.set('json spaces', 2)
@@ -34,7 +37,7 @@ export default function createApp(userService: UserService, visitMigrationServic
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
 
-  app.use('/', indexRoutes(standardRouter(userService),{visitMigrationService}))
+  app.use('/', indexRoutes(standardRouter(userService), { visitMigrationService }))
 
   app.use((req, res, next) => next(createError(404, 'Not found')))
   app.use(errorHandler(process.env.NODE_ENV === 'production'))

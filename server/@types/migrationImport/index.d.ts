@@ -4,344 +4,342 @@
  */
 
 export interface paths {
-  "/queue-admin/retry-dlq/{dlqName}": {
-    put: operations["retryDlq"];
-  };
-  "/queue-admin/retry-all-dlqs": {
-    put: operations["retryAllDlqs"];
-  };
-  "/queue-admin/purge-queue/{queueName}": {
-    put: operations["purgeQueue"];
-  };
-  "/migrate/visits": {
+  '/queue-admin/retry-dlq/{dlqName}': {
+    put: operations['retryDlq']
+  }
+  '/queue-admin/retry-all-dlqs': {
+    put: operations['retryAllDlqs']
+  }
+  '/queue-admin/purge-queue/{queueName}': {
+    put: operations['purgeQueue']
+  }
+  '/migrate/visits': {
     /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b> */
-    post: operations["migrateVisits"];
-  };
-  "/queue-admin/get-dlq-messages/{dlqName}": {
-    get: operations["getDlqMessages"];
-  };
-  "/migrate/visits/history": {
+    post: operations['migrateVisits']
+  }
+  '/queue-admin/get-dlq-messages/{dlqName}': {
+    get: operations['getDlqMessages']
+  }
+  '/migrate/visits/history': {
     /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
-    get: operations["getAll"];
-  };
-  "/history": {
+    get: operations['getAll']
+  }
+  '/history': {
     /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
-    get: operations["getAll_1"];
+    get: operations['getAll_1']
     /** This is only required for test environments and requires role <b>MIGRATION_ADMIN</b> */
-    delete: operations["deleteAll"];
-  };
+    delete: operations['deleteAll']
+  }
 }
 
 export interface components {
   schemas: {
     Message: {
-      messageId?: string;
-      receiptHandle?: string;
-      body?: string;
-      attributes?: { [key: string]: string };
+      messageId?: string
+      receiptHandle?: string
+      body?: string
+      attributes?: { [key: string]: string }
       messageAttributes?: {
-        [key: string]: components["schemas"]["MessageAttributeValue"];
-      };
-      md5OfBody?: string;
-      md5OfMessageAttributes?: string;
-    };
+        [key: string]: components['schemas']['MessageAttributeValue']
+      }
+      md5OfBody?: string
+      md5OfMessageAttributes?: string
+    }
     MessageAttributeValue: {
-      stringValue?: string;
+      stringValue?: string
       binaryValue?: {
         /** Format: int32 */
-        short?: number;
-        char?: string;
+        short?: number
+        char?: string
         /** Format: int32 */
-        int?: number;
+        int?: number
         /** Format: int64 */
-        long?: number;
+        long?: number
         /** Format: float */
-        float?: number;
+        float?: number
         /** Format: double */
-        double?: number;
-        direct?: boolean;
-        readOnly?: boolean;
-      };
-      stringListValues?: string[];
+        double?: number
+        direct?: boolean
+        readOnly?: boolean
+      }
+      stringListValues?: string[]
       binaryListValues?: {
         /** Format: int32 */
-        short?: number;
-        char?: string;
+        short?: number
+        char?: string
         /** Format: int32 */
-        int?: number;
+        int?: number
         /** Format: int64 */
-        long?: number;
+        long?: number
         /** Format: float */
-        float?: number;
+        float?: number
         /** Format: double */
-        double?: number;
-        direct?: boolean;
-        readOnly?: boolean;
-      }[];
-      dataType?: string;
-    };
+        double?: number
+        direct?: boolean
+        readOnly?: boolean
+      }[]
+      dataType?: string
+    }
     RetryDlqResult: {
       /** Format: int32 */
-      messagesFoundCount: number;
-      messages: components["schemas"]["Message"][];
-    };
+      messagesFoundCount: number
+      messages: components['schemas']['Message'][]
+    }
     PurgeQueueResult: {
       /** Format: int32 */
-      messagesFoundCount: number;
-    };
+      messagesFoundCount: number
+    }
     /** @description Filter specifying what should be migrated from NOMIS to Visits service */
     VisitsMigrationFilter: {
       /**
        * @description List of prison Ids (AKA Agency Ids) to migrate visits from
        * @example MDI
        */
-      prisonIds: string[];
+      prisonIds: string[]
       /**
        * @description List of visit types to migrate
        * @default SCON
        * @example SCON
        * @enum {array}
        */
-      visitTypes: "SCON" | "OFFI";
+      visitTypes: 'SCON' | 'OFFI'
       /**
        * @description Only include visits created after this date. NB this is creation date not the actual visit date
        * @example 2021-07-05T10:35:17
        */
-      fromDateTime?: string;
+      fromDateTime?: string
       /**
        * @description Only include visits created before this date. NB this is creation date not the actual visit date
        * @example 2021-07-05T10:35:17
        */
-      toDateTime?: string;
+      toDateTime?: string
       /** @description When true exclude visits without an associated room (visits created during the VSIP synchronisation process), defaults to false. Only required during testing when mapping records are manually deleted */
-      ignoreMissingRoom: boolean;
-    };
+      ignoreMissingRoom: boolean
+    }
     ErrorResponse: {
       /** Format: int32 */
-      status: number;
+      status: number
       /** Format: int32 */
-      errorCode?: number;
-      userMessage?: string;
-      developerMessage?: string;
-      moreInfo?: string;
-    };
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
     MigrationContextVisitsMigrationFilter: {
-      migrationId: string;
+      migrationId: string
       /** Format: int64 */
-      estimatedCount: number;
-      body: components["schemas"]["VisitsMigrationFilter"];
-    };
+      estimatedCount: number
+      body: components['schemas']['VisitsMigrationFilter']
+    }
     DlqMessage: {
-      body: { [key: string]: { [key: string]: unknown } };
-      messageId: string;
-    };
+      body: { [key: string]: { [key: string]: unknown } }
+      messageId: string
+    }
     GetDlqResult: {
       /** Format: int32 */
-      messagesFoundCount: number;
+      messagesFoundCount: number
       /** Format: int32 */
-      messagesReturnedCount: number;
-      messages: components["schemas"]["DlqMessage"][];
-    };
+      messagesReturnedCount: number
+      messages: components['schemas']['DlqMessage'][]
+    }
     MigrationHistory: {
-      migrationId: string;
+      migrationId: string
       /** @example 2021-07-05T10:35:17 */
-      whenStarted: string;
+      whenStarted: string
       /** @example 2021-07-05T10:35:17 */
-      whenEnded?: string;
+      whenEnded?: string
       /** Format: int64 */
-      estimatedRecordCount: number;
-      filter?: string;
+      estimatedRecordCount: number
+      filter?: string
       /** Format: int64 */
-      recordsMigrated: number;
+      recordsMigrated: number
       /** Format: int64 */
-      recordsFailed: number;
+      recordsFailed: number
       /** @enum {string} */
-      migrationType: "VISITS";
+      migrationType: 'VISITS'
       /** @enum {string} */
-      status: "STARTED" | "COMPLETED";
-      id: string;
-    };
-  };
+      status: 'STARTED' | 'COMPLETED'
+      id: string
+    }
+  }
 }
 
 export interface operations {
   retryDlq: {
     parameters: {
       path: {
-        dlqName: string;
-      };
-    };
+        dlqName: string
+      }
+    }
     responses: {
       /** OK */
       200: {
         content: {
-          "*/*": components["schemas"]["RetryDlqResult"];
-        };
-      };
-    };
-  };
+          '*/*': components['schemas']['RetryDlqResult']
+        }
+      }
+    }
+  }
   retryAllDlqs: {
     responses: {
       /** OK */
       200: {
         content: {
-          "*/*": components["schemas"]["RetryDlqResult"][];
-        };
-      };
-    };
-  };
+          '*/*': components['schemas']['RetryDlqResult'][]
+        }
+      }
+    }
+  }
   purgeQueue: {
     parameters: {
       path: {
-        queueName: string;
-      };
-    };
+        queueName: string
+      }
+    }
     responses: {
       /** OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PurgeQueueResult"];
-        };
-      };
-    };
-  };
+          '*/*': components['schemas']['PurgeQueueResult']
+        }
+      }
+    }
+  }
   /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b> */
   migrateVisits: {
     responses: {
       /** MigrationHistory process started */
       202: {
         content: {
-          "application/json": components["schemas"]["MigrationContextVisitsMigrationFilter"];
-        };
-      };
+          'application/json': components['schemas']['MigrationContextVisitsMigrationFilter']
+        }
+      }
       /** Unauthorized to access this endpoint */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** Incorrect permissions to start migration */
       403: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
     requestBody: {
       content: {
-        "application/json": components["schemas"]["VisitsMigrationFilter"];
-      };
-    };
-  };
+        'application/json': components['schemas']['VisitsMigrationFilter']
+      }
+    }
+  }
   getDlqMessages: {
     parameters: {
       path: {
-        dlqName: string;
-      };
+        dlqName: string
+      }
       query: {
-        maxMessages?: number;
-      };
-    };
+        maxMessages?: number
+      }
+    }
     responses: {
       /** OK */
       200: {
         content: {
-          "*/*": components["schemas"]["GetDlqResult"];
-        };
-      };
-    };
-  };
+          '*/*': components['schemas']['GetDlqResult']
+        }
+      }
+    }
+  }
   /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
   getAll: {
     parameters: {
       query: {
         /** Only include migrations started after this date time */
-        fromDateTime?: string;
+        fromDateTime?: string
         /** Only include migrations started before this date time */
-        toDateTime?: string;
+        toDateTime?: string
         /** When true only include migrations that had at least one failure */
-        includeOnlyFailures?: boolean;
+        includeOnlyFailures?: boolean
         /** Specify the prison associated with the migration */
-        prisonId?: string;
-      };
-    };
+        prisonId?: string
+      }
+    }
     responses: {
       /** All visit migration history records */
       200: {
         content: {
-          "application/json": components["schemas"]["MigrationHistory"][];
-        };
-      };
+          'application/json': components['schemas']['MigrationHistory'][]
+        }
+      }
       /** Unauthorized to access this endpoint */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** Incorrect permissions to access this endpoint */
       403: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
   getAll_1: {
     parameters: {
       query: {
         /** List of migration types, when omitted all migration types will be returned */
-        migrationTypes?: string[];
+        migrationTypes?: string[]
         /** Only include migrations started after this date time */
-        fromDateTime?: string;
+        fromDateTime?: string
         /** Only include migrations started before this date time */
-        toDateTime?: string;
+        toDateTime?: string
         /** When true only include migrations that had at least one failure */
-        includeOnlyFailures?: boolean;
+        includeOnlyFailures?: boolean
         /** Specify a word of phrase that will appear in the filter related to the migration */
-        filterContains?: string;
-      };
-    };
+        filterContains?: string
+      }
+    }
     responses: {
       /** All history records */
       200: {
         content: {
-          "application/json": components["schemas"]["MigrationHistory"][];
-        };
-      };
+          'application/json': components['schemas']['MigrationHistory'][]
+        }
+      }
       /** Unauthorized to access this endpoint */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** Incorrect permissions to access this endpoint */
       403: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** This is only required for test environments and requires role <b>MIGRATION_ADMIN</b> */
   deleteAll: {
     responses: {
       /** All history records deleted */
-      204: never;
+      204: never
       /** Unauthorized to access this endpoint */
       401: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
       /** Incorrect permissions to access this endpoint */
       403: {
         content: {
-          "application/json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
 }
-
-export interface external {}

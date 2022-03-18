@@ -1,6 +1,5 @@
 import type { RequestHandler, Router } from 'express'
-import VisitMigrationController from './visitMigration/visitMigrationController'
-import visitMigrationRoutes, {Services} from './visitMigration/visitMigrationRouter'
+import visitMigrationRoutes, { Services } from './visitMigration/visitMigrationRouter'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 

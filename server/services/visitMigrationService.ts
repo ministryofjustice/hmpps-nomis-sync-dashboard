@@ -1,7 +1,4 @@
-import querystring from 'querystring'
-import type {
-  MigrationHistory,
-} from '../@types/migration'
+import type { MigrationHistory } from '../@types/migration'
 import type HmppsAuthClient from '../data/hmppsAuthClient'
 import RestClient from '../data/restClient'
 import config from '../config'
@@ -12,13 +9,11 @@ export interface VisitMigrations {
 }
 
 export interface Context {
-  username?: string,
+  username?: string
   token?: string
 }
 
-
 // type ServerError = { status: number; error: string; message: string }
-
 
 export default class VisitMigrationService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
@@ -29,9 +24,10 @@ export default class VisitMigrationService {
 
   async getVisitMigrations(context: Context): Promise<VisitMigrations> {
     logger.info(`getting details for all courts`)
-    return { migrations: await VisitMigrationService.restClient(context.token).get<MigrationHistory[]>({ path: `/migrate/visits/history` }) }
+    return {
+      migrations: await VisitMigrationService.restClient(context.token).get<MigrationHistory[]>({
+        path: `/migrate/visits/history`,
+      }),
+    }
   }
 }
-
-const undefinedWhenAbsent = (value: string | undefined): string | undefined =>
-  (value && value.trim().length > 0 && value) || undefined
