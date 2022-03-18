@@ -51,3 +51,10 @@ Or run tests with the cypress UI:
 
 `npm run int-test-ui`
 
+
+### Generating types
+
+Example of command to generate types from an api:
+
+`npx openapi-typescript  https://prisoner-nomis-migration-dev.hmpps.service.justice.gov.uk/v3/api-docs --output server/@types/migration.t`
+
