@@ -14,10 +14,8 @@ export default class VisitMigrationController {
   async getVisitMigrations(req: Request, res: Response): Promise<void> {
     const visitMigrations = await this.visitMigrationService.getVisitMigrations(context(res))
 
-    const errors: any[] = []
     res.render('pages/visits/visitsMigration', {
       visitMigrations,
-      errors,
     })
   }
 }
