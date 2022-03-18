@@ -6,12 +6,12 @@ generic-service:
 
   ingress:
     host: nomis-sync-dashboard-dev.hmpps.service.justice.gov.uk
-    contextColour: green
 
   env:
     INGRESS_URL: "https://nomis-sync-dashboard-dev.hmpps.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api-dev.prison.service.justice.gov.uk"
+    NOMIS_MIGRATION_API_URL: "https://prisoner-nomis-migration-dev.hmpps.service.justice.gov.uk"
 
 generic-prometheus-alerts:
   alertSeverity: digital-prison-service-dev
