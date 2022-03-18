@@ -13,8 +13,6 @@ export interface Context {
   token?: string
 }
 
-// type ServerError = { status: number; error: string; message: string }
-
 export default class NomisMigrationService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
 
@@ -23,7 +21,7 @@ export default class NomisMigrationService {
   }
 
   async getVisitMigrations(context: Context): Promise<VisitMigrations> {
-    logger.info(`getting details for all courts`)
+    logger.info(`getting details for visit migrations`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
         path: `/migrate/visits/history`,
