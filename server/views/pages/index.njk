@@ -13,16 +13,17 @@
     <div class="homepage-content">
       <div class="govuk-width-container">
         <ul class="govuk-grid-row card-group">
-          <li class="govuk-grid-column-one-third card-group__item">
-            {{ card({
-              "href": "/visits-migration",
-              "clickable": "true",
-              "heading": "Visits Migration",
-              "description": "migration and synchronisation information",
-              "id": "visit-migration"
-            }) }}
-          </li>
-        </ul>
+          {% for dashboard in dashboards %}
+            <li class="govuk-grid-column-one-third card-group__item">
+              {{ card({
+                "href": dashboard.href,
+                "clickable": "true",
+                "heading": dashboard.heading,
+                "description": dashboard.description,
+                "id": dashboard.id
+              }) }}
+            </li>
+          {% endfor %}
       </div>
     </div>
   </main>

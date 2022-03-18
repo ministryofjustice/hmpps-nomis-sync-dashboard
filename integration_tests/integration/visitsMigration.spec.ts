@@ -10,6 +10,7 @@ context('Visit Migration Homepage', () => {
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
+      cy.task('stubListOfMigrationHistory')
       cy.signIn()
     })
     it('should see migrate visits tile', () => {

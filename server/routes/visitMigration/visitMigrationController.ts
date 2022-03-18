@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import VisitMigrationService, { Context } from '../../services/visitMigrationService'
+import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
 
 function context(res: Response): Context {
   return {
@@ -9,7 +9,7 @@ function context(res: Response): Context {
 }
 
 export default class VisitMigrationController {
-  constructor(private readonly visitMigrationService: VisitMigrationService) {}
+  constructor(private readonly visitMigrationService: NomisMigrationService) {}
 
   async getVisitMigrations(req: Request, res: Response): Promise<void> {
     const visitMigrations = await this.visitMigrationService.getVisitMigrations(context(res))
