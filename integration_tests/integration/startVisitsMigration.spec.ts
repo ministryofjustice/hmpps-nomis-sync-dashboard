@@ -55,7 +55,7 @@ context('Visit Migration Homepage', () => {
       pageWithErrors.errorSummary().contains('Enter one or more prison IDs')
       pageWithErrors.errorSummary().contains('Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23')
     })
-    it('submitting view estimated count with valid return back to start page', () => {
+    it('submitting view estimated count with valid form will return back to start page', () => {
       Page.verifyOnPage(VisitsMigrationPage).startNewMigration().click()
       const page = Page.verifyOnPage(StartVisitsMigrationPage)
       page.prisonIds().type('HEI')
