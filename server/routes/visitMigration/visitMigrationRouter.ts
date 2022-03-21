@@ -9,10 +9,15 @@ export interface Services {
 }
 export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
+  const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
   const visitMigrationController = new VisitMigrationController(services.nomisMigrationService)
   get('/visits-migration', (req, res) => visitMigrationController.getVisitMigrations(req, res))
   get('/visits-migration/start', (req, res) => visitMigrationController.startVisitMigration(req, res))
+  post('/visits-migration/start', (req, res) => visitMigrationController.postStartVisitMigration(req, res))
+  get('/visits-migration/start/confirmation', (req, res) =>
+    visitMigrationController.startVisitMigrationConfirmation(req, res)
+  )
 
   return router
 }

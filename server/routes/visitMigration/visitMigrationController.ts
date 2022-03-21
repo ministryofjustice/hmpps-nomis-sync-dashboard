@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
+import trimForm from '../../utils/trim'
+import startVisitsMigrationValidator from './startVisitsMigrationValidator'
 
 function context(res: Response): Context {
   return {
@@ -20,6 +22,19 @@ export default class VisitMigrationController {
   }
 
   async startVisitMigration(req: Request, res: Response): Promise<void> {
-    res.render('pages/visits/startVisitsMigration')
+    res.render('pages/visits/startVisitsMigration', {
+      form: req.session.startVisitsMigrationForm,
+      errors: req.flash('errors'),
+    })
+  }
+
+  async postStartVisitMigration(req: Request, res: Response): Promise<void> {
+    req.session.startVisitsMigrationForm = { ...trimForm(req.body) }
+
+    res.redirect(startVisitsMigrationValidator(req.session.startVisitsMigrationForm, req))
+  }
+
+  async startVisitMigrationConfirmation(req: Request, res: Response): Promise<void> {
+    res.render('pages/visits/startVisitsMigrationConfirmation')
   }
 }

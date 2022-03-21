@@ -110,7 +110,9 @@
     "passport-oauth2": "^1.6.1",
     "redis": "^4.0.4",
     "superagent": "^7.1.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "validator": "^13.7.0",
+    "validatorjs": "^3.22.1"
   },
   "devDependencies": {
     "@types/bunyan": "^1.8.8",
@@ -132,6 +134,8 @@
     "@types/superagent": "^4.1.15",
     "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.4",
+    "@types/validator": "^13.7.1",
+    "@types/validatorjs": "^3.15.0",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "concurrently": "^7.0.0",
