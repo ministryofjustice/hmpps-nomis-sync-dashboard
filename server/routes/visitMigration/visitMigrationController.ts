@@ -18,4 +18,8 @@ export default class VisitMigrationController {
       visitMigrations,
     })
   }
+
+  async startVisitMigration(req: Request, res: Response): Promise<void> {
+    res.render('pages/visits/startVisitsMigration')
+  }
 }

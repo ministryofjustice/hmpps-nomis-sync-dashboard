@@ -12,5 +12,7 @@ export default function routes(router: Router, services: Services): Router {
 
   const visitMigrationController = new VisitMigrationController(services.nomisMigrationService)
   get('/visits-migration', (req, res) => visitMigrationController.getVisitMigrations(req, res))
+  get('/visits-migration/start', (req, res) => visitMigrationController.startVisitMigration(req, res))
+
   return router
 }

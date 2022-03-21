@@ -1,4 +1,5 @@
 {% extends "../../partials/layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set pageTitle = applicationName + " - Visits migration" %}
 
@@ -7,6 +8,12 @@
   <main class="app-container govuk-body">
     <div class="govuk-width-container">
       <h1 class="govuk-heading-l govuk-!-margin-top-7">Visits migration</h1>
+      {{ govukButton({
+        text: "Start new migration",
+        href: "/visits-migration/start",
+        isStartButton: true
+      }) }}
+
     </div>
   </main>
 
