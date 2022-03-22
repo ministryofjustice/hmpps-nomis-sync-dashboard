@@ -16,6 +16,20 @@ const stubListOfMigrationHistory = (migrationHistory: unknown): SuperAgentReques
     },
   })
 
+const stubNomisMigrationPing = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/health/ping',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: { status: 'UP' },
+    },
+  })
+
 export default {
   stubListOfMigrationHistory,
+  stubNomisMigrationPing,
 }

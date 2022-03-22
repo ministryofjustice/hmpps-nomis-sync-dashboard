@@ -12,6 +12,7 @@ generic-service:
     HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     NOMIS_MIGRATION_API_URL: "https://prisoner-nomis-migration.hmpps.service.justice.gov.uk"
+    NOMIS_PRISONER_API_URL: "https://nomis-prisoner.aks-live-1.studio-hosting.service.justice.gov.uk"
 
 generic-prometheus-alerts:
   alertSeverity: digital-prison-service

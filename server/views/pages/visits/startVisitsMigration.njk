@@ -1,13 +1,124 @@
 {% extends "../../partials/layout.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% set pageTitle = applicationName + " - Start visits migration" %}
+{% set pageTitle = applicationName + " - Start a visits migration" %}
 
 {% block content %}
 
   <main class="app-container govuk-body">
-    <div class="govuk-width-container">
-      <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new visits migration</h1>
+    {% if errors.length > 0 %}
+    {{ govukErrorSummary({
+        titleText: 'There is a problem',
+        errorList: errors,
+        attributes: { 'data-qa-errors': true }
+    }) }}
+    {% endif %}
 
+    <div class="govuk-width-container">
+      <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new visits migration</h1>
+            </div>
+            <div class="govuk-grid-column-two-thirds">
+                <form action="/visits-migration/start" method="post" novalidate>
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                    {% call govukFieldset({
+                        legend: {
+                            text: "Enter the filter details for the visits you want to migrate",
+                            classes: "govuk-fieldset__legend--m",
+                            isPageHeading: false
+                        }
+                    }) %}
+
+                        <div class="govuk-list">
+                          {{ govukCheckboxes({
+                            idPrefix: 'visitTypes',
+                            name: 'visitTypes',
+                            errorMessage: errors | findError('visitTypes'),
+                            fieldset: {
+                                legend: {
+                                  text: "Which types visits should be inlcuded?",
+                                  isPageHeading: false,
+                                  classes: "govuk-label"
+                                }
+                              },                            
+                              items: [
+                              {
+                                value: 'SCON',
+                                text: 'Social visits'
+                              },
+                              {
+                                value: 'OFFI',
+                                text: 'Official visits'
+                              }
+                            ]  | setChecked(form.visitTypes) 
+                          }) }}
+                        </div>
+
+                        {{ govukInput({
+                            label: {
+                                html: 'Prison code'
+                            },
+                            id: "prisonIds",
+                            name: "prisonIds",
+                            classes: "govuk-input--width-10",
+                            hint: {
+                                text: "Example 3 letter prison id: `HEI` or comma separated list: `HEI, WWI`"
+                            },
+                            value: form.prisonIds,
+                            errorMessage: errors | findError('prisonIds')
+                        }) }}
+
+                        {{ govukInput({
+                            label: {
+                                html: 'Only include visits created after this date'
+                            },
+                            id: "fromDateTime",
+                            name: "fromDateTime",
+                            classes: "govuk-input--width-20",
+                            hint: {
+                                text: "Example 2020-03-23T12:00:00. This optional field indicates the creation date not the actual visit date"
+                            },
+                            value: form.fromDateTime,
+                            errorMessage: errors | findError('fromDateTime')
+                        }) }}
+
+                        {{ govukInput({
+                            label: {
+                                html: 'Only include visits created before this date'
+                            },
+                            id: "toDateTime",
+                            name: "toDateTime",
+                            classes: "govuk-input--width-20",
+                            hint: {
+                                text: "Example 2020-03-28T12:00:00. This optional field indicates the creation date not the actual visit date"
+                            },
+                            value: form.toDateTime,
+                            errorMessage: errors | findError('toDateTime')
+                        }) }}
+
+                        <div class="govuk-button-group">
+                            {{ govukButton({
+                                text: "Start migration",
+                                name: "action",
+                                value: "startMigration"
+                            }) }}
+                            {{ govukButton({
+                                text: "View estimated count",
+                                value: "viewEstimatedCount",
+                                name: "action",
+                                classes: "govuk-button--secondary"
+                            }) }}
+                            <a class="govuk-link" href={{ backLink  }}>Cancel</a>
+                        </div>
+                    {% endcall %}
+                </form>
+            </div>
+        </div>      
     </div>
   </main>
 

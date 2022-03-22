@@ -2,6 +2,7 @@
 import nunjucks from 'nunjucks'
 import express from 'express'
 import * as pathModule from 'path'
+import { Error } from '../validation/validation'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -44,5 +45,25 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     }
     const array = fullName.split(' ')
     return `${array[0][0]}. ${array.reverse()[0]}`
+  })
+
+  njkEnv.addFilter(
+    'setChecked',
+    (items, selectedList) =>
+      items &&
+      items.map((entry: { value: string }) => ({
+        ...entry,
+        checked: entry && selectedList && selectedList.includes(entry.value),
+      }))
+  )
+
+  njkEnv.addFilter('findError', (array: Error[], formFieldId: string) => {
+    const item = array.find(error => error.href === `#${formFieldId}`)
+    if (item) {
+      return {
+        text: item.text,
+      }
+    }
+    return null
   })
 }
