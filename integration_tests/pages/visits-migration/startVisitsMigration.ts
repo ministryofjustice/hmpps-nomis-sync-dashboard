@@ -22,4 +22,6 @@ export default class StartVisitsMigrationPage extends Page {
   toDateTime = () => cy.get('#toDateTime')
 
   errorSummary = () => cy.get('.govuk-error-summary')
+
+  estimateSummary = () => cy.get('#estimateSummary')
 }

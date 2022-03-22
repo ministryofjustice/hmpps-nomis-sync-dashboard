@@ -1,6 +1,15 @@
 export default {}
 
 declare module 'express-session' {
+  interface StartVisitsMigrationForm {
+    prisonIds?: string
+    visitTypes?: string | string[]
+    fromDateTime?: string
+    toDateTime?: string
+    action?: 'startMigration' | 'viewEstimatedCount'
+    estimatedCount?: string
+  }
+
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
@@ -17,10 +26,15 @@ export declare global {
       authSource: string
     }
 
+    interface ValidationError {
+      href: string
+      text: string
+    }
+
     interface Request {
       verified?: boolean
       id: string
-      flash(type: string, message: Array<Record<string, string>>): number
+      flash(type: string, message: ValidationError[]): number
       flash(message: 'errors'): Array<Record<string, string>>
     }
   }

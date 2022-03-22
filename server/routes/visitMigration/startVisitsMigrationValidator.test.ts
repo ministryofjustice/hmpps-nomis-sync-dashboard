@@ -1,30 +1,13 @@
-import { Request } from 'express'
 import type { StartVisitsMigrationForm } from 'forms'
 import validate from './startVisitsMigrationValidator'
 
 describe('startVisitsMigrationValidator', () => {
-  const req = {
-    flash: jest.fn() as (type: string, message: Array<Record<string, string>>) => number,
-  } as Request
-
-  beforeEach(() => {
-    jest.resetAllMocks()
-  })
-
-  it('should redirect to success page when everthing is valid and selected migration', () => {
+  it('should no errors when everthing is valid', () => {
     const form: StartVisitsMigrationForm = {
       ...validForm,
       action: 'startMigration',
     }
-    expect(validate(form, req)).toEqual('/visits-migration/start/confirmation')
-  })
-
-  it('should redirect to back to start page when everthing is valid and selected view estimated count', () => {
-    const form: StartVisitsMigrationForm = {
-      ...validForm,
-      action: 'viewEstimatedCount',
-    }
-    expect(validate(form, req)).toEqual('/visits-migration/start')
+    expect(validate(form)).toHaveLength(0)
   })
 
   it('should reject empty prisonIds', () => {
@@ -33,8 +16,7 @@ describe('startVisitsMigrationValidator', () => {
       prisonIds: '',
     }
 
-    expect(validate(form, req)).toEqual('/visits-migration/start')
-    expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonIds', text: 'Enter one or more prison IDs' }])
+    expect(validate(form)).toContainEqual({ href: '#prisonIds', text: 'Enter one or more prison IDs' })
   })
 
   it('should reject empty visit types', () => {
@@ -43,8 +25,7 @@ describe('startVisitsMigrationValidator', () => {
       visitTypes: '',
     }
 
-    expect(validate(form, req)).toEqual('/visits-migration/start')
-    expect(req.flash).toBeCalledWith('errors', [{ href: '#visitTypes', text: 'Enter the type of visits to migrate' }])
+    expect(validate(form)).toContainEqual({ href: '#visitTypes', text: 'Enter the type of visits to migrate' })
   })
 
   it('should reject invalid fromDateTime', () => {
@@ -53,10 +34,10 @@ describe('startVisitsMigrationValidator', () => {
       fromDateTime: 'invalid',
     }
 
-    expect(validate(form, req)).toEqual('/visits-migration/start')
-    expect(req.flash).toBeCalledWith('errors', [
-      { href: '#fromDateTime', text: 'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23' },
-    ])
+    expect(validate(form)).toContainEqual({
+      href: '#fromDateTime',
+      text: 'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23',
+    })
   })
 
   it('should reject invalid toDateTime', () => {
@@ -65,10 +46,10 @@ describe('startVisitsMigrationValidator', () => {
       toDateTime: 'invalid',
     }
 
-    expect(validate(form, req)).toEqual('/visits-migration/start')
-    expect(req.flash).toBeCalledWith('errors', [
-      { href: '#toDateTime', text: 'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23' },
-    ])
+    expect(validate(form)).toContainEqual({
+      href: '#toDateTime',
+      text: 'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23',
+    })
   })
 
   it('should allow short time format in to/fromDateTime', () => {
@@ -78,7 +59,7 @@ describe('startVisitsMigrationValidator', () => {
       toDateTime: '2020-03-23T12',
     }
 
-    expect(validate(form, req)).toEqual('/visits-migration/start/confirmation')
+    expect(validate(form)).toHaveLength(0)
   })
 
   it('should allow just date in to/fromDateTime', () => {
@@ -88,7 +69,7 @@ describe('startVisitsMigrationValidator', () => {
       toDateTime: '2020-03-23',
     }
 
-    expect(validate(form, req)).toEqual('/visits-migration/start/confirmation')
+    expect(validate(form)).toHaveLength(0)
   })
 })
 

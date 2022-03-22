@@ -10,6 +10,7 @@ import standardRouter from '../standardRouter'
 import UserService from '../../services/userService'
 import * as auth from '../../authentication/auth'
 import nomisMigrationService from './mockNomisMigrationService'
+import nomisPrisonerService from './mockNomisPrisonerService'
 
 const user = {
   name: 'john smith',
@@ -57,5 +58,8 @@ function appSetup(route: Router, production: boolean): Express {
 
 export default function appWithAllRoutes({ production = false }: { production?: boolean }): Express {
   auth.default.authenticationMiddleware = () => (req, res, next) => next()
-  return appSetup(allRoutes(standardRouter(new MockUserService()), { nomisMigrationService }), production)
+  return appSetup(
+    allRoutes(standardRouter(new MockUserService()), { nomisMigrationService, nomisPrisonerService }),
+    production
+  )
 }

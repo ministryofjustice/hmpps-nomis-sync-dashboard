@@ -56,6 +56,8 @@ context('Visit Migration Homepage', () => {
       pageWithErrors.errorSummary().contains('Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23')
     })
     it('submitting view estimated count with valid form will return back to start page', () => {
+      cy.task('stubGetVisitMigrationEstimatedCount', 100_988)
+
       Page.verifyOnPage(VisitsMigrationPage).startNewMigration().click()
       const page = Page.verifyOnPage(StartVisitsMigrationPage)
       page.prisonIds().type('HEI')
@@ -66,7 +68,9 @@ context('Visit Migration Homepage', () => {
 
       page.viewEstimatedCountButton().click()
 
-      Page.verifyOnPage(StartVisitsMigrationPage)
+      const pageWithEstimate = Page.verifyOnPage(StartVisitsMigrationPage)
+
+      pageWithEstimate.estimateSummary().contains('Estimated number of visits to be migrated: 100,988')
     })
 
     it('submitting start migration with valid form will start migration', () => {
