@@ -3,6 +3,8 @@ context('Healthcheck', () => {
     cy.task('reset')
     cy.task('stubAuthPing')
     cy.task('stubTokenVerificationPing')
+    cy.task('stubNomisMigrationPing')
+    cy.task('stubNomisPrisonerPing')
   })
 
   it('Health check page is visible', () => {
