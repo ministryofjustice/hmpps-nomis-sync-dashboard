@@ -2,8 +2,8 @@ import Validator, { ErrorMessages, Rules } from 'validatorjs'
 import isISO8601 from 'validator/lib/isISO8601'
 
 export interface Error {
-  text: string
   href: string
+  text: string
 }
 
 Validator.register(
@@ -17,7 +17,6 @@ Validator.register(
   'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23'
 )
 
-// eslint-disable-next-line import/prefer-default-export
 export function validate<T>(form: T, rules: Rules, customMessages: ErrorMessages) {
   const validation = new Validator(form, rules, customMessages)
 
