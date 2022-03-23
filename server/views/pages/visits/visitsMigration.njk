@@ -27,6 +27,12 @@
   <div class="govuk-grid-row govuk-body">
     <h1 class="govuk-heading-l">Visits migration</h1>
 
+      {{ govukButton({
+        text: "Start new migration",
+        href: "/visits-migration/start",
+        isStartButton: true
+      }) }}
+
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <div class="moj-filter-layout">
