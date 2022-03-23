@@ -1,3 +1,7 @@
+import moment from 'moment'
+
+export const DATE_TIME_FORMAT_SPEC = 'YYYY-MM-DDTHH:mm:ss'
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 

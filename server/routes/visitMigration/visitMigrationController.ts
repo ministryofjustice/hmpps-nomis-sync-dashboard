@@ -3,6 +3,13 @@ import NomisMigrationService, { Context } from '../../services/nomisMigrationSer
 import trimForm from '../../utils/trim'
 import startVisitsMigrationValidator from './startVisitsMigrationValidator'
 
+interface Filter {
+  prisonIds?: string[]
+  visitTypes?: string[]
+  fromDateTime?: string
+  toDateTime?: string
+}
+
 function context(res: Response): Context {
   return {
     username: res?.locals?.user?.username,
@@ -14,10 +21,24 @@ export default class VisitMigrationController {
   constructor(private readonly visitMigrationService: NomisMigrationService) {}
 
   async getVisitMigrations(req: Request, res: Response): Promise<void> {
-    const visitMigrations = await this.visitMigrationService.getVisitMigrations(context(res))
-
+    const { migrations } = await this.visitMigrationService.getVisitMigrations(context(res))
+    const decoratedMigrations = migrations.map(migration => {
+      const filter: Filter = JSON.parse(migration.filter)
+      const filterPrisonIds = filter.prisonIds?.join()
+      const filterVisitTypes = filter.visitTypes?.join()
+      const filterToDate = filter.toDateTime
+      const filterFromDate = filter.fromDateTime
+      return {
+        ...migration,
+        ...(filterPrisonIds && { filterPrisonIds }),
+        ...(filterVisitTypes && { filterVisitTypes }),
+        ...(filterToDate && { filterToDate }),
+        ...(filterFromDate && { filterFromDate }),
+      }
+    })
+    console.log(decoratedMigrations)
     res.render('pages/visits/visitsMigration', {
-      visitMigrations,
+      migrations: decoratedMigrations,
     })
   }
 
