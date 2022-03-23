@@ -36,7 +36,6 @@ export default class VisitMigrationController {
         ...(filterFromDate && { filterFromDate }),
       }
     })
-    console.log(decoratedMigrations)
     res.render('pages/visits/visitsMigration', {
       migrations: decoratedMigrations,
     })
