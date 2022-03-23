@@ -18,6 +18,7 @@ export default (on: (string, Record) => void): void => {
     stubTokenVerificationPing: tokenVerification.stubPing,
     stubListOfMigrationHistory: nomisMigrationApi.stubListOfMigrationHistory,
     stubNomisMigrationPing: nomisMigrationApi.stubNomisMigrationPing,
+    stubStartVisitsMigration: nomisMigrationApi.stubStartVisitsMigration,
     stubNomisPrisonerPing: nomisPrisonerApi.stubNomisPrisonerPing,
     stubGetVisitMigrationEstimatedCount: nomisPrisonerApi.stubGetVisitMigrationEstimatedCount,
   })

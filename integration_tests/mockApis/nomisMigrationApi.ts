@@ -32,6 +32,31 @@ const stubNomisMigrationPing = (): SuperAgentRequest =>
     },
   })
 
+const stubStartVisitsMigration = (
+  response: unknown = {
+    migrationId: '2022-03-23T11:11:56',
+    estimatedCount: 2,
+    body: {
+      prisonIds: ['HEI'],
+      visitTypes: ['SCON'],
+      fromDateTime: '2022-03-23T12:00:00',
+      toDateTime: '2022-03-24T12:00:00',
+      ignoreMissingRoom: false,
+    },
+  }
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/nomis-migration-api/migrate/visits',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
 const defaultMigrationHistory: MigrationHistory[] = [
   {
     migrationId: '2022-03-14T10:13:56',
@@ -75,4 +100,5 @@ const defaultMigrationHistory: MigrationHistory[] = [
 export default {
   stubListOfMigrationHistory,
   stubNomisMigrationPing,
+  stubStartVisitsMigration,
 }

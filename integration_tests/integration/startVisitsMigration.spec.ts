@@ -74,6 +74,11 @@ context('Visit Migration Homepage', () => {
     })
 
     it('submitting start migration with valid form will start migration', () => {
+      cy.task('stubStartVisitsMigration', {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 100_988,
+      })
+
       Page.verifyOnPage(VisitsMigrationPage).startNewMigration().click()
       const page = Page.verifyOnPage(StartVisitsMigrationPage)
       page.prisonIds().type('HEI')
@@ -84,7 +89,9 @@ context('Visit Migration Homepage', () => {
 
       page.startMigrationButton().click()
 
-      Page.verifyOnPage(StartVisitsMigrationConfirmationPage)
+      const confirmationPage = Page.verifyOnPage(StartVisitsMigrationConfirmationPage)
+      confirmationPage.confirmationMessage().contains('00,988')
+      confirmationPage.confirmationMessage().contains('2022-03-23T11:11:56')
     })
   })
 })
