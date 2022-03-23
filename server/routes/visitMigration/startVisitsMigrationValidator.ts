@@ -1,9 +1,8 @@
-import { Request } from 'express'
 import type { StartVisitsMigrationForm } from 'forms'
 import { validate as validateForm } from '../../validation/validation'
 
-export default function validate(form: StartVisitsMigrationForm, req: Request): string {
-  const errors = validateForm(
+export default function validate(form: StartVisitsMigrationForm): Express.ValidationError[] {
+  return validateForm(
     form,
     {
       prisonIds: 'required',
@@ -16,10 +15,4 @@ export default function validate(form: StartVisitsMigrationForm, req: Request): 
       'required.visitTypes': 'Enter the type of visits to migrate',
     }
   )
-
-  if (errors.length > 0) {
-    req.flash('errors', errors)
-    return '/visits-migration/start'
-  }
-  return form.action === 'startMigration' ? '/visits-migration/start/confirmation' : '/visits-migration/start'
 }

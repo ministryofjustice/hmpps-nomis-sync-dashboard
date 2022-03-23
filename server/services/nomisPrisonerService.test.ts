@@ -1,9 +1,14 @@
 import nock from 'nock'
 import NomisPrisonerService from './nomisPrisonerService'
 import config from '../config'
+import HmppsAuthClient from '../data/hmppsAuthClient'
+import TokenStore from '../data/tokenStore'
 
+jest.mock('../data/hmppsAuthClient')
 describe('NomisPrisonerService tests', () => {
   let nomisPrisonerService: NomisPrisonerService
+  let hmppsAuthClient: jest.Mocked<HmppsAuthClient>
+
   let fakeNomisPrisonerService: nock.Scope
 
   beforeEach(() => {
@@ -12,7 +17,8 @@ describe('NomisPrisonerService tests', () => {
 
   describe('getVisitMigrationEstimatedCount', () => {
     beforeEach(() => {
-      nomisPrisonerService = new NomisPrisonerService()
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
     })
 
     it('will allow empty filter', async () => {
@@ -34,7 +40,7 @@ describe('NomisPrisonerService tests', () => {
 
       await nomisPrisonerService.getVisitMigrationEstimatedCount(
         {
-          prisonIds: 'HEI',
+          prisonIds: ['HEI'],
           visitTypes: ['SCON', 'OFFI'],
           fromDateTime: '2022-01-24T02:54:00',
           toDateTime: '2022-01-25T02:54:00',

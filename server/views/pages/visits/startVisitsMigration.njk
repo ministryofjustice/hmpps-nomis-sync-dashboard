@@ -4,6 +4,7 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% set pageTitle = applicationName + " - Start a visits migration" %}
 
@@ -24,6 +25,17 @@
             <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new visits migration</h1>
             </div>
             <div class="govuk-grid-column-two-thirds">
+                {% if form.estimatedCount %}
+                {% set html %}
+                <p class="govuk-notification-banner__heading" id="estimateSummary">
+                    Estimated number of visits to be migrated: {{form.estimatedCount}}
+                </p>
+                {% endset %}
+
+                {{ govukNotificationBanner({
+                html: html
+                }) }}
+                {% endif %}
                 <form action="/visits-migration/start" method="post" novalidate>
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     {% call govukFieldset({
