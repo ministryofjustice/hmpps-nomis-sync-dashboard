@@ -66,6 +66,9 @@ export default class VisitMigrationController {
       const filter = this.toFilter(req.session.startVisitsMigrationForm)
 
       if (req.session.startVisitsMigrationForm.action === 'startMigration') {
+        const result = await this.visitMigrationService.startVisitsMigration(filter, context(res))
+        req.session.startVisitsMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
+        req.session.startVisitsMigrationForm.migrationId = result.migrationId
         res.redirect('/visits-migration/start/confirmation')
       } else {
         const count = await this.nomisPrisonerService.getVisitMigrationEstimatedCount(filter, context(res))
@@ -76,7 +79,7 @@ export default class VisitMigrationController {
   }
 
   async startVisitMigrationConfirmation(req: Request, res: Response): Promise<void> {
-    res.render('pages/visits/startVisitsMigrationConfirmation')
+    res.render('pages/visits/startVisitsMigrationConfirmation', { form: req.session.startVisitsMigrationForm })
   }
 
   private toFilter(form: StartVisitsMigrationForm): GetVisitsByFilter {

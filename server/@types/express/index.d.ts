@@ -8,6 +8,7 @@ declare module 'express-session' {
     toDateTime?: string
     action?: 'startMigration' | 'viewEstimatedCount'
     estimatedCount?: string
+    migrationId?: string
   }
 
   // Declare that the session will potentially contain these additional fields

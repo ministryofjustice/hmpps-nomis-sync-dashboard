@@ -64,7 +64,7 @@ export default {
         response: Number(get('NOMIS_MIGRATION_TIMEOUT_RESPONSE', 60000)),
         deadline: Number(get('NOMIS_MIGRATION_TIMEOUT_DEADLINE', 60000)),
       },
-      agent: new AgentConfig(),
+      agent: new AgentConfig(Number(get('NOMIS_MIGRATION_TIMEOUT_RESPONSE', 60000))),
     },
     nomisPrisoner: {
       url: get('NOMIS_PRISONER_API_URL', 'http://localhost:8102', requiredInProduction) as string,
@@ -72,7 +72,7 @@ export default {
         response: Number(get('NOMIS_PRISONER_TIMEOUT_RESPONSE', 60000)),
         deadline: Number(get('NOMIS_PRISONER_TIMEOUT_DEADLINE', 60000)),
       },
-      agent: new AgentConfig(),
+      agent: new AgentConfig(Number(get('NOMIS_PRISONER_TIMEOUT_RESPONSE', 60000))),
     },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
