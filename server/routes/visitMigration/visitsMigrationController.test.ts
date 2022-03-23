@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import VisitMigrationController from './visitMigrationController'
 import { VisitMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
+import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
 describe('visitMigrationController', () => {
   const req = {
@@ -84,7 +85,7 @@ describe('visitMigrationController', () => {
     ]
     nomisMigrationService.getVisitMigrations.mockResolvedValue(visitMigrationResponse)
 
-    await new VisitMigrationController(nomisMigrationService).getVisitMigrations(req, res)
+    await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).getVisitMigrations(req, res)
     expect(res.render).toBeCalled()
     expect(res.render).toBeCalledWith('pages/visits/visitsMigration', {
       migrations: expect.arrayContaining([
