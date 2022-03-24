@@ -83,6 +83,11 @@ export default class VisitMigrationController {
     res.render('pages/visits/startVisitsMigrationConfirmation', { form: req.session.startVisitsMigrationForm })
   }
 
+  async viewFailures(req: Request, res: Response): Promise<void> {
+    const failures = await this.visitMigrationService.getFailures(context(res))
+    res.render('pages/visits/visitsMigrationFailures', { failures })
+  }
+
   private toFilter(form: StartVisitsMigrationForm): VisitsMigrationFilter {
     return {
       prisonIds: this.asArray(form.prisonIds),

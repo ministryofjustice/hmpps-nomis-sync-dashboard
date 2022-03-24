@@ -1,4 +1,5 @@
 import type {
+  GetDlqResult,
   MigrationContextVisitsMigrationFilter,
   MigrationHistory,
   VisitsMigrationFilter,
@@ -43,5 +44,30 @@ export default class NomisMigrationService {
       path: `/migrate/visits`,
       data: filter,
     })
+  }
+
+  async getFailures(context: Context): Promise<GetDlqResult> {
+    logger.info(`getting messages on DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await this.getDLQName(token)
+
+    return NomisMigrationService.restClient(token).get<GetDlqResult>({
+      path: `/queue-admin/get-dlq-messages/${dlqName}`,
+    })
+  }
+
+  private async getDLQName(token: string): Promise<string> {
+    const health = await NomisMigrationService.restClient(token).get<{
+      components: {
+        'migration-health': {
+          details: {
+            dlqName: string
+          }
+        }
+      }
+    }>({
+      path: `/health`,
+    })
+    return health.components['migration-health'].details.dlqName
   }
 }
