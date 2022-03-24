@@ -21,7 +21,7 @@ describe('NomisMigrationService tests', () => {
       nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
     })
 
-    it('will allow empty filter to be sent', async () => {
+    it('will allow minimal filter to be sent', async () => {
       let filter: unknown
       fakeNomisMigrationService
         .post('/migrate/visits', body => {
@@ -36,9 +36,12 @@ describe('NomisMigrationService tests', () => {
           },
         })
 
-      await nomisMigrationService.startVisitsMigration({}, { token: 'some token' })
+      await nomisMigrationService.startVisitsMigration(
+        { prisonIds: ['HEI'], visitTypes: ['SCON'], ignoreMissingRoom: false },
+        { token: 'some token' }
+      )
 
-      expect(filter).toEqual({})
+      expect(filter).toEqual({ prisonIds: ['HEI'], visitTypes: ['SCON'], ignoreMissingRoom: false })
     })
   })
 
@@ -67,6 +70,7 @@ describe('NomisMigrationService tests', () => {
         visitTypes: ['SCON'],
         fromDateTime: '2022-03-23T12:00:00',
         toDateTime: '2022-03-24T12:00:00',
+        ignoreMissingRoom: false,
       },
       { token: 'some token' }
     )
@@ -76,6 +80,7 @@ describe('NomisMigrationService tests', () => {
       visitTypes: ['SCON'],
       fromDateTime: '2022-03-23T12:00:00',
       toDateTime: '2022-03-24T12:00:00',
+      ignoreMissingRoom: false,
     })
   })
 
@@ -98,6 +103,7 @@ describe('NomisMigrationService tests', () => {
         visitTypes: ['SCON'],
         fromDateTime: '2022-03-23T12:00:00',
         toDateTime: '2022-03-24T12:00:00',
+        ignoreMissingRoom: false,
       },
       { token: 'some token' }
     )

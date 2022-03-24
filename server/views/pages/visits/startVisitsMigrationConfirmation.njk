@@ -1,20 +1,26 @@
 {% extends "../../partials/layout.njk" %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% set pageTitle = applicationName + " - Visits migration started" %}
 
 {% block content %}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: '/visits-migration'
+  }) }}
 
   <main class="app-container govuk-body">
     <div class="govuk-width-container">
       <h1 class="govuk-heading-l govuk-!-margin-top-7">Visits migration started</h1>
     </div>
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-grid-column-full-width">
         {% set html %}
         <div id="confirmationMessage">
-          <p>Migration id: <strong>{{form.migrationId}}</strong></p>
-          <p>Estimated number of visits to be migrated: <strong>{{form.estimatedCount}}</strong></p>
+          Migration id: <strong>{{form.migrationId}}</strong><br/>
+          Estimated number of visits to be migrated: <strong>{{form.estimatedCount}}</strong>
         </div>  
         {% endset %}
 

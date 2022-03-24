@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
 import { StartVisitsMigrationForm } from 'express-session'
+import moment from 'moment'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import trimForm from '../../utils/trim'
 import startVisitsMigrationValidator from './startVisitsMigrationValidator'
-import type { GetVisitsByFilter } from '../../@types/nomisPrisoner'
+import { VisitsMigrationFilter } from '../../@types/migration'
 
 interface Filter {
   prisonIds?: string[]
@@ -82,18 +83,26 @@ export default class VisitMigrationController {
     res.render('pages/visits/startVisitsMigrationConfirmation', { form: req.session.startVisitsMigrationForm })
   }
 
-  private toFilter(form: StartVisitsMigrationForm): GetVisitsByFilter {
+  private toFilter(form: StartVisitsMigrationForm): VisitsMigrationFilter {
     return {
       prisonIds: this.asArray(form.prisonIds),
       visitTypes: this.asArray(form.visitTypes),
-      fromDateTime: form.fromDateTime,
-      toDateTime: form.toDateTime,
+      fromDateTime: this.withDefaultTime(form.fromDateTime),
+      toDateTime: this.withDefaultTime(form.toDateTime),
+      ignoreMissingRoom: false,
     }
   }
 
   private asArray(value: string | string[]): string[] {
     if (typeof value === 'string') {
       return value.split(',').map((v: string) => v.trim())
+    }
+    return value
+  }
+
+  private withDefaultTime(value?: string): string | undefined {
+    if (value) {
+      return moment(value).format('YYYY-MM-DDTHH:mm:ss')
     }
     return value
   }
