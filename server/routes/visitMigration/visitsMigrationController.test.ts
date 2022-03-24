@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import Context from 'applicationinsights/out/Library/Context'
 import VisitMigrationController from './visitMigrationController'
 import { VisitMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
