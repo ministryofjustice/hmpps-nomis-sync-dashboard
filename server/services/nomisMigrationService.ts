@@ -1,5 +1,8 @@
-import type { MigrationContextVisitsMigrationFilter, MigrationHistory } from '../@types/migration'
-import { GetVisitsByFilter } from '../@types/nomisPrisoner'
+import type {
+  MigrationContextVisitsMigrationFilter,
+  MigrationHistory,
+  VisitsMigrationFilter,
+} from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
 import RestClient from '../data/restClient'
@@ -32,7 +35,7 @@ export default class NomisMigrationService {
   }
 
   async startVisitsMigration(
-    filter: GetVisitsByFilter, // should actual use VisitsMigrationFilter, but this hasn't been generated correctly from swagger, and should be identical to GetVisitsByFilter (allowableValues in swagger has made the type a enum when it shaould be a list)
+    filter: VisitsMigrationFilter,
     context: Context
   ): Promise<MigrationContextVisitsMigrationFilter> {
     logger.info(`starting a visits migration`)

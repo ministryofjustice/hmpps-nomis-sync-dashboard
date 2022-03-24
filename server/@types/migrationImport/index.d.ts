@@ -42,8 +42,8 @@ export interface components {
       messageAttributes?: {
         [key: string]: components['schemas']['MessageAttributeValue']
       }
-      md5OfBody?: string
       md5OfMessageAttributes?: string
+      md5OfBody?: string
     }
     MessageAttributeValue: {
       stringValue?: string
@@ -99,10 +99,9 @@ export interface components {
       /**
        * @description List of visit types to migrate
        * @default SCON
-       * @example SCON
-       * @enum {array}
+       * @example SCON,OFFI
        */
-      visitTypes: 'SCON' | 'OFFI'
+      visitTypes: string[]
       /**
        * @description Only include visits created after this date. NB this is creation date not the actual visit date
        * @example 2021-07-05T10:35:17
@@ -208,7 +207,7 @@ export interface operations {
   /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b> */
   migrateVisits: {
     responses: {
-      /** MigrationHistory process started */
+      /** Migration process started */
       202: {
         content: {
           'application/json': components['schemas']['MigrationContextVisitsMigrationFilter']

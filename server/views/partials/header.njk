@@ -45,24 +45,3 @@
     </nav>
   </div>
 </header>
-<div class="location-bar">
-  {% if feedbackUrl %}
-    <div class="location-bar__feedback">
-      {{ govukPhaseBanner({
-        classes: "app-phase-banner",
-        tag: {
-          text: "Feedback"
-        },
-        html: 'Provide <a class="govuk-link" target="feedback" href="' + feedbackUrl + '">feedback</a> to help us improve this page.'
-      }) }}
-    </div>
-  {% endif %}
-  <div class="location-bar__location" >
-    <span class="location-bar__location__name"  data-qa="active-location">
-      {{ user.activeCaseLoad.name }}
-    </span>
-    {% if user.allCaseloads.length > 1 %}
-      <a class="location-bar__link" href="{{ dpsUrl }}/change-caseload" data-qa="change-location-link">Change location</a>
-    {% endif %}
-  </div>
-</div>
