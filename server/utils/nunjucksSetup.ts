@@ -49,6 +49,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
   })
 
   njkEnv.addFilter('formatDate', (value, format) => (value ? moment(value).format(format) : null))
+  njkEnv.addFilter('json', value => (value ? JSON.stringify(value) : null))
 
   njkEnv.addFilter(
     'setChecked',

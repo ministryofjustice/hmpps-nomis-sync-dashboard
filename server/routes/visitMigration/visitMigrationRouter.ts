@@ -23,6 +23,7 @@ export default function routes(router: Router, services: Services): Router {
   get('/visits-migration/start/confirmation', (req, res) =>
     visitMigrationController.startVisitMigrationConfirmation(req, res)
   )
+  get('/visits-migration/failures', (req, res) => visitMigrationController.viewFailures(req, res))
 
   return router
 }
