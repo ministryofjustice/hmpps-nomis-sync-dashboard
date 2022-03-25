@@ -1,7 +1,7 @@
 import type { RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../../middleware/asyncMiddleware'
-import VisitMigrationController from './visitMigrationController'
+import VisitsMigrationController from './visitsMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 
@@ -13,7 +13,7 @@ export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  const visitMigrationController = new VisitMigrationController(
+  const visitMigrationController = new VisitsMigrationController(
     services.nomisMigrationService,
     services.nomisPrisonerService
   )

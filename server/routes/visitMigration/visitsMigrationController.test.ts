@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import VisitMigrationController from './visitMigrationController'
+import VisitsMigrationController from './visitsMigrationController'
 import { VisitMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
-describe('visitMigrationController', () => {
+describe('visitsMigrationController', () => {
   const req = {
     query: {},
     session: {},
@@ -86,7 +86,7 @@ describe('visitMigrationController', () => {
       ]
       nomisMigrationService.getVisitMigrations.mockResolvedValue(visitMigrationResponse)
 
-      await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).getVisitMigrations(req, res)
+      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).getVisitMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/visits/visitsMigration', {
         migrations: expect.arrayContaining([
@@ -104,7 +104,7 @@ describe('visitMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'viewEstimatedCount',
         }
-        await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
           req,
           res
         )
@@ -126,7 +126,7 @@ describe('visitMigrationController', () => {
         nomisPrisonerService.getVisitMigrationEstimatedCount.mockResolvedValue(124_001)
       })
       it('should render the start page again', async () => {
-        await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
           req,
           res
         )
@@ -157,21 +157,21 @@ describe('visitMigrationController', () => {
       })
 
       it('should render the confirmation page', async () => {
-        await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
           req,
           res
         )
         expect(res.redirect).toHaveBeenCalledWith('/visits-migration/start/confirmation')
       })
       it('should call start migration service', async () => {
-        await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
           req,
           res
         )
         expect(nomisMigrationService.startVisitsMigration).toBeCalled()
       })
       it('should convert prison ids to array', async () => {
-        await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
           req,
           res
         )
@@ -181,7 +181,7 @@ describe('visitMigrationController', () => {
         )
       })
       it('should convert single visit type to array', async () => {
-        await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
           req,
           res
         )
@@ -191,7 +191,7 @@ describe('visitMigrationController', () => {
         )
       })
       it('should pass fromDateTime to service', async () => {
-        await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
           req,
           res
         )
@@ -201,7 +201,7 @@ describe('visitMigrationController', () => {
         )
       })
       it('should add midnight to date when not present', async () => {
-        await new VisitMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
           req,
           res
         )
@@ -209,6 +209,42 @@ describe('visitMigrationController', () => {
           expect.objectContaining({ toDateTime: '2020-03-24T00:00:00' }),
           expect.anything()
         )
+      })
+    })
+  })
+
+  describe('viewFailures', () => {
+    beforeEach(() => {
+      nomisMigrationService.getFailures.mockResolvedValue({
+        messagesFoundCount: 353,
+        messagesReturnedCount: 5,
+        messages: [
+          {
+            body: {},
+            messageId: 'afeb75fd-a2aa-41c4-9ede-b6bfe9590d36',
+          },
+          {
+            body: {},
+            messageId: '86b96f0e-2ac3-445c-b3ac-0a4d525d371e',
+          },
+        ],
+      })
+    })
+    it('should render the failures page with application insights link for failed messageId', async () => {
+      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      expect(res.render).toBeCalledWith('pages/visits/visitsMigrationFailures', {
+        failures: expect.objectContaining({
+          messages: expect.arrayContaining([
+            expect.objectContaining({
+              applicationInsightsLink:
+                "http://localhost:8103/applicationinsights/resourceId/%2Fsubscriptions%2Fsubscription%2FresourceGroups%2Fcomponent-rg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fcomponent/source/LogsBlade.AnalyticsShareLinkToQuery/query/exceptions%0A%20%20%20%20%7C%20where%20cloud_RoleName%20%3D%3D%20'hmpps-prisoner-from-nomis-migration'%20%0A%20%20%20%20%7C%20where%20customDimensions.%5B%22Logger%20Message%22%5D%20%3D%3D%20%22MessageID%3Aafeb75fd-a2aa-41c4-9ede-b6bfe9590d36%22%0A%20%20%20%20%7C%20order%20by%20timestamp%20desc/timespan/P1D",
+            }),
+            expect.objectContaining({
+              applicationInsightsLink:
+                "http://localhost:8103/applicationinsights/resourceId/%2Fsubscriptions%2Fsubscription%2FresourceGroups%2Fcomponent-rg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fcomponent/source/LogsBlade.AnalyticsShareLinkToQuery/query/exceptions%0A%20%20%20%20%7C%20where%20cloud_RoleName%20%3D%3D%20'hmpps-prisoner-from-nomis-migration'%20%0A%20%20%20%20%7C%20where%20customDimensions.%5B%22Logger%20Message%22%5D%20%3D%3D%20%22MessageID%3A86b96f0e-2ac3-445c-b3ac-0a4d525d371e%22%0A%20%20%20%20%7C%20order%20by%20timestamp%20desc/timespan/P1D",
+            }),
+          ]),
+        }),
       })
     })
   })

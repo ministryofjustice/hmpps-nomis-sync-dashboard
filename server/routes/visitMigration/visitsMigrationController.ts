@@ -6,6 +6,7 @@ import NomisPrisonerService from '../../services/nomisPrisonerService'
 import trimForm from '../../utils/trim'
 import startVisitsMigrationValidator from './startVisitsMigrationValidator'
 import { VisitsMigrationFilter } from '../../@types/migration'
+import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 
 interface Filter {
   prisonIds?: string[]
@@ -21,7 +22,7 @@ function context(res: Response): Context {
   }
 }
 
-export default class VisitMigrationController {
+export default class VisitsMigrationController {
   constructor(
     private readonly visitMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService
@@ -85,7 +86,14 @@ export default class VisitMigrationController {
 
   async viewFailures(req: Request, res: Response): Promise<void> {
     const failures = await this.visitMigrationService.getFailures(context(res))
-    res.render('pages/visits/visitsMigrationFailures', { failures })
+    const failuresDecorated = {
+      ...failures,
+      messages: failures.messages.map(message => ({
+        ...message,
+        applicationInsightsLink: this.applicationInsightsUrl(this.applicationInsightsQuery(message)),
+      })),
+    }
+    res.render('pages/visits/visitsMigrationFailures', { failures: failuresDecorated })
   }
 
   private toFilter(form: StartVisitsMigrationForm): VisitsMigrationFilter {
@@ -110,5 +118,16 @@ export default class VisitMigrationController {
       return moment(value).format('YYYY-MM-DDTHH:mm:ss')
     }
     return value
+  }
+
+  private applicationInsightsQuery(message: { messageId: string }): string {
+    return `exceptions
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
+    | order by timestamp desc`
+  }
+
+  private applicationInsightsUrl(query: string): string {
+    return buildUrl(query, 'P1D')
   }
 }

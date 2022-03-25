@@ -7,7 +7,7 @@ import { Error } from '../validation/validation'
 
 const production = process.env.NODE_ENV === 'production'
 
-export default function nunjucksSetup(app: express.Express, path: pathModule.PlatformPath): void {
+export default function nunjucksSetup(app: express.Express, path: pathModule.PlatformPath): nunjucks.Environment {
   app.set('view engine', 'njk')
 
   app.locals.asset_path = '/assets/'
@@ -49,7 +49,10 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
   })
 
   njkEnv.addFilter('formatDate', (value, format) => (value ? moment(value).format(format) : null))
-  njkEnv.addFilter('json', value => (value ? JSON.stringify(value) : null))
+  njkEnv.addFilter('json', (value, excludeProperties: string[] = []) => {
+    const propsToExclude = excludeProperties.reduce((acc, prop) => ({ ...acc, [prop]: undefined }), {})
+    return value ? JSON.stringify({ ...value, ...propsToExclude }) : null
+  })
 
   njkEnv.addFilter(
     'setChecked',
@@ -70,4 +73,6 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     }
     return null
   })
+
+  return njkEnv
 }
