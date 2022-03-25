@@ -88,11 +88,7 @@ export default {
     url: get('APPLICATION_INSIGHTS_URL', 'http://localhost:8103/applicationinsights'),
     subscriptId: get('APPINSIGHTS_SUBSCRIPTION_ID', 'subscription', requiredInProduction),
     component: get('APPINSIGHTS_COMPONENT', 'component', requiredInProduction),
-    resourceGroup: get(
-      'APPINSIGHTS_RESOURCE_GROUP',
-      `${get('APPINSIGHTS_COMPONENT', 'component')}-rg`,
-      requiredInProduction
-    ),
+    resourceGroup: get('APPINSIGHTS_RESOURCE_GROUP', `${get('APPINSIGHTS_COMPONENT', 'component')}-rg`),
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
 }
