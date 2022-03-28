@@ -284,4 +284,124 @@ describe('NomisMigrationService tests', () => {
       )
     })
   })
+
+  describe('getVisitMigration', () => {
+    it('will return message lengths along with history', async () => {
+      fakeNomisMigrationService.get('/info').reply(200, {
+        git: {
+          branch: 'main',
+          commit: {
+            id: '909b9e9',
+            time: '2022-03-28T09:48:07Z',
+          },
+        },
+        build: {
+          operatingSystem: 'Linux (5.4.0-1021-gcp)',
+          version: '2022-03-28.585.909b9e9',
+          artifact: 'hmpps-prisoner-from-nomis-migration',
+          machine: '07616ee6ca3c',
+          by: 'root',
+          name: 'hmpps-prisoner-from-nomis-migration',
+          time: '2022-03-28T09:51:17.920Z',
+          group: 'uk.gov.justice.digital.hmpps',
+        },
+        'last visits migration': {
+          'records waiting processing': '2367',
+          'records currently being processed': '0',
+          'records that have failed': '353',
+          id: '2022-03-24T13:39:33',
+          'records migrated': 1,
+          started: '2022-03-14T13:10:54.073256',
+        },
+      })
+      fakeNomisMigrationService.get('/migrate/visits/history/2022-03-24T13:39:33').reply(200, {
+        migrationId: '2022-03-24T13:39:33',
+        whenStarted: '2022-03-24T13:39:33.477466',
+        whenEnded: '2022-03-24T13:41:39.83053',
+        estimatedRecordCount: 292,
+        filter:
+          '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2017-03-23T12:00:00","ignoreMissingRoom":false}',
+        recordsMigrated: 0,
+        recordsFailed: 353,
+        migrationType: 'VISITS',
+        status: 'COMPLETED',
+        id: '2022-03-24T13:39:33',
+      })
+      const summary = await nomisMigrationService.getVisitsMigration('2022-03-24T13:39:33', { token: 'some token' })
+
+      expect(summary).toEqual(
+        expect.objectContaining({
+          history: {
+            migrationId: '2022-03-24T13:39:33',
+            whenStarted: '2022-03-24T13:39:33.477466',
+            whenEnded: '2022-03-24T13:41:39.83053',
+            estimatedRecordCount: 292,
+            filter:
+              '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2017-03-23T12:00:00","ignoreMissingRoom":false}',
+            recordsMigrated: 0,
+            recordsFailed: 353,
+            migrationType: 'VISITS',
+            status: 'COMPLETED',
+            id: '2022-03-24T13:39:33',
+          },
+          currentProgress: {
+            recordsFailed: '353',
+            recordsToBeProcessed: '2367',
+            recordsMigrated: 1,
+          },
+        })
+      )
+    })
+    it('will not return current count when migration mapping has not been written yet so migrationIds do not match', async () => {
+      fakeNomisMigrationService.get('/info').reply(200, {
+        git: {
+          branch: 'main',
+          commit: {
+            id: '909b9e9',
+            time: '2022-03-28T09:48:07Z',
+          },
+        },
+        build: {
+          operatingSystem: 'Linux (5.4.0-1021-gcp)',
+          version: '2022-03-28.585.909b9e9',
+          artifact: 'hmpps-prisoner-from-nomis-migration',
+          machine: '07616ee6ca3c',
+          by: 'root',
+          name: 'hmpps-prisoner-from-nomis-migration',
+          time: '2022-03-28T09:51:17.920Z',
+          group: 'uk.gov.justice.digital.hmpps',
+        },
+        'last visits migration': {
+          'records waiting processing': '2367',
+          'records currently being processed': '0',
+          'records that have failed': '353',
+          id: '2021-02-24T11:39:33',
+          'records migrated': 999,
+          started: '2022-03-14T13:10:54.073256',
+        },
+      })
+      fakeNomisMigrationService.get('/migrate/visits/history/2022-03-24T13:39:33').reply(200, {
+        migrationId: '2022-03-24T13:39:33',
+        whenStarted: '2022-03-24T13:39:33.477466',
+        whenEnded: '2022-03-24T13:41:39.83053',
+        estimatedRecordCount: 292,
+        filter:
+          '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2017-03-23T12:00:00","ignoreMissingRoom":false}',
+        recordsMigrated: 0,
+        recordsFailed: 353,
+        migrationType: 'VISITS',
+        status: 'COMPLETED',
+        id: '2022-03-24T13:39:33',
+      })
+      const summary = await nomisMigrationService.getVisitsMigration('2022-03-24T13:39:33', { token: 'some token' })
+
+      expect(summary).toEqual(
+        expect.objectContaining({
+          currentProgress: expect.objectContaining({
+            recordsMigrated: 0,
+          }),
+        })
+      )
+    })
+  })
 })

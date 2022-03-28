@@ -23,5 +23,9 @@ export default (on: (string, Record) => void): void => {
     stubHealth: nomisMigrationApi.stubHealth,
     stubNomisPrisonerPing: nomisPrisonerApi.stubNomisPrisonerPing,
     stubGetVisitMigrationEstimatedCount: nomisPrisonerApi.stubGetVisitMigrationEstimatedCount,
+    stubGetMigrationDetailsStarted: nomisMigrationApi.stubGetMigrationDetailsStarted,
+    stubGetMigrationDetailsCompleted: nomisMigrationApi.stubGetMigrationDetailsCompleted,
+    stubInfoInProgress: nomisMigrationApi.stubInfoInProgress,
+    stubInfoCompleted: nomisMigrationApi.stubInfoCompleted,
   })
 }

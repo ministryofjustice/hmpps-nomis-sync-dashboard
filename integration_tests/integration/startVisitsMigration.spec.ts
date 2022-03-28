@@ -90,8 +90,9 @@ context('Visit Migration Homepage', () => {
       page.startMigrationButton().click()
 
       const confirmationPage = Page.verifyOnPage(StartVisitsMigrationConfirmationPage)
-      confirmationPage.confirmationMessage().contains('00,988')
+      confirmationPage.confirmationMessage().contains('100,988')
       confirmationPage.confirmationMessage().contains('2022-03-23T11:11:56')
+      confirmationPage.detailsLink().contains('View migration status')
     })
   })
 })
