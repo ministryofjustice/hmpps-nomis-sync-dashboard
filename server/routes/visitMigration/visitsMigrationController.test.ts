@@ -93,6 +93,38 @@ describe('visitsMigrationController', () => {
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
         ]),
+        migrationViewFilter: expect.objectContaining({
+          fromDateTime: undefined,
+          includeOnlyFailures: false,
+          prisonId: undefined,
+          toDateTime: undefined,
+        }),
+        errors: expect.arrayContaining([]),
+      })
+    })
+
+    it('should return an error response on invalid date', async () => {
+      req.query.toDateTime = 'invalid'
+      req.query.fromDateTime = '23/4'
+      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).getVisitMigrations(req, res)
+      expect(res.render).toBeCalled()
+      expect(res.render).toBeCalledWith('pages/visits/visitsMigration', {
+        migrationViewFilter: expect.objectContaining({
+          fromDateTime: '23/4',
+          includeOnlyFailures: false,
+          prisonId: undefined,
+          toDateTime: 'invalid',
+        }),
+        errors: expect.arrayContaining([
+          expect.objectContaining({
+            href: '#toDateTime',
+            text: 'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23',
+          }),
+          expect.objectContaining({
+            href: '#fromDateTime',
+            text: 'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23',
+          }),
+        ]),
       })
     })
   })

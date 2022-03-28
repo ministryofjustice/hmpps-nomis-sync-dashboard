@@ -4,6 +4,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
 {% set pageTitle = applicationName + " - Visits migration" %}
 
@@ -15,41 +16,35 @@
 
 
   {% set filterOptionsHtml %}
-    {{ govukInput({
-      label: { text: "Name" if dpsSearch else "Name, username or email address", classes: "govuk-label--s" },
-      classes: "govuk-input--width-20 govuk-fieldset__legend--s",
-      value: currentFilter.user,
-      id: "user",
-      name: "user",
-      hint: {
-        text: "Will match the user's name or username"
-      },
-      errorMessage: errors
-    }) }}
+    <form id="filter-form" action="/visits-migration" novalidate>
+      {{ govukInput( migrationViewFilter | prisonSearchInput ) }}
+      {{ govukInput( migrationViewFilter | toDateInput(errors | findError('toDateTime')) ) }}
+      {{ govukInput( migrationViewFilter | fromDateInput ) }}
+      {{ govukCheckboxes( migrationViewFilter | failedOnlyCheckbox ) }}
+    </form>
   {% endset %}
 
 
   <div class="govuk-grid-row govuk-body">
     <h1 class="govuk-heading-l">Visits migration</h1>
 
+    <div>
       {{ govukButton({
         text: "Start new migration",
         href: "/visits-migration/start",
-        isStartButton: true
+        isStartButton: true,
+        classes: "float-right"
       }) }}
+    </div>
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <div class="moj-filter-layout">
-          <div class="moj-filter-layout__filter">
-            <form id="filter-form" action="TODOACTION" novalidate>
-              {{ filterOptionsHtml }}
-            </form>
-          </div>
+            <div class="moj-filter-layout__filter">{{ mojFilter(filterOptionsHtml | toPrisonListFilter(migrationViewFilter, filterOptionsHtml)) }}</div>
           <div class="moj-filter-layout__content" data-qa="migration-results-div">
             <div>
               <div class="govuk-grid-column-full">
-                <div class="moj-action-bar__filterTagsContainer govuk-!-margin-bottom-5"></div>
+                <div class="moj-action-bar__filterTagsContainer" ></div>
                 {% if migrations.length %}
 
                   {% set rows = [] %}
@@ -92,7 +87,7 @@
 
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full">
-                            <span class="govuk-label--s migration-results-label">Filter used:</span>
+                            <span class="govuk-label--s migration-results-label">Migration properties:</span>
                           </div>
                           {% if u.filterPrisonIds %}
                             <div class="govuk-grid-column-full">
@@ -138,4 +133,9 @@
     </div>
   </div>
 
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/assets/filter-toggle-button.js"></script>
 {% endblock %}

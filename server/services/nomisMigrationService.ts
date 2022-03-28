@@ -1,3 +1,4 @@
+import querystring from 'querystring'
 import type {
   GetDlqResult,
   MigrationContextVisitsMigrationFilter,
@@ -9,6 +10,7 @@ import type HmppsAuthClient from '../data/hmppsAuthClient'
 import RestClient from '../data/restClient'
 import config from '../config'
 import logger from '../../logger'
+import { MigrationViewFilter } from '../@types/dashboard'
 
 export interface VisitMigrations {
   migrations: Array<MigrationHistory>
@@ -19,6 +21,13 @@ export interface Context {
   token?: string
 }
 
+function removeEmptyPropertiesAndStringify(filter: MigrationViewFilter): string {
+  const filterWithoutNulls = JSON.parse(JSON.stringify(filter), (key, value) =>
+    value === null || value === '' ? undefined : value
+  )
+  return querystring.stringify(filterWithoutNulls)
+}
+
 export default class NomisMigrationService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
 
@@ -26,11 +35,12 @@ export default class NomisMigrationService {
     return new RestClient('Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
   }
 
-  async getVisitMigrations(context: Context): Promise<VisitMigrations> {
-    logger.info(`getting details for visit migrations`)
+  async getVisitMigrations(context: Context, filter: MigrationViewFilter): Promise<VisitMigrations> {
+    logger.info(`getting migrations with filter ${JSON.stringify(filter)}`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
         path: `/migrate/visits/history`,
+        query: `${removeEmptyPropertiesAndStringify(filter)}`,
       }),
     }
   }

@@ -8,7 +8,7 @@ const stubListOfMigrationHistory = (
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-migration-api/migrate/visits/history*',
+      urlPattern: '/nomis-migration-api/migrate/visits/history?.*',
     },
     response: {
       status: 200,
