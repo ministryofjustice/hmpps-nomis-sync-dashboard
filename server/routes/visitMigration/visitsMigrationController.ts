@@ -8,6 +8,7 @@ import startVisitsMigrationValidator from './startVisitsMigrationValidator'
 import { MigrationHistory, VisitsMigrationFilter } from '../../@types/migration'
 import { MigrationViewFilter } from '../../@types/dashboard'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
+import visitsMigrationValidator from './visitsMigrationValidator'
 
 interface Filter {
   prisonIds?: string[]
