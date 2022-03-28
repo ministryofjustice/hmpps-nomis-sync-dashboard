@@ -214,10 +214,170 @@ const stubGetFailures = (failures: unknown = defaultFailures): SuperAgentRequest
     },
   })
 
+const stubGetMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/visits/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded: null,
+        estimatedRecordCount: 26602,
+        filter:
+          '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2016-03-23T00:00:00","ignoreMissingRoom":false}',
+        recordsMigrated: 12091,
+        recordsFailed: 123,
+        migrationType: 'VISITS',
+        status: 'STARTED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubInfoInProgress = ({
+  migrationId,
+  migrated,
+  failed,
+  stillToBeProcessed,
+}: {
+  migrationId: string
+  migrated: number
+  failed: string
+  stillToBeProcessed: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/info',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        git: {
+          branch: 'main',
+          commit: {
+            id: '909b9e9',
+            time: '2022-03-28T09:48:07Z',
+          },
+        },
+        build: {
+          operatingSystem: 'Linux (5.4.0-1021-gcp)',
+          version: '2022-03-28.585.909b9e9',
+          artifact: 'hmpps-prisoner-from-nomis-migration',
+          machine: '07616ee6ca3c',
+          by: 'root',
+          name: 'hmpps-prisoner-from-nomis-migration',
+          time: '2022-03-28T09:51:17.920Z',
+          group: 'uk.gov.justice.digital.hmpps',
+        },
+        'last visits migration': {
+          'records waiting processing': stillToBeProcessed,
+          'records currently being processed': '24',
+          'records that have failed': failed,
+          id: migrationId,
+          'records migrated': migrated,
+          started: '2022-03-14T13:10:54.073256',
+        },
+      },
+    },
+  })
+
+const stubGetMigrationDetailsCompleted = ({
+  migrationId,
+  migrated,
+  failed,
+  whenEnded,
+}: {
+  migrationId: string
+  migrated: number
+  failed: string
+  whenEnded: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/visits/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded,
+        estimatedRecordCount: 26602,
+        filter:
+          '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2016-03-23T00:00:00","ignoreMissingRoom":false}',
+        recordsMigrated: migrated,
+        recordsFailed: failed,
+        migrationType: 'VISITS',
+        status: 'COMPLETED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubInfoCompleted = (migrationId: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/info',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        git: {
+          branch: 'main',
+          commit: {
+            id: '909b9e9',
+            time: '2022-03-28T09:48:07Z',
+          },
+        },
+        build: {
+          operatingSystem: 'Linux (5.4.0-1021-gcp)',
+          version: '2022-03-28.585.909b9e9',
+          artifact: 'hmpps-prisoner-from-nomis-migration',
+          machine: '07616ee6ca3c',
+          by: 'root',
+          name: 'hmpps-prisoner-from-nomis-migration',
+          time: '2022-03-28T09:51:17.920Z',
+          group: 'uk.gov.justice.digital.hmpps',
+        },
+        'last visits migration': {
+          'records waiting processing': '0',
+          'records currently being processed': '0',
+          'records that have failed': '999',
+          id: migrationId,
+          'records migrated': 999,
+          started: '2022-03-14T13:10:54.073256',
+        },
+      },
+    },
+  })
+
 export default {
   stubListOfMigrationHistory,
   stubNomisMigrationPing,
   stubStartVisitsMigration,
   stubGetFailures,
   stubHealth,
+  stubGetMigrationDetailsStarted,
+  stubGetMigrationDetailsCompleted,
+  stubInfoInProgress,
+  stubInfoCompleted,
 }

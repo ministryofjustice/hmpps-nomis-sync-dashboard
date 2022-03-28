@@ -16,6 +16,14 @@ export interface VisitMigrations {
   migrations: Array<MigrationHistory>
 }
 
+export interface VisitsMigrationDetails {
+  history: MigrationHistory
+  currentProgress: {
+    recordsFailed: string
+    recordsToBeProcessed: string
+    recordsMigrated: number
+  }
+}
 export interface Context {
   username?: string
   token?: string
@@ -35,13 +43,41 @@ export default class NomisMigrationService {
     return new RestClient('Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
   }
 
-  async getVisitMigrations(context: Context, filter: MigrationViewFilter): Promise<VisitMigrations> {
+  async getVisitsMigrations(context: Context, filter: MigrationViewFilter): Promise<VisitMigrations> {
     logger.info(`getting migrations with filter ${JSON.stringify(filter)}`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
         path: `/migrate/visits/history`,
         query: `${removeEmptyPropertiesAndStringify(filter)}`,
       }),
+    }
+  }
+
+  async getVisitsMigration(migrationId: string, context: Context): Promise<VisitsMigrationDetails> {
+    logger.info(`getting details for visit migration ${migrationId}`)
+    const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
+      path: `/migrate/visits/history/${migrationId}`,
+    })
+
+    const info = await NomisMigrationService.restClient(context.token).get<{
+      'last visits migration': {
+        'records waiting processing': string
+        'records that have failed': string
+        id: string
+        'records migrated': number
+      }
+    }>({
+      path: `/info`,
+    })
+
+    return {
+      history,
+      currentProgress: {
+        recordsFailed: info['last visits migration']['records that have failed'],
+        recordsMigrated:
+          info['last visits migration'].id === migrationId ? info['last visits migration']['records migrated'] : 0,
+        recordsToBeProcessed: info['last visits migration']['records waiting processing'],
+      },
     }
   }
 

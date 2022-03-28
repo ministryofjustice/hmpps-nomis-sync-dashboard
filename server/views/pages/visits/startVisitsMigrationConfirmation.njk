@@ -20,7 +20,7 @@
         {% set html %}
         <div id="confirmationMessage">
           Migration id: <strong>{{form.migrationId}}</strong><br/>
-          Estimated number of visits to be migrated: <strong>{{form.estimatedCount}}</strong>
+          Estimated number of visits to be migrated: <strong>{{form.estimatedCount}}</strong><br/>
         </div>  
         {% endset %}
 
@@ -28,7 +28,12 @@
           titleText: "Visits migration has successfully started",
           html: html
         }) }}
-      </div  
+      </div>  
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <a data-qa="details-link" href="/visits-migration/details?migrationId={{form.migrationId}}">View migration status</a>
+      </div>
     </div>
   </main>
 

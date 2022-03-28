@@ -84,7 +84,7 @@ describe('visitsMigrationController', () => {
           filterVisitTypes: 'SCON',
         },
       ]
-      nomisMigrationService.getVisitMigrations.mockResolvedValue(visitMigrationResponse)
+      nomisMigrationService.getVisitsMigrations.mockResolvedValue(visitMigrationResponse)
 
       await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).getVisitMigrations(req, res)
       expect(res.render).toBeCalled()

@@ -6,4 +6,6 @@ export default class StartVisitsMigrationConfirmationPage extends Page {
   }
 
   confirmationMessage = () => cy.get('#confirmationMessage')
+
+  detailsLink = () => cy.get('[data-qa=details-link]')
 }

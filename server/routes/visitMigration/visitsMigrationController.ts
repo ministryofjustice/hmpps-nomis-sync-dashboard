@@ -5,10 +5,10 @@ import NomisMigrationService, { Context } from '../../services/nomisMigrationSer
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import trimForm from '../../utils/trim'
 import startVisitsMigrationValidator from './startVisitsMigrationValidator'
-import visitsMigrationValidator from './visitsMigrationValidator'
-import { VisitsMigrationFilter } from '../../@types/migration'
+import { MigrationHistory, VisitsMigrationFilter } from '../../@types/migration'
 import { MigrationViewFilter } from '../../@types/dashboard'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
+import visitsMigrationValidator from './visitsMigrationValidator'
 
 interface Filter {
   prisonIds?: string[]
@@ -41,26 +41,13 @@ export default class VisitsMigrationController {
         migrationViewFilter: searchFilter,
       })
     } else {
-      const { migrations } = await this.visitMigrationService.getVisitMigrations(context(res), {
+      const { migrations } = await this.visitMigrationService.getVisitsMigrations(context(res), {
         ...searchFilter,
         toDateTime: VisitsMigrationController.withDefaultTime(searchFilter.toDateTime),
         fromDateTime: VisitsMigrationController.withDefaultTime(searchFilter.fromDateTime),
       })
 
-      const decoratedMigrations = migrations.map(migration => {
-        const filter: Filter = JSON.parse(migration.filter)
-        const filterPrisonIds = filter.prisonIds?.join()
-        const filterVisitTypes = filter.visitTypes?.join()
-        const filterToDate = filter.toDateTime
-        const filterFromDate = filter.fromDateTime
-        return {
-          ...migration,
-          ...(filterPrisonIds && { filterPrisonIds }),
-          ...(filterVisitTypes && { filterVisitTypes }),
-          ...(filterToDate && { filterToDate }),
-          ...(filterFromDate && { filterFromDate }),
-        }
-      })
+      const decoratedMigrations = migrations.map(this.withFilter)
       res.render('pages/visits/visitsMigration', {
         migrations: decoratedMigrations,
         migrationViewFilter: searchFilter,
@@ -102,6 +89,14 @@ export default class VisitsMigrationController {
 
   async startVisitMigrationConfirmation(req: Request, res: Response): Promise<void> {
     res.render('pages/visits/startVisitsMigrationConfirmation', { form: req.session.startVisitsMigrationForm })
+  }
+
+  async visitsMigrationDetails(req: Request, res: Response): Promise<void> {
+    const { migrationId } = req.query as { migrationId: string }
+    const migration = await this.visitMigrationService.getVisitsMigration(migrationId, context(res))
+    res.render('pages/visits/visitsMigrationDetails', {
+      migration: { ...migration, history: this.withFilter(migration.history) },
+    })
   }
 
   async viewFailures(req: Request, res: Response): Promise<void> {
@@ -160,5 +155,25 @@ export default class VisitsMigrationController {
 
   private static applicationInsightsUrl(query: string): string {
     return buildUrl(query, 'P1D')
+  }
+
+  private withFilter(migration: MigrationHistory): MigrationHistory & {
+    filterPrisonIds?: string
+    filterVisitTypes?: string
+    filterToDate?: string
+    filterFromDate?: string
+  } {
+    const filter: Filter = JSON.parse(migration.filter)
+    const filterPrisonIds = filter.prisonIds?.join()
+    const filterVisitTypes = filter.visitTypes?.join()
+    const filterToDate = filter.toDateTime
+    const filterFromDate = filter.fromDateTime
+    return {
+      ...migration,
+      ...(filterPrisonIds && { filterPrisonIds }),
+      ...(filterVisitTypes && { filterVisitTypes }),
+      ...(filterToDate && { filterToDate }),
+      ...(filterFromDate && { filterFromDate }),
+    }
   }
 }

@@ -24,6 +24,7 @@ export default function routes(router: Router, services: Services): Router {
     visitMigrationController.startVisitMigrationConfirmation(req, res)
   )
   get('/visits-migration/failures', (req, res) => visitMigrationController.viewFailures(req, res))
+  get('/visits-migration/details', (req, res) => visitMigrationController.visitsMigrationDetails(req, res))
 
   return router
 }
