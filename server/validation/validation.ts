@@ -10,7 +10,7 @@ Validator.register(
   'datetime',
   value => {
     if (typeof value === 'string') {
-      return isISO8601(value)
+      return isISO8601(value, { strict: true })
     }
     return false
   },

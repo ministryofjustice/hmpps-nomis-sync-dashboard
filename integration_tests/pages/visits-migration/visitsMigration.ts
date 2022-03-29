@@ -11,6 +11,16 @@ export default class VisitsMigrationPage extends Page {
 
   migrationResultsRow = (rowNumber): PageElement => cy.get('[data-qa=migration-results-div] tbody > tr').eq(rowNumber)
 
+  applyFiltersButton = () => cy.contains('Apply filters')
+
+  fromDateTime = () => cy.get('#fromDateTime')
+
+  toDateTime = () => cy.get('#toDateTime')
+
+  fromDateTimeError = () => cy.get('#fromDateTime-error')
+
+  toDateTimeError = () => cy.get('#toDateTime-error')
+
   static goTo(): VisitsMigrationPage {
     cy.visit('/visits-migration')
     return Page.verifyOnPage(VisitsMigrationPage)

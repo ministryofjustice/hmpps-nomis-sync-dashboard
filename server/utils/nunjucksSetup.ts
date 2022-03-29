@@ -145,7 +145,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     }
   })
 
-  njkEnv.addFilter('fromDateInput', (migrationViewFilter: MigrationViewFilter) => {
+  njkEnv.addFilter('fromDateInput', (migrationViewFilter: MigrationViewFilter, error: string) => {
     return {
       label: {
         text: 'From date',
@@ -157,6 +157,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
         text: 'Only include migrations from after this date. Example 2020-03-28T12:00:00',
       },
       value: migrationViewFilter?.fromDateTime,
+      errorMessage: error,
     }
   })
 
