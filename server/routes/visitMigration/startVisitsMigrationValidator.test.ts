@@ -43,7 +43,7 @@ describe('startVisitsMigrationValidator', () => {
   it('should reject invalid toDateTime', () => {
     const form: StartVisitsMigrationForm = {
       ...validForm,
-      toDateTime: 'invalid',
+      toDateTime: '124-01-01',
     }
 
     expect(validate(form)).toContainEqual({

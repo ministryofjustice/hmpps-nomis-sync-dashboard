@@ -19,7 +19,7 @@
     <form id="filter-form" action="/visits-migration" novalidate>
       {{ govukInput( migrationViewFilter | prisonSearchInput ) }}
       {{ govukInput( migrationViewFilter | toDateInput(errors | findError('toDateTime')) ) }}
-      {{ govukInput( migrationViewFilter | fromDateInput ) }}
+      {{ govukInput( migrationViewFilter | fromDateInput(errors | findError('fromDateTime')) ) }}
       {{ govukCheckboxes( migrationViewFilter | failedOnlyCheckbox ) }}
     </form>
   {% endset %}
@@ -63,16 +63,26 @@
                             <span data-qa="status" class="govuk-!-margin-left-2">{{ u.status }}</span>
                           </div>
                         </div>
+
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full">
                             <span class="govuk-label--s">Started: </span>
-                            <span data-qa="whenStarted" class="govuk-!-margin-left-2">{{ u.whenStarted | formatDate('D MMMM YYYY - HH:mm') }}</span>
+                            <span data-qa="whenStarted"
+                                  class="govuk-!-margin-left-2">{{ u.whenStarted | formatDate('D MMMM YYYY - HH:mm') }}</span>
                             {% if u.whenEnded %}
                               <span class="govuk-label--s govuk-!-margin-left-3">Ended: </span>
-                              <span data-qa="whenEnded" class="govuk-!-margin-left-2">{{ u.whenEnded | formatDate('D MMMM YYYY - HH:mm') }}</span>
+                              <span data-qa="whenEnded"
+                                    class="govuk-!-margin-left-2">{{ u.whenEnded | formatDate('D MMMM YYYY - HH:mm') }}</span>
                             {% endif %}
                           </div>
                         </div>
+                        {% if u.status == 'STARTED' %}
+                          <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                            <div class="govuk-grid-column-full">
+                              <a data-qa="progress-link" class="govuk-link" href="/visits-migration/details?migrationId={{ u.migrationId }}">View progress</a>
+                            </div>
+                          </div>
+                        {% endif %}
 
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full">
@@ -84,6 +94,14 @@
                             <span data-qa="estimatedCount" class="govuk-!-margin-left-1">{{ u.estimatedRecordCount }}</span>
                           </div>
                         </div>
+
+                        {% if u.recordsFailed > 0 %}
+                          <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                            <div class="govuk-grid-column-full">
+                              <a data-qa="failures-link" class="govuk-link" href="/visits-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
+                            </div>
+                          </div>
+                        {% endif %}
 
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full">

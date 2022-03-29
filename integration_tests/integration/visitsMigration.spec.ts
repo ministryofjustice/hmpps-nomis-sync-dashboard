@@ -1,6 +1,7 @@
 import IndexPage from '../pages/index'
 import Page from '../pages/page'
 import VisitsMigrationPage from '../pages/visits-migration/visitsMigration'
+import VisitsMigrationFailuresPage from '../pages/visits-migration/visitsMigrationFailures'
 
 context('Visit Migration Homepage', () => {
   beforeEach(() => {
@@ -24,7 +25,14 @@ context('Visit Migration Homepage', () => {
     })
 
     it('should display list of migrations', () => {
+      cy.task('stubHealth')
+      cy.task('stubGetFailures')
+
       const migrationPage = VisitsMigrationPage.goTo()
+
+      migrationPage.fromDateTime().type('2022-03-12')
+      migrationPage.toDateTime().type('2022-03-15')
+
       migrationPage.migrationResultsRow(0).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T10:13:56')
         cy.get('[data-qa=whenStarted]').should('contain.text', '14 March 2022 - 10:13')
@@ -37,6 +45,8 @@ context('Visit Migration Homepage', () => {
         cy.get('[data-qa=filterVisitTypes]').should('contain.text', 'SCON')
         cy.get('[data-qa=filterToDate]').should('not.exist')
         cy.get('[data-qa=filterFromDate]').should('contain.text', '4 March 2022 - 16:01')
+        cy.get('[data-qa=progress-link]').should('not.exist')
+        cy.get('[data-qa=failures-link]').should('not.exist')
       })
       migrationPage.migrationResultsRow(1).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T11:45:12')
@@ -50,6 +60,8 @@ context('Visit Migration Homepage', () => {
         cy.get('[data-qa=filterVisitTypes]').should('contain.text', 'SCON')
         cy.get('[data-qa=filterToDate]').should('not.exist')
         cy.get('[data-qa=filterFromDate]').should('not.exist')
+        cy.get('[data-qa=progress-link]').should('contain.text', 'View progress')
+        cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
       })
       migrationPage.migrationResultsRow(2).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-15T11:00:35')
@@ -63,9 +75,30 @@ context('Visit Migration Homepage', () => {
         cy.get('[data-qa=filterVisitTypes]').should('contain.text', 'SCON')
         cy.get('[data-qa=filterToDate]').should('not.exist')
         cy.get('[data-qa=filterFromDate]').should('contain.text', '15 March 2022 - 09:01')
+        cy.get('[data-qa=progress-link]').should('not.exist')
+        cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
       })
+
+      migrationPage.migrationResultsRow(1).within(() => {
+        cy.get('[data-qa=failures-link]').click()
+      })
+      Page.verifyOnPage(VisitsMigrationFailuresPage)
+    })
+
+    it('will validate the dates when filtering', () => {
+      const migrationPage = VisitsMigrationPage.goTo()
+
+      migrationPage.fromDateTime().type('invalid')
+      migrationPage.toDateTime().type('1971-67-12')
+
+      migrationPage.applyFiltersButton().click()
+
+      const pageWithErrors = Page.verifyOnPage(VisitsMigrationPage)
+      pageWithErrors.fromDateTimeError().contains('Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23')
+      pageWithErrors.toDateTimeError().contains('Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23')
     })
   })
+
   context('Without MIGRATE_VISITS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', ['ROLE_MIGRATE_PRISONERS'])
