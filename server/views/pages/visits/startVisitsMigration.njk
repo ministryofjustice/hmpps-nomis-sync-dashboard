@@ -141,13 +141,15 @@
                             {{ govukButton({
                                 text: "Start migration",
                                 name: "action",
-                                value: "startMigration"
+                                value: "startMigration",
+                                attributes: { 'data-qa': 'start-migration-button' }
                             }) }}
                             {{ govukButton({
                                 text: "View estimated count",
                                 value: "viewEstimatedCount",
                                 name: "action",
-                                classes: "govuk-button--secondary"
+                                classes: "govuk-button--secondary",
+                                attributes: { 'data-qa': 'view-estimated-count-button' }
                             }) }}
                             <a class="govuk-link" href="/visits-migration">Cancel</a>
                         </div>
