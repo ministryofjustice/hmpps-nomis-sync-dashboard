@@ -55,11 +55,11 @@
                       <div class="govuk-!-margin-bottom-5">
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-two-thirds">
-                            <span class="govuk-label--s migration-results-label">Migration Id: </span>
+                            <span class="govuk-label--s govuk-!-font-weight-bold">Migration Id: </span>
                             <span data-qa="migration-id" class="govuk-!-margin-left-2">{{ u.migrationId }}</span>
                           </div>
                           <div class="govuk-grid-column-one-third">
-                            <span class="govuk-label--s migration-results-label">Status: </span>
+                            <span class="govuk-label--s govuk-!-font-weight-bold">Status: </span>
                             <span data-qa="status" class="govuk-!-margin-left-2">{{ u.status }}</span>
                           </div>
                         </div>
@@ -104,8 +104,8 @@
                         {% endif %}
 
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                          <div class="govuk-grid-column-full">
-                            <span class="govuk-label--s migration-results-label">Migration properties:</span>
+                          <div class="govuk-grid-column-full govuk-!-margin-bottom-3 govuk-!-margin-top-2">
+                            <span class="govuk-label--s govuk-!-font-weight-bold">Migration properties:</span>
                           </div>
                           {% if u.filterPrisonIds %}
                             <div class="govuk-grid-column-full">
@@ -141,7 +141,11 @@
                   }) }}
 
                 {% else %}
-                  I am good!
+                  <div class="govuk-!-margin-bottom-5">
+                    <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                      No migration records found
+                    </div>
+                  </div>
                 {% endif %}
               </div>
             </div>
