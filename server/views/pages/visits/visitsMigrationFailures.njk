@@ -2,6 +2,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% set pageTitle = applicationName + " - Visits migration failures" %}
 
@@ -17,6 +18,20 @@
       <h1 class="govuk-heading-l govuk-!-margin-top-7">Visits migration failures</h1>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
+          {% set notificationBannerHtml %}
+          <p><b>Note:</b> because reading the dead letter queue has the side affect of changing the visibility of records, refreshing this page within a minute can return different results.</p> 
+          {% endset %}
+          {{ govukNotificationBanner({
+            html: notificationBannerHtml
+          }) }}
+        </div>
+      </div>      
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <p>All records that on the main dead letter queue are displayed. These may include records from other migration runs.
+            If a record that failed at the point of the migration was susquently fixed (or discarded) then it will no longer be shown on this page.
+          </p>
+
         {% if failures.messages %}
         {% set rows = [] %}
         {% for message in failures.messages %}
