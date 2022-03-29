@@ -4,7 +4,7 @@ import StartVisitsMigrationPage from '../pages/visits-migration/startVisitsMigra
 import StartVisitsMigrationConfirmationPage from '../pages/visits-migration/startVisitsMigrationConfirmation'
 import VisitsMigrationPage from '../pages/visits-migration/visitsMigration'
 
-context('Visit Migration Homepage', () => {
+context('Start Visits Migration', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubAuthUser')
