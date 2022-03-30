@@ -165,7 +165,7 @@ export default class VisitsMigrationController {
     | where timestamp between (datetime(${VisitsMigrationController.toISODateTime(
       startedDate
     )}) .. datetime(${VisitsMigrationController.toISODateTime(endedDate)}))
-    | summarize count()`
+    | summarize dcount(message)`
   }
 
   private static toISODateTime(localDateTime: string): string {
