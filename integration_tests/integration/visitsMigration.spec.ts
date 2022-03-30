@@ -62,6 +62,7 @@ context('Visit Migration Homepage', () => {
         cy.get('[data-qa=filterFromDate]').should('not.exist')
         cy.get('[data-qa=progress-link]').should('contain.text', 'View progress')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
+        cy.get('[data-qa=already-migrated-link]').should('contain.text', 'View Insights')
       })
       migrationPage.migrationResultsRow(2).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-15T11:00:35')
@@ -77,6 +78,7 @@ context('Visit Migration Homepage', () => {
         cy.get('[data-qa=filterFromDate]').should('contain.text', '15 March 2022 - 09:01')
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
+        cy.get('[data-qa=already-migrated-link]').should('not.exist')
       })
 
       migrationPage.migrationResultsRow(1).within(() => {

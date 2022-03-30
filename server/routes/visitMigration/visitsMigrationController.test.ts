@@ -25,9 +25,9 @@ describe('visitsMigrationController', () => {
       const visitMigrationResponse: VisitMigrations = {
         migrations: [
           {
-            migrationId: '2022-03-14T10:13:56',
-            whenStarted: '2022-03-14T10:13:56.878627',
-            whenEnded: '2022-03-14T10:14:07.531409',
+            migrationId: '2022-03-30T10:13:56',
+            whenStarted: '2022-03-30T10:13:56.878627',
+            whenEnded: '2022-03-30T10:14:07.531409',
             estimatedRecordCount: 0,
             filter:
               '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2022-03-04T16:01:00","ignoreMissingRoom":false}',
@@ -54,9 +54,9 @@ describe('visitsMigrationController', () => {
 
       const decoratedMigrations = [
         {
-          migrationId: '2022-03-14T10:13:56',
-          whenStarted: '2022-03-14T10:13:56.878627',
-          whenEnded: '2022-03-14T10:14:07.531409',
+          migrationId: '2022-03-30T10:13:56',
+          whenStarted: '2022-03-30T10:13:56.878627',
+          whenEnded: '2022-03-30T10:14:07.531409',
           estimatedRecordCount: 0,
           filter:
             '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2022-03-04T16:01:00","ignoreMissingRoom":false}',
@@ -68,6 +68,7 @@ describe('visitsMigrationController', () => {
           filterPrisonIds: 'HEI',
           filterVisitTypes: 'SCON',
           filterFromDate: '2022-03-04T16:01:00',
+          applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-30T09:13:56.878Z')), // BST was 2022-03-30T10:13:56.878627
         },
         {
           migrationId: '2022-03-14T11:45:12',
@@ -82,6 +83,7 @@ describe('visitsMigrationController', () => {
           id: '2022-03-14T11:45:12',
           filterPrisonIds: 'HEI',
           filterVisitTypes: 'SCON',
+          applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-14T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
       nomisMigrationService.getVisitsMigrations.mockResolvedValue(visitMigrationResponse)

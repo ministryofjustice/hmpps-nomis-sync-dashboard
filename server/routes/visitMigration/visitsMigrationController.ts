@@ -47,7 +47,12 @@ export default class VisitsMigrationController {
         fromDateTime: VisitsMigrationController.withDefaultTime(searchFilter.fromDateTime),
       })
 
-      const decoratedMigrations = migrations.map(this.withFilter)
+      const decoratedMigrations = migrations.map(this.withFilter).map(history => ({
+        ...history,
+        applicationInsightsLink: VisitsMigrationController.applicationInsightsUrl(
+          VisitsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded)
+        ),
+      }))
       res.render('pages/visits/visitsMigration', {
         migrations: decoratedMigrations,
         migrationViewFilter: searchFilter,
@@ -106,7 +111,7 @@ export default class VisitsMigrationController {
       messages: failures.messages.map(message => ({
         ...message,
         applicationInsightsLink: VisitsMigrationController.applicationInsightsUrl(
-          VisitsMigrationController.applicationInsightsQuery(message)
+          VisitsMigrationController.messageApplicationInsightsQuery(message)
         ),
       })),
     }
@@ -146,11 +151,25 @@ export default class VisitsMigrationController {
     }
   }
 
-  private static applicationInsightsQuery(message: { messageId: string }): string {
+  private static messageApplicationInsightsQuery(message: { messageId: string }): string {
     return `exceptions
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
     | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
     | order by timestamp desc`
+  }
+
+  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
+    return `traces
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where message contains 'Will not migrate visit since it is migrated already,'
+    | where timestamp between (datetime(${VisitsMigrationController.toISODateTime(
+      startedDate
+    )}) .. datetime(${VisitsMigrationController.toISODateTime(endedDate)}))
+    | summarize count()`
+  }
+
+  private static toISODateTime(localDateTime: string): string {
+    return moment(localDateTime).toISOString()
   }
 
   private static applicationInsightsUrl(query: string): string {
