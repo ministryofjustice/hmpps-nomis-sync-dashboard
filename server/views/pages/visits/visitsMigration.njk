@@ -18,8 +18,8 @@
   {% set filterOptionsHtml %}
     <form id="filter-form" action="/visits-migration" novalidate>
       {{ govukInput( migrationViewFilter | prisonSearchInput ) }}
-      {{ govukInput( migrationViewFilter | toDateInput(errors | findError('toDateTime')) ) }}
       {{ govukInput( migrationViewFilter | fromDateInput(errors | findError('fromDateTime')) ) }}
+      {{ govukInput( migrationViewFilter | toDateInput(errors | findError('toDateTime')) ) }}
       {{ govukCheckboxes( migrationViewFilter | failedOnlyCheckbox ) }}
     </form>
   {% endset %}
@@ -95,13 +95,18 @@
                           </div>
                         </div>
 
-                        {% if u.recordsFailed > 0 %}
                           <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                            <div class="govuk-grid-column-full">
+                          {% if u.recordsFailed + u.recordsMigrated < u.estimatedRecordCount %}
+                            <div class="govuk-grid-column-two-thirds">
+                              <a data-qa="already-migrated-link" class="govuk-link"  target="_blank" href="{{ u.applicationInsightsLink }}">View Insights</a> for already migrated records
+                            </div>
+                          {% endif %}
+                          {% if u.recordsFailed > 0 %}
+                            <div class="govuk-grid-column-one-third">
                               <a data-qa="failures-link" class="govuk-link" href="/visits-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
                             </div>
+                          {% endif %}
                           </div>
-                        {% endif %}
 
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full govuk-!-margin-bottom-3 govuk-!-margin-top-2">
