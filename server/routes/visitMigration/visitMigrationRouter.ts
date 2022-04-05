@@ -18,8 +18,13 @@ export default function routes(router: Router, services: Services): Router {
     services.nomisPrisonerService
   )
   get('/visits-migration', (req, res) => visitMigrationController.getVisitMigrations(req, res))
-  get('/visits-migration/start', (req, res) => visitMigrationController.startVisitMigration(req, res))
+  get('/visits-migration/start', (req, res) => visitMigrationController.startNewVisitMigration(req, res))
+  get('/visits-migration/amend', (req, res) => visitMigrationController.startVisitMigration(req, res))
   post('/visits-migration/start', (req, res) => visitMigrationController.postStartVisitMigration(req, res))
+  get('/visits-migration/start/preview', (req, res) => visitMigrationController.startVisitMigrationPreview(req, res))
+  post('/visits-migration/start/preview', (req, res) =>
+    visitMigrationController.postStartVisitMigrationPreview(req, res)
+  )
   get('/visits-migration/start/confirmation', (req, res) =>
     visitMigrationController.startVisitMigrationConfirmation(req, res)
   )

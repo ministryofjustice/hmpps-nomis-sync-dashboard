@@ -102,6 +102,24 @@ export default class NomisMigrationService {
     })
   }
 
+  async getDLQMessageCount(context: Context): Promise<string> {
+    logger.info(`getting DLQ message count`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const health = await NomisMigrationService.restClient(token).get<{
+      components: {
+        'migration-health': {
+          details: {
+            dlqName: string
+            messagesOnDlq: string
+          }
+        }
+      }
+    }>({
+      path: `/health`,
+    })
+    return health.components['migration-health'].details.messagesOnDlq
+  }
+
   private async getDLQName(token: string): Promise<string> {
     const health = await NomisMigrationService.restClient(token).get<{
       components: {

@@ -2,11 +2,13 @@ export default {}
 
 declare module 'express-session' {
   interface StartVisitsMigrationForm {
+    dlqCount?: string
+    unmappedRooms?: string[]
     prisonIds?: string
     visitTypes?: string | string[]
     fromDateTime?: string
     toDateTime?: string
-    action?: 'startMigration' | 'viewEstimatedCount'
+    action?: 'startMigration'
     estimatedCount?: string
     migrationId?: string
   }
