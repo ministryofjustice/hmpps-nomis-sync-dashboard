@@ -7,9 +7,7 @@ export default class StartVisitsMigrationPage extends Page {
 
   private checkbox = (text: string) => cy.contains('label', text).prev()
 
-  startMigrationButton = () => cy.get('[data-qa=start-migration-button]')
-
-  viewEstimatedCountButton = () => cy.get('[data-qa=view-estimated-count-button]')
+  continueButton = () => cy.get('[data-qa=continue-button]')
 
   prisonIds = () => cy.get('#prisonIds')
 

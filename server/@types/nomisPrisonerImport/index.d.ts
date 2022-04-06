@@ -15,6 +15,10 @@ export interface paths {
     /** Retrieves a visit by id. */
     get: operations['getVisit']
   }
+  '/visits/rooms/usage-count': {
+    /** Retrieves a list of rooms with usage count for the (filtered) visits */
+    get: operations['getVisitRoomCountsByFilter']
+  }
   '/visits/ids': {
     /** Retrieves a paged list of visits by filter */
     get: operations['getVisitsByFilter']
@@ -130,6 +134,13 @@ export interface components {
       size?: number
       sort?: string[]
     }
+    /** @description Visit id */
+    VisitRoomCountResponse: {
+      /** @description The internal location description */
+      agencyInternalLocationDescription: string
+      /** Format: int64 */
+      count: number
+    }
     PageVisitIdResponse: {
       /** Format: int32 */
       totalPages?: number
@@ -141,8 +152,8 @@ export interface components {
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['Sort']
-      first?: boolean
       last?: boolean
+      first?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -154,10 +165,10 @@ export interface components {
       sort?: components['schemas']['Sort']
       /** Format: int32 */
       pageSize?: number
-      paged?: boolean
-      unpaged?: boolean
       /** Format: int32 */
       pageNumber?: number
+      paged?: boolean
+      unpaged?: boolean
     }
     Sort: {
       empty?: boolean
@@ -272,6 +283,36 @@ export interface operations {
       }
       /** visit does not exist */
       404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Retrieves a list of rooms with usage count for the (filtered) visits */
+  getVisitRoomCountsByFilter: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /** Filter results by prison ids (returns all prisons if not specified) */
+        prisonIds?: string[]
+        /** Filter results by visitType (returns all types if not specified) */
+        visitTypes?: string[]
+        /** Filter results by visits that start on or after the given timestamp */
+        fromDateTime?: string
+        /** Filter results by visits that start on or before the given timestamp */
+        toDateTime?: string
+      }
+    }
+    responses: {
+      /** list of visit room and count is returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['VisitRoomCountResponse'][]
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }

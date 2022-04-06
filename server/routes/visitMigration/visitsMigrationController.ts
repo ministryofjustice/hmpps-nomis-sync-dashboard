@@ -61,6 +61,11 @@ export default class VisitsMigrationController {
     }
   }
 
+  async startNewVisitMigration(req: Request, res: Response): Promise<void> {
+    delete req.session.startVisitsMigrationForm
+    await this.startVisitMigration(req, res)
+  }
+
   async startVisitMigration(req: Request, res: Response): Promise<void> {
     res.render('pages/visits/startVisitsMigration', {
       form: req.session.startVisitsMigrationForm,
@@ -75,21 +80,31 @@ export default class VisitsMigrationController {
 
     if (errors.length > 0) {
       req.flash('errors', errors)
-      res.redirect('/visits-migration/start')
+      res.redirect('/visits-migration/amend')
     } else {
       const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
 
-      if (req.session.startVisitsMigrationForm.action === 'startMigration') {
-        const result = await this.visitMigrationService.startVisitsMigration(filter, context(res))
-        req.session.startVisitsMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
-        req.session.startVisitsMigrationForm.migrationId = result.migrationId
-        res.redirect('/visits-migration/start/confirmation')
-      } else {
-        const count = await this.nomisPrisonerService.getVisitMigrationEstimatedCount(filter, context(res))
-        req.session.startVisitsMigrationForm.estimatedCount = count.toLocaleString()
-        res.redirect('/visits-migration/start')
-      }
+      const count = await this.nomisPrisonerService.getVisitMigrationEstimatedCount(filter, context(res))
+      const roomMappings = await this.nomisPrisonerService.getVisitMigrationRoomMappings(filter, context(res))
+      const dlqCountString = await this.visitMigrationService.getDLQMessageCount(context(res))
+      req.session.startVisitsMigrationForm.estimatedCount = count.toLocaleString()
+      req.session.startVisitsMigrationForm.dlqCount = dlqCountString.toLocaleString()
+      req.session.startVisitsMigrationForm.unmappedRooms = roomMappings.map(r => r.agencyInternalLocationDescription)
+      res.redirect('/visits-migration/start/preview')
     }
+  }
+
+  async startVisitMigrationPreview(req: Request, res: Response): Promise<void> {
+    res.render('pages/visits/startVisitsMigrationPreview', { form: req.session.startVisitsMigrationForm })
+  }
+
+  async postStartVisitMigrationPreview(req: Request, res: Response): Promise<void> {
+    const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
+
+    const result = await this.visitMigrationService.startVisitsMigration(filter, context(res))
+    req.session.startVisitsMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
+    req.session.startVisitsMigrationForm.migrationId = result.migrationId
+    res.redirect('/visits-migration/start/confirmation')
   }
 
   async startVisitMigrationConfirmation(req: Request, res: Response): Promise<void> {

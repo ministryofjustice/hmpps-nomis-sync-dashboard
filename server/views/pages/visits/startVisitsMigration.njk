@@ -30,36 +30,8 @@
             <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new visits migration</h1>
             </div>
-            <div class="govuk-grid-column-full">
-            {% set detailsHtml %}
-            <p> 
-                We would always recommend selecting the <b>View estimated count</b> before starting a migration. Selecting this will not start a migration but will do an initial estimate of the number of records that could be potentially migrated based on the current filter. Use this to check the filter is returning results that match your expectations.
-            </p>  
-            <p>
-                The initial check can sometimes be <b>very slow</b> since it has to read so many non-indexed records. So another advantage of doing an estimation first is the estimation process will cache data at the database making the <b>Start migration</b> button quicker to use.
-            </p>    
-            
-            {% endset %}
-
-            {{ govukDetails({
-                summaryText: "When should the 'View estimated count' button be selected?",
-                html: detailsHtml
-            }) }}                
-        
-            <div>
 
             <div class="govuk-grid-column-two-thirds">
-                {% if form.estimatedCount %}
-                {% set html %}
-                <p class="govuk-notification-banner__heading" id="estimateSummary">
-                    Estimated number of visits to be migrated: {{form.estimatedCount}}
-                </p>
-                {% endset %}
-
-                {{ govukNotificationBanner({
-                html: html
-                }) }}
-                {% endif %}
                 <form action="/visits-migration/start" method="post" novalidate>
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     {% call govukFieldset({
@@ -139,17 +111,10 @@
 
                         <div class="govuk-button-group">
                             {{ govukButton({
-                                text: "Start migration",
+                                text: "Continue to preview",
                                 name: "action",
                                 value: "startMigration",
-                                attributes: { 'data-qa': 'start-migration-button' }
-                            }) }}
-                            {{ govukButton({
-                                text: "View estimated count",
-                                value: "viewEstimatedCount",
-                                name: "action",
-                                classes: "govuk-button--secondary",
-                                attributes: { 'data-qa': 'view-estimated-count-button' }
+                                attributes: { 'data-qa': 'continue-button' }
                             }) }}
                             <a class="govuk-link" href="/visits-migration">Cancel</a>
                         </div>
