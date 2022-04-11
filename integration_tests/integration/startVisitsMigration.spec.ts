@@ -72,7 +72,9 @@ context('Start Visits Migration', () => {
         .contains(
           'This migration includes visits rooms that are not mapped. Please add mappings for the following rooms:'
         )
-      previewPage.roomsWarning().contains('AGI-VISITS-OFF_VIS')
+      previewPage.roomsWarning().should('not.contains.text', 'AGI-VISITS-OFF_VIS')
+      previewPage.roomsWarning().should('contains.text', 'AGI-VISITS-SOC_VIS')
+      previewPage.roomsWarning().should('not.contains.text', 'AKI-VISITS-3RD SECTOR')
 
       previewPage.fromDateTimeRow().contains('2020-03-23T12:00:00')
       previewPage.fromDateTimeChangeLink().click()

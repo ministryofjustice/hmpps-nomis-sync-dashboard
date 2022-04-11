@@ -370,6 +370,34 @@ const stubInfoCompleted = (migrationId: string): SuperAgentRequest =>
     },
   })
 
+const stubGetVisitMigrationRoomUsage = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPath: '/nomis-migration-api/migrate/visits/rooms/usage',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: [
+        {
+          agencyInternalLocationDescription: 'AGI-VISITS-OFF_VIS',
+          count: 95,
+          vsipRoom: 'vsip1',
+        },
+        {
+          agencyInternalLocationDescription: 'AGI-VISITS-SOC_VIS',
+          count: 14314,
+        },
+        {
+          agencyInternalLocationDescription: 'AKI-VISITS-3RD SECTOR',
+          count: 390,
+          vsipRoom: 'vsip4',
+        },
+      ],
+    },
+  })
+
 export default {
   stubListOfMigrationHistory,
   stubNomisMigrationPing,
@@ -380,4 +408,5 @@ export default {
   stubGetMigrationDetailsCompleted,
   stubInfoInProgress,
   stubInfoCompleted,
+  stubGetVisitMigrationRoomUsage,
 }

@@ -4,6 +4,7 @@ import type {
   MigrationContextVisitsMigrationFilter,
   MigrationHistory,
   VisitsMigrationFilter,
+  RoomMappingsResponse,
 } from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
@@ -11,6 +12,7 @@ import RestClient from '../data/restClient'
 import config from '../config'
 import logger from '../../logger'
 import { MigrationViewFilter } from '../@types/dashboard'
+import { GetVisitsByFilter } from '../@types/nomisPrisoner'
 
 export interface VisitMigrations {
   migrations: Array<MigrationHistory>
@@ -95,7 +97,7 @@ export default class NomisMigrationService {
   async getFailures(context: Context): Promise<GetDlqResult> {
     logger.info(`getting messages on DLQ`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const dlqName = await this.getDLQName(token)
+    const dlqName = await NomisMigrationService.getDLQName(token)
 
     return NomisMigrationService.restClient(token).get<GetDlqResult>({
       path: `/queue-admin/get-dlq-messages/${dlqName}`,
@@ -120,7 +122,7 @@ export default class NomisMigrationService {
     return health.components['migration-health'].details.messagesOnDlq
   }
 
-  private async getDLQName(token: string): Promise<string> {
+  private static async getDLQName(token: string): Promise<string> {
     const health = await NomisMigrationService.restClient(token).get<{
       components: {
         'migration-health': {
@@ -133,5 +135,13 @@ export default class NomisMigrationService {
       path: `/health`,
     })
     return health.components['migration-health'].details.dlqName
+  }
+
+  async getVisitMigrationRoomMappings(filter: GetVisitsByFilter, context: Context): Promise<RoomMappingsResponse[]> {
+    logger.info(`getting details for visit migration - room mappings`)
+    return NomisMigrationService.restClient(context.token).get<RoomMappingsResponse[]>({
+      path: `/migrate/visits/rooms/usage`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
   }
 }
