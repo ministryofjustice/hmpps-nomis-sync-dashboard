@@ -193,7 +193,7 @@ describe('visitsMigrationController', () => {
           visitTypes: 'SCON',
         }
         nomisPrisonerService.getVisitMigrationEstimatedCount.mockResolvedValue(124_001)
-        nomisPrisonerService.getVisitMigrationRoomMappings.mockResolvedValue([])
+        nomisMigrationService.getVisitMigrationRoomMappings.mockResolvedValue([])
         nomisMigrationService.getDLQMessageCount.mockResolvedValue('4')
       })
       it('should render the migration preview page', async () => {

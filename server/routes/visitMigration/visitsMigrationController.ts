@@ -47,7 +47,7 @@ export default class VisitsMigrationController {
         fromDateTime: VisitsMigrationController.withDefaultTime(searchFilter.fromDateTime),
       })
 
-      const decoratedMigrations = migrations.map(this.withFilter).map(history => ({
+      const decoratedMigrations = migrations.map(VisitsMigrationController.withFilter).map(history => ({
         ...history,
         applicationInsightsLink: VisitsMigrationController.applicationInsightsUrl(
           VisitsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded)
@@ -85,11 +85,13 @@ export default class VisitsMigrationController {
       const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
 
       const count = await this.nomisPrisonerService.getVisitMigrationEstimatedCount(filter, context(res))
-      const roomMappings = await this.nomisPrisonerService.getVisitMigrationRoomMappings(filter, context(res))
+      const roomMappings = await this.visitMigrationService.getVisitMigrationRoomMappings(filter, context(res))
       const dlqCountString = await this.visitMigrationService.getDLQMessageCount(context(res))
       req.session.startVisitsMigrationForm.estimatedCount = count.toLocaleString()
       req.session.startVisitsMigrationForm.dlqCount = dlqCountString.toLocaleString()
-      req.session.startVisitsMigrationForm.unmappedRooms = roomMappings.map(r => r.agencyInternalLocationDescription)
+      req.session.startVisitsMigrationForm.unmappedRooms = roomMappings
+        .filter(r => !r.vsipRoom)
+        .map(r => r.agencyInternalLocationDescription)
       res.redirect('/visits-migration/start/preview')
     }
   }
@@ -115,7 +117,7 @@ export default class VisitsMigrationController {
     const { migrationId } = req.query as { migrationId: string }
     const migration = await this.visitMigrationService.getVisitsMigration(migrationId, context(res))
     res.render('pages/visits/visitsMigrationDetails', {
-      migration: { ...migration, history: this.withFilter(migration.history) },
+      migration: { ...migration, history: VisitsMigrationController.withFilter(migration.history) },
     })
   }
 
@@ -191,7 +193,7 @@ export default class VisitsMigrationController {
     return buildUrl(query, 'P1D')
   }
 
-  private withFilter(migration: MigrationHistory): MigrationHistory & {
+  private static withFilter(migration: MigrationHistory): MigrationHistory & {
     filterPrisonIds?: string
     filterVisitTypes?: string
     filterToDate?: string

@@ -20,9 +20,17 @@ export interface paths {
   '/queue-admin/get-dlq-messages/{dlqName}': {
     get: operations['getDlqMessages']
   }
+  '/migrate/visits/rooms/usage': {
+    /** Retrieves a list of rooms with usage count and vsip mapping for the (filtered) visits */
+    get: operations['getVisitRoomUsageDetailsByFilter']
+  }
   '/migrate/visits/history': {
     /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
     get: operations['getAll']
+  }
+  '/migrate/visits/history/{migrationId}': {
+    /** Requires role <b>MIGRATE_VISITS</b> */
+    get: operations['get']
   }
   '/history': {
     /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
@@ -42,8 +50,8 @@ export interface components {
       messageAttributes?: {
         [key: string]: components['schemas']['MessageAttributeValue']
       }
-      md5OfMessageAttributes?: string
       md5OfBody?: string
+      md5OfMessageAttributes?: string
     }
     MessageAttributeValue: {
       stringValue?: string
@@ -140,6 +148,20 @@ export interface components {
       /** Format: int32 */
       messagesReturnedCount: number
       messages: components['schemas']['DlqMessage'][]
+    }
+    /** @description Visit room usage and vsip mapping */
+    VisitRoomUsageResponse: {
+      /** @description The nomis internal location description */
+      agencyInternalLocationDescription: string
+      /**
+       * Format: int64
+       * @description room usage count
+       */
+      count: number
+      /** @description VSIP room mapping */
+      vsipRoom?: string
+      /** @description The nomis prison id */
+      prisonId: string
     }
     MigrationHistory: {
       migrationId: string
@@ -250,6 +272,41 @@ export interface operations {
       }
     }
   }
+  /** Retrieves a list of rooms with usage count and vsip mapping for the (filtered) visits */
+  getVisitRoomUsageDetailsByFilter: {
+    parameters: {
+      query: {
+        /** Filter results by prison ids (returns all prisons if not specified) */
+        prisonIds?: string[]
+        /** Filter results by visitType (returns all types if not specified) */
+        visitTypes?: string[]
+        /** Filter results by visits that start on or after the given timestamp */
+        fromDateTime?: string
+        /** Filter results by visits that start on or before the given timestamp */
+        toDateTime?: string
+      }
+    }
+    responses: {
+      /** list of visit room and count is returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['VisitRoomUsageResponse'][]
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to start migration */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
   getAll: {
     parameters: {
@@ -279,6 +336,40 @@ export interface operations {
       }
       /** Incorrect permissions to access this endpoint */
       403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Requires role <b>MIGRATE_VISITS</b> */
+  get: {
+    parameters: {
+      path: {
+        migrationId: string
+      }
+    }
+    responses: {
+      /** The visit migration history record */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Migration not found */
+      404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
