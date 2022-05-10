@@ -63,6 +63,21 @@ Example of command to generate types from an api:
 
 ## Operational Instructions for Visits Migration
 
+### Overview
+
+This service is built to control and monitor any migration of data from NOMIS to any new service that is taking over the hosting of that data. The first of these migrations is visit data and the migration to Visit Someone in Prison (VSIP).
+
+Migration uses AWS SQS messaging to asynchronously process a large number of records. This involves the service sending itself messages that are commands to do an action. This allows for failures to be automatically retried and eventually sent to a dead letter queue.
+
+This dashboard invokes the [migration service](https://github.com/ministryofjustice/hmpps-prisoner-from-nomis-migration) to control the migration process. 
+
+The process runs in 5 stages:
+- Estimation stage - estimate the number of records to be migrated and create a unique migration id
+- Paging stage - break the large number of records into smaller pages of 1000 records, each page is processed by retrieving the nomis visit id for each visit in that page
+- Visit record message creation stage - send a message for each record that potentially requires migrating
+- Migrate individual visit record - for each of the visits it will check if it has already been migrated (by checking the mapping service) and if not, will migrate it by reading the data from NOMIS and the room mapping and calling the VSIP service to create the record
+- Complete stage - when the service detects there are no more messages on the queue it will mark the migration as complete
+
 ### Prerequisites
 
 Before a migration is run it is necessary to:
@@ -186,6 +201,12 @@ For instance in this example the root cause is a missing room mapping (which we 
 
 ![](documentation/ApplicationInsightsRoomMappingFailure.png)
 
+#### Dead Letter Queue Handling
+
+Any failures encountered during a migration are immediately tried twice, so any persistent error will typically be recorded three times. The retries are added to the end of a queue so for large migrations the retry might happen sometime after the original incident.
+After the two retires the failing record is placed on the dead letter queue.
+
+There is a scheduled CRON job that is run every 10 minutes that will retry any failures automatically. So if for instance there was an outage of VSIP for say 30 minutes, the system will eventually process all visit records without any intervention.
 
 ### Architecture
 
