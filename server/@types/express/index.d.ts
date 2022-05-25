@@ -39,6 +39,7 @@ export declare global {
       id: string
       flash(type: string, message: ValidationError[]): number
       flash(message: 'errors'): Array<Record<string, string>>
+      logout(done: (err: unknown) => void): void
     }
   }
 }
