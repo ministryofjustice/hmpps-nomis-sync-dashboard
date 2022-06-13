@@ -76,7 +76,7 @@
                             {% endif %}
                           </div>
                         </div>
-                        {% if u.status == 'STARTED' %}
+                        {% if u.status == 'STARTED' or u.status == 'CANCELLED_REQUESTED'  %}
                           <div class="govuk-grid-row govuk-!-margin-bottom-2">
                             <div class="govuk-grid-column-full">
                               <a data-qa="progress-link" class="govuk-link" href="/visits-migration/details?migrationId={{ u.migrationId }}">View progress</a>

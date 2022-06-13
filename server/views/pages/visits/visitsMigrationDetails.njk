@@ -157,11 +157,25 @@
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        {{ govukButton({
-          text: "Refresh",
-          href: '/visits-migration/details?migrationId=' + migration.history.migrationId,
-          classes: "govuk-button--secondary"
-        }) }}
+        <form action="/visits-migration/cancel" method="post" novalidate>
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            <input type="hidden" name="migrationId" value="{{ migration.history.migrationId }}"/>
+
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: "Refresh",
+                href: '/visits-migration/details?migrationId=' + migration.history.migrationId,
+                classes: "govuk-button--secondary"
+              }) }}
+              {% if  migration.history.status != 'COMPLETED'  %}
+              {{ govukButton({
+                  text: "Cancel",
+                  classes: "govuk-button--warning",
+                  attributes: { 'data-qa': 'cancel-migration-button' }
+              }) }}
+              {% endif %}
+            </div>
+        </form>
       </div>
     </div>
   </main>

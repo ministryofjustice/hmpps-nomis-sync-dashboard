@@ -30,6 +30,7 @@ export default function routes(router: Router, services: Services): Router {
   )
   get('/visits-migration/failures', (req, res) => visitMigrationController.viewFailures(req, res))
   get('/visits-migration/details', (req, res) => visitMigrationController.visitsMigrationDetails(req, res))
+  post('/visits-migration/cancel', (req, res) => visitMigrationController.cancelMigration(req, res))
 
   return router
 }
