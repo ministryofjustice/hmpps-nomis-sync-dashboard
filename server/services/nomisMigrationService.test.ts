@@ -112,6 +112,16 @@ describe('NomisMigrationService tests', () => {
     })
   })
 
+  describe('cancelVisitsMigration', () => {
+    it('will cancel migration', async () => {
+      fakeNomisMigrationService.post('/migrate/visits/2022-03-23T11:11:56/cancel').reply(202, {})
+
+      const response = await nomisMigrationService.cancelVisitsMigration('2022-03-23T11:11:56', { token: 'some token' })
+
+      expect(response).toEqual({})
+    })
+  })
+
   describe('getFailures', () => {
     it('will return message for current DLQ ', async () => {
       fakeNomisMigrationService.get('/health').reply(200, {

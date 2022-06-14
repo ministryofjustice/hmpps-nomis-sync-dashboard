@@ -122,6 +122,13 @@ export default class NomisMigrationService {
     return health.components['migration-health'].details.messagesOnDlq
   }
 
+  async cancelVisitsMigration(migrationId: string, context: Context): Promise<void> {
+    logger.info(`cancelling a visits migration`)
+    return NomisMigrationService.restClient(context.token).post<void>({
+      path: `/migrate/visits/${migrationId}/cancel`,
+    })
+  }
+
   private static async getDLQName(token: string): Promise<string> {
     const health = await NomisMigrationService.restClient(token).get<{
       components: {

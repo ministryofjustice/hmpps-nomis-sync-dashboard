@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import VisitsMigrationController from './visitsMigrationController'
-import { VisitMigrations } from '../../services/nomisMigrationService'
+import { VisitMigrations, VisitsMigrationDetails } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
@@ -319,6 +319,55 @@ describe('visitsMigrationController', () => {
           ]),
         }),
       })
+    })
+  })
+
+  describe('cancelMigration', () => {
+    beforeEach(() => {
+      req.body = {
+        _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
+        migrationId: '2022-03-23T11:11:56',
+      }
+      nomisMigrationService.cancelVisitsMigration.mockResolvedValue()
+      const visitMigrationResponse: VisitsMigrationDetails = {
+        history: {
+          migrationId: '2022-03-30T10:13:56',
+          whenStarted: '2022-03-30T10:13:56.878627',
+          whenEnded: '2022-03-30T10:14:07.531409',
+          estimatedRecordCount: 0,
+          filter:
+            '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2022-03-04T16:01:00","ignoreMissingRoom":false}',
+          recordsMigrated: 0,
+          recordsFailed: 0,
+          migrationType: 'VISITS',
+          status: 'COMPLETED',
+          id: '2022-03-14T10:13:56',
+        },
+        currentProgress: {
+          recordsFailed: '0',
+          recordsToBeProcessed: '0',
+          recordsMigrated: 0,
+        },
+      }
+
+      nomisMigrationService.getVisitsMigration.mockResolvedValue(visitMigrationResponse)
+    })
+
+    it('should cancel migration and get latest status', async () => {
+      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).cancelMigration(req, res)
+      expect(res.render).toBeCalled()
+      expect(res.render).toBeCalledWith(
+        'pages/visits/visitsMigrationDetails',
+        expect.objectContaining({
+          migration: expect.objectContaining({
+            history: expect.objectContaining({
+              id: '2022-03-14T10:13:56',
+            }),
+          }),
+        })
+      )
+      expect(nomisMigrationService.cancelVisitsMigration).toBeCalledWith('2022-03-23T11:11:56', expect.anything())
+      expect(nomisMigrationService.getVisitsMigration).toBeCalledWith('2022-03-23T11:11:56', expect.anything())
     })
   })
 })

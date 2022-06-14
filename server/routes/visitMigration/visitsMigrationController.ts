@@ -135,6 +135,15 @@ export default class VisitsMigrationController {
     res.render('pages/visits/visitsMigrationFailures', { failures: failuresDecorated })
   }
 
+  async cancelMigration(req: Request, res: Response): Promise<void> {
+    const { migrationId }: { migrationId: string } = req.body
+    await this.visitMigrationService.cancelVisitsMigration(migrationId, context(res))
+    const migration = await this.visitMigrationService.getVisitsMigration(migrationId, context(res))
+    res.render('pages/visits/visitsMigrationDetails', {
+      migration: { ...migration, history: VisitsMigrationController.withFilter(migration.history) },
+    })
+  }
+
   private static toFilter(form: StartVisitsMigrationForm): VisitsMigrationFilter {
     return {
       prisonIds: VisitsMigrationController.asArray(form.prisonIds),

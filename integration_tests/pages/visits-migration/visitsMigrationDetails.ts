@@ -15,6 +15,8 @@ export default class VisitsMigrationDetailsPage extends Page {
 
   failed = (): PageElement => cy.get('.failed')
 
+  cancel = (): PageElement => cy.get('[data-qa=cancel-migration-button]')
+
   static goTo(migrationId: string): VisitsMigrationDetailsPage {
     cy.visit(`/visits-migration/details?migrationId=${migrationId}`)
     return Page.verifyOnPage(VisitsMigrationDetailsPage)
