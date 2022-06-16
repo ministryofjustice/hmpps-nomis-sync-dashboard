@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import moment from 'moment'
 import VisitsMigrationController from './visitsMigrationController'
 import { VisitMigrations, VisitsMigrationDetails } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
@@ -202,6 +203,17 @@ describe('visitsMigrationController', () => {
           res
         )
         expect(res.redirect).toHaveBeenCalledWith('/visits-migration/start/preview')
+      })
+      it('should lookup room mappings for future visits only (including current day)', async () => {
+        const today = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss')
+        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
+          req,
+          res
+        )
+        expect(nomisMigrationService.getVisitMigrationRoomMappings).toBeCalledWith(
+          expect.objectContaining({ fromDateTime: today }),
+          expect.anything()
+        )
       })
     })
     describe('when preview is submitted and new migration requested', () => {
