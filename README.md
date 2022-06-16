@@ -149,7 +149,7 @@ Selecting the `View migration status` will show a page that will show the curren
 Even at this stage the migration can be cancelled:
 ![](documentation/MigrationCancel.png)
 
-Cancelling a migration can take between 1 - 3 minutes as all he SQS queues are cleared, during that time the status is changed to `CANCELLED_REQUESTED`. There is no guarantee that a small number of records sneak through and get still get migrated.
+Cancelling a migration can take between 1 - 3 minutes as all the SQS queues are cleared, during that time the status is changed to `CANCELLED_REQUESTED`. There is no guarantee that a small number of records won't sneak through and be migrated anyway.
 ![](documentation/MigrationCancelRequested.png)
 
 Eventually, after selecting the `Refresh` button the status we move to the final state of `CANCELLED`
