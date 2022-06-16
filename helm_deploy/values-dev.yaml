@@ -16,5 +16,5 @@ generic-service:
     APPINSIGHTS_COMPONENT: "nomisapi-t3"
 
 generic-prometheus-alerts:
-  alertSeverity: digital-prison-service-dev
+  alertSeverity: syscon
 
