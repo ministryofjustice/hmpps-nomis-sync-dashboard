@@ -25,7 +25,7 @@ context('Visit Migration Details', () => {
       page.migrated().contains('1000')
       page.failed().contains('100')
       page.stillToBeProcessed().contains('23100')
-      page.cancel().contains('Cancel')
+      page.cancel().contains('Cancel migration')
     })
   })
   context('after migration has completed', () => {
