@@ -146,6 +146,15 @@ The service will confirm the migration has started with:
 Selecting the `View migration status` will show a page that will show the current state of the migration:
 ![](documentation/MigrationProgress.png)
 
+Even at this stage the migration can be cancelled:
+![](documentation/MigrationCancel.png)
+
+Cancelling a migration can take between 1 - 3 minutes as all the SQS queues are cleared, during that time the status is changed to `CANCELLED_REQUESTED`. There is no guarantee that a small number of records won't sneak through and be migrated anyway.
+![](documentation/MigrationCancelRequested.png)
+
+Eventually, after selecting the `Refresh` button the status we move to the final state of `CANCELLED`
+![](documentation/MigrationCancelled.png)
+
 Migrating around 250,000 should take around 1 hour. Refreshing the page will show progress until it is finally complete:
 ![](documentation/MigrationCompleted.png)
 
