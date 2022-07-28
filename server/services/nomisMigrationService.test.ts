@@ -295,6 +295,37 @@ describe('NomisMigrationService tests', () => {
     })
   })
 
+  describe('deleteFailures', () => {
+    it('will delete message on current DLQ ', async () => {
+      fakeNomisMigrationService.get('/health').reply(200, {
+        status: 'UP',
+        components: {
+          'migration-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-migration_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-migration_dlq',
+              messagesOnDlq: '153',
+            },
+          },
+        },
+      })
+      fakeNomisMigrationService.put('/queue-admin-async/purge-queue/dps-syscon-dev-migration_dlq').reply(200, {
+        messagesFoundCount: 5,
+      })
+      const count = await nomisMigrationService.deleteFailures({ token: 'some token' })
+
+      expect(count).toEqual(
+        expect.objectContaining({
+          messagesFoundCount: 5,
+        })
+      )
+    })
+  })
+
   describe('getVisitMigration', () => {
     it('will return message lengths along with history', async () => {
       fakeNomisMigrationService.get('/info').reply(200, {

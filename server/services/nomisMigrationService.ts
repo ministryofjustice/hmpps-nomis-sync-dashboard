@@ -5,6 +5,7 @@ import type {
   MigrationHistory,
   VisitsMigrationFilter,
   RoomMappingsResponse,
+  PurgeQueueResult,
 } from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
@@ -101,6 +102,16 @@ export default class NomisMigrationService {
 
     return NomisMigrationService.restClient(token).get<GetDlqResult>({
       path: `/queue-admin-async/get-dlq-messages/${dlqName}`,
+    })
+  }
+
+  async deleteFailures(context: Context): Promise<PurgeQueueResult> {
+    logger.info(`deleting messages on DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getDLQName(token)
+
+    return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
+      path: `/queue-admin-async/purge-queue/${dlqName}`,
     })
   }
 

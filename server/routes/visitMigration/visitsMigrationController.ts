@@ -9,6 +9,7 @@ import { MigrationHistory, VisitsMigrationFilter } from '../../@types/migration'
 import { MigrationViewFilter } from '../../@types/dashboard'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import visitsMigrationValidator from './visitsMigrationValidator'
+import logger from '../../../logger'
 
 interface Filter {
   prisonIds?: string[]
@@ -90,6 +91,8 @@ export default class VisitsMigrationController {
         context(res)
       )
       const dlqCountString = await this.visitMigrationService.getDLQMessageCount(context(res))
+      logger.info(`${dlqCountString} failures found`)
+
       req.session.startVisitsMigrationForm.estimatedCount = count.toLocaleString()
       req.session.startVisitsMigrationForm.dlqCount = dlqCountString.toLocaleString()
       req.session.startVisitsMigrationForm.unmappedRooms = roomMappings
@@ -101,6 +104,13 @@ export default class VisitsMigrationController {
 
   async startVisitMigrationPreview(req: Request, res: Response): Promise<void> {
     res.render('pages/visits/startVisitsMigrationPreview', { form: req.session.startVisitsMigrationForm })
+  }
+
+  async postClearDLQVisitMigrationPreview(req: Request, res: Response): Promise<void> {
+    const result = await this.visitMigrationService.deleteFailures(context(res))
+    logger.info(`${result.messagesFoundCount} failures deleted`)
+    req.body = { ...req.session.startVisitsMigrationForm }
+    this.postStartVisitMigration(req, res)
   }
 
   async postStartVisitMigrationPreview(req: Request, res: Response): Promise<void> {

@@ -17,5 +17,7 @@ export default class StartVisitsMigrationPage extends Page {
 
   dlqWarning = () => cy.get('#dlqWarning')
 
+  clearDlqMessages = () => cy.get('[data-qa=delete-dlq-button]')
+
   roomsWarning = () => cy.get('#roomsWarning')
 }

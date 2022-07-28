@@ -21,6 +21,9 @@ export default function routes(router: Router, services: Services): Router {
   get('/visits-migration/start', (req, res) => visitMigrationController.startNewVisitMigration(req, res))
   get('/visits-migration/amend', (req, res) => visitMigrationController.startVisitMigration(req, res))
   post('/visits-migration/start', (req, res) => visitMigrationController.postStartVisitMigration(req, res))
+  post('/visits-migration/start/delete-faiures', (req, res) =>
+    visitMigrationController.postClearDLQVisitMigrationPreview(req, res)
+  )
   get('/visits-migration/start/preview', (req, res) => visitMigrationController.startVisitMigrationPreview(req, res))
   post('/visits-migration/start/preview', (req, res) =>
     visitMigrationController.postStartVisitMigrationPreview(req, res)

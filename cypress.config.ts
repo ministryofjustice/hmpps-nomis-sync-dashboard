@@ -34,6 +34,7 @@ export default defineConfig({
         stubNomisMigrationPing: nomisMigrationApi.stubNomisMigrationPing,
         stubStartVisitsMigration: nomisMigrationApi.stubStartVisitsMigration,
         stubGetFailures: nomisMigrationApi.stubGetFailures,
+        stubDeleteFailures: nomisMigrationApi.stubDeleteFailures,
         stubHealth: nomisMigrationApi.stubHealth,
         stubNomisPrisonerPing: nomisPrisonerApi.stubNomisPrisonerPing,
         stubGetVisitMigrationEstimatedCount: nomisPrisonerApi.stubGetVisitMigrationEstimatedCount,
