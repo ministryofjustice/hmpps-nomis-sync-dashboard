@@ -45,11 +45,30 @@
                     {% endif %}
 
                     {% if form.dlqCount > 0 %}
-                        {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear before starting the migration{% endset %}
+                        {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear these before starting the migration{% endset %}
+                        {% set html %}
+                        <form action="/visits-migration/start/delete-faiures" method="post" novalidate>
+                        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                        <p>If you are sure all previous failures have been successful understood and processed you can permentaly delete any record of these errors</p>
+                        <div class="govuk-button-group">
+                            {{ govukButton({
+                                text: "Delete failure messages",
+                                classes: "govuk-button--warning",
+                                name: "action",
+                                value: "deleteDlq",
+                                attributes: { 'data-qa': 'delete-dlq-button' }
+                            }) }}
+                        </div>
+                        <p>Deleting failures can sometimes take up to a minute, so after selecting this button it might appear that the messages are still there. These can be safely ignored.</p>
+                        {% endset %}
+
                         {{ govukErrorSummary({
                             titleText: dlqText,
-                            attributes: { 'id': 'dlqWarning' }
+                            attributes: { 'id': 'dlqWarning' },
+                            descriptionHtml: html
                         }) }}
+                    </form>
+
                     {% endif %}
 
                     {% if form.unmappedRooms.length > 0 %}

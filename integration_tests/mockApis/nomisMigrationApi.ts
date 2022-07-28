@@ -214,6 +214,23 @@ const stubGetFailures = (failures: unknown = defaultFailures): SuperAgentRequest
     },
   })
 
+const stubDeleteFailures = (failures: unknown = defaultFailures): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/nomis-migration-api/queue-admin-async/purge-queue/dps-syscon-dev-migration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        messagesFoundCount: 5,
+      },
+    },
+  })
+
 const stubGetMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
   stubFor({
     request: {
@@ -403,6 +420,7 @@ export default {
   stubNomisMigrationPing,
   stubStartVisitsMigration,
   stubGetFailures,
+  stubDeleteFailures,
   stubHealth,
   stubGetMigrationDetailsStarted,
   stubGetMigrationDetailsCompleted,
