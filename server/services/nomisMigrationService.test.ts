@@ -196,7 +196,7 @@ describe('NomisMigrationService tests', () => {
         },
         groups: ['liveness', 'readiness'],
       })
-      fakeNomisMigrationService.get('/queue-admin/get-dlq-messages/dps-syscon-dev-migration_dlq').reply(200, {
+      fakeNomisMigrationService.get('/queue-admin-async/get-dlq-messages/dps-syscon-dev-migration_dlq').reply(200, {
         messagesFoundCount: 353,
         messagesReturnedCount: 5,
         messages: [

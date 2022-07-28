@@ -203,7 +203,7 @@ const stubGetFailures = (failures: unknown = defaultFailures): SuperAgentRequest
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-migration_dlq',
+      urlPattern: '/nomis-migration-api/queue-admin-async/get-dlq-messages/dps-syscon-dev-migration_dlq',
     },
     response: {
       status: 200,
