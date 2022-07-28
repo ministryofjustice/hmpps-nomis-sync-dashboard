@@ -122,7 +122,7 @@ context('Start Visits Migration', () => {
       previewPage
         .dlqWarning()
         .contains(
-          'There are 153 messages on the migration dead letter queue. Please clear before starting the migration'
+          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration'
         )
 
       previewPage.clearDlqMessages().click()
