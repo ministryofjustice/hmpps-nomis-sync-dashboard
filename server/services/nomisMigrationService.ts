@@ -101,7 +101,7 @@ export default class NomisMigrationService {
     const dlqName = await NomisMigrationService.getDLQName(token)
 
     return NomisMigrationService.restClient(token).get<GetDlqResult>({
-      path: `/queue-admin-async/get-dlq-messages/${dlqName}`,
+      path: `/queue-admin/get-dlq-messages/${dlqName}`,
     })
   }
 
@@ -111,7 +111,7 @@ export default class NomisMigrationService {
     const dlqName = await NomisMigrationService.getDLQName(token)
 
     return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
-      path: `/queue-admin-async/purge-queue/${dlqName}`,
+      path: `/queue-admin/purge-queue/${dlqName}`,
     })
   }
 
