@@ -120,7 +120,7 @@ export default class NomisMigrationService {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     const health = await NomisMigrationService.restClient(token).get<{
       components: {
-        'migration-health': {
+        'migrationvisits-health': {
           details: {
             dlqName: string
             messagesOnDlq: string
@@ -130,7 +130,7 @@ export default class NomisMigrationService {
     }>({
       path: `/health`,
     })
-    return health.components['migration-health'].details.messagesOnDlq
+    return health.components['migrationvisits-health'].details.messagesOnDlq
   }
 
   async cancelVisitsMigration(migrationId: string, context: Context): Promise<void> {
@@ -143,7 +143,7 @@ export default class NomisMigrationService {
   private static async getDLQName(token: string): Promise<string> {
     const health = await NomisMigrationService.restClient(token).get<{
       components: {
-        'migration-health': {
+        'migrationvisits-health': {
           details: {
             dlqName: string
           }
@@ -152,7 +152,7 @@ export default class NomisMigrationService {
     }>({
       path: `/health`,
     })
-    return health.components['migration-health'].details.dlqName
+    return health.components['migrationvisits-health'].details.dlqName
   }
 
   async getVisitMigrationRoomMappings(filter: GetVisitsByFilter, context: Context): Promise<RoomMappingsResponse[]> {

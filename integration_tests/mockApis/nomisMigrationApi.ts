@@ -182,7 +182,7 @@ const stubHealth = (): SuperAgentRequest =>
       jsonBody: {
         status: 'UP',
         components: {
-          'migration-health': {
+          'migrationvisits-health': {
             status: 'UP',
             details: {
               queueName: 'dps-syscon-dev-migration_queue',
