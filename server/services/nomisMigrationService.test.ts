@@ -151,7 +151,7 @@ describe('NomisMigrationService tests', () => {
           livenessState: {
             status: 'UP',
           },
-          'migration-health': {
+          'migrationvisits-health': {
             status: 'UP',
             details: {
               queueName: 'dps-syscon-dev-migration_queue',
@@ -300,7 +300,7 @@ describe('NomisMigrationService tests', () => {
       fakeNomisMigrationService.get('/health').reply(200, {
         status: 'UP',
         components: {
-          'migration-health': {
+          'migrationvisits-health': {
             status: 'UP',
             details: {
               queueName: 'dps-syscon-dev-migration_queue',
