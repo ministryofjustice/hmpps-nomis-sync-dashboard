@@ -377,7 +377,7 @@ const stubDeleteFailures = (failures: unknown = defaultVisitsFailures): SuperAge
   stubFor({
     request: {
       method: 'PUT',
-      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-migration_dlq',
+      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-visitsmigration_dlq',
     },
     response: {
       status: 200,
