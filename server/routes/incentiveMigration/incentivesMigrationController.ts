@@ -5,6 +5,7 @@ import { MigrationHistory } from '../../@types/migration'
 import { MigrationViewFilter } from '../../@types/dashboard'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import incentivesMigrationValidator from './incentivesMigrationValidator'
+import { withDefaultTime } from '../../utils/utils'
 
 interface Filter {
   fromDate?: string
@@ -34,6 +35,8 @@ export default class IncentivesMigrationController {
     } else {
       const { migrations } = await this.nomisMigrationService.getIncentivesMigrations(context(res), {
         ...searchFilter,
+        toDateTime: withDefaultTime(searchFilter.toDateTime),
+        fromDateTime: withDefaultTime(searchFilter.fromDateTime),
       })
 
       const decoratedMigrations = migrations.map(IncentivesMigrationController.withFilter).map(history => ({

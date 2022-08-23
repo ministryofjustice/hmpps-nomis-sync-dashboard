@@ -10,6 +10,7 @@ import { VisitsMigrationViewFilter } from '../../@types/dashboard'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import visitsMigrationValidator from './visitsMigrationValidator'
 import logger from '../../../logger'
+import { withDefaultTime } from '../../utils/utils'
 
 interface Filter {
   prisonIds?: string[]
@@ -44,8 +45,8 @@ export default class VisitsMigrationController {
     } else {
       const { migrations } = await this.visitMigrationService.getVisitsMigrations(context(res), {
         ...searchFilter,
-        toDateTime: VisitsMigrationController.withDefaultTime(searchFilter.toDateTime),
-        fromDateTime: VisitsMigrationController.withDefaultTime(searchFilter.fromDateTime),
+        toDateTime: withDefaultTime(searchFilter.toDateTime),
+        fromDateTime: withDefaultTime(searchFilter.fromDateTime),
       })
 
       const decoratedMigrations = migrations.map(VisitsMigrationController.withFilter).map(history => ({
@@ -161,8 +162,8 @@ export default class VisitsMigrationController {
     return {
       prisonIds: VisitsMigrationController.asArray(form.prisonIds),
       visitTypes: VisitsMigrationController.asArray(form.visitTypes),
-      fromDateTime: VisitsMigrationController.withDefaultTime(form.fromDateTime),
-      toDateTime: VisitsMigrationController.withDefaultTime(form.toDateTime),
+      fromDateTime: withDefaultTime(form.fromDateTime),
+      toDateTime: withDefaultTime(form.toDateTime),
       ignoreMissingRoom: false,
     }
   }
@@ -170,13 +171,6 @@ export default class VisitsMigrationController {
   private static asArray(value: string | string[]): string[] {
     if (typeof value === 'string') {
       return value.split(',').map((v: string) => v.trim())
-    }
-    return value
-  }
-
-  private static withDefaultTime(value?: string): string | undefined {
-    if (value) {
-      return moment(value).format('YYYY-MM-DDTHH:mm:ss')
     }
     return value
   }
