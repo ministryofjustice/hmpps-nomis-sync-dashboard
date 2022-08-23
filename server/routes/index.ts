@@ -1,6 +1,7 @@
 import type { RequestHandler, Router } from 'express'
 import visitMigrationRoutes, { Services } from './visitMigration/visitMigrationRouter'
-import { extractRoles, MIGRATE_VISITS_ROLE } from '../authentication/roles'
+import incentiveMigrationRoutes from './incentiveMigration/incentiveMigrationRouter'
+import { extractRoles, MIGRATE_INCENTIVES_ROLE, MIGRATE_VISITS_ROLE } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 
@@ -19,6 +20,14 @@ export default function routes(router: Router, services: Services): Router {
           roles: [MIGRATE_VISITS_ROLE],
           enabled: true,
         },
+        {
+          id: 'incentives-migration',
+          heading: 'Incentives migration',
+          description: 'Migration and synchronisation information',
+          href: '/incentives-migration',
+          roles: [MIGRATE_INCENTIVES_ROLE],
+          enabled: true,
+        },
       ].filter(
         register =>
           Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled
@@ -27,5 +36,6 @@ export default function routes(router: Router, services: Services): Router {
   })
 
   visitMigrationRoutes(router, services)
+  incentiveMigrationRoutes(router, services)
   return router
 }

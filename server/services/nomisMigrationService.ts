@@ -12,10 +12,10 @@ import type HmppsAuthClient from '../data/hmppsAuthClient'
 import RestClient from '../data/restClient'
 import config from '../config'
 import logger from '../../logger'
-import { MigrationViewFilter } from '../@types/dashboard'
+import { MigrationViewFilter, VisitsMigrationViewFilter } from '../@types/dashboard'
 import { GetVisitsByFilter } from '../@types/nomisPrisoner'
 
-export interface VisitMigrations {
+export interface HistoricMigrations {
   migrations: Array<MigrationHistory>
 }
 
@@ -32,7 +32,7 @@ export interface Context {
   token?: string
 }
 
-function removeEmptyPropertiesAndStringify(filter: MigrationViewFilter): string {
+function removeEmptyPropertiesAndStringify(filter: unknown): string {
   const filterWithoutNulls = JSON.parse(JSON.stringify(filter), (key, value) =>
     value === null || value === '' ? undefined : value
   )
@@ -46,11 +46,21 @@ export default class NomisMigrationService {
     return new RestClient('Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
   }
 
-  async getVisitsMigrations(context: Context, filter: MigrationViewFilter): Promise<VisitMigrations> {
+  async getVisitsMigrations(context: Context, filter: VisitsMigrationViewFilter): Promise<HistoricMigrations> {
     logger.info(`getting migrations with filter ${JSON.stringify(filter)}`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
         path: `/migrate/visits/history`,
+        query: `${removeEmptyPropertiesAndStringify(filter)}`,
+      }),
+    }
+  }
+
+  async getIncentivesMigrations(context: Context, filter: MigrationViewFilter): Promise<HistoricMigrations> {
+    logger.info(`getting migrations with filter ${JSON.stringify(filter)}`)
+    return {
+      migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
+        path: `/migrate/incentives/history`,
         query: `${removeEmptyPropertiesAndStringify(filter)}`,
       }),
     }
@@ -95,10 +105,20 @@ export default class NomisMigrationService {
     })
   }
 
-  async getFailures(context: Context): Promise<GetDlqResult> {
-    logger.info(`getting messages on DLQ`)
+  async getVisitsFailures(context: Context): Promise<GetDlqResult> {
+    logger.info(`getting messages on visits DLQ`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const dlqName = await NomisMigrationService.getDLQName(token)
+    const dlqName = await NomisMigrationService.getVisitsDLQName(token)
+
+    return NomisMigrationService.restClient(token).get<GetDlqResult>({
+      path: `/queue-admin/get-dlq-messages/${dlqName}`,
+    })
+  }
+
+  async getIncentivesFailures(context: Context): Promise<GetDlqResult> {
+    logger.info(`getting messages on incentives DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getIncentivesDLQName(token)
 
     return NomisMigrationService.restClient(token).get<GetDlqResult>({
       path: `/queue-admin/get-dlq-messages/${dlqName}`,
@@ -108,7 +128,7 @@ export default class NomisMigrationService {
   async deleteFailures(context: Context): Promise<PurgeQueueResult> {
     logger.info(`deleting messages on DLQ`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const dlqName = await NomisMigrationService.getDLQName(token)
+    const dlqName = await NomisMigrationService.getVisitsDLQName(token)
 
     return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
       path: `/queue-admin/purge-queue/${dlqName}`,
@@ -140,19 +160,28 @@ export default class NomisMigrationService {
     })
   }
 
-  private static async getDLQName(token: string): Promise<string> {
+  private static async getVisitsDLQName(token: string): Promise<string> {
+    return NomisMigrationService.getAnyDLQName('migrationvisits-health', token)
+  }
+
+  private static async getIncentivesDLQName(token: string): Promise<string> {
+    return NomisMigrationService.getAnyDLQName('migrationincentives-health', token)
+  }
+
+  private static async getAnyDLQName(queueId: string, token: string): Promise<string> {
     const health = await NomisMigrationService.restClient(token).get<{
-      components: {
-        'migrationvisits-health': {
+      components: Record<
+        string,
+        {
           details: {
             dlqName: string
           }
         }
-      }
+      >
     }>({
       path: `/health`,
     })
-    return health.components['migrationvisits-health'].details.dlqName
+    return health.components[queueId].details.dlqName
   }
 
   async getVisitMigrationRoomMappings(filter: GetVisitsByFilter, context: Context): Promise<RoomMappingsResponse[]> {
