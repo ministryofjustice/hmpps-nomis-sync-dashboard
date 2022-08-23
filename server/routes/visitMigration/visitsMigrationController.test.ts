@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import moment from 'moment'
 import VisitsMigrationController from './visitsMigrationController'
-import { VisitMigrations, VisitsMigrationDetails } from '../../services/nomisMigrationService'
+import { HistoricMigrations, VisitsMigrationDetails } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
@@ -23,7 +23,7 @@ describe('visitsMigrationController', () => {
 
   describe('getVisitMigrations', () => {
     it('should decorate the returned migrations', async () => {
-      const visitMigrationResponse: VisitMigrations = {
+      const visitMigrationResponse: HistoricMigrations = {
         migrations: [
           {
             migrationId: '2022-03-30T10:13:56',
@@ -300,7 +300,7 @@ describe('visitsMigrationController', () => {
 
   describe('viewFailures', () => {
     beforeEach(() => {
-      nomisMigrationService.getFailures.mockResolvedValue({
+      nomisMigrationService.getVisitsFailures.mockResolvedValue({
         messagesFoundCount: 353,
         messagesReturnedCount: 5,
         messages: [

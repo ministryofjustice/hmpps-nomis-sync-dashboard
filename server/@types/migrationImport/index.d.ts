@@ -177,7 +177,7 @@ export interface components {
       /** Format: int64 */
       recordsFailed: number
       /** @enum {string} */
-      migrationType: 'VISITS'
+      migrationType: 'VISITS' | 'INCENTIVES'
       /** @enum {string} */
       status: 'STARTED' | 'COMPLETED'
       id: string

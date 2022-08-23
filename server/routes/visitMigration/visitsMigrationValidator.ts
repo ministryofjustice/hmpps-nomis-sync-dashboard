@@ -1,7 +1,7 @@
-import type { MigrationViewFilter } from '../../@types/dashboard'
+import type { VisitsMigrationViewFilter } from '../../@types/dashboard'
 import { validate as validateForm } from '../../validation/validation'
 
-export default function validate(form: MigrationViewFilter): Express.ValidationError[] {
+export default function validate(form: VisitsMigrationViewFilter): Express.ValidationError[] {
   return validateForm(
     form,
     {

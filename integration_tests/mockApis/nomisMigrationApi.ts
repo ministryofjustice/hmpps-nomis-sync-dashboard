@@ -2,13 +2,30 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 import { MigrationHistory } from '../../server/@types/migration'
 
-const stubListOfMigrationHistory = (
-  migrationHistory: MigrationHistory[] = defaultMigrationHistory
+const stubListOfVisitsMigrationHistory = (
+  migrationHistory: MigrationHistory[] = defaultVisitsMigrationHistory
 ): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
       urlPattern: '/nomis-migration-api/migrate/visits/history?.*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: migrationHistory,
+    },
+  })
+
+const stubListOfIncentivesMigrationHistory = (
+  migrationHistory: MigrationHistory[] = defaultIncentivesMigrationHistory
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/migrate/incentives/history?.*',
     },
     response: {
       status: 200,
@@ -57,7 +74,7 @@ const stubStartVisitsMigration = (
     },
   })
 
-const defaultMigrationHistory: MigrationHistory[] = [
+const defaultVisitsMigrationHistory: MigrationHistory[] = [
   {
     migrationId: '2022-03-14T10:13:56',
     whenStarted: '2022-03-14T10:13:56.878627',
@@ -97,7 +114,45 @@ const defaultMigrationHistory: MigrationHistory[] = [
   },
 ]
 
-const defaultFailures = {
+const defaultIncentivesMigrationHistory: MigrationHistory[] = [
+  {
+    migrationId: '2022-03-14T10:13:56',
+    whenStarted: '2022-03-14T10:13:56.878627',
+    whenEnded: '2022-03-14T10:14:07.531409',
+    estimatedRecordCount: 0,
+    filter: '{"fromDate":"2022-03-04"}',
+    recordsMigrated: 0,
+    recordsFailed: 0,
+    migrationType: 'INCENTIVES',
+    status: 'COMPLETED',
+    id: '2022-03-14T10:13:56',
+  },
+  {
+    migrationId: '2022-03-14T11:45:12',
+    whenStarted: '2022-03-14T11:45:12.615759',
+    estimatedRecordCount: 205630,
+    filter: '{}',
+    recordsMigrated: 1,
+    recordsFailed: 162794,
+    migrationType: 'INCENTIVES',
+    status: 'STARTED',
+    id: '2022-03-14T11:45:12',
+  },
+  {
+    migrationId: '2022-03-15T11:00:35',
+    whenStarted: '2022-03-15T11:00:35.406626',
+    whenEnded: '2022-03-15T11:00:45.990485',
+    estimatedRecordCount: 4,
+    filter: '{"fromDate":"2022-03-15"}',
+    recordsMigrated: 0,
+    recordsFailed: 4,
+    migrationType: 'INCENTIVES',
+    status: 'COMPLETED',
+    id: '2022-03-15T11:00:35',
+  },
+]
+
+const defaultVisitsFailures = {
   messagesFoundCount: 353,
   messagesReturnedCount: 5,
   messages: [
@@ -168,6 +223,84 @@ const defaultFailures = {
     },
   ],
 }
+
+const defaultIncentivesFailures = {
+  messagesFoundCount: 353,
+  messagesReturnedCount: 5,
+  messages: [
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {
+            bookingId: 10310112,
+            sequence: 1,
+          },
+        },
+        type: 'MIGRATE_INCENTIVE',
+      },
+      messageId: 'afeb75fd-a2aa-41c4-9ede-b6bfe9590d36',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {
+            bookingId: 10309678,
+            sequence: 1,
+          },
+        },
+        type: 'MIGRATE_INCENTIVE',
+      },
+      messageId: '86b96f0e-2ac3-445c-b3ac-0a4d525d371e',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            bookingId: 10243234,
+            sequence: 1,
+          },
+        },
+        type: 'MIGRATE_INCENTIVE',
+      },
+      messageId: '7e37a1e0-f041-42bc-9c2d-1da82d3bb83b',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            bookingId: 10243119,
+            sequence: 1,
+          },
+        },
+        type: 'MIGRATE_INCENTIVE',
+      },
+      messageId: '8d87f4d7-7846-48b2-ae93-5a7878dba502',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            bookingId: 10245176,
+            sequence: 1,
+          },
+        },
+        type: 'MIGRATE_INCENTIVE',
+      },
+      messageId: '230dcb1f-3391-4630-b907-3923ec9e0ee4',
+    },
+  ],
+}
+
 const stubHealth = (): SuperAgentRequest =>
   stubFor({
     request: {
@@ -185,11 +318,22 @@ const stubHealth = (): SuperAgentRequest =>
           'migrationvisits-health': {
             status: 'UP',
             details: {
-              queueName: 'dps-syscon-dev-migration_queue',
+              queueName: 'dps-syscon-dev-visitsmigration_queue',
               messagesOnQueue: '0',
               messagesInFlight: '0',
               dlqStatus: 'UP',
-              dlqName: 'dps-syscon-dev-migration_dlq',
+              dlqName: 'dps-syscon-dev-visitsmigration_dlq',
+              messagesOnDlq: '153',
+            },
+          },
+          'migrationincentives-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-incentivesmigration_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-incentivesmigration_dlq',
               messagesOnDlq: '153',
             },
           },
@@ -199,11 +343,11 @@ const stubHealth = (): SuperAgentRequest =>
     },
   })
 
-const stubGetFailures = (failures: unknown = defaultFailures): SuperAgentRequest =>
+const stubGetVisitsFailures = (failures: unknown = defaultVisitsFailures): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-migration_dlq',
+      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-visitsmigration_dlq',
     },
     response: {
       status: 200,
@@ -214,11 +358,26 @@ const stubGetFailures = (failures: unknown = defaultFailures): SuperAgentRequest
     },
   })
 
-const stubDeleteFailures = (failures: unknown = defaultFailures): SuperAgentRequest =>
+const stubGetIncentivesFailures = (failures: unknown = defaultIncentivesFailures): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-incentivesmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: failures,
+    },
+  })
+
+const stubDeleteFailures = (failures: unknown = defaultVisitsFailures): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'PUT',
-      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-migration_dlq',
+      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-visitsmigration_dlq',
     },
     response: {
       status: 200,
@@ -416,10 +575,12 @@ const stubGetVisitMigrationRoomUsage = (): SuperAgentRequest =>
   })
 
 export default {
-  stubListOfMigrationHistory,
+  stubListOfVisitsMigrationHistory,
+  stubListOfIncentivesMigrationHistory,
   stubNomisMigrationPing,
   stubStartVisitsMigration,
-  stubGetFailures,
+  stubGetVisitsFailures,
+  stubGetIncentivesFailures,
   stubDeleteFailures,
   stubHealth,
   stubGetMigrationDetailsStarted,

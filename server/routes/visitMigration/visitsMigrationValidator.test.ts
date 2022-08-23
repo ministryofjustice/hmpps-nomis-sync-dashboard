@@ -1,15 +1,15 @@
 import validate from './visitsMigrationValidator'
-import { MigrationViewFilter } from '../../@types/dashboard'
+import { VisitsMigrationViewFilter } from '../../@types/dashboard'
 
 describe('visitsMigrationValidator', () => {
   it('should no errors when everything is valid', () => {
-    const form: MigrationViewFilter = validForm
+    const form: VisitsMigrationViewFilter = validForm
 
     expect(validate(form)).toHaveLength(0)
   })
 
   it('should allow an empty prisonId', () => {
-    const form: MigrationViewFilter = {
+    const form: VisitsMigrationViewFilter = {
       ...validForm,
       prisonId: '',
     }
@@ -18,7 +18,7 @@ describe('visitsMigrationValidator', () => {
   })
 
   it('should reject invalid fromDateTime', () => {
-    const form: MigrationViewFilter = {
+    const form: VisitsMigrationViewFilter = {
       ...validForm,
       fromDateTime: 'invalid',
     }
@@ -30,7 +30,7 @@ describe('visitsMigrationValidator', () => {
   })
 
   it('should reject invalid toDateTime', () => {
-    const form: MigrationViewFilter = {
+    const form: VisitsMigrationViewFilter = {
       ...validForm,
       toDateTime: 'invalid',
     }
@@ -42,7 +42,7 @@ describe('visitsMigrationValidator', () => {
   })
 
   it('should allow just date in to/fromDateTime', () => {
-    const form: MigrationViewFilter = {
+    const form: VisitsMigrationViewFilter = {
       ...validForm,
       fromDateTime: '2020-03-23',
       toDateTime: '2020-03-23',
@@ -52,7 +52,7 @@ describe('visitsMigrationValidator', () => {
   })
 })
 
-const validForm: MigrationViewFilter = {
+const validForm: VisitsMigrationViewFilter = {
   prisonId: 'HEI',
   fromDateTime: '2020-03-23T12:00:00',
   toDateTime: '2020-03-24T12:00:00',

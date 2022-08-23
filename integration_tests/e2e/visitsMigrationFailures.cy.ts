@@ -9,7 +9,7 @@ context('Visit Migration Failures', () => {
     beforeEach(() => {
       cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
       cy.task('stubHealth')
-      cy.task('stubGetFailures')
+      cy.task('stubGetVisitsFailures')
       cy.signIn()
     })
     it('should failures rows', () => {

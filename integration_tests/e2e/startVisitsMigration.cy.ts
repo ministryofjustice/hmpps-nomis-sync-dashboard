@@ -13,7 +13,7 @@ context('Start Visits Migration', () => {
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
-      cy.task('stubListOfMigrationHistory')
+      cy.task('stubListOfVisitsMigrationHistory')
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.visitsMigrationLink().click()
@@ -46,7 +46,7 @@ context('Start Visits Migration', () => {
         estimatedCount: 100_988,
       })
       cy.task('stubHealth')
-      cy.task('stubGetFailures')
+      cy.task('stubGetVisitsFailures')
 
       Page.verifyOnPage(VisitsMigrationPage).startNewMigration().click()
       cy.task('stubGetVisitMigrationEstimatedCount', 100_988)
@@ -102,7 +102,7 @@ context('Start Visits Migration', () => {
         estimatedCount: 100_988,
       })
       cy.task('stubHealth')
-      cy.task('stubGetFailures')
+      cy.task('stubGetVisitsFailures')
       cy.task('stubDeleteFailures')
 
       Page.verifyOnPage(VisitsMigrationPage).startNewMigration().click()

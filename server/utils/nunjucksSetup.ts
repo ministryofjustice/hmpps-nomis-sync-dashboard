@@ -5,7 +5,7 @@ import * as pathModule from 'path'
 import moment from 'moment'
 import querystring, { ParsedUrlQueryInput } from 'querystring'
 import { Error } from '../validation/validation'
-import { MigrationViewFilter } from '../@types/dashboard'
+import { VisitsMigrationViewFilter, MigrationViewFilter } from '../@types/dashboard'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -114,7 +114,44 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     }
   })
 
-  njkEnv.addFilter('prisonSearchInput', (migrationViewFilter: MigrationViewFilter) => {
+  njkEnv.addFilter(
+    'toIncentivesMigrationsListFilter',
+    (filterOptionsHtml: string, migrationViewFilter: MigrationViewFilter) => {
+      const hrefBase = '/incentives-migration?'
+      const toDateFilterTags = getToDateFilterTags(migrationViewFilter, hrefBase)
+      const fromDateFilterTags = getFromDateFilterTags(migrationViewFilter, hrefBase)
+      const failedFilterTags = getFailedFilterTags(migrationViewFilter, hrefBase)
+
+      return {
+        heading: {
+          text: 'Filter',
+        },
+        selectedFilters: {
+          heading: {
+            text: 'Selected filters',
+          },
+          clearLink: {
+            text: 'Clear filters',
+            href: '/incentivess-migration',
+          },
+          categories: [
+            {
+              items: fromDateFilterTags,
+            },
+            {
+              items: toDateFilterTags,
+            },
+            {
+              items: failedFilterTags,
+            },
+          ],
+        },
+        optionsHtml: filterOptionsHtml,
+      }
+    }
+  )
+
+  njkEnv.addFilter('prisonSearchInput', (migrationViewFilter: VisitsMigrationViewFilter) => {
     return {
       label: {
         text: 'Prison search',
@@ -175,7 +212,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     }
   })
 
-  function getPrisonFilterTags(migrationViewFilter: MigrationViewFilter, hrefBase: string) {
+  function getPrisonFilterTags(migrationViewFilter: VisitsMigrationViewFilter, hrefBase: string) {
     const { prisonId, ...newFilter }: ParsedUrlQueryInput = migrationViewFilter
     if (prisonId) {
       return [
