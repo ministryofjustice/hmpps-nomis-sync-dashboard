@@ -13,7 +13,7 @@ context('Start Visits Migration', () => {
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
-      cy.task('stubListOfMigrationHistory')
+      cy.task('stubListOfVisitsMigrationHistory')
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.visitsMigrationLink().click()
