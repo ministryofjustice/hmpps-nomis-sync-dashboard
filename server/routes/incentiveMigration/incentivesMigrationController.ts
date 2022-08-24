@@ -6,6 +6,8 @@ import { MigrationViewFilter } from '../../@types/dashboard'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import incentivesMigrationValidator from './incentivesMigrationValidator'
 import { withDefaultTime } from '../../utils/utils'
+import trimForm from '../../utils/trim'
+import startIncentivesMigrationValidator from './startIncentivesMigrationValidator'
 
 interface Filter {
   fromDate?: string
@@ -67,6 +69,31 @@ export default class IncentivesMigrationController {
     res.render('pages/incentives/incentivesMigrationFailures', { failures: failuresDecorated })
   }
 
+  async startNewIncentiveMigration(req: Request, res: Response): Promise<void> {
+    delete req.session.startIncentivesMigrationForm
+    await this.startIncentiveMigration(req, res)
+  }
+
+  async startIncentiveMigration(req: Request, res: Response): Promise<void> {
+    res.render('pages/incentives/startIncentivesMigration', {
+      form: req.session.startIncentivesMigrationForm,
+      errors: req.flash('errors'),
+    })
+  }
+
+  async postStartIncentiveMigration(req: Request, res: Response): Promise<void> {
+    req.session.startIncentivesMigrationForm = { ...trimForm(req.body) }
+
+    const errors = startIncentivesMigrationValidator(req.session.startIncentivesMigrationForm)
+
+    if (errors.length > 0) {
+      req.flash('errors', errors)
+      res.redirect('/incentives-migration/amend')
+    } else {
+      // TODO: go to next page
+    }
+  }
+
   parseFilter(req: Request): MigrationViewFilter {
     return {
       toDateTime: req.query.toDateTime as string | undefined,
@@ -85,7 +112,7 @@ export default class IncentivesMigrationController {
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
-    | where message contains 'Will not migrate visit since it is migrated already,'
+    | where message contains 'Will not migrate incentive since it is migrated already,'
     | where timestamp between (datetime(${IncentivesMigrationController.toISODateTime(
       startedDate
     )}) .. datetime(${IncentivesMigrationController.toISODateTime(endedDate)}))
