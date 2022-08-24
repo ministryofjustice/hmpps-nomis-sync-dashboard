@@ -158,7 +158,7 @@ describe('incentivesMigrationController', () => {
     })
   })
 
-  describe('postStartVisitMigration', () => {
+  describe('postStartIncentivesMigration', () => {
     describe('with validation error', () => {
       it('should return an error response', async () => {
         req.body = {
