@@ -17,6 +17,17 @@ Validator.register(
   'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23'
 )
 
+Validator.register(
+  'date',
+  value => {
+    if (typeof value === 'string') {
+      return isISO8601(value, { strict: true })
+    }
+    return false
+  },
+  'Enter a real date, like 2020-03-23'
+)
+
 export function validate<T>(form: T, rules: Rules, customMessages: ErrorMessages) {
   const validation = new Validator(form, rules, customMessages)
 

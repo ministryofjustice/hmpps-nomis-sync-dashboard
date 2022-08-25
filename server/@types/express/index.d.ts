@@ -1,16 +1,23 @@
 export default {}
 
 declare module 'express-session' {
-  interface StartVisitsMigrationForm {
+  interface MigrationForm {
     dlqCount?: string
+    action?: 'startMigration'
+    estimatedCount?: string
+    migrationId?: string
+  }
+  interface StartVisitsMigrationForm extends MigrationForm {
     unmappedRooms?: string[]
     prisonIds?: string
     visitTypes?: string | string[]
     fromDateTime?: string
     toDateTime?: string
-    action?: 'startMigration'
-    estimatedCount?: string
-    migrationId?: string
+  }
+
+  interface StartIncentivesMigrationForm extends MigrationForm {
+    fromDate?: string
+    toDate?: string
   }
 
   // Declare that the session will potentially contain these additional fields
@@ -18,6 +25,7 @@ declare module 'express-session' {
     returnTo: string
     nowInMinutes: number
     startVisitsMigrationForm: StartVisitsMigrationForm
+    startIncentivesMigrationForm: StartIncentivesMigrationForm
   }
 }
 

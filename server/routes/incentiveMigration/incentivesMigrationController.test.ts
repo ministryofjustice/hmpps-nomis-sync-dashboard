@@ -157,4 +157,19 @@ describe('incentivesMigrationController', () => {
       })
     })
   })
+
+  describe('postStartIncentivesMigration', () => {
+    describe('with validation error', () => {
+      it('should return an error response', async () => {
+        req.body = {
+          _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
+          action: 'startMigration',
+          toDate: 'banana',
+        }
+        await new IncentivesMigrationController(nomisMigrationService).postStartIncentiveMigration(req, res)
+        expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
+        expect(res.redirect).toHaveBeenCalledWith('/incentives-migration/amend')
+      })
+    })
+  })
 })
