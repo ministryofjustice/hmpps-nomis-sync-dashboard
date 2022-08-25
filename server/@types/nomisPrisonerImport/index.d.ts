@@ -23,6 +23,14 @@ export interface paths {
     /** Retrieves a paged list of visits by filter */
     get: operations['getVisitsByFilter']
   }
+  '/incentives/ids': {
+    /** Retrieves a paged list of incentive composite ids by filter. Requires ROLE_NOMIS_INCENTIVES. */
+    get: operations['getIncentivesByFilter']
+  }
+  '/incentives/booking-id/{bookingId}/incentive-sequence/{incentiveSequence}': {
+    /** Retrieves a created incentive level for a prisoner. Requires ROLE_NOMIS_INCENTIVES. */
+    get: operations['getIncentive']
+  }
 }
 
 export interface components {
@@ -72,6 +80,17 @@ export interface components {
        * @description Issue date
        */
       issueDate: string
+      /** @description Comment to be added to visit */
+      visitComment: string
+      /** @description Comment to be added to visit order (if one is created) */
+      visitOrderComment: string
+      /** @description Name of the real world room where visit will take place */
+      room: string
+      /**
+       * @description Whether visit is restricted to a closed session
+       * @enum {string}
+       */
+      openClosedStatus: 'OPEN' | 'CLOSED'
     }
     /** @description Visit creation response */
     CreateVisitResponse: {
@@ -85,6 +104,18 @@ export interface components {
     CodeDescription: {
       code: string
       description: string
+    }
+    /** @description the lead visitor */
+    LeadVisitor: {
+      /**
+       * Format: int64
+       * @description visitor NOMIS person Id
+       */
+      personId: number
+      /** @description full name of visitor */
+      fullName: string
+      /** @description Ordered list of telephone numbers for contact with latest first */
+      telephones: string[]
     }
     /** @description Visit information */
     VisitResponse: {
@@ -109,8 +140,10 @@ export interface components {
       prisonId: string
       /** @description Visitors */
       visitors: components['schemas']['Visitor'][]
+      leadVisitor?: components['schemas']['LeadVisitor']
       visitType: components['schemas']['CodeDescription']
       visitStatus: components['schemas']['CodeDescription']
+      visitOutcome?: components['schemas']['CodeDescription']
       agencyInternalLocation?: components['schemas']['CodeDescription']
       /** @description Visit comments */
       commentText?: string
@@ -138,8 +171,13 @@ export interface components {
     VisitRoomCountResponse: {
       /** @description The internal location description */
       agencyInternalLocationDescription: string
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The room usage count
+       */
       count: number
+      /** @description The prison id */
+      prisonId: string
     }
     PageVisitIdResponse: {
       /** Format: int32 */
@@ -151,18 +189,18 @@ export interface components {
       content?: components['schemas']['VisitIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['Sort']
-      last?: boolean
+      sort?: components['schemas']['SortObject']
       first?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     PageableObject: {
       /** Format: int64 */
       offset?: number
-      sort?: components['schemas']['Sort']
+      sort?: components['schemas']['SortObject']
       /** Format: int32 */
       pageSize?: number
       /** Format: int32 */
@@ -170,7 +208,7 @@ export interface components {
       paged?: boolean
       unpaged?: boolean
     }
-    Sort: {
+    SortObject: {
       empty?: boolean
       sorted?: boolean
       unsorted?: boolean
@@ -183,6 +221,62 @@ export interface components {
        */
       visitId: number
     }
+    /** @description Incentive id */
+    IncentiveIdResponse: {
+      /**
+       * Format: int64
+       * @description The booking id
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The sequence of the incentive within this booking
+       */
+      sequence: number
+    }
+    PageIncentiveIdResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['IncentiveIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
+      first?: boolean
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      last?: boolean
+      empty?: boolean
+    }
+    /** @description Incentive information */
+    IncentiveResponse: {
+      /**
+       * Format: int64
+       * @description The booking id
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The sequence of the incentive within this booking
+       */
+      incentiveSequence: number
+      /** @description Comment for Incentive level */
+      commentText?: string
+      /**
+       * @description Date and time of Incentive level creation
+       * @example 2021-07-05T10:35:17
+       */
+      iepDateTime: string
+      /** @description Prison where the Incentive level was created */
+      prisonId: string
+      iepLevel: components['schemas']['CodeDescription']
+      /** @description User id of user creating prisoner incentive level */
+      userId?: string
+    }
   }
 }
 
@@ -190,8 +284,10 @@ export interface operations {
   cancelVisit: {
     parameters: {
       path: {
+        /** Offender Noms Id */
         offenderNo: string
-        visitId: number
+        /** Nomis Visit Id */
+        visitId: string
       }
     }
     responses: {
@@ -226,6 +322,7 @@ export interface operations {
   createVisit: {
     parameters: {
       path: {
+        /** Offender Noms Id */
         offenderNo: string
       }
     }
@@ -265,7 +362,8 @@ export interface operations {
   getVisit: {
     parameters: {
       path: {
-        visitId: number
+        /** Nomis Visit Id */
+        visitId: string
       }
     }
     responses: {
@@ -345,6 +443,71 @@ export interface operations {
       }
       /** Unauthorized to access this endpoint */
       401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Retrieves a paged list of incentive composite ids by filter. Requires ROLE_NOMIS_INCENTIVES. */
+  getIncentivesByFilter: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /** Filter results by incentives that were assigned on or after the given date */
+        fromDate?: string
+        /** Filter results by incentives that were assigned on or before the given date */
+        toDate?: string
+        /** if true only retrieve latest incentive for each prisoner */
+        latestOnly?: boolean
+      }
+    }
+    responses: {
+      /** Pageable list of composite ids are returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageIncentiveIdResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Retrieves a created incentive level for a prisoner. Requires ROLE_NOMIS_INCENTIVES. */
+  getIncentive: {
+    parameters: {
+      path: {
+        /** NOMIS booking Id */
+        bookingId: string
+        /** NOMIS Incentive sequence */
+        incentiveSequence: string
+      }
+    }
+    responses: {
+      /** the incentive level details */
+      200: {
+        content: {
+          'application/json': components['schemas']['IncentiveResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
+      403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }

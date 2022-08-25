@@ -231,6 +231,7 @@ describe('visitsMigrationController', () => {
         nomisMigrationService.startVisitsMigration.mockResolvedValue({
           migrationId: '2022-03-14T10:13:56',
           estimatedCount: 124_001,
+          type: 'VISITS',
           body: {
             prisonIds: ['HEI'],
             visitTypes: ['SCON'],

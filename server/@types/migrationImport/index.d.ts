@@ -13,9 +13,21 @@ export interface paths {
   '/queue-admin/purge-queue/{queueName}': {
     put: operations['purgeQueue']
   }
+  '/migrate/visits/{migrationId}/cancel': {
+    /** Requires role <b>MIGRATE_VISITS</b> */
+    post: operations['cancel']
+  }
   '/migrate/visits': {
     /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b> */
     post: operations['migrateVisits']
+  }
+  '/migrate/incentives/{migrationId}/cancel': {
+    /** Requires role <b>MIGRATE_VISITS</b> */
+    post: operations['cancel_1']
+  }
+  '/migrate/incentives': {
+    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCENTIVES</b> */
+    post: operations['migrateIncentives']
   }
   '/queue-admin/get-dlq-messages/{dlqName}': {
     get: operations['getDlqMessages']
@@ -24,17 +36,25 @@ export interface paths {
     /** Retrieves a list of rooms with usage count and vsip mapping for the (filtered) visits */
     get: operations['getVisitRoomUsageDetailsByFilter']
   }
-  '/migrate/visits/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
-    get: operations['getAll']
-  }
   '/migrate/visits/history/{migrationId}': {
     /** Requires role <b>MIGRATE_VISITS</b> */
     get: operations['get']
   }
+  '/migrate/visits/history': {
+    /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
+    get: operations['getAll']
+  }
+  '/migrate/incentives/history/{migrationId}': {
+    /** Requires role <b>MIGRATE_INCENTIVES</b> */
+    get: operations['get_1']
+  }
+  '/migrate/incentives/history': {
+    /** The records are un-paged and requires role <b>MIGRATE_INCENTIVES</b> */
+    get: operations['getAll_1']
+  }
   '/history': {
     /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
-    get: operations['getAll_1']
+    get: operations['getAll_2']
     /** This is only required for test environments and requires role <b>MIGRATION_ADMIN</b> */
     delete: operations['deleteAll']
   }
@@ -97,6 +117,15 @@ export interface components {
       /** Format: int32 */
       messagesFoundCount: number
     }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      /** Format: int32 */
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
     /** @description Filter specifying what should be migrated from NOMIS to Visits service */
     VisitsMigrationFilter: {
       /**
@@ -106,8 +135,13 @@ export interface components {
       prisonIds: string[]
       /**
        * @description List of visit types to migrate
-       * @default SCON
-       * @example SCON,OFFI
+       * @default [
+       *   "SCON"
+       * ]
+       * @example [
+       *   "SCON",
+       *   "OFFI"
+       * ]
        */
       visitTypes: string[]
       /**
@@ -120,23 +154,43 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       toDateTime?: string
-      /** @description When true exclude visits without an associated room (visits created during the VSIP synchronisation process), defaults to false. Only required during testing when mapping records are manually deleted */
+      /**
+       * @description When true exclude visits without an associated room (visits created during the VSIP synchronisation process), defaults to false. Only required during testing when mapping records are manually deleted
+       * @default false
+       * @example false
+       */
       ignoreMissingRoom: boolean
     }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
-    }
     MigrationContextVisitsMigrationFilter: {
+      /** @enum {string} */
+      type: 'VISITS' | 'INCENTIVES'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['VisitsMigrationFilter']
+    }
+    /** @description Filter specifying what should be migrated from NOMIS to Incentives service */
+    IncentivesMigrationFilter: {
+      /**
+       * Format: date
+       * @description Only include incentives issued on or after this date
+       * @example 2020-03-23
+       */
+      fromDate?: string
+      /**
+       * Format: date
+       * @description Only include incentives issued before or on this date
+       * @example 2020-03-24
+       */
+      toDate?: string
+    }
+    MigrationContextIncentivesMigrationFilter: {
+      /** @enum {string} */
+      type: 'VISITS' | 'INCENTIVES'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: components['schemas']['IncentivesMigrationFilter']
     }
     DlqMessage: {
       body: { [key: string]: { [key: string]: unknown } }
@@ -179,7 +233,7 @@ export interface components {
       /** @enum {string} */
       migrationType: 'VISITS' | 'INCENTIVES'
       /** @enum {string} */
-      status: 'STARTED' | 'COMPLETED'
+      status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
       id: string
     }
   }
@@ -226,6 +280,37 @@ export interface operations {
       }
     }
   }
+  /** Requires role <b>MIGRATE_VISITS</b> */
+  cancel: {
+    parameters: {
+      path: {
+        /** Migration Id */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** Cancellation request accepted */
+      202: unknown
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** No running migration found with migration id */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b> */
   migrateVisits: {
     responses: {
@@ -251,6 +336,65 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['VisitsMigrationFilter']
+      }
+    }
+  }
+  /** Requires role <b>MIGRATE_VISITS</b> */
+  cancel_1: {
+    parameters: {
+      path: {
+        /** Migration Id */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** Cancellation request accepted */
+      202: unknown
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** No running migration found with migration id */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCENTIVES</b> */
+  migrateIncentives: {
+    responses: {
+      /** Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextIncentivesMigrationFilter']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to start migration */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['IncentivesMigrationFilter']
       }
     }
   }
@@ -307,6 +451,41 @@ export interface operations {
       }
     }
   }
+  /** Requires role <b>MIGRATE_VISITS</b> */
+  get: {
+    parameters: {
+      path: {
+        /** Migration Id */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** The visit migration history record */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Migration not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
   getAll: {
     parameters: {
@@ -342,15 +521,16 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_VISITS</b> */
-  get: {
+  /** Requires role <b>MIGRATE_INCENTIVES</b> */
+  get_1: {
     parameters: {
       path: {
+        /** Migration Id */
         migrationId: string
       }
     }
     responses: {
-      /** The visit migration history record */
+      /** The incentive migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
@@ -376,8 +556,41 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
+  /** The records are un-paged and requires role <b>MIGRATE_INCENTIVES</b> */
   getAll_1: {
+    parameters: {
+      query: {
+        /** Only include migrations started after this date time */
+        fromDateTime?: string
+        /** Only include migrations started before this date time */
+        toDateTime?: string
+        /** When true only include migrations that had at least one failure */
+        includeOnlyFailures?: boolean
+      }
+    }
+    responses: {
+      /** All incentives migration history records */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory'][]
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
+  getAll_2: {
     parameters: {
       query: {
         /** List of migration types, when omitted all migration types will be returned */

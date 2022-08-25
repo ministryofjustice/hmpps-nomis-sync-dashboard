@@ -1,0 +1,128 @@
+{% extends "../../partials/layout.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+
+{% set pageTitle = applicationName + " - Start a incentives migration - preview" %}
+
+{% block content %}
+    {{ govukBackLink({
+        text: "Back",
+        href: '/incentives-migration/amend'
+    }) }}
+
+    <main class="app-container govuk-body">
+        {% if errors.length > 0 %}
+            {{ govukErrorSummary({
+                titleText: 'There is a problem',
+                errorList: errors,
+                attributes: { 'data-qa-errors': true }
+            }) }}
+        {% endif %}
+
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new incentives migration - preview</h1>
+                </div>
+                <div class="govuk-grid-column-two-thirds">
+                    {% if form.estimatedCount %}
+                        {% set html %}
+                            <p class="govuk-notification-banner__heading" id="estimateSummary">
+                                Estimated number of incentives to be migrated: {{ form.estimatedCount }}
+                            </p>
+                        {% endset %}
+
+                        {{ govukNotificationBanner({
+                            html: html
+                        }) }}
+                    {% endif %}
+
+                    {% if form.dlqCount > 0 %}
+                        {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear these before starting the migration{% endset %}
+                        {% set html %}
+                        <form action="/incentives-migration/start/delete-faiures" method="post" novalidate>
+                        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                        <p>If you are sure all previous failures have been successfully understood and processed, you can permanently delete any record of these errors</p>
+                        <div class="govuk-button-group">
+                            {{ govukButton({
+                                text: "Delete failure messages",
+                                classes: "govuk-button--warning",
+                                name: "action",
+                                value: "deleteDlq",
+                                attributes: { 'data-qa': 'delete-dlq-button' }
+                            }) }}
+                        </div>
+                        <p>Deleting failures can sometimes take up to a minute, so after selecting this button it might appear that the messages are still there. These can be safely ignored.</p>
+                        {% endset %}
+
+                        {{ govukErrorSummary({
+                            titleText: dlqText,
+                            attributes: { 'id': 'dlqWarning' },
+                            descriptionHtml: html
+                        }) }}
+                    </form>
+
+                    {% endif %}
+
+                    {% set summaryRows = [] %}
+
+                    {{ summaryRow(form.fromDate, "Created after date", summaryRows, "created-after") }}
+                    {{ summaryRow(form.toDate, "Created before date", summaryRows, "created-before") }}
+
+                    {{ govukSummaryList({
+                        rows: summaryRows
+                    }) }}
+
+
+                    <form action="/incentives-migration/start/preview" method="post" novalidate>
+                        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+                        <div class="govuk-button-group">
+                            {{ govukButton({
+                                text: "Start migration",
+                                name: "action",
+                                value: "startMigration",
+                                attributes: { 'data-qa': 'start-migration-button' }
+                            }) }}
+                            <a class="govuk-link" href="/incentives-migration">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
+
+{% macro summaryRow(formItem, label, summaryRows, dataQa) %}
+    {% if formItem %}
+        {% set summaryRow =   {
+            key: {
+                text: label
+            },
+            value: {
+                text: formItem
+            },
+            actions: {
+                items: [
+                    {
+                        href: "/incentives-migration/amend",
+                        text: "Change",
+                        visuallyHiddenText: label,
+                        attributes: { 'data-qa': dataQa }
+                    }
+                ]
+            }
+        } %}
+        {% set summaryRows = (summaryRows.push(
+            summaryRow
+        ), summaryRows) %}
+    {% endif %}
+{% endmacro %}
