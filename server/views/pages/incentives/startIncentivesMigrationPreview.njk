@@ -73,8 +73,8 @@
 
                     {% set summaryRows = [] %}
 
-                    {{ summaryRow(form.fromDate, "Created after date", summaryRows, "created-after") }}
-                    {{ summaryRow(form.toDate, "Created before date", summaryRows, "created-before") }}
+                    {{ summaryRow(form.fromDate, "Issued on or after date", summaryRows, "created-after") }}
+                    {{ summaryRow(form.toDate, "Issued on or before date", summaryRows, "created-before") }}
 
                     {{ govukSummaryList({
                         rows: summaryRows

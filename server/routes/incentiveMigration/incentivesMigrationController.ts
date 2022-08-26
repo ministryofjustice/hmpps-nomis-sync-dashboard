@@ -133,6 +133,23 @@ export default class IncentivesMigrationController {
     })
   }
 
+  async incentivesMigrationDetails(req: Request, res: Response): Promise<void> {
+    const { migrationId } = req.query as { migrationId: string }
+    const migration = await this.nomisMigrationService.getIncentivesMigration(migrationId, context(res))
+    res.render('pages/incentives/incentivesMigrationDetails', {
+      migration: { ...migration, history: IncentivesMigrationController.withFilter(migration.history) },
+    })
+  }
+
+  async cancelMigration(req: Request, res: Response): Promise<void> {
+    const { migrationId }: { migrationId: string } = req.body
+    await this.nomisMigrationService.cancelIncentivesMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getIncentivesMigration(migrationId, context(res))
+    res.render('pages/incentives/incentivesMigrationDetails', {
+      migration: { ...migration, history: IncentivesMigrationController.withFilter(migration.history) },
+    })
+  }
+
   parseFilter(req: Request): MigrationViewFilter {
     return {
       toDateTime: req.query.toDateTime as string | undefined,

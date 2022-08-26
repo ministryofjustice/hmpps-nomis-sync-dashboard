@@ -429,7 +429,7 @@ const stubDeleteIncentivesFailures = (): SuperAgentRequest =>
     },
   })
 
-const stubGetMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
+const stubGetVisitsMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -450,6 +450,32 @@ const stubGetMigrationDetailsStarted = (migrationId: string): SuperAgentRequest 
         recordsMigrated: 12091,
         recordsFailed: 123,
         migrationType: 'VISITS',
+        status: 'STARTED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubGetIncentivesMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/incentives/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded: null,
+        estimatedRecordCount: 26602,
+        filter: '{"fromDate":"2016-03-23"}',
+        recordsMigrated: 12091,
+        recordsFailed: 123,
+        migrationType: 'INCENTIVES',
         status: 'STARTED',
         id: migrationId,
       },
@@ -503,11 +529,19 @@ const stubInfoInProgress = ({
           'records migrated': migrated,
           started: '2022-03-14T13:10:54.073256',
         },
+        'last incentives migration': {
+          'records waiting processing': stillToBeProcessed,
+          'records currently being processed': '24',
+          'records that have failed': failed,
+          id: migrationId,
+          'records migrated': migrated,
+          started: '2022-03-14T13:10:54.073256',
+        },
       },
     },
   })
 
-const stubGetMigrationDetailsCompleted = ({
+const stubGetVisitsMigrationDetailsCompleted = ({
   migrationId,
   migrated,
   failed,
@@ -544,6 +578,41 @@ const stubGetMigrationDetailsCompleted = ({
     },
   })
 
+const stubGetIncentivesMigrationDetailsCompleted = ({
+  migrationId,
+  migrated,
+  failed,
+  whenEnded,
+}: {
+  migrationId: string
+  migrated: number
+  failed: string
+  whenEnded: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/incentives/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded,
+        estimatedRecordCount: 26602,
+        filter: '{"fromDate":"2016-03-23"}',
+        recordsMigrated: migrated,
+        recordsFailed: failed,
+        migrationType: 'INCENTIVES',
+        status: 'COMPLETED',
+        id: migrationId,
+      },
+    },
+  })
 const stubInfoCompleted = (migrationId: string): SuperAgentRequest =>
   stubFor({
     request: {
@@ -574,6 +643,14 @@ const stubInfoCompleted = (migrationId: string): SuperAgentRequest =>
           group: 'uk.gov.justice.digital.hmpps',
         },
         'last visits migration': {
+          'records waiting processing': '0',
+          'records currently being processed': '0',
+          'records that have failed': '999',
+          id: migrationId,
+          'records migrated': 999,
+          started: '2022-03-14T13:10:54.073256',
+        },
+        'last incentives migration': {
           'records waiting processing': '0',
           'records currently being processed': '0',
           'records that have failed': '999',
@@ -624,8 +701,10 @@ export default {
   stubDeleteVisitsFailures,
   stubDeleteIncentivesFailures,
   stubHealth,
-  stubGetMigrationDetailsStarted,
-  stubGetMigrationDetailsCompleted,
+  stubGetVisitsMigrationDetailsStarted,
+  stubGetVisitsMigrationDetailsCompleted,
+  stubGetIncentivesMigrationDetailsStarted,
+  stubGetIncentivesMigrationDetailsCompleted,
   stubInfoInProgress,
   stubInfoCompleted,
   stubGetVisitMigrationRoomUsage,
