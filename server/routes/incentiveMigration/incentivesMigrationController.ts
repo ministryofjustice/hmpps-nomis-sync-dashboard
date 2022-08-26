@@ -114,7 +114,7 @@ export default class IncentivesMigrationController {
   async postClearDLQIncentiveMigrationPreview(req: Request, res: Response): Promise<void> {
     const result = await this.nomisMigrationService.deleteIncentivesFailures(context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
-    req.body = { ...req.session.startVisitsMigrationForm }
+    req.body = { ...req.session.startIncentivesMigrationForm }
     this.postStartIncentiveMigration(req, res)
   }
 
