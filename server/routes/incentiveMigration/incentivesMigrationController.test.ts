@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import IncentivesMigrationController from './incentivesMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
+import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
 describe('incentivesMigrationController', () => {
   const req = {
@@ -81,7 +82,10 @@ describe('incentivesMigrationController', () => {
       ]
       nomisMigrationService.getIncentivesMigrations.mockResolvedValue(incentiveMigrationResponse)
 
-      await new IncentivesMigrationController(nomisMigrationService).getIncentiveMigrations(req, res)
+      await new IncentivesMigrationController(nomisMigrationService, nomisPrisonerService).getIncentiveMigrations(
+        req,
+        res
+      )
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/incentives/incentivesMigration', {
         migrations: expect.arrayContaining([
@@ -100,7 +104,10 @@ describe('incentivesMigrationController', () => {
     it('should return an error response on invalid date', async () => {
       req.query.toDateTime = 'invalid'
       req.query.fromDateTime = '23/4'
-      await new IncentivesMigrationController(nomisMigrationService).getIncentiveMigrations(req, res)
+      await new IncentivesMigrationController(nomisMigrationService, nomisPrisonerService).getIncentiveMigrations(
+        req,
+        res
+      )
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/incentives/incentivesMigration', {
         migrationViewFilter: expect.objectContaining({
@@ -140,7 +147,7 @@ describe('incentivesMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new IncentivesMigrationController(nomisMigrationService).viewFailures(req, res)
+      await new IncentivesMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/incentives/incentivesMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -166,7 +173,10 @@ describe('incentivesMigrationController', () => {
           action: 'startMigration',
           toDate: 'banana',
         }
-        await new IncentivesMigrationController(nomisMigrationService).postStartIncentiveMigration(req, res)
+        await new IncentivesMigrationController(
+          nomisMigrationService,
+          nomisPrisonerService
+        ).postStartIncentiveMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
         expect(res.redirect).toHaveBeenCalledWith('/incentives-migration/amend')
       })

@@ -6,6 +6,8 @@ import type {
   VisitsMigrationFilter,
   RoomMappingsResponse,
   PurgeQueueResult,
+  IncentivesMigrationFilter,
+  MigrationContextIncentivesMigrationFilter,
 } from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
@@ -105,6 +107,17 @@ export default class NomisMigrationService {
     })
   }
 
+  async startIncentivesMigration(
+    filter: IncentivesMigrationFilter,
+    context: Context
+  ): Promise<MigrationContextIncentivesMigrationFilter> {
+    logger.info(`starting a incentives migration`)
+    return NomisMigrationService.restClient(context.token).post<MigrationContextIncentivesMigrationFilter>({
+      path: `/migrate/incentives`,
+      data: filter,
+    })
+  }
+
   async getVisitsFailures(context: Context): Promise<GetDlqResult> {
     logger.info(`getting messages on visits DLQ`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
@@ -125,10 +138,20 @@ export default class NomisMigrationService {
     })
   }
 
-  async deleteFailures(context: Context): Promise<PurgeQueueResult> {
+  async deleteVisitsFailures(context: Context): Promise<PurgeQueueResult> {
     logger.info(`deleting messages on DLQ`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     const dlqName = await NomisMigrationService.getVisitsDLQName(token)
+
+    return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
+      path: `/queue-admin/purge-queue/${dlqName}`,
+    })
+  }
+
+  async deleteIncentivesFailures(context: Context): Promise<PurgeQueueResult> {
+    logger.info(`deleting messages on DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getIncentivesDLQName(token)
 
     return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
       path: `/queue-admin/purge-queue/${dlqName}`,

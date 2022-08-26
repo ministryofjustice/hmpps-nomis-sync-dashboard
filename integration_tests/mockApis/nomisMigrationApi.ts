@@ -74,6 +74,28 @@ const stubStartVisitsMigration = (
     },
   })
 
+const stubStartIncentivesMigration = (
+  response: unknown = {
+    migrationId: '2022-03-23T11:11:56',
+    estimatedCount: 2,
+    body: {
+      fromDate: '2022-03-23',
+      toDate: '2022-03-24',
+    },
+  }
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/nomis-migration-api/migrate/incentives',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
 const defaultVisitsMigrationHistory: MigrationHistory[] = [
   {
     migrationId: '2022-03-14T10:13:56',
@@ -373,11 +395,28 @@ const stubGetIncentivesFailures = (failures: unknown = defaultIncentivesFailures
     },
   })
 
-const stubDeleteFailures = (failures: unknown = defaultVisitsFailures): SuperAgentRequest =>
+const stubDeleteVisitsFailures = (): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'PUT',
       urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-visitsmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        messagesFoundCount: 5,
+      },
+    },
+  })
+
+const stubDeleteIncentivesFailures = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-incentivesmigration_dlq',
     },
     response: {
       status: 200,
@@ -579,9 +618,11 @@ export default {
   stubListOfIncentivesMigrationHistory,
   stubNomisMigrationPing,
   stubStartVisitsMigration,
+  stubStartIncentivesMigration,
   stubGetVisitsFailures,
   stubGetIncentivesFailures,
-  stubDeleteFailures,
+  stubDeleteVisitsFailures,
+  stubDeleteIncentivesFailures,
   stubHealth,
   stubGetMigrationDetailsStarted,
   stubGetMigrationDetailsCompleted,

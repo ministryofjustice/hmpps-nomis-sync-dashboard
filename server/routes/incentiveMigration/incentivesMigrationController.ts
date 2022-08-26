@@ -1,13 +1,16 @@
 import { Request, Response } from 'express'
+import { StartIncentivesMigrationForm } from 'express-session'
 import moment from 'moment'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
-import { MigrationHistory } from '../../@types/migration'
+import { IncentivesMigrationFilter, MigrationHistory } from '../../@types/migration'
 import { MigrationViewFilter } from '../../@types/dashboard'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import incentivesMigrationValidator from './incentivesMigrationValidator'
 import { withDefaultTime } from '../../utils/utils'
 import trimForm from '../../utils/trim'
+import logger from '../../../logger'
 import startIncentivesMigrationValidator from './startIncentivesMigrationValidator'
+import NomisPrisonerService from '../../services/nomisPrisonerService'
 
 interface Filter {
   fromDate?: string
@@ -22,7 +25,10 @@ function context(res: Response): Context {
 }
 
 export default class IncentivesMigrationController {
-  constructor(private readonly nomisMigrationService: NomisMigrationService) {}
+  constructor(
+    private readonly nomisMigrationService: NomisMigrationService,
+    private readonly nomisPrisonerService: NomisPrisonerService
+  ) {}
 
   async getIncentiveMigrations(req: Request, res: Response): Promise<void> {
     const searchFilter = this.parseFilter(req)
@@ -90,8 +96,41 @@ export default class IncentivesMigrationController {
       req.flash('errors', errors)
       res.redirect('/incentives-migration/amend')
     } else {
-      // TODO: go to next page
+      const filter = IncentivesMigrationController.toFilter(req.session.startIncentivesMigrationForm)
+      const count = await this.nomisPrisonerService.getIncentiveMigrationEstimatedCount(filter, context(res))
+      const dlqCountString = await this.nomisMigrationService.getDLQMessageCount(context(res))
+      logger.info(`${dlqCountString} failures found`)
+
+      req.session.startIncentivesMigrationForm.estimatedCount = count.toLocaleString()
+      req.session.startIncentivesMigrationForm.dlqCount = dlqCountString.toLocaleString()
+      res.redirect('/incentives-migration/start/preview')
     }
+  }
+
+  async startIncentiveMigrationPreview(req: Request, res: Response): Promise<void> {
+    res.render('pages/incentives/startIncentivesMigrationPreview', { form: req.session.startIncentivesMigrationForm })
+  }
+
+  async postClearDLQIncentiveMigrationPreview(req: Request, res: Response): Promise<void> {
+    const result = await this.nomisMigrationService.deleteIncentivesFailures(context(res))
+    logger.info(`${result.messagesFoundCount} failures deleted`)
+    req.body = { ...req.session.startIncentivesMigrationForm }
+    this.postStartIncentiveMigration(req, res)
+  }
+
+  async postStartIncentiveMigrationPreview(req: Request, res: Response): Promise<void> {
+    const filter = IncentivesMigrationController.toFilter(req.session.startIncentivesMigrationForm)
+
+    const result = await this.nomisMigrationService.startIncentivesMigration(filter, context(res))
+    req.session.startIncentivesMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
+    req.session.startIncentivesMigrationForm.migrationId = result.migrationId
+    res.redirect('/incentives-migration/start/confirmation')
+  }
+
+  async startIncentiveMigrationConfirmation(req: Request, res: Response): Promise<void> {
+    res.render('pages/incentives/startIncentivesMigrationConfirmation', {
+      form: req.session.startIncentivesMigrationForm,
+    })
   }
 
   parseFilter(req: Request): MigrationViewFilter {
@@ -138,6 +177,13 @@ export default class IncentivesMigrationController {
       ...migration,
       ...(filterToDate && { filterToDate }),
       ...(filterFromDate && { filterFromDate }),
+    }
+  }
+
+  private static toFilter(form: StartIncentivesMigrationForm): IncentivesMigrationFilter {
+    return {
+      fromDate: form.fromDate,
+      toDate: form.toDate,
     }
   }
 }

@@ -112,6 +112,81 @@ describe('NomisMigrationService tests', () => {
     })
   })
 
+  describe('startIncentivesMigration', () => {
+    it('will allow minimal filter to be sent', async () => {
+      let filter: unknown
+      fakeNomisMigrationService
+        .post('/migrate/incentives', body => {
+          filter = body
+          return body
+        })
+        .reply(200, {
+          migrationId: '2022-03-23T11:11:56',
+          estimatedCount: 2,
+          body: {},
+        })
+
+      await nomisMigrationService.startIncentivesMigration({}, { token: 'some token' })
+
+      expect(filter).toEqual({})
+    })
+    it('will allow complete filter to be sent', async () => {
+      let filter: unknown
+      fakeNomisMigrationService
+        .post('/migrate/incentives', body => {
+          filter = body
+          return body
+        })
+        .reply(200, {
+          migrationId: '2022-03-23T11:11:56',
+          estimatedCount: 2,
+          body: {
+            fromDate: '2022-03-23',
+            toDate: '2022-03-24',
+          },
+        })
+
+      await nomisMigrationService.startIncentivesMigration(
+        {
+          fromDate: '2022-03-23',
+          toDate: '2022-03-24',
+        },
+        { token: 'some token' }
+      )
+
+      expect(filter).toEqual({
+        fromDate: '2022-03-23',
+        toDate: '2022-03-24',
+      })
+    })
+
+    it('will return migrationId and estimated count', async () => {
+      fakeNomisMigrationService.post('/migrate/incentives').reply(200, {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 2,
+        body: {
+          fromDate: '2022-03-23',
+          toDate: '2022-03-24',
+        },
+      })
+
+      const response = await nomisMigrationService.startIncentivesMigration(
+        {
+          fromDate: '2022-03-23',
+          toDate: '2022-03-24',
+        },
+        { token: 'some token' }
+      )
+
+      expect(response).toEqual(
+        expect.objectContaining({
+          migrationId: '2022-03-23T11:11:56',
+          estimatedCount: 2,
+        })
+      )
+    })
+  })
+
   describe('cancelVisitsMigration', () => {
     it('will cancel migration', async () => {
       fakeNomisMigrationService.post('/migrate/visits/2022-03-23T11:11:56/cancel').reply(202, {})
@@ -505,7 +580,7 @@ describe('NomisMigrationService tests', () => {
       fakeNomisMigrationService.put('/queue-admin/purge-queue/dps-syscon-dev-migration_dlq').reply(200, {
         messagesFoundCount: 5,
       })
-      const count = await nomisMigrationService.deleteFailures({ token: 'some token' })
+      const count = await nomisMigrationService.deleteVisitsFailures({ token: 'some token' })
 
       expect(count).toEqual(
         expect.objectContaining({

@@ -108,7 +108,7 @@ export default class VisitsMigrationController {
   }
 
   async postClearDLQVisitMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.visitMigrationService.deleteFailures(context(res))
+    const result = await this.visitMigrationService.deleteVisitsFailures(context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startVisitsMigrationForm }
     this.postStartVisitMigration(req, res)
