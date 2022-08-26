@@ -21,7 +21,7 @@ export interface HistoricMigrations {
   migrations: Array<MigrationHistory>
 }
 
-export interface VisitsMigrationDetails {
+export interface HistoricMigrationDetails {
   history: MigrationHistory
   currentProgress: {
     recordsFailed: string
@@ -68,7 +68,7 @@ export default class NomisMigrationService {
     }
   }
 
-  async getVisitsMigration(migrationId: string, context: Context): Promise<VisitsMigrationDetails> {
+  async getVisitsMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
     logger.info(`getting details for visit migration ${migrationId}`)
     const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
       path: `/migrate/visits/history/${migrationId}`,
@@ -92,6 +92,36 @@ export default class NomisMigrationService {
         recordsMigrated:
           info['last visits migration'].id === migrationId ? info['last visits migration']['records migrated'] : 0,
         recordsToBeProcessed: info['last visits migration']['records waiting processing'],
+      },
+    }
+  }
+
+  async getIncentivesMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
+    logger.info(`getting details for visit migration ${migrationId}`)
+    const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
+      path: `/migrate/incentives/history/${migrationId}`,
+    })
+
+    const info = await NomisMigrationService.restClient(context.token).get<{
+      'last incentives migration': {
+        'records waiting processing': string
+        'records that have failed': string
+        id: string
+        'records migrated': number
+      }
+    }>({
+      path: `/info`,
+    })
+
+    return {
+      history,
+      currentProgress: {
+        recordsFailed: info['last incentives migration']['records that have failed'],
+        recordsMigrated:
+          info['last incentives migration'].id === migrationId
+            ? info['last incentives migration']['records migrated']
+            : 0,
+        recordsToBeProcessed: info['last incentives migration']['records waiting processing'],
       },
     }
   }
@@ -180,6 +210,13 @@ export default class NomisMigrationService {
     logger.info(`cancelling a visits migration`)
     return NomisMigrationService.restClient(context.token).post<void>({
       path: `/migrate/visits/${migrationId}/cancel`,
+    })
+  }
+
+  async cancelIncentivesMigration(migrationId: string, context: Context): Promise<void> {
+    logger.info(`cancelling a incentives migration`)
+    return NomisMigrationService.restClient(context.token).post<void>({
+      path: `/migrate/incentives/${migrationId}/cancel`,
     })
   }
 

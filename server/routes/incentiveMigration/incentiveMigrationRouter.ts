@@ -34,6 +34,8 @@ export default function routes(router: Router, services: Services): Router {
   get('/incentives-migration/start/confirmation', (req, res) =>
     incentivesMigrationController.startIncentiveMigrationConfirmation(req, res)
   )
+  get('/incentives-migration/details', (req, res) => incentivesMigrationController.incentivesMigrationDetails(req, res))
+  post('/incentives-migration/cancel', (req, res) => incentivesMigrationController.cancelMigration(req, res))
 
   return router
 }

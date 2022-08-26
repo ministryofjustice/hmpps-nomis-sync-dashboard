@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import moment from 'moment'
 import VisitsMigrationController from './visitsMigrationController'
-import { HistoricMigrations, VisitsMigrationDetails } from '../../services/nomisMigrationService'
+import { HistoricMigrations, HistoricMigrationDetails } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
@@ -342,7 +342,7 @@ describe('visitsMigrationController', () => {
         migrationId: '2022-03-23T11:11:56',
       }
       nomisMigrationService.cancelVisitsMigration.mockResolvedValue()
-      const visitMigrationResponse: VisitsMigrationDetails = {
+      const visitMigrationResponse: HistoricMigrationDetails = {
         history: {
           migrationId: '2022-03-30T10:13:56',
           whenStarted: '2022-03-30T10:13:56.878627',
