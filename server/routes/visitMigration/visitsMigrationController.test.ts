@@ -195,7 +195,7 @@ describe('visitsMigrationController', () => {
         }
         nomisPrisonerService.getVisitMigrationEstimatedCount.mockResolvedValue(124_001)
         nomisMigrationService.getVisitMigrationRoomMappings.mockResolvedValue([])
-        nomisMigrationService.getDLQMessageCount.mockResolvedValue('4')
+        nomisMigrationService.getVisitsDLQMessageCount.mockResolvedValue('4')
       })
       it('should render the migration preview page', async () => {
         await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(

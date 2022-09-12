@@ -188,22 +188,12 @@ export default class NomisMigrationService {
     })
   }
 
-  async getDLQMessageCount(context: Context): Promise<string> {
-    logger.info(`getting DLQ message count`)
-    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const health = await NomisMigrationService.restClient(token).get<{
-      components: {
-        'migrationvisits-health': {
-          details: {
-            dlqName: string
-            messagesOnDlq: string
-          }
-        }
-      }
-    }>({
-      path: `/health`,
-    })
-    return health.components['migrationvisits-health'].details.messagesOnDlq
+  async getVisitsDLQMessageCount(context: Context): Promise<string> {
+    return NomisMigrationService.getAnyDLQMessageCount('migrationvisits-health', context.token)
+  }
+
+  async getIncentivesDLQMessageCount(context: Context): Promise<string> {
+    return NomisMigrationService.getAnyDLQMessageCount('migrationincentives-health', context.token)
   }
 
   async cancelVisitsMigration(migrationId: string, context: Context): Promise<void> {
@@ -235,6 +225,7 @@ export default class NomisMigrationService {
         {
           details: {
             dlqName: string
+            messagesOnDlq: string
           }
         }
       >
@@ -242,6 +233,24 @@ export default class NomisMigrationService {
       path: `/health`,
     })
     return health.components[queueId].details.dlqName
+  }
+
+  private static async getAnyDLQMessageCount(queueId: string, token: string): Promise<string> {
+    logger.info(`getting DLQ message count`)
+    const health = await NomisMigrationService.restClient(token).get<{
+      components: Record<
+        string,
+        {
+          details: {
+            dlqName: string
+            messagesOnDlq: string
+          }
+        }
+      >
+    }>({
+      path: `/health`,
+    })
+    return health.components[queueId].details.messagesOnDlq
   }
 
   async getVisitMigrationRoomMappings(filter: GetVisitsByFilter, context: Context): Promise<RoomMappingsResponse[]> {
