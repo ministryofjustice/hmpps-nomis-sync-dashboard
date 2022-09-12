@@ -98,7 +98,7 @@ export default class IncentivesMigrationController {
     } else {
       const filter = IncentivesMigrationController.toFilter(req.session.startIncentivesMigrationForm)
       const count = await this.nomisPrisonerService.getIncentiveMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getDLQMessageCount(context(res))
+      const dlqCountString = await this.nomisMigrationService.getIncentivesDLQMessageCount(context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startIncentivesMigrationForm.estimatedCount = count.toLocaleString()

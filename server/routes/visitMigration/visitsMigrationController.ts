@@ -91,7 +91,7 @@ export default class VisitsMigrationController {
         roomMappingFilter,
         context(res)
       )
-      const dlqCountString = await this.visitMigrationService.getDLQMessageCount(context(res))
+      const dlqCountString = await this.visitMigrationService.getVisitsDLQMessageCount(context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startVisitsMigrationForm.estimatedCount = count.toLocaleString()
