@@ -85,13 +85,9 @@ export default class VisitsMigrationController {
       res.redirect('/visits-migration/amend')
     } else {
       const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
-      const roomMappingFilter = { ...filter, fromDateTime: moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss') }
       const count = await this.nomisPrisonerService.getVisitMigrationEstimatedCount(filter, context(res))
-      const roomMappings = await this.visitMigrationService.getVisitMigrationRoomMappings(
-        roomMappingFilter,
-        context(res)
-      )
-      const dlqCountString = await this.visitMigrationService.getVisitsDLQMessageCount(context(res))
+      const roomMappings = await this.visitMigrationService.getVisitMigrationRoomMappings(filter, context(res))
+      const dlqCountString = await this.visitMigrationService.getDLQMessageCount(context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startVisitsMigrationForm.estimatedCount = count.toLocaleString()
