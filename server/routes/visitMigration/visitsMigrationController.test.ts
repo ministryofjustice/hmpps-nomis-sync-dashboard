@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import moment from 'moment'
 import VisitsMigrationController from './visitsMigrationController'
 import { HistoricMigrations, HistoricMigrationDetails } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'

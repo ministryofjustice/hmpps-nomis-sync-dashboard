@@ -87,7 +87,7 @@ export default class VisitsMigrationController {
       const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
       const count = await this.nomisPrisonerService.getVisitMigrationEstimatedCount(filter, context(res))
       const roomMappings = await this.visitMigrationService.getVisitMigrationRoomMappings(filter, context(res))
-      const dlqCountString = await this.visitMigrationService.getDLQMessageCount(context(res))
+      const dlqCountString = await this.visitMigrationService.getVisitsDLQMessageCount(context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startVisitsMigrationForm.estimatedCount = count.toLocaleString()
