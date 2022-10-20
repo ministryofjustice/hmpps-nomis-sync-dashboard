@@ -41,13 +41,13 @@
 
                         {{ govukInput({
                             label: {
-                                html: 'Only include incentives issued after or on this date'
+                                html: 'Only include incentives created after or on this date'
                             },
                             id: "fromDate",
                             name: "fromDate",
                             classes: "govuk-input--width-20",
                             hint: {
-                                text: "Example 2020-03-23. This optional field indicates the IEP date not the created date"
+                                text: "Example 2020-03-23. This optional field indicates the created date not the IEP date"
                             },
                             value: form.fromDate,
                             errorMessage: errors | findError('fromDate')
@@ -55,13 +55,13 @@
 
                         {{ govukInput({
                             label: {
-                                html: 'Only include incentives issued before or on this date'
+                                html: 'Only include incentives created before or on this date'
                             },
                             id: "toDate",
                             name: "toDate",
                             classes: "govuk-input--width-20",
                             hint: {
-                                text: "Example 2020-03-23. This optional field indicates the IEP date not the created date"
+                                text: "Example 2020-03-23. This optional field indicates the created date not the IEP date"
                             },
                             value: form.toDate,
                             errorMessage: errors | findError('toDate')
