@@ -4,6 +4,7 @@ import auth from './integration_tests/mockApis/auth'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import nomisMigrationApi from './integration_tests/mockApis/nomisMigrationApi'
 import nomisPrisonerApi from './integration_tests/mockApis/nomisPrisonerApi'
+import mappingApi from './integration_tests/mockApis/mappingApi'
 
 export default defineConfig({
   chromeWebSecurity: false,
@@ -50,6 +51,8 @@ export default defineConfig({
         stubInfoInProgress: nomisMigrationApi.stubInfoInProgress,
         stubInfoCompleted: nomisMigrationApi.stubInfoCompleted,
         stubGetVisitMigrationRoomUsage: nomisMigrationApi.stubGetVisitMigrationRoomUsage,
+        stubGetVisitRoomMappings: mappingApi.stubGetVisitRoomMappings,
+        stubGetVisitRoomUsage: nomisPrisonerApi.stubGetVisitRoomUsage,
       })
     },
     baseUrl: 'http://localhost:3007',

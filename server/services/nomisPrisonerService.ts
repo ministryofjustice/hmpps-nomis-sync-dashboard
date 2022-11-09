@@ -2,10 +2,11 @@ import querystring from 'querystring'
 import RestClient from '../data/restClient'
 import config from '../config'
 import {
-  GetVisitsByFilter,
   GetIncentivesByFilter,
-  PageVisitIdResponse,
+  GetVisitsByFilter,
   PageIncentiveIdResponse,
+  PageVisitIdResponse,
+  VisitRoomCountResponse,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
@@ -36,5 +37,12 @@ export default class NomisPrisonerService {
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements
+  }
+
+  async getVisitRooms(prisonId: string, context: Context): Promise<VisitRoomCountResponse[]> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return NomisPrisonerService.restClient(token).get<VisitRoomCountResponse[]>({
+      path: `/visits/rooms/usage-count?prisonIds=${prisonId}`,
+    })
   }
 }

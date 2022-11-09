@@ -10,4 +10,6 @@ export default class IndexPage extends Page {
   visitsMigrationLink = (): PageElement => cy.get('[href="/visits-migration"]')
 
   incentivesMigrationLink = (): PageElement => cy.get('[href="/incentives-migration"]')
+
+  visitRoomMappingsLink = (): PageElement => cy.get('[href="/visits-room-mappings-prison"]')
 }

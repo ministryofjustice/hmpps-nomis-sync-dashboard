@@ -1,7 +1,12 @@
 import type { RequestHandler, Router } from 'express'
 import visitMigrationRoutes, { Services } from './visitMigration/visitMigrationRouter'
 import incentiveMigrationRoutes from './incentiveMigration/incentiveMigrationRouter'
-import { extractRoles, MIGRATE_INCENTIVES_ROLE, MIGRATE_VISITS_ROLE } from '../authentication/roles'
+import {
+  extractRoles,
+  MIGRATE_INCENTIVES_ROLE,
+  MIGRATE_VISITS_ROLE,
+  TEMP_ROOM_MAPPING_ROLE,
+} from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 
@@ -26,6 +31,14 @@ export default function routes(router: Router, services: Services): Router {
           description: 'Migration and synchronisation information',
           href: '/incentives-migration',
           roles: [MIGRATE_INCENTIVES_ROLE],
+          enabled: true,
+        },
+        {
+          id: 'room-mappings',
+          heading: 'Visit room mappings',
+          description: 'Manage visit room mappings between NOMIS and VSIP',
+          href: '/visits-room-mappings-prison',
+          roles: [TEMP_ROOM_MAPPING_ROLE],
           enabled: true,
         },
       ].filter(
