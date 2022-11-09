@@ -74,6 +74,14 @@ export default {
       },
       agent: new AgentConfig(Number(get('NOMIS_PRISONER_TIMEOUT_RESPONSE', 60000))),
     },
+    mapping: {
+      url: get('MAPPING_API_URL', 'http://localhost:8103', requiredInProduction) as string,
+      timeout: {
+        response: Number(get('MAPPING_TIMEOUT_RESPONSE', 60000)),
+        deadline: Number(get('MAPPING_TIMEOUT_DEADLINE', 60000)),
+      },
+      agent: new AgentConfig(Number(get('MAPPING_TIMEOUT_RESPONSE', 60000))),
+    },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
       timeout: {

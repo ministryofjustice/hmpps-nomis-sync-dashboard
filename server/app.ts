@@ -18,11 +18,13 @@ import setUpHealthChecks from './middleware/setUpHealthChecks'
 import setUpWebRequestParsing from './middleware/setupRequestParsing'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 import NomisPrisonerService from './services/nomisPrisonerService'
+import MappingService from './services/mappingService'
 
 export default function createApp(
   userService: UserService,
   nomisMigrationService: NomisMigrationService,
-  nomisPrisonerService: NomisPrisonerService
+  nomisPrisonerService: NomisPrisonerService,
+  mappingService: MappingService
 ): express.Application {
   const app = express()
 
@@ -39,7 +41,10 @@ export default function createApp(
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
 
-  app.use('/', indexRoutes(standardRouter(userService), { nomisMigrationService, nomisPrisonerService }))
+  app.use(
+    '/',
+    indexRoutes(standardRouter(userService), { nomisMigrationService, nomisPrisonerService, mappingService })
+  )
 
   app.use((req, res, next) => next(createError(404, 'Not found')))
   app.use(errorHandler(process.env.NODE_ENV === 'production'))

@@ -1,0 +1,49 @@
+{% extends "../../partials/layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% set pageTitle = applicationName + " - Room mappings" %}
+
+{% block content %}
+{{ govukBackLink({
+text: "Back",
+href: '/'
+}) }}
+
+
+<div class="app-container govuk-body">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <form id="prison-form" action="/visits-room-mappings" novalidate>
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+                    {{ govukInput({
+                    label: {
+                    text: "Enter the prison code",
+                    classes: "govuk-label--m",
+                    isPageHeading: false
+                    },
+                    id: "prisonId",
+                    name: "prisonId",
+                    classes: "govuk-input--width-10",
+                    hint: {
+                    text: "Example prison code: `HEI`"
+                    }
+                    }) }}
+
+
+                    {{ govukButton({
+                    text: "next"
+                    }) }}
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
