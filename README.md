@@ -184,7 +184,7 @@ When previewing a migration you may see a warning like the following:
 
 This means NOMIS rooms have not been mapped to VSIP rooms. Attempting to start the migration in this state would result in the visits that occurred in these rooms not being migrated. 
 We would advise the migration to be abandoned and the room mappings corrected.
-This is currently fixed with a PR and release of the [Visit Mapping Service](https://github.com/ministryofjustice/hmpps-nomis-visits-mapping-service)
+This is currently fixed with a PR and release of the [Mapping Service](https://github.com/ministryofjustice/hmpps-nomis-mapping-service)
 
 #### Messages on dead letter queue before migration
 

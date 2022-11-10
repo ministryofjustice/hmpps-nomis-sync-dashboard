@@ -13,7 +13,7 @@ generic-service:
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api-dev.prison.service.justice.gov.uk"
     NOMIS_MIGRATION_API_URL: "https://prisoner-nomis-migration-dev.hmpps.service.justice.gov.uk"
     NOMIS_PRISONER_API_URL: "https://nomis-prsner-dev.aks-dev-1.studio-hosting.service.justice.gov.uk"
-    MAPPING_API_URL: "https://nomis-visits-mapping-dev.hmpps.service.justice.gov.uk"
+    MAPPING_API_URL: "https://nomis-sync-prisoner-mapping-dev.hmpps.service.justice.gov.uk"
     APPINSIGHTS_COMPONENT: "nomisapi-t3"
 
 generic-prometheus-alerts:
