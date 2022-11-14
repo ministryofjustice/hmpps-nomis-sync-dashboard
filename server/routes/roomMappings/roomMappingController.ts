@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import { Context } from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import MappingService from '../../services/mappingService'
+import addRoomMappingValidator from './addRoomMappingValidator'
+import roomMappingPrisonValidator from './roomMappingPrisonValidator'
 
 function context(res: Response): Context {
   return {
@@ -18,7 +20,12 @@ export default class RoomMappingController {
 
   async getVisitRoomMappings(req: Request, res: Response): Promise<void> {
     const { prisonId } = req.query as { prisonId: string }
-    await this.viewMappings(prisonId, res)
+    const errors = roomMappingPrisonValidator(prisonId)
+    if (errors.length > 0) {
+      res.render('pages/visits/roomMappingPrison', { errors })
+    } else {
+      await this.viewMappings(prisonId, res)
+    }
   }
 
   private async viewMappings(prisonId: string, res: Response) {
@@ -37,22 +44,35 @@ export default class RoomMappingController {
   }
 
   getPrison(req: Request, res: Response): void {
-    res.render('pages/visits/roomMappingPrison', {})
+    res.render('pages/visits/roomMappingPrison', { errors: [] })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async addVisitRoomMapping(req: Request, res: Response) {
-    // TODO
+    const { prisonId, nomisRoomDescription }: { prisonId: string; nomisRoomDescription: string } = req.body
+    res.render('pages/visits/addRoomMapping', { prisonId, nomisRoomDescription, errors: [] })
   }
 
   async deleteVisitRoomMapping(req: Request, res: Response) {
     const { prisonId, nomisRoomDescription }: { prisonId: string; nomisRoomDescription: string } = req.body
     await this.mappingService.deleteVisitRoomMappings(prisonId, nomisRoomDescription, context(res))
-    await this.viewMappings(prisonId, res)
+    res.redirect(`/visits-room-mappings/?prisonId=${prisonId}`)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async postAddVisitRoomMapping(req: Request, res: Response) {
-    // TODO
+    const {
+      prisonId,
+      nomisRoomDescription,
+      isOpen,
+      vsipId,
+    }: { prisonId: string; nomisRoomDescription: string; isOpen: boolean; vsipId: string } = req.body
+
+    const errors = addRoomMappingValidator({ isOpen, vsipId, nomisRoomDescription })
+
+    if (errors.length > 0) {
+      res.render('pages/visits/addRoomMapping', { prisonId, nomisRoomDescription, vsipId, errors })
+    } else {
+      await this.mappingService.addVisitRoomMappings(prisonId, { isOpen, vsipId, nomisRoomDescription }, context(res))
+      res.redirect(`/visits-room-mappings/?prisonId=${prisonId}`)
+    }
   }
 }

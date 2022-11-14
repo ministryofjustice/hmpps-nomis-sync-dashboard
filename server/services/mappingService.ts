@@ -3,7 +3,7 @@ import config from '../config'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
 import type HmppsAuthClient from '../data/hmppsAuthClient'
-import { RoomMappingResponse } from '../@types/mapping'
+import { CreateRoomMappingDto, RoomMappingResponse } from '../@types/mapping'
 
 export default class MappingService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
@@ -25,6 +25,15 @@ export default class MappingService {
     logger.info(`delete room mapping for ${prisonId} with nomis room description ${nomisRoomDescription}`)
     return MappingService.restClient(token).delete<void>({
       path: `/prison/${prisonId}/room-mappings/nomis-room-id/${nomisRoomDescription}`,
+    })
+  }
+
+  async addVisitRoomMappings(prisonId: string, mapping: CreateRoomMappingDto, context: Context): Promise<void> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`add room mapping for ${prisonId}, ${mapping}`)
+    return MappingService.restClient(token).post<void>({
+      path: `/prison/${prisonId}/room-mappings`,
+      data: mapping,
     })
   }
 }

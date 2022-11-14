@@ -1,0 +1,76 @@
+{% extends "../../partials/layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitle = applicationName + " - Room mappings" %}
+
+{% block content %}
+<div class="app-container govuk-body">
+    {% if errors.length > 0 %}
+    {{ govukErrorSummary({
+    titleText: 'There is a problem',
+    errorList: errors,
+    attributes: { 'data-qa-errors': true }
+    }) }}
+    {% endif %}
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-m govuk-!-margin-top-7">Add room mapping for Nomis room: {{ nomisRoomDescription }} at Prison {{ prisonId }}</h1>
+            </div>
+            <div class="govuk-grid-column-full">
+                <form id="mapping-form" method="post" action="/visits-room-mappings/add" novalidate>
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+                    <input type="hidden" name="nomisRoomDescription" value="{{ nomisRoomDescription }}"/>
+                    <input type="hidden" name="prisonId" value="{{ prisonId }}"/>
+
+                    {{ govukInput({
+                    label: {
+                    text: "Enter the VSIP room description",
+                    classes: "govuk-label--x",
+                    isPageHeading: false
+                    },
+                    id: "vsipId",
+                    name: "vsipId",
+                    classes: "govuk-input--width-10",
+                    errorMessage: errors | findError('vsipId')
+                    }) }}
+
+                    {{ govukCheckboxes({
+                    idPrefix: 'isOpen',
+                    name: 'isOpen',
+                    errorMessage: errors | findError('isOpen'),
+                    fieldset: {
+                    legend: {
+                    isPageHeading: false,
+                    classes: "govuk-label"
+                    }
+                    },
+                    items: [
+                    {
+                    value: true,
+                    text: 'Open'
+                    }
+                    ]
+                    }) }}
+
+                    {{ govukButton({
+                    text: "cancel",
+                    href: "/visits-room-mappings?prisonId=" + prisonId
+                    }) }}
+                    {{ govukButton({
+                    text: "add mapping"
+                    }) }}
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+

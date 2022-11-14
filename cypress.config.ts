@@ -53,6 +53,7 @@ export default defineConfig({
         stubGetVisitMigrationRoomUsage: nomisMigrationApi.stubGetVisitMigrationRoomUsage,
         stubGetVisitRoomMappings: mappingApi.stubGetVisitRoomMappings,
         stubGetVisitRoomUsage: nomisPrisonerApi.stubGetVisitRoomUsage,
+        stubAddVisitsRoomMapping: mappingApi.stubAddVisitsRoomMapping,
       })
     },
     baseUrl: 'http://localhost:3007',

@@ -2,22 +2,23 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% set pageTitle = applicationName + " - Room mappings" %}
 
 {% block content %}
-{{ govukBackLink({
-text: "Back",
-href: '/'
-}) }}
-
-
 <div class="app-container govuk-body">
+    {% if errors.length > 0 %}
+    {{ govukErrorSummary({
+    titleText: 'There is a problem',
+    errorList: errors,
+    attributes: { 'data-qa-errors': true }
+    }) }}
+    {% endif %}
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
                 <form id="prison-form" action="/visits-room-mappings" novalidate>
-                    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
                     {{ govukInput({
                     label: {
@@ -28,12 +29,16 @@ href: '/'
                     id: "prisonId",
                     name: "prisonId",
                     classes: "govuk-input--width-10",
+                    errorMessage: errors | findError('prisonId'),
                     hint: {
                     text: "Example prison code: `HEI`"
                     }
                     }) }}
 
-
+                    {{ govukButton({
+                    text: "cancel",
+                    href: "/"
+                    }) }}
                     {{ govukButton({
                     text: "next"
                     }) }}
