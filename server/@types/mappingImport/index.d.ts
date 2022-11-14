@@ -68,6 +68,24 @@ export interface paths {
 
 export interface components {
   schemas: {
+    /** @description Create room mapping request */
+    CreateRoomMappingDto: {
+      /** @description VSIP room id */
+      vsipId: string
+      /** @description nomis room description (unique within prison) */
+      nomisRoomDescription: string
+      /** @description open or closed indicator */
+      isOpen: boolean
+    }
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      /** Format: int32 */
+      errorCode?: number
+      userMessage?: string
+      developerMessage?: string
+      moreInfo?: string
+    }
     /** @description NOMIS to VSIP Visit Id mapping */
     VisitMappingDto: {
       /**
@@ -89,15 +107,6 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       whenCreated?: string
-    }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
     }
     /** @description NOMIS to Incentive mapping */
     IncentiveMappingDto: {
@@ -200,7 +209,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['VisitMappingDto']
+        'application/json': components['schemas']['CreateRoomMappingDto']
       }
     }
   }

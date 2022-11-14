@@ -27,6 +27,19 @@ const stubGetVisitRoomMappings = (prison: string): SuperAgentRequest =>
     },
   })
 
+const stubAddVisitsRoomMapping = (prisonId: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: `/mapping-api/prison/${prisonId}/room-mappings`,
+    },
+    response: {
+      status: 201,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+    },
+  })
+
 export default {
   stubGetVisitRoomMappings,
+  stubAddVisitsRoomMapping,
 }
