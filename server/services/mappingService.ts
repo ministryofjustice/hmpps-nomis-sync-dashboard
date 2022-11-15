@@ -23,8 +23,9 @@ export default class MappingService {
   async deleteVisitRoomMappings(prisonId: string, nomisRoomDescription: string, context: Context): Promise<void> {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     logger.info(`delete room mapping for ${prisonId} with nomis room description ${nomisRoomDescription}`)
+    const encodedRoom = encodeURIComponent(nomisRoomDescription)
     return MappingService.restClient(token).delete<void>({
-      path: `/prison/${prisonId}/room-mappings/nomis-room-id/${nomisRoomDescription}`,
+      path: `/prison/${prisonId}/room-mappings/nomis-room-id/${encodedRoom}`,
     })
   }
 

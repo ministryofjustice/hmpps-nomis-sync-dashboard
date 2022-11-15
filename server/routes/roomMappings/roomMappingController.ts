@@ -49,14 +49,22 @@ export default class RoomMappingController {
   }
 
   async addVisitRoomMapping(req: Request, res: Response) {
-    const { prisonId, nomisRoomDescription }: { prisonId: string; nomisRoomDescription: string } = req.body
-    res.render('pages/visits/addRoomMapping', { prisonId, nomisRoomDescription, errors: [] })
+    const {
+      prisonId,
+      nomisRoomDescription,
+      futureVisits,
+    }: { prisonId: string; nomisRoomDescription: string; futureVisits: boolean } = req.body
+    res.render('pages/visits/addRoomMapping', { prisonId, futureVisits, nomisRoomDescription, errors: [] })
   }
 
   async deleteVisitRoomMapping(req: Request, res: Response) {
-    const { prisonId, nomisRoomDescription }: { prisonId: string; nomisRoomDescription: string } = req.body
+    const {
+      prisonId,
+      nomisRoomDescription,
+      futureVisits,
+    }: { prisonId: string; nomisRoomDescription: string; futureVisits: boolean } = req.body
     await this.mappingService.deleteVisitRoomMappings(prisonId, nomisRoomDescription, context(res))
-    res.redirect(`/visits-room-mappings/?prisonId=${prisonId}`)
+    res.redirect(`/visits-room-mappings/?prisonId=${prisonId}&futureVisits=${futureVisits}`)
   }
 
   async postAddVisitRoomMapping(req: Request, res: Response) {
@@ -65,15 +73,17 @@ export default class RoomMappingController {
       nomisRoomDescription,
       isOpen,
       vsipId,
-    }: { prisonId: string; nomisRoomDescription: string; isOpen: boolean; vsipId: string } = req.body
+      futureVisits,
+    }: { prisonId: string; nomisRoomDescription: string; isOpen: boolean; vsipId: string; futureVisits: boolean } =
+      req.body
 
     const errors = addRoomMappingValidator({ isOpen, vsipId, nomisRoomDescription })
 
     if (errors.length > 0) {
-      res.render('pages/visits/addRoomMapping', { prisonId, nomisRoomDescription, vsipId, errors })
+      res.render('pages/visits/addRoomMapping', { prisonId, nomisRoomDescription, vsipId, errors, futureVisits })
     } else {
       await this.mappingService.addVisitRoomMappings(prisonId, { isOpen, vsipId, nomisRoomDescription }, context(res))
-      res.redirect(`/visits-room-mappings/?prisonId=${prisonId}`)
+      res.redirect(`/visits-room-mappings/?prisonId=${prisonId}&futureVisits=${futureVisits}`)
     }
   }
 }

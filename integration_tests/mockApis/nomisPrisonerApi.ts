@@ -107,7 +107,7 @@ const stubGetVisitRoomUsage = (prison: string): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/nomis-prisoner-api/visits/rooms/usage-count\\?prisonIds=${prison}`,
+      urlPattern: `/nomis-prisoner-api/visits/rooms/usage-count\\?prisonIds=${prison}&futureVisitsOnly=true`,
     },
     response: {
       status: 200,

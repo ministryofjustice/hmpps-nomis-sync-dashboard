@@ -12,7 +12,7 @@ export default class VisitRoomMappingPage extends Page {
   }
 
   static goTo(prisonId: string): VisitRoomMappingPage {
-    cy.visit(`/visits-room-mappings?prisonId=${prisonId}`)
+    cy.visit(`/visits-room-mappings?prisonId=${prisonId}&futureVisits=true`)
     return Page.verifyOnPageWithTitleParam(VisitRoomMappingPage, prisonId)
   }
 }
