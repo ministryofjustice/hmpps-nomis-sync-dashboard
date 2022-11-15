@@ -19,18 +19,18 @@ export default class RoomMappingController {
   ) {}
 
   async getVisitRoomMappings(req: Request, res: Response): Promise<void> {
-    const { prisonId } = req.query as { prisonId: string }
+    const { prisonId, futureVisits } = req.query as { prisonId: string; futureVisits: string }
     const errors = roomMappingPrisonValidator(prisonId)
     if (errors.length > 0) {
-      res.render('pages/visits/roomMappingPrison', { errors })
+      res.render('pages/visits/roomMappingPrison', { futureVisits: futureVisits === 'true', errors })
     } else {
-      await this.viewMappings(prisonId, res)
+      await this.viewMappings(prisonId, futureVisits === 'true', res)
     }
   }
 
-  private async viewMappings(prisonId: string, res: Response) {
+  private async viewMappings(prisonId: string, futureVisits: boolean, res: Response) {
     const mappings = await this.mappingService.getVisitRoomMappings(prisonId, context(res))
-    const nomisVisitRooms = await this.nomisPrisonerService.getVisitRooms(prisonId, context(res))
+    const nomisVisitRooms = await this.nomisPrisonerService.getVisitRooms(prisonId, futureVisits, context(res))
 
     const rooms = nomisVisitRooms.map(nomisRoom => ({
       ...nomisRoom,
@@ -40,11 +40,12 @@ export default class RoomMappingController {
     res.render('pages/visits/viewRoomMappings', {
       rooms,
       prisonId,
+      futureVisits,
     })
   }
 
   getPrison(req: Request, res: Response): void {
-    res.render('pages/visits/roomMappingPrison', { errors: [] })
+    res.render('pages/visits/roomMappingPrison', { futureVisits: true, errors: [] })
   }
 
   async addVisitRoomMapping(req: Request, res: Response) {

@@ -3,6 +3,8 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set pageTitle = applicationName + " - Room mappings" %}
 
@@ -16,6 +18,7 @@
     }) }}
     {% endif %}
     <div class="govuk-width-container">
+        <h1 class="govuk-heading-l">Room mappings</h1>
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
                 <form id="prison-form" action="/visits-room-mappings" novalidate>
@@ -35,6 +38,31 @@
                     }
                     }) }}
 
+                    {{ govukCheckboxes({
+                    idPrefix: 'futureVisits',
+                    name: 'futureVisits',
+                    errorMessage: errors | findError('futureVisits'),
+                    fieldset: {
+                    legend: {
+                    isPageHeading: false,
+                    classes: "govuk-label"
+                    }
+                    },
+                    items: [
+                    {
+                    value: true,
+                    text: 'Future visits only',
+                    checked: futureVisits
+                    }
+                    ]
+                    }) }}
+
+                    {{ govukWarningText({
+                    text: "Unselecting 'Future visits only' will result in a slower query that may need a page refresh on timeout",
+                    iconFallbackText: "Warning"
+
+                    }) }}
+
                     {{ govukButton({
                     text: "cancel",
                     href: "/"
@@ -42,6 +70,7 @@
                     {{ govukButton({
                     text: "next"
                     }) }}
+
 
                 </form>
             </div>
