@@ -39,10 +39,10 @@ export default class NomisPrisonerService {
     return response.totalElements
   }
 
-  async getVisitRooms(prisonId: string, context: Context): Promise<VisitRoomCountResponse[]> {
+  async getVisitRooms(prisonId: string, futureVisits: boolean, context: Context): Promise<VisitRoomCountResponse[]> {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     return NomisPrisonerService.restClient(token).get<VisitRoomCountResponse[]>({
-      path: `/visits/rooms/usage-count?prisonIds=${prisonId}`,
+      path: `/visits/rooms/usage-count?prisonIds=${prisonId}&futureVisitsOnly=${futureVisits}`,
     })
   }
 }

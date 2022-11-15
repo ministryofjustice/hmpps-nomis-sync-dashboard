@@ -30,6 +30,7 @@
             <form action="/visits-room-mappings/delete" method="post" novalidate>
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                 <input type="hidden" name="prisonId" value="{{ u.prisonId }}"/>
+                <input type="hidden" name="futureVisits" value="{{ futureVisits }}"/>
                 <input type="hidden" name="nomisRoomDescription" value="{{ u.nomisRoomDescription }}"/>
                 {{ govukButton({
                 text: "delete",
@@ -41,6 +42,7 @@
             <form action="/visits-room-mappings/add/preview" method="post" novalidate>
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                 <input type="hidden" name="prisonId" value="{{ u.prisonId }}"/>
+                <input type="hidden" name="futureVisits" value="{{ futureVisits }}"/>
                 <input type="hidden" name="nomisRoomDescription" value="{{ u.agencyInternalLocationDescription }}"/>
                 {{ govukButton({
                 text: "add",
@@ -56,6 +58,8 @@
             ]), rows) %}
             {% endfor %}
 
+            {% set usageTitle %}Usage {% if futureVisits %}(future visits){% endif %}{% endset %}
+
             {{ govukTable({
             head: [
             {
@@ -68,7 +72,7 @@
             text: "Open"
             },
             {
-            text: "Usage (future visits)"
+            text: usageTitle
             },
             {}
             ],

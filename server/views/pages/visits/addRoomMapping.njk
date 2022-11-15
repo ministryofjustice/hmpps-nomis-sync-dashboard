@@ -25,6 +25,7 @@
                 <form id="mapping-form" method="post" action="/visits-room-mappings/add" novalidate>
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                     <input type="hidden" name="nomisRoomDescription" value="{{ nomisRoomDescription }}"/>
+                    <input type="hidden" name="futureVisits" value="{{ futureVisits }}"/>
                     <input type="hidden" name="prisonId" value="{{ prisonId }}"/>
 
                     {{ govukInput({
