@@ -24,7 +24,7 @@ export default class RoomMappingController {
     if (errors.length > 0) {
       res.render('pages/visits/roomMappingPrison', { futureVisits: futureVisits === 'true', errors })
     } else {
-      await this.viewMappings(prisonId, futureVisits === 'true', res)
+      await this.viewMappings(prisonId.toUpperCase(), futureVisits === 'true', res)
     }
   }
 
