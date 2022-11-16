@@ -11,7 +11,7 @@ context('Visit Room Mappings', () => {
 
   context('With VISIT MAPPINGS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_TEST_ROLE'])
+      cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
       cy.signIn()
     })
     it('should see visit room mappings tile', () => {
