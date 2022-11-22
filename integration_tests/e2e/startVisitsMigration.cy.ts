@@ -75,6 +75,7 @@ context('Start Visits Migration', () => {
         )
       previewPage.roomsWarning().should('not.contains.text', 'AGI-VISITS-OFF_VIS')
       previewPage.roomsWarning().should('contains.text', 'AGI-VISITS-SOC_VIS')
+      previewPage.roomsWarning().should('contains.text', '14314')
       previewPage.roomsWarning().should('not.contains.text', 'AKI-VISITS-3RD SECTOR')
 
       previewPage.fromDateTimeRow().contains('2020-03-23T12:00:00')

@@ -8,11 +8,16 @@ declare module 'express-session' {
     migrationId?: string
   }
   interface StartVisitsMigrationForm extends MigrationForm {
-    unmappedRooms?: string[]
+    unmappedRooms?: UnmappedRooms[]
     prisonIds?: string
     visitTypes?: string | string[]
     fromDateTime?: string
     toDateTime?: string
+  }
+
+  interface UnmappedRooms {
+    room: string
+    count: number
   }
 
   interface StartIncentivesMigrationForm extends MigrationForm {
