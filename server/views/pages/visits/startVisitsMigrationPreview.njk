@@ -73,9 +73,12 @@
 
                     {% if form.unmappedRooms.length > 0 %}
                         {% set rooms = [] %}
-                        {% for room in form.unmappedRooms %}
+                        {% for ur in form.unmappedRooms %}
+                        {% set roomHtml %}
+                        <span class='govuk-!-font-weight-bold'>{{ur.room}}</span><span class='govuk-!-font-weight-bold govuk-!-padding-left-9'>count: {{ur.count}}</span>
+                        {% endset %}
                             {% set room = {
-                                text: room
+                                html: roomHtml
                             } %}
                             {% set rooms = (rooms.push(
                                 room

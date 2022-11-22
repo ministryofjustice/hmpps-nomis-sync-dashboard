@@ -94,7 +94,7 @@ export default class VisitsMigrationController {
       req.session.startVisitsMigrationForm.dlqCount = dlqCountString.toLocaleString()
       req.session.startVisitsMigrationForm.unmappedRooms = roomMappings
         .filter(r => !r.vsipRoom)
-        .map(r => r.agencyInternalLocationDescription)
+        .map(r => ({ room: r.agencyInternalLocationDescription, count: r.count }))
       res.redirect('/visits-migration/start/preview')
     }
   }
