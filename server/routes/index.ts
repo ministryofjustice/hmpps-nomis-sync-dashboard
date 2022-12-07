@@ -1,11 +1,15 @@
-import type { RequestHandler, Router } from 'express'
-import visitMigrationRoutes, { Services } from './visitMigration/visitMigrationRouter'
+import { type RequestHandler, Router } from 'express'
+
+import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
 import incentiveMigrationRoutes from './incentiveMigration/incentiveMigrationRouter'
 import { extractRoles, MIGRATE_INCENTIVES_ROLE, MIGRATE_VISITS_ROLE } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
+import { Services } from '../services'
 
-export default function routes(router: Router, services: Services): Router {
+export default function routes(services: Services): Router {
+  const router = Router()
+
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
   get('/', (req, res, next) => {
