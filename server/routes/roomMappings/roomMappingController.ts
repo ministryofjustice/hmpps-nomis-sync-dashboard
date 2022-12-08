@@ -15,7 +15,7 @@ function context(res: Response): Context {
 export default class RoomMappingController {
   constructor(
     private readonly mappingService: MappingService,
-    private readonly nomisPrisonerService: NomisPrisonerService
+    private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
 
   async getVisitRoomMappings(req: Request, res: Response): Promise<void> {

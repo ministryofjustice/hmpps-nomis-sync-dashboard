@@ -27,7 +27,7 @@ function context(res: Response): Context {
 export default class IncentivesMigrationController {
   constructor(
     private readonly nomisMigrationService: NomisMigrationService,
-    private readonly nomisPrisonerService: NomisPrisonerService
+    private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
 
   async getIncentiveMigrations(req: Request, res: Response): Promise<void> {
@@ -50,7 +50,7 @@ export default class IncentivesMigrationController {
       const decoratedMigrations = migrations.map(IncentivesMigrationController.withFilter).map(history => ({
         ...history,
         applicationInsightsLink: IncentivesMigrationController.applicationInsightsUrl(
-          IncentivesMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded)
+          IncentivesMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
         ),
       }))
       res.render('pages/incentives/incentivesMigration', {
@@ -68,7 +68,7 @@ export default class IncentivesMigrationController {
       messages: failures.messages.map(message => ({
         ...message,
         applicationInsightsLink: IncentivesMigrationController.applicationInsightsUrl(
-          IncentivesMigrationController.messageApplicationInsightsQuery(message)
+          IncentivesMigrationController.messageApplicationInsightsQuery(message),
         ),
       })),
     }
@@ -170,7 +170,7 @@ export default class IncentivesMigrationController {
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
     | where message contains 'Will not migrate incentive since it is migrated already,'
     | where timestamp between (datetime(${IncentivesMigrationController.toISODateTime(
-      startedDate
+      startedDate,
     )}) .. datetime(${IncentivesMigrationController.toISODateTime(endedDate)}))
     | summarize dcount(message)`
   }

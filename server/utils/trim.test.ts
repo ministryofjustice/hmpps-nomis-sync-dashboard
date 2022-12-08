@@ -10,7 +10,7 @@ describe('trimForm', () => {
         firstName: 'Andy  ',
         surname: 'Marke  ',
         age: 21,
-      })
+      }),
     ).toEqual({ firstName: 'Andy', surname: 'Marke', age: 21 })
   })
   it('will trim string in arrays properties', () => {
@@ -18,7 +18,7 @@ describe('trimForm', () => {
       trimForm({
         aliases: ['Andy  ', 'Marke  '],
         age: 21,
-      })
+      }),
     ).toEqual({ aliases: ['Andy', 'Marke'], age: 21 })
   })
   it('will trim strings in nested object properties', () => {
@@ -29,7 +29,7 @@ describe('trimForm', () => {
           surname: 'Marke  ',
         },
         age: 21,
-      })
+      }),
     ).toEqual({ customer: { firstName: 'Andy', surname: 'Marke' }, age: 21 })
   })
   it('will trim recursively', () => {
@@ -47,7 +47,7 @@ describe('trimForm', () => {
           ],
         },
         age: 21,
-      })
+      }),
     ).toEqual({
       customer: {
         aliases: [

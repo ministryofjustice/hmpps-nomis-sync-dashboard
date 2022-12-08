@@ -32,7 +32,7 @@ describe('NomisPrisonerService tests', () => {
     it('will allow a complete filter', async () => {
       fakeNomisPrisonerService
         .get(
-          '/visits/ids?prisonIds=HEI&visitTypes=SCON&visitTypes=OFFI&fromDateTime=2022-01-24T02:54:00&toDateTime=2022-01-25T02:54:00&size=1'
+          '/visits/ids?prisonIds=HEI&visitTypes=SCON&visitTypes=OFFI&fromDateTime=2022-01-24T02:54:00&toDateTime=2022-01-25T02:54:00&size=1',
         )
         .reply(200, {
           totalElements: 205630,
@@ -45,7 +45,7 @@ describe('NomisPrisonerService tests', () => {
           fromDateTime: '2022-01-24T02:54:00',
           toDateTime: '2022-01-25T02:54:00',
         },
-        { token: 'some token' }
+        { token: 'some token' },
       )
     })
 
@@ -113,7 +113,7 @@ describe('NomisPrisonerService tests', () => {
           fromDate: '2022-01-24',
           toDate: '2022-01-25',
         },
-        { token: 'some token' }
+        { token: 'some token' },
       )
     })
 

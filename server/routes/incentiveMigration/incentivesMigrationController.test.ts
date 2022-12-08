@@ -84,7 +84,7 @@ describe('incentivesMigrationController', () => {
 
       await new IncentivesMigrationController(nomisMigrationService, nomisPrisonerService).getIncentiveMigrations(
         req,
-        res
+        res,
       )
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/incentives/incentivesMigration', {
@@ -106,7 +106,7 @@ describe('incentivesMigrationController', () => {
       req.query.fromDateTime = '23/4'
       await new IncentivesMigrationController(nomisMigrationService, nomisPrisonerService).getIncentiveMigrations(
         req,
-        res
+        res,
       )
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/incentives/incentivesMigration', {
@@ -175,7 +175,7 @@ describe('incentivesMigrationController', () => {
         }
         await new IncentivesMigrationController(
           nomisMigrationService,
-          nomisPrisonerService
+          nomisPrisonerService,
         ).postStartIncentiveMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
         expect(res.redirect).toHaveBeenCalledWith('/incentives-migration/amend')

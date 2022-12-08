@@ -56,7 +56,7 @@ context('Start Incentives Migration', () => {
       previewPage
         .dlqWarning()
         .contains(
-          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration'
+          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration',
         )
 
       previewPage.fromDateRow().contains('2020-03-23')
@@ -101,7 +101,7 @@ context('Start Incentives Migration', () => {
       previewPage
         .dlqWarning()
         .contains(
-          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration'
+          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration',
         )
 
       previewPage.clearDlqMessages().click()

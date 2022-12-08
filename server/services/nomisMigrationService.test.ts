@@ -35,7 +35,7 @@ describe('NomisMigrationService tests', () => {
 
       await nomisMigrationService.startVisitsMigration(
         { prisonIds: ['HEI'], visitTypes: ['SCON'], ignoreMissingRoom: false },
-        { token: 'some token' }
+        { token: 'some token' },
       )
 
       expect(filter).toEqual({ prisonIds: ['HEI'], visitTypes: ['SCON'], ignoreMissingRoom: false })
@@ -67,7 +67,7 @@ describe('NomisMigrationService tests', () => {
           toDateTime: '2022-03-24T12:00:00',
           ignoreMissingRoom: false,
         },
-        { token: 'some token' }
+        { token: 'some token' },
       )
 
       expect(filter).toEqual({
@@ -100,14 +100,14 @@ describe('NomisMigrationService tests', () => {
           toDateTime: '2022-03-24T12:00:00',
           ignoreMissingRoom: false,
         },
-        { token: 'some token' }
+        { token: 'some token' },
       )
 
       expect(response).toEqual(
         expect.objectContaining({
           migrationId: '2022-03-23T11:11:56',
           estimatedCount: 2,
-        })
+        }),
       )
     })
   })
@@ -151,7 +151,7 @@ describe('NomisMigrationService tests', () => {
           fromDate: '2022-03-23',
           toDate: '2022-03-24',
         },
-        { token: 'some token' }
+        { token: 'some token' },
       )
 
       expect(filter).toEqual({
@@ -175,14 +175,14 @@ describe('NomisMigrationService tests', () => {
           fromDate: '2022-03-23',
           toDate: '2022-03-24',
         },
-        { token: 'some token' }
+        { token: 'some token' },
       )
 
       expect(response).toEqual(
         expect.objectContaining({
           migrationId: '2022-03-23T11:11:56',
           estimatedCount: 2,
-        })
+        }),
       )
     })
   })
@@ -377,7 +377,7 @@ describe('NomisMigrationService tests', () => {
               messageId: '230dcb1f-3391-4630-b907-3923ec9e0ee4',
             }),
           ]),
-        })
+        }),
       )
     })
   })
@@ -566,7 +566,7 @@ describe('NomisMigrationService tests', () => {
               messageId: '230dcb1f-3391-4630-b907-3923ec9e0ee4',
             }),
           ]),
-        })
+        }),
       )
     })
   })
@@ -597,7 +597,7 @@ describe('NomisMigrationService tests', () => {
       expect(count).toEqual(
         expect.objectContaining({
           messagesFoundCount: 5,
-        })
+        }),
       )
     })
   })
@@ -666,7 +666,7 @@ describe('NomisMigrationService tests', () => {
             recordsToBeProcessed: '2367',
             recordsMigrated: 1,
           },
-        })
+        }),
       )
     })
     it('will not return current count when migration mapping has not been written yet so migrationIds do not match', async () => {
@@ -717,7 +717,7 @@ describe('NomisMigrationService tests', () => {
           currentProgress: expect.objectContaining({
             recordsMigrated: 0,
           }),
-        })
+        }),
       )
     })
   })
@@ -783,7 +783,7 @@ describe('NomisMigrationService tests', () => {
             recordsToBeProcessed: '2367',
             recordsMigrated: 1,
           },
-        })
+        }),
       )
     })
     it('will not return current count when migration mapping has not been written yet so migrationIds do not match', async () => {
@@ -833,7 +833,7 @@ describe('NomisMigrationService tests', () => {
           currentProgress: expect.objectContaining({
             recordsMigrated: 0,
           }),
-        })
+        }),
       )
     })
   })

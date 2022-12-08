@@ -15,7 +15,7 @@ export default function routes(router: Router, services: Services): Router {
 
   const incentivesMigrationController = new IncentivesMigrationController(
     services.nomisMigrationService,
-    services.nomisPrisonerService
+    services.nomisPrisonerService,
   )
   get('/incentives-migration', (req, res) => incentivesMigrationController.getIncentiveMigrations(req, res))
   get('/incentives-migration/failures', (req, res) => incentivesMigrationController.viewFailures(req, res))
@@ -23,16 +23,16 @@ export default function routes(router: Router, services: Services): Router {
   post('/incentives-migration/start', (req, res) => incentivesMigrationController.postStartIncentiveMigration(req, res))
   get('/incentives-migration/amend', (req, res) => incentivesMigrationController.startIncentiveMigration(req, res))
   get('/incentives-migration/start/preview', (req, res) =>
-    incentivesMigrationController.startIncentiveMigrationPreview(req, res)
+    incentivesMigrationController.startIncentiveMigrationPreview(req, res),
   )
   post('/incentives-migration/start/preview', (req, res) =>
-    incentivesMigrationController.postStartIncentiveMigrationPreview(req, res)
+    incentivesMigrationController.postStartIncentiveMigrationPreview(req, res),
   )
   post('/incentives-migration/start/delete-faiures', (req, res) =>
-    incentivesMigrationController.postClearDLQIncentiveMigrationPreview(req, res)
+    incentivesMigrationController.postClearDLQIncentiveMigrationPreview(req, res),
   )
   get('/incentives-migration/start/confirmation', (req, res) =>
-    incentivesMigrationController.startIncentiveMigrationConfirmation(req, res)
+    incentivesMigrationController.startIncentiveMigrationConfirmation(req, res),
   )
   get('/incentives-migration/details', (req, res) => incentivesMigrationController.incentivesMigrationDetails(req, res))
   post('/incentives-migration/cancel', (req, res) => incentivesMigrationController.cancelMigration(req, res))

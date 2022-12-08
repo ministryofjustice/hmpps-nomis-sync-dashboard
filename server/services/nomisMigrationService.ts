@@ -36,7 +36,7 @@ export interface Context {
 
 function removeEmptyPropertiesAndStringify(filter: unknown): string {
   const filterWithoutNulls = JSON.parse(JSON.stringify(filter), (key, value) =>
-    value === null || value === '' ? undefined : value
+    value === null || value === '' ? undefined : value,
   )
   return querystring.stringify(filterWithoutNulls)
 }
@@ -128,7 +128,7 @@ export default class NomisMigrationService {
 
   async startVisitsMigration(
     filter: VisitsMigrationFilter,
-    context: Context
+    context: Context,
   ): Promise<MigrationContextVisitsMigrationFilter> {
     logger.info(`starting a visits migration`)
     return NomisMigrationService.restClient(context.token).post<MigrationContextVisitsMigrationFilter>({
@@ -139,7 +139,7 @@ export default class NomisMigrationService {
 
   async startIncentivesMigration(
     filter: IncentivesMigrationFilter,
-    context: Context
+    context: Context,
   ): Promise<MigrationContextIncentivesMigrationFilter> {
     logger.info(`starting a incentives migration`)
     return NomisMigrationService.restClient(context.token).post<MigrationContextIncentivesMigrationFilter>({

@@ -3,7 +3,7 @@ import { stubFor } from './wiremock'
 import { MigrationHistory } from '../../server/@types/migration'
 
 const stubListOfVisitsMigrationHistory = (
-  migrationHistory: MigrationHistory[] = defaultVisitsMigrationHistory
+  migrationHistory: MigrationHistory[] = defaultVisitsMigrationHistory,
 ): SuperAgentRequest =>
   stubFor({
     request: {
@@ -20,7 +20,7 @@ const stubListOfVisitsMigrationHistory = (
   })
 
 const stubListOfIncentivesMigrationHistory = (
-  migrationHistory: MigrationHistory[] = defaultIncentivesMigrationHistory
+  migrationHistory: MigrationHistory[] = defaultIncentivesMigrationHistory,
 ): SuperAgentRequest =>
   stubFor({
     request: {
@@ -60,7 +60,7 @@ const stubStartVisitsMigration = (
       toDateTime: '2022-03-24T12:00:00',
       ignoreMissingRoom: false,
     },
-  }
+  },
 ): SuperAgentRequest =>
   stubFor({
     request: {
@@ -82,7 +82,7 @@ const stubStartIncentivesMigration = (
       fromDate: '2022-03-23',
       toDate: '2022-03-24',
     },
-  }
+  },
 ): SuperAgentRequest =>
   stubFor({
     request: {

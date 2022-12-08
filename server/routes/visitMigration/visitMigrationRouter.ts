@@ -8,7 +8,7 @@ import { Services } from '../../services'
 
 export default function routes(
   router: Router,
-  { nomisMigrationService, nomisPrisonerService, mappingService }: Services
+  { nomisMigrationService, nomisPrisonerService, mappingService }: Services,
 ): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
@@ -22,14 +22,14 @@ export default function routes(
   get('/visits-migration/amend', (req, res) => visitMigrationController.startVisitMigration(req, res))
   post('/visits-migration/start', (req, res) => visitMigrationController.postStartVisitMigration(req, res))
   post('/visits-migration/start/delete-faiures', (req, res) =>
-    visitMigrationController.postClearDLQVisitMigrationPreview(req, res)
+    visitMigrationController.postClearDLQVisitMigrationPreview(req, res),
   )
   get('/visits-migration/start/preview', (req, res) => visitMigrationController.startVisitMigrationPreview(req, res))
   post('/visits-migration/start/preview', (req, res) =>
-    visitMigrationController.postStartVisitMigrationPreview(req, res)
+    visitMigrationController.postStartVisitMigrationPreview(req, res),
   )
   get('/visits-migration/start/confirmation', (req, res) =>
-    visitMigrationController.startVisitMigrationConfirmation(req, res)
+    visitMigrationController.startVisitMigrationConfirmation(req, res),
   )
   get('/visits-migration/failures', (req, res) => visitMigrationController.viewFailures(req, res))
   get('/visits-migration/details', (req, res) => visitMigrationController.visitsMigrationDetails(req, res))

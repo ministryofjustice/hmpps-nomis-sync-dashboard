@@ -11,6 +11,6 @@ export default function validate(form: VisitsMigrationViewFilter): Express.Valid
     {
       'required.prisonIds': 'Enter one or more prison IDs',
       'required.visitTypes': 'Enter the type of visits to migrate',
-    }
+    },
   )
 }

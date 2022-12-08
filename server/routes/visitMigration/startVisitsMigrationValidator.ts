@@ -13,6 +13,6 @@ export default function validate(form: StartVisitsMigrationForm): Express.Valida
     {
       'required.prisonIds': 'Enter one or more prison IDs',
       'required.visitTypes': 'Enter the type of visits to migrate',
-    }
+    },
   )
 }
