@@ -38,7 +38,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     {
       autoescape: true,
       express: app,
-    }
+    },
   )
 
   njkEnv.addFilter('initialiseName', (fullName: string) => {
@@ -63,7 +63,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
       items.map((entry: { value: string }) => ({
         ...entry,
         checked: entry && selectedList && selectedList.includes(entry.value),
-      }))
+      })),
   )
 
   njkEnv.addFilter('findError', (array: Error[], formFieldId: string) => {
@@ -148,7 +148,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
         },
         optionsHtml: filterOptionsHtml,
       }
-    }
+    },
   )
 
   njkEnv.addFilter('prisonSearchInput', (migrationViewFilter: VisitsMigrationViewFilter) => {

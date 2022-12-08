@@ -8,6 +8,6 @@ export default function validate(form: MigrationViewFilter): Express.ValidationE
       fromDateTime: 'datetime',
       toDateTime: 'datetime',
     },
-    {}
+    {},
   )
 }

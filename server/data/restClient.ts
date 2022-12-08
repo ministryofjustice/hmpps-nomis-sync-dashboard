@@ -172,7 +172,7 @@ export default class RestClient {
       const response = error.response && error.response.text
       logger.warn(
         `Error calling ${this.name}, path: '${path}', verb: 'DELETE', query: 'DELETE', response: '${response}'`,
-        error.stack
+        error.stack,
       )
       throw error
     }

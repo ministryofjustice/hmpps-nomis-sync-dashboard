@@ -6,6 +6,6 @@ export default function validate(prisonId: string): Express.ValidationError[] {
     { prisonId: 'required' },
     {
       'required.prisonId': 'Enter the 3 character prison code',
-    }
+    },
   )
 }

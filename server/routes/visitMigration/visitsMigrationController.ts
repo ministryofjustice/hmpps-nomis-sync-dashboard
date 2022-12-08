@@ -29,7 +29,7 @@ function context(res: Response): Context {
 export default class VisitsMigrationController {
   constructor(
     private readonly visitMigrationService: NomisMigrationService,
-    private readonly nomisPrisonerService: NomisPrisonerService
+    private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
 
   async getVisitMigrations(req: Request, res: Response): Promise<void> {
@@ -52,7 +52,7 @@ export default class VisitsMigrationController {
       const decoratedMigrations = migrations.map(VisitsMigrationController.withFilter).map(history => ({
         ...history,
         applicationInsightsLink: VisitsMigrationController.applicationInsightsUrl(
-          VisitsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded)
+          VisitsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
         ),
       }))
       res.render('pages/visits/visitsMigration', {
@@ -138,7 +138,7 @@ export default class VisitsMigrationController {
       messages: failures.messages.map(message => ({
         ...message,
         applicationInsightsLink: VisitsMigrationController.applicationInsightsUrl(
-          VisitsMigrationController.messageApplicationInsightsQuery(message)
+          VisitsMigrationController.messageApplicationInsightsQuery(message),
         ),
       })),
     }
@@ -192,7 +192,7 @@ export default class VisitsMigrationController {
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
     | where message contains 'Will not migrate visit since it is migrated already,'
     | where timestamp between (datetime(${VisitsMigrationController.toISODateTime(
-      startedDate
+      startedDate,
     )}) .. datetime(${VisitsMigrationController.toISODateTime(endedDate)}))
     | summarize dcount(message)`
   }

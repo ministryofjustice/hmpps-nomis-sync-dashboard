@@ -8,6 +8,6 @@ export default function validate(form: StartIncentivesMigrationForm): Express.Va
       fromDate: 'date',
       toDate: 'date',
     },
-    {}
+    {},
   )
 }

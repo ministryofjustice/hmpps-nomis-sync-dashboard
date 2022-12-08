@@ -7,6 +7,6 @@ export default function validate(form: CreateRoomMappingDto): Express.Validation
     { vsipId: 'required' },
     {
       'required.vsipId': 'Enter the VSIP room description',
-    }
+    },
   )
 }

@@ -42,7 +42,7 @@ export default function routes(services: Services): Router {
         },
       ].filter(
         register =>
-          Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled
+          Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled,
       ),
     })
   })

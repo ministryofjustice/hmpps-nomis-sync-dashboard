@@ -65,13 +65,13 @@ context('Start Visits Migration', () => {
       previewPage
         .dlqWarning()
         .contains(
-          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration'
+          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration',
         )
 
       previewPage
         .roomsWarning()
         .contains(
-          'This migration includes visits rooms that are not mapped. Please add mappings for the following rooms:'
+          'This migration includes visits rooms that are not mapped. Please add mappings for the following rooms:',
         )
       previewPage.roomsWarning().should('not.contains.text', 'AGI-VISITS-OFF_VIS')
       previewPage.roomsWarning().should('contains.text', 'AGI-VISITS-SOC_VIS')
@@ -123,7 +123,7 @@ context('Start Visits Migration', () => {
       previewPage
         .dlqWarning()
         .contains(
-          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration'
+          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration',
         )
 
       previewPage.clearDlqMessages().click()
