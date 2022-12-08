@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@3.14
-  slack: circleci/slack@4.4.2
+  hmpps: ministryofjustice/hmpps@6
+  slack: circleci/slack@4.12
 
 parameters:
   alerts-slack-channel:
@@ -98,7 +98,7 @@ jobs:
     executor:
       name: hmpps/node_redis
       node_tag: << pipeline.parameters.node-version >>
-      redis_tag: buster
+      redis_tag: "6.2"
     steps:
       - checkout
       - attach_workspace:
@@ -108,7 +108,7 @@ jobs:
           command: sudo apt-get install libxss1
       - run:
           name: Get wiremock
-          command: curl -o wiremock.jar https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/2.27.1/wiremock-standalone-2.27.1.jar
+          command: curl -o wiremock.jar https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/2.27.2/wiremock-standalone-2.27.2.jar
       - run:
           name: Run wiremock
           command: java -jar wiremock.jar --port 9091
