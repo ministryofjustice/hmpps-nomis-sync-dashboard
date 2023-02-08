@@ -4,7 +4,9 @@ import config from '../config'
 import {
   GetIncentivesByFilter,
   GetVisitsByFilter,
+  GetAdjustmentsByFilter,
   PageIncentiveIdResponse,
+  PageAdjustmentIdResponse,
   PageVisitIdResponse,
   VisitRoomCountResponse,
 } from '../@types/nomisPrisoner'
@@ -34,6 +36,17 @@ export default class NomisPrisonerService {
     logger.info(`getting details for incentive migration  estimated count`)
     const response = await NomisPrisonerService.restClient(token).get<PageIncentiveIdResponse>({
       path: `/incentives/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
+  }
+
+  // TODO currently only dealing with adjustments, to be expanded with other sentencing entities
+  async getSentencingMigrationEstimatedCount(filter: GetAdjustmentsByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for sentencing migration estimated count`)
+    const response = await NomisPrisonerService.restClient(token).get<PageAdjustmentIdResponse>({
+      path: `/adjustments/ids`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements

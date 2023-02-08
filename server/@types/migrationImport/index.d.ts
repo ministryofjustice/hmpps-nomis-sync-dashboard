@@ -21,9 +21,17 @@ export interface paths {
     /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b> */
     post: operations['migrateVisits']
   }
-  '/migrate/incentives/{migrationId}/cancel': {
+  '/migrate/sentencing/{migrationId}/cancel': {
     /** Requires role <b>MIGRATE_VISITS</b> */
     post: operations['cancel_1']
+  }
+  '/migrate/sentencing': {
+    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b> */
+    post: operations['migrateSentencing']
+  }
+  '/migrate/incentives/{migrationId}/cancel': {
+    /** Requires role <b>MIGRATE_VISITS</b> */
+    post: operations['cancel_2']
   }
   '/migrate/incentives': {
     /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCENTIVES</b> */
@@ -44,17 +52,25 @@ export interface paths {
     /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
     get: operations['getAll']
   }
+  '/migrate/sentencing/history/{migrationId}': {
+    /** Requires role <b>MIGRATE_SENTENCING</b> */
+    get: operations['get_1']
+  }
+  '/migrate/sentencing/history': {
+    /** The records are un-paged and requires role <b>MIGRATE_SENTENCING</b> */
+    get: operations['getAll_1']
+  }
   '/migrate/incentives/history/{migrationId}': {
     /** Requires role <b>MIGRATE_INCENTIVES</b> */
-    get: operations['get_1']
+    get: operations['get_2']
   }
   '/migrate/incentives/history': {
     /** The records are un-paged and requires role <b>MIGRATE_INCENTIVES</b> */
-    get: operations['getAll_1']
+    get: operations['getAll_2']
   }
   '/history': {
     /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
-    get: operations['getAll_2']
+    get: operations['getAll_3']
     /** This is only required for test environments and requires role <b>MIGRATION_ADMIN</b> */
     delete: operations['deleteAll']
   }
@@ -62,56 +78,14 @@ export interface paths {
 
 export interface components {
   schemas: {
-    Message: {
-      messageId?: string
-      receiptHandle?: string
-      body?: string
-      attributes?: { [key: string]: string }
-      messageAttributes?: {
-        [key: string]: components['schemas']['MessageAttributeValue']
-      }
-      md5OfBody?: string
-      md5OfMessageAttributes?: string
-    }
-    MessageAttributeValue: {
-      stringValue?: string
-      binaryValue?: {
-        /** Format: int32 */
-        short?: number
-        char?: string
-        /** Format: int32 */
-        int?: number
-        /** Format: int64 */
-        long?: number
-        /** Format: float */
-        float?: number
-        /** Format: double */
-        double?: number
-        direct?: boolean
-        readOnly?: boolean
-      }
-      stringListValues?: string[]
-      binaryListValues?: {
-        /** Format: int32 */
-        short?: number
-        char?: string
-        /** Format: int32 */
-        int?: number
-        /** Format: int64 */
-        long?: number
-        /** Format: float */
-        float?: number
-        /** Format: double */
-        double?: number
-        direct?: boolean
-        readOnly?: boolean
-      }[]
-      dataType?: string
+    DlqMessage: {
+      body: { [key: string]: { [key: string]: unknown } }
+      messageId: string
     }
     RetryDlqResult: {
       /** Format: int32 */
       messagesFoundCount: number
-      messages: components['schemas']['Message'][]
+      messages: components['schemas']['DlqMessage'][]
     }
     PurgeQueueResult: {
       /** Format: int32 */
@@ -163,11 +137,34 @@ export interface components {
     }
     MigrationContextVisitsMigrationFilter: {
       /** @enum {string} */
-      type: 'VISITS' | 'INCENTIVES'
+      type: 'VISITS' | 'INCENTIVES' | 'SENTENCING'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['VisitsMigrationFilter']
+    }
+    /** @description Filter specifying what should be migrated from NOMIS to Sentencing service */
+    SentencingMigrationFilter: {
+      /**
+       * Format: date
+       * @description Only include Sentencing entity issued on or after this date
+       * @example 2020-03-23
+       */
+      fromDate?: string
+      /**
+       * Format: date
+       * @description Only include Sentencing entity issued before or on this date
+       * @example 2020-03-24
+       */
+      toDate?: string
+    }
+    MigrationContextSentencingMigrationFilter: {
+      /** @enum {string} */
+      type: 'VISITS' | 'INCENTIVES' | 'SENTENCING'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: components['schemas']['SentencingMigrationFilter']
     }
     /** @description Filter specifying what should be migrated from NOMIS to Incentives service */
     IncentivesMigrationFilter: {
@@ -186,15 +183,11 @@ export interface components {
     }
     MigrationContextIncentivesMigrationFilter: {
       /** @enum {string} */
-      type: 'VISITS' | 'INCENTIVES'
+      type: 'VISITS' | 'INCENTIVES' | 'SENTENCING'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['IncentivesMigrationFilter']
-    }
-    DlqMessage: {
-      body: { [key: string]: { [key: string]: unknown } }
-      messageId: string
     }
     GetDlqResult: {
       /** Format: int32 */
@@ -231,7 +224,7 @@ export interface components {
       /** Format: int64 */
       recordsFailed: number
       /** @enum {string} */
-      migrationType: 'VISITS' | 'INCENTIVES'
+      migrationType: 'VISITS' | 'INCENTIVES' | 'SENTENCING'
       /** @enum {string} */
       status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
       id: string
@@ -341,6 +334,65 @@ export interface operations {
   }
   /** Requires role <b>MIGRATE_VISITS</b> */
   cancel_1: {
+    parameters: {
+      path: {
+        /** Migration Id */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** Cancellation request accepted */
+      202: unknown
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** No running migration found with migration id */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b> */
+  migrateSentencing: {
+    responses: {
+      /** Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextSentencingMigrationFilter']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to start migration */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SentencingMigrationFilter']
+      }
+    }
+  }
+  /** Requires role <b>MIGRATE_VISITS</b> */
+  cancel_2: {
     parameters: {
       path: {
         /** Migration Id */
@@ -521,8 +573,76 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_INCENTIVES</b> */
+  /** Requires role <b>MIGRATE_SENTENCING</b> */
   get_1: {
+    parameters: {
+      path: {
+        /** Migration Id */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** The sentencing migration history record */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Migration not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** The records are un-paged and requires role <b>MIGRATE_SENTENCING</b> */
+  getAll_1: {
+    parameters: {
+      query: {
+        /** Only include migrations started after this date time */
+        fromDateTime?: string
+        /** Only include migrations started before this date time */
+        toDateTime?: string
+        /** When true only include migrations that had at least one failure */
+        includeOnlyFailures?: boolean
+      }
+    }
+    responses: {
+      /** All sentencing migration history records */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory'][]
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Requires role <b>MIGRATE_INCENTIVES</b> */
+  get_2: {
     parameters: {
       path: {
         /** Migration Id */
@@ -557,7 +677,7 @@ export interface operations {
     }
   }
   /** The records are un-paged and requires role <b>MIGRATE_INCENTIVES</b> */
-  getAll_1: {
+  getAll_2: {
     parameters: {
       query: {
         /** Only include migrations started after this date time */
@@ -590,7 +710,7 @@ export interface operations {
     }
   }
   /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
-  getAll_2: {
+  getAll_3: {
     parameters: {
       query: {
         /** List of migration types, when omitted all migration types will be returned */
