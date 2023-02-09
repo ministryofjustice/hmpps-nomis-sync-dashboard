@@ -151,6 +151,43 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     },
   )
 
+  njkEnv.addFilter(
+    'toSentencingMigrationsListFilter',
+    (filterOptionsHtml: string, migrationViewFilter: MigrationViewFilter) => {
+      const hrefBase = '/sentencing-migration?'
+      const toDateFilterTags = getToDateFilterTags(migrationViewFilter, hrefBase)
+      const fromDateFilterTags = getFromDateFilterTags(migrationViewFilter, hrefBase)
+      const failedFilterTags = getFailedFilterTags(migrationViewFilter, hrefBase)
+
+      return {
+        heading: {
+          text: 'Filter',
+        },
+        selectedFilters: {
+          heading: {
+            text: 'Selected filters',
+          },
+          clearLink: {
+            text: 'Clear filters',
+            href: '/sentencing-migration',
+          },
+          categories: [
+            {
+              items: fromDateFilterTags,
+            },
+            {
+              items: toDateFilterTags,
+            },
+            {
+              items: failedFilterTags,
+            },
+          ],
+        },
+        optionsHtml: filterOptionsHtml,
+      }
+    },
+  )
+
   njkEnv.addFilter('prisonSearchInput', (migrationViewFilter: VisitsMigrationViewFilter) => {
     return {
       label: {

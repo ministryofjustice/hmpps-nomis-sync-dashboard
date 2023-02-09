@@ -11,4 +11,10 @@ declare module 'forms' {
     toDate?: string
     action?: 'startMigration' | 'viewEstimatedCount'
   }
+
+  export interface StartSentencingMigrationForm {
+    fromDate?: string
+    toDate?: string
+    action?: 'startMigration' | 'viewEstimatedCount'
+  }
 }

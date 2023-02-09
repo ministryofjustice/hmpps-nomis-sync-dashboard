@@ -103,6 +103,51 @@ const stubGetIncentiveMigrationEstimatedCount = (count: number): SuperAgentReque
     },
   })
 
+const stubGetSentencingMigrationEstimatedCount = (count: number): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPath: '/nomis-prisoner-api/adjustments/ids',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        content: [
+          {
+            bookingId: 180935,
+            sequence: 1,
+          },
+        ],
+        pageable: {
+          sort: {
+            empty: false,
+            sorted: true,
+            unsorted: false,
+          },
+          offset: 0,
+          pageSize: 1,
+          pageNumber: 0,
+          paged: true,
+          unpaged: false,
+        },
+        last: false,
+        totalPages: count,
+        totalElements: count,
+        size: 1,
+        number: 0,
+        sort: {
+          empty: false,
+          sorted: true,
+          unsorted: false,
+        },
+        first: true,
+        numberOfElements: 1,
+        empty: false,
+      },
+    },
+  })
+
 const stubGetVisitRoomUsage = (prison: string): SuperAgentRequest =>
   stubFor({
     request: {
@@ -146,5 +191,6 @@ export default {
   stubNomisPrisonerPing,
   stubGetVisitMigrationEstimatedCount,
   stubGetIncentiveMigrationEstimatedCount,
+  stubGetSentencingMigrationEstimatedCount,
   stubGetVisitRoomUsage,
 }

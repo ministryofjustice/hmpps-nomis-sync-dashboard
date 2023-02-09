@@ -4,19 +4,65 @@
  */
 
 export interface paths {
+  '/sentence-adjustments/{adjustmentId}': {
+    /** Requires role NOMIS_SENTENCING. Retrieves a sentence adjustment by id */
+    get: operations['getSentenceAdjustment']
+    /** Requires role NOMIS_SENTENCING. Updates a sentence adjustment by id */
+    put: operations['updateSentenceAdjustment']
+    /** Requires role NOMIS_SENTENCING. Deletes a sentence adjustment by id */
+    delete: operations['deleteSentenceAdjustment']
+  }
+  '/prisoners/{offenderNo}/visits/{visitId}': {
+    /** Updates details of an existing visit such as the visitors and time slot */
+    put: operations['updateVisit']
+  }
   '/prisoners/{offenderNo}/visits/{visitId}/cancel': {
     put: operations['cancelVisit']
+  }
+  '/key-date-adjustments/{adjustmentId}': {
+    /** Requires role NOMIS_SENTENCING. Retrieves a key date adjustment by id */
+    get: operations['getKeyDateAdjustment']
+    /** Requires role NOMIS_SENTENCING. Updates a sentence adjustment by id */
+    put: operations['updateKeyDateAdjustment']
+    /** Requires role NOMIS_SENTENCING. Deletes a key date adjustment by id */
+    delete: operations['deleteKeyDateAdjustment']
+  }
+  '/activities/{courseActivityId}': {
+    /** Updates an activity and associated pay rates. Requires role NOMIS_ACTIVITIES */
+    put: operations['updateActivity']
+    /** Allocates a prisoner to an activity. Requires role NOMIS_ACTIVITIES */
+    post: operations['createOffenderProgramProfile']
+  }
+  '/activities/{courseActivityId}/booking-id/{bookingId}/end': {
+    /** Ends a prisoner's allocation to an activity. Requires role NOMIS_ACTIVITIES */
+    put: operations['endOffenderProgramProfile']
   }
   '/prisoners/{offenderNo}/visits': {
     /** Creates a new visit and decrements the visit balance. */
     post: operations['createVisit']
+  }
+  '/prisoners/booking-id/{bookingId}/sentences/{sentenceSequence}/adjustments': {
+    /** Required role NOMIS_SENTENCING Creates a new sentence adjustment (aka Debit/Credit). Key dates will not be recalculated as a side effect of this operation */
+    post: operations['createSentenceAdjustment']
+  }
+  '/prisoners/booking-id/{bookingId}/incentives': {
+    /** Creates a new incentive using next sequence no. */
+    post: operations['createIncentive']
+  }
+  '/prisoners/booking-id/{bookingId}/adjustments': {
+    /** Required role NOMIS_SENTENCING Creates a new key date adjustment. Key dates will be recalculated as a side effect of this operation */
+    post: operations['createKeyDateAdjustment']
+  }
+  '/activities': {
+    /** Creates a new activity and associated pay rates. Requires role NOMIS_ACTIVITIES */
+    post: operations['createActivity']
   }
   '/visits/{visitId}': {
     /** Retrieves a visit by id. */
     get: operations['getVisit']
   }
   '/visits/rooms/usage-count': {
-    /** Retrieves a list of rooms with usage count for the (filtered) visits */
+    /** Retrieves a list of rooms with usage count for the (filtered) visits. Only future visits are included */
     get: operations['getVisitRoomCountsByFilter']
   }
   '/visits/ids': {
@@ -31,6 +77,14 @@ export interface paths {
     /** Retrieves a created incentive level for a prisoner. Requires ROLE_NOMIS_INCENTIVES. */
     get: operations['getIncentive']
   }
+  '/incentives/booking-id/{bookingId}/current': {
+    /** Retrieves the current incentive level (by booking) for a prisoner. Requires ROLE_NOMIS_INCENTIVES. */
+    get: operations['getCurrentIncentive']
+  }
+  '/adjustments/ids': {
+    /** Retrieves a paged list of adjustment ids by filter. Requires ROLE_NOMIS_SENTENCING. */
+    get: operations['getAdjustmentsByFilter']
+  }
 }
 
 export interface components {
@@ -44,6 +98,56 @@ export interface components {
       developerMessage?: string
       moreInfo?: string
     }
+    /** @description Sentence adjustment update request */
+    UpdateSentenceAdjustmentRequest: {
+      /**
+       * @description NOMIS Adjustment type code from SENTENCE_ADJUSTMENTS
+       * @example RX
+       * @enum {string}
+       */
+      adjustmentTypeCode: 'RSR' | 'UR' | 'S240A' | 'RST' | 'RX'
+      /** Format: date */
+      adjustmentDate: string
+      /**
+       * Format: date
+       * @description Start of the period which contributed to the adjustment
+       */
+      adjustmentFromDate?: string
+      /**
+       * Format: int64
+       * @description Number of days for the adjustment
+       */
+      adjustmentDays: number
+      /** @description Comment */
+      comment?: string
+      /**
+       * @description Flag to indicate if the adjustment is being applied
+       * @default true
+       */
+      active: boolean
+    }
+    /** @description Visit update request */
+    UpdateVisitRequest: {
+      /**
+       * @description Visit start date and time
+       * @example 2021-07-05T10:35:17
+       */
+      startDateTime: string
+      /**
+       * @description Visit end time
+       * @example 14:30
+       */
+      endTime: string
+      /** @description Visitors */
+      visitorPersonIds: number[]
+      /** @description Name of the real world room where visit will take place */
+      room: string
+      /**
+       * @description Whether visit is restricted to a closed session
+       * @enum {string}
+       */
+      openClosedStatus: 'OPEN' | 'CLOSED'
+    }
     /** @description Visit cancellation */
     CancelVisitRequest: {
       /**
@@ -51,6 +155,101 @@ export interface components {
        * @enum {string}
        */
       outcome: 'VISCANC' | 'OFFCANC' | 'ADMIN' | 'NSHOW'
+    }
+    /** @description Key date adjustment update request */
+    UpdateKeyDateAdjustmentRequest: {
+      /**
+       * @description NOMIS Adjustment type code from SENTENCE_ADJUSTMENTS
+       * @example ADA
+       * @enum {string}
+       */
+      adjustmentTypeCode: 'LAL' | 'UAL' | 'RADA' | 'ADA' | 'SREM'
+      /**
+       * Format: date
+       * @description Date adjustment is applied
+       */
+      adjustmentDate: string
+      /**
+       * Format: date
+       * @description Start of the period which contributed to the adjustment
+       */
+      adjustmentFromDate: string
+      /**
+       * Format: int64
+       * @description Number of days for the adjustment
+       */
+      adjustmentDays: number
+      /** @description Comment */
+      comment?: string
+      /**
+       * @description Flag to indicate if the adjustment is being applied
+       * @default true
+       */
+      active: boolean
+    }
+    /** @description Course activity creation request pay rates */
+    PayRateRequest: {
+      /**
+       * @description The incentive level
+       * @example BAS
+       */
+      incentiveLevel: string
+      /**
+       * @description The pay band (1 TO 10)
+       * @example 4
+       */
+      payBand: string
+      /**
+       * @description The half day rate
+       * @example 0.5
+       */
+      rate: number
+    }
+    /** @description Course activity update request */
+    UpdateActivityRequest: {
+      /**
+       * Format: date
+       * @description Activity end date
+       * @example 2022-08-12
+       */
+      endDate?: string
+      /**
+       * Format: int64
+       * @description Room where the activity is to occur (from activity schedule)
+       */
+      internalLocationId?: number
+      /** @description Pay rates */
+      payRates: components['schemas']['PayRateRequest'][]
+    }
+    /** @description Course activity update response */
+    UpdateActivityResponse: {
+      /** @description Prison where the activity is to occur */
+      prisonId: string
+    }
+    /** @description Course activity deallocation request */
+    EndOffenderProgramProfileRequest: {
+      /**
+       * Format: date
+       * @description Activity end date
+       * @example 2022-08-12
+       */
+      endDate: string
+      /**
+       * @description Activity end reason (from domain PS_END_RSN)
+       * @example REL
+       */
+      endReason?: string
+      /** @description Activity end comment */
+      endComment?: string
+    }
+    /** @description OffenderProgramProfile creation response */
+    OffenderProgramProfileResponse: {
+      /**
+       * Format: int64
+       * @description The created OffenderProgramProfile id
+       * @example 12345678
+       */
+      offenderProgramReferenceId: number
     }
     /** @description Visit creation request */
     CreateVisitRequest: {
@@ -68,8 +267,6 @@ export interface components {
       prisonId: string
       /** @description Visitors */
       visitorPersonIds: number[]
-      /** @description Whether visit is a privileged one */
-      privileged: boolean
       /**
        * @description Visit type, whether social or official
        * @enum {string}
@@ -99,6 +296,187 @@ export interface components {
        * @description The created Nomis visit id
        */
       visitId: number
+    }
+    /** @description Sentence adjustment create request */
+    CreateSentenceAdjustmentRequest: {
+      /**
+       * @description NOMIS Adjustment type code from SENTENCE_ADJUSTMENTS
+       * @example RX
+       * @enum {string}
+       */
+      adjustmentTypeCode: 'RSR' | 'UR' | 'S240A' | 'RST' | 'RX'
+      /**
+       * Format: date
+       * @description Date adjustment is applied
+       */
+      adjustmentDate: string
+      /**
+       * Format: date
+       * @description Start of the period which contributed to the adjustment
+       */
+      adjustmentFromDate?: string
+      /**
+       * Format: int64
+       * @description Number of days for the adjustment
+       */
+      adjustmentDays: number
+      /** @description Comment */
+      comment?: string
+      /**
+       * @description Flag to indicate if the adjustment is being applied
+       * @default true
+       */
+      active: boolean
+    }
+    /** @description Create adjustment response */
+    CreateAdjustmentResponse: {
+      /** Format: int64 */
+      id: number
+    }
+    /** @description IEP creation request */
+    CreateIncentiveRequest: {
+      /**
+       * @description IEP Level
+       * @example Standard
+       */
+      iepLevel: string
+      /**
+       * @description Review comments
+       * @example A review took place
+       */
+      comments?: string
+      /**
+       * @description Date and time when last review took place
+       * @example 2021-07-05T10:35:17
+       */
+      iepDateTime: string
+      /**
+       * @description Prison ID
+       * @example MDI
+       */
+      prisonId: string
+      /**
+       * @description Username of the reviewer
+       * @example AJONES
+       */
+      userId: string
+    }
+    /** @description Incentive creation response */
+    CreateIncentiveResponse: {
+      /**
+       * Format: int64
+       * @description The created Nomis booking and sequence
+       */
+      bookingId: number
+      /** Format: int64 */
+      sequence: number
+    }
+    /** @description Key date adjustment create request */
+    CreateKeyDateAdjustmentRequest: {
+      /**
+       * @description NOMIS Adjustment type code from SENTENCE_ADJUSTMENTS
+       * @example ADA
+       * @enum {string}
+       */
+      adjustmentTypeCode: 'LAL' | 'UAL' | 'RADA' | 'ADA' | 'SREM'
+      /**
+       * Format: date
+       * @description Date adjustment is applied
+       */
+      adjustmentDate: string
+      /**
+       * Format: date
+       * @description Start of the period which contributed to the adjustment
+       */
+      adjustmentFromDate: string
+      /**
+       * Format: int64
+       * @description Number of days for the adjustment
+       */
+      adjustmentDays: number
+      /** @description Comment */
+      comment?: string
+      /**
+       * @description Flag to indicate if the adjustment is being applied
+       * @default true
+       */
+      active: boolean
+    }
+    /** @description Course activity creation request */
+    CreateActivityRequest: {
+      /** @description Code generated from the activity and schedule ids and mapped */
+      code: string
+      /**
+       * Format: date
+       * @description Activity start date
+       * @example 2022-08-12
+       */
+      startDate: string
+      /**
+       * Format: date
+       * @description Activity end date
+       * @example 2022-08-12
+       */
+      endDate?: string
+      /** @description Prison where the activity is to occur */
+      prisonId: string
+      /**
+       * Format: int64
+       * @description Room where the activity is to occur (from activity schedule)
+       */
+      internalLocationId?: number
+      /**
+       * Format: int32
+       * @description Capacity of activity (from activity schedule)
+       */
+      capacity: number
+      /** @description Pay rates */
+      payRates: components['schemas']['PayRateRequest'][]
+      /** @description Description from concatenated activity and activity schedule */
+      description: string
+      /** @description Minimum Incentive Level */
+      minimumIncentiveLevelCode?: string
+      /** @description Program Service code (from activity category) */
+      programCode: string
+      /**
+       * @description Half or Full day (H or F)
+       * @example H
+       */
+      payPerSession: string
+    }
+    /** @description Activity creation response */
+    CreateActivityResponse: {
+      /**
+       * Format: int64
+       * @description The created course activity id
+       */
+      courseActivityId: number
+    }
+    /** @description Course activity allocation request */
+    CreateOffenderProgramProfileRequest: {
+      /**
+       * Format: int64
+       * @description Booking id of the prisoner to be allocated to the activity
+       * @example 1234567
+       */
+      bookingId: number
+      /**
+       * Format: date
+       * @description Activity start date
+       * @example 2022-08-12
+       */
+      startDate: string
+      /**
+       * Format: date
+       * @description Activity end date
+       * @example 2022-08-12
+       */
+      endDate?: string
+      /**
+       * @description The prisoner's pay band
+       * @example 2
+       */
+      payBandCode: string
     }
     /** @description NOMIS room */
     CodeDescription: {
@@ -143,12 +521,26 @@ export interface components {
       leadVisitor?: components['schemas']['LeadVisitor']
       visitType: components['schemas']['CodeDescription']
       visitStatus: components['schemas']['CodeDescription']
-      visitOutcome?: components['schemas']['CodeDescription']
-      agencyInternalLocation?: components['schemas']['CodeDescription']
+      visitOutcome: components['schemas']['CodeDescription']
+      agencyInternalLocation: components['schemas']['CodeDescription']
       /** @description Visit comments */
       commentText?: string
       /** @description Visitor concerns text */
       visitorConcernText?: string
+      /**
+       * @description date and time of creation
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated: string
+      /**
+       * @description date and time of last update
+       * @example 2021-07-05T10:35:17
+       */
+      whenUpdated?: string
+      /** @description User id for visit creation */
+      createUserId: string
+      /** @description User id for last visit update */
+      modifyUserId?: string
     }
     /** @description Visitors */
     Visitor: {
@@ -221,6 +613,100 @@ export interface components {
        */
       visitId: number
     }
+    /** @description Sentence adjustment */
+    SentenceAdjustmentResponse: {
+      /**
+       * Format: int64
+       * @description The sentence adjustment id
+       */
+      id: number
+      /**
+       * Format: int64
+       * @description The booking id
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The sequence of the sentence within this booking
+       */
+      sentenceSequence: number
+      adjustmentType: components['schemas']['SentencingAdjustmentType']
+      /**
+       * Format: date
+       * @description Date adjustment is applied
+       */
+      adjustmentDate: string
+      /**
+       * Format: date
+       * @description Start of the period which contributed to the adjustment
+       */
+      adjustmentFromDate?: string
+      /**
+       * Format: date
+       * @description End of the period which contributed to the adjustment
+       */
+      adjustmentToDate?: string
+      /**
+       * Format: int64
+       * @description Number of days for the adjustment
+       */
+      adjustmentDays: number
+      /** @description Comment */
+      comment?: string
+      /** @description Flag to indicate if the adjustment is being applied */
+      active: boolean
+    }
+    /** @description Adjustment type */
+    SentencingAdjustmentType: {
+      /**
+       * @description code
+       * @example RX
+       */
+      code: string
+      /**
+       * @description description
+       * @example Remand
+       */
+      description: string
+    }
+    /** @description Key date adjustment */
+    KeyDateAdjustmentResponse: {
+      /**
+       * Format: int64
+       * @description The key date adjustment id
+       */
+      id: number
+      /**
+       * Format: int64
+       * @description The booking id
+       */
+      bookingId: number
+      adjustmentType: components['schemas']['SentencingAdjustmentType']
+      /**
+       * Format: date
+       * @description Date adjustment is applied
+       */
+      adjustmentDate: string
+      /**
+       * Format: date
+       * @description Start of the period which contributed to the adjustment
+       */
+      adjustmentFromDate?: string
+      /**
+       * Format: date
+       * @description End of the period which contributed to the adjustment
+       */
+      adjustmentToDate?: string
+      /**
+       * Format: int64
+       * @description Number of days for the adjustment
+       */
+      adjustmentDays: number
+      /** @description Comment */
+      comment?: string
+      /** @description Flag to indicate if the adjustment is being applied */
+      active: boolean
+    }
     /** @description Incentive id */
     IncentiveIdResponse: {
       /**
@@ -254,6 +740,8 @@ export interface components {
     }
     /** @description Incentive information */
     IncentiveResponse: {
+      /** @description The offender number, aka nomsId, prisonerId */
+      offenderNo: string
       /**
        * Format: int64
        * @description The booking id
@@ -276,11 +764,190 @@ export interface components {
       iepLevel: components['schemas']['CodeDescription']
       /** @description User id of user creating prisoner incentive level */
       userId?: string
+      /** @description Is this IEP the current IEP for the booking? */
+      currentIep: boolean
+      /**
+       * @description The NOMIS module that created this IEP
+       * @enum {string}
+       */
+      auditModule: 'OCUWARNG' | 'PRISON_API' | 'OIDADMIS' | 'MERGE' | 'OIDOIEPS' | 'OIDITRAN' | 'OSIOSEAR'
+      /**
+       * @description date and time of creation
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated: string
+      /**
+       * @description date and time of last update
+       * @example 2021-07-05T10:35:17
+       */
+      whenUpdated?: string
+    }
+    /** @description Adjustment id */
+    AdjustmentIdResponse: {
+      /**
+       * Format: int64
+       * @description The adjustment id
+       */
+      adjustmentId: number
+      /** @description SENTENCE or KEY_DATE */
+      adjustmentCategory: string
+    }
+    PageAdjustmentIdResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['AdjustmentIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
+      first?: boolean
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      last?: boolean
+      empty?: boolean
     }
   }
 }
 
 export interface operations {
+  /** Requires role NOMIS_SENTENCING. Retrieves a sentence adjustment by id */
+  getSentenceAdjustment: {
+    parameters: {
+      path: {
+        /** Sentence adjustment id */
+        adjustmentId: string
+      }
+    }
+    responses: {
+      /** the sentence adjustment details */
+      200: {
+        content: {
+          'application/json': components['schemas']['SentenceAdjustmentResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Adjustment not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Requires role NOMIS_SENTENCING. Updates a sentence adjustment by id */
+  updateSentenceAdjustment: {
+    parameters: {
+      path: {
+        /** Sentence adjustment id */
+        adjustmentId: string
+      }
+    }
+    responses: {
+      /** the sentence adjustment has been updated */
+      200: unknown
+      /** Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateSentenceAdjustmentRequest']
+      }
+    }
+  }
+  /** Requires role NOMIS_SENTENCING. Deletes a sentence adjustment by id */
+  deleteSentenceAdjustment: {
+    parameters: {
+      path: {
+        /** Sentence adjustment id */
+        adjustmentId: string
+      }
+    }
+    responses: {
+      /** the sentence adjustment has been deleted */
+      204: never
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Updates details of an existing visit such as the visitors and time slot */
+  updateVisit: {
+    parameters: {
+      path: {
+        /** Offender Noms Id */
+        offenderNo: string
+        /** Nomis visit Id */
+        visitId: string
+      }
+    }
+    responses: {
+      /** Visit information updated */
+      200: unknown
+      /** Person ids do not exist */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** offenderNo or visits id does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateVisitRequest']
+      }
+    }
+  }
   cancelVisit: {
     parameters: {
       path: {
@@ -315,6 +982,261 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['CancelVisitRequest']
+      }
+    }
+  }
+  /** Requires role NOMIS_SENTENCING. Retrieves a key date adjustment by id */
+  getKeyDateAdjustment: {
+    parameters: {
+      path: {
+        /** Key date adjustment id */
+        adjustmentId: string
+      }
+    }
+    responses: {
+      /** the key date adjustment details */
+      200: {
+        content: {
+          'application/json': components['schemas']['KeyDateAdjustmentResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Adjustment not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Requires role NOMIS_SENTENCING. Updates a sentence adjustment by id */
+  updateKeyDateAdjustment: {
+    parameters: {
+      path: {
+        /** Key date adjustment id */
+        adjustmentId: string
+      }
+    }
+    responses: {
+      /** the key date adjustment has been updated */
+      200: unknown
+      /** Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Adjustment not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateKeyDateAdjustmentRequest']
+      }
+    }
+  }
+  /** Requires role NOMIS_SENTENCING. Deletes a key date adjustment by id */
+  deleteKeyDateAdjustment: {
+    parameters: {
+      path: {
+        /** Key date adjustment id */
+        adjustmentId: string
+      }
+    }
+    responses: {
+      /** the key date adjustment has been deleted */
+      204: never
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Updates an activity and associated pay rates. Requires role NOMIS_ACTIVITIES */
+  updateActivity: {
+    parameters: {
+      path: {
+        /** Course activity id */
+        courseActivityId: string
+      }
+    }
+    responses: {
+      /** Activity information */
+      200: {
+        content: {
+          'application/json': components['schemas']['UpdateActivityResponse']
+        }
+      }
+      /** Prison, location, program service or iep value do not exist */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Activity Not Found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateActivityRequest']
+      }
+    }
+  }
+  /** Allocates a prisoner to an activity. Requires role NOMIS_ACTIVITIES */
+  createOffenderProgramProfile: {
+    parameters: {
+      path: {
+        /** Course activity id */
+        courseActivityId: string
+      }
+    }
+    responses: {
+      /** Offender program profile information with created id */
+      201: {
+        content: {
+          'application/json': components['schemas']['OffenderProgramProfileResponse']
+        }
+      }
+      /**
+       * One or more of the following is true:<ul>
+       *         <li>the booking id does not exist,</li>
+       *         <li>the prisoner is already allocated,</li>
+       *         <li>the course is held at a different prison to the prisoner's location,</li>
+       *         <li>the pay band code does not exist for the given course activity.</li></ul>
+       */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** The course activity does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateOffenderProgramProfileRequest']
+      }
+    }
+  }
+  /** Ends a prisoner's allocation to an activity. Requires role NOMIS_ACTIVITIES */
+  endOffenderProgramProfile: {
+    parameters: {
+      path: {
+        /** Course activity id */
+        courseActivityId: string
+        /** Booking id */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** Success */
+      200: {
+        content: {
+          'application/json': components['schemas']['OffenderProgramProfileResponse']
+        }
+      }
+      /**
+       * One or more of the following is true:<ul>
+       *         <li>the prisoner is not allocated to the course,</li>
+       *         <li>the course or prisoner does not exist,</li>
+       *         <li>the end date is missing or invalid,</li>
+       *         <li>the reason is invalid</li>
+       *         </ul>
+       */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** The course activity or booking id do not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['EndOffenderProgramProfileRequest']
       }
     }
   }
@@ -358,6 +1280,174 @@ export interface operations {
       }
     }
   }
+  /** Required role NOMIS_SENTENCING Creates a new sentence adjustment (aka Debit/Credit). Key dates will not be recalculated as a side effect of this operation */
+  createSentenceAdjustment: {
+    parameters: {
+      path: {
+        /** Booking Id */
+        bookingId: string
+        /** Sentence sequence number */
+        sentenceSequence: string
+      }
+    }
+    responses: {
+      /** Created Sentence adjustment id */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateAdjustmentResponse']
+        }
+      }
+      /** Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Booking or sentence sequence do not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateSentenceAdjustmentRequest']
+      }
+    }
+  }
+  /** Creates a new incentive using next sequence no. */
+  createIncentive: {
+    parameters: {
+      path: {
+        /** Offender Booking Id */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** Incentive information with created sequence */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateIncentiveResponse']
+        }
+      }
+      /** Prison or iep value do not exist */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** booking does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateIncentiveRequest']
+      }
+    }
+  }
+  /** Required role NOMIS_SENTENCING Creates a new key date adjustment. Key dates will be recalculated as a side effect of this operation */
+  createKeyDateAdjustment: {
+    parameters: {
+      path: {
+        /** Booking Id */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** Created key date adjustment */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateAdjustmentResponse']
+        }
+      }
+      /** Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Booking does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateKeyDateAdjustmentRequest']
+      }
+    }
+  }
+  /** Creates a new activity and associated pay rates. Requires role NOMIS_ACTIVITIES */
+  createActivity: {
+    responses: {
+      /** Activity information with created sequence */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateActivityResponse']
+        }
+      }
+      /** Prison, location, program service or iep value do not exist */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateActivityRequest']
+      }
+    }
+  }
   /** Retrieves a visit by id. */
   getVisit: {
     parameters: {
@@ -387,7 +1477,7 @@ export interface operations {
       }
     }
   }
-  /** Retrieves a list of rooms with usage count for the (filtered) visits */
+  /** Retrieves a list of rooms with usage count for the (filtered) visits. Only future visits are included */
   getVisitRoomCountsByFilter: {
     parameters: {
       query: {
@@ -396,10 +1486,12 @@ export interface operations {
         prisonIds?: string[]
         /** Filter results by visitType (returns all types if not specified) */
         visitTypes?: string[]
-        /** Filter results by visits that start on or after the given timestamp */
+        /** Filter results by visits that were created on or after the given timestamp */
         fromDateTime?: string
-        /** Filter results by visits that start on or before the given timestamp */
+        /** Filter results by visits that were created on or before the given timestamp */
         toDateTime?: string
+        /** Filter results by restricting to future visit usage only */
+        futureVisitsOnly?: boolean
       }
     }
     responses: {
@@ -426,12 +1518,10 @@ export interface operations {
         prisonIds?: string[]
         /** Filter results by visitType (returns all types if not specified) */
         visitTypes?: string[]
-        /** Filter results by visits that start on or after the given timestamp */
+        /** Filter results by visits that were created on or after the given timestamp */
         fromDateTime?: string
-        /** Filter results by visits that start on or before the given timestamp */
+        /** Filter results by visits that were created on or before the given timestamp */
         toDateTime?: string
-        /** if true exclude visits without an associated room (visits created during the VSIP synchronisation process) */
-        ignoreMissingRoom?: boolean
       }
     }
     responses: {
@@ -454,9 +1544,9 @@ export interface operations {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
-        /** Filter results by incentives that were assigned on or after the given date */
+        /** Filter results by incentives that were created on or after the given date */
         fromDate?: string
-        /** Filter results by incentives that were assigned on or before the given date */
+        /** Filter results by incentives that were created on or before the given date */
         toDate?: string
         /** if true only retrieve latest incentive for each prisoner */
         latestOnly?: boolean
@@ -507,6 +1597,67 @@ export interface operations {
         }
       }
       /** Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Retrieves the current incentive level (by booking) for a prisoner. Requires ROLE_NOMIS_INCENTIVES. */
+  getCurrentIncentive: {
+    parameters: {
+      path: {
+        /** NOMIS booking Id */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** the incentive level details */
+      200: {
+        content: {
+          'application/json': components['schemas']['IncentiveResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Retrieves a paged list of adjustment ids by filter. Requires ROLE_NOMIS_SENTENCING. */
+  getAdjustmentsByFilter: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /** Filter results by adjustments that were created on or after the given date */
+        fromDate?: string
+        /** Filter results by adjustments that were created on or before the given date */
+        toDate?: string
+      }
+    }
+    responses: {
+      /** Pageable list of ids are returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageAdjustmentIdResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
