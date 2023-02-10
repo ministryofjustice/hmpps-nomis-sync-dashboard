@@ -22,7 +22,7 @@ describe('sentencingMigrationController', () => {
 
   describe('getSentencingMigrations', () => {
     it('should decorate the returned migrations', async () => {
-      const incentiveMigrationResponse: HistoricMigrations = {
+      const sentencingMigrationResponse: HistoricMigrations = {
         migrations: [
           {
             migrationId: '2022-03-30T10:13:56',
@@ -32,7 +32,7 @@ describe('sentencingMigrationController', () => {
             filter: '{"fromDate":"2022-03-04"}',
             recordsMigrated: 0,
             recordsFailed: 0,
-            migrationType: 'INCENTIVES',
+            migrationType: 'SENTENCING',
             status: 'COMPLETED',
             id: '2022-03-14T10:13:56',
           },
@@ -44,7 +44,7 @@ describe('sentencingMigrationController', () => {
             filter: '{}',
             recordsMigrated: 1,
             recordsFailed: 162794,
-            migrationType: 'INCENTIVES',
+            migrationType: 'SENTENCING',
             status: 'COMPLETED',
             id: '2022-03-14T11:45:12',
           },
@@ -60,10 +60,9 @@ describe('sentencingMigrationController', () => {
           filter: '{"fromDate":"2022-03-04"}',
           recordsMigrated: 0,
           recordsFailed: 0,
-          migrationType: 'INCENTIVES',
+          migrationType: 'SENTENCING',
           status: 'COMPLETED',
           id: '2022-03-14T10:13:56',
-          filterFromDate: '2022-03-04',
           applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-30T09:13:56.878Z')), // BST was 2022-03-30T10:13:56.878627
         },
         {
@@ -74,13 +73,13 @@ describe('sentencingMigrationController', () => {
           filter: '{}',
           recordsMigrated: 1,
           recordsFailed: 162794,
-          migrationType: 'INCENTIVES',
+          migrationType: 'SENTENCING',
           status: 'COMPLETED',
           id: '2022-03-14T11:45:12',
           applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-14T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
-      nomisMigrationService.getSentencingMigrations.mockResolvedValue(incentiveMigrationResponse)
+      nomisMigrationService.getSentencingMigrations.mockResolvedValue(sentencingMigrationResponse)
 
       await new SentencingMigrationController(nomisMigrationService, nomisPrisonerService).getSentencingMigrations(
         req,
@@ -91,39 +90,6 @@ describe('sentencingMigrationController', () => {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
-        ]),
-        migrationViewFilter: expect.objectContaining({
-          fromDateTime: undefined,
-          includeOnlyFailures: false,
-          toDateTime: undefined,
-        }),
-        errors: expect.arrayContaining([]),
-      })
-    })
-
-    it('should return an error response on invalid date', async () => {
-      req.query.toDateTime = 'invalid'
-      req.query.fromDateTime = '23/4'
-      await new SentencingMigrationController(nomisMigrationService, nomisPrisonerService).getSentencingMigrations(
-        req,
-        res,
-      )
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/sentencing/sentencingMigration', {
-        migrationViewFilter: expect.objectContaining({
-          fromDateTime: '23/4',
-          includeOnlyFailures: false,
-          toDateTime: 'invalid',
-        }),
-        errors: expect.arrayContaining([
-          expect.objectContaining({
-            href: '#toDateTime',
-            text: 'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23',
-          }),
-          expect.objectContaining({
-            href: '#fromDateTime',
-            text: 'Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23',
-          }),
         ]),
       })
     })
