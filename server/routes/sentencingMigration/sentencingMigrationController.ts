@@ -2,11 +2,8 @@ import { Request, Response } from 'express'
 import { StartSentencingMigrationForm } from 'express-session'
 import moment from 'moment'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
-import { SentencingMigrationFilter, MigrationHistory } from '../../@types/migration'
-import { MigrationViewFilter } from '../../@types/dashboard'
+import { MigrationHistory, SentencingMigrationFilter } from '../../@types/migration'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
-import sentencingMigrationValidator from './sentencingMigrationValidator'
-import { withDefaultTime } from '../../utils/utils'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startSentencingMigrationValidator from './startSentencingMigrationValidator'
@@ -31,34 +28,17 @@ export default class SentencingMigrationController {
   ) {}
 
   async getSentencingMigrations(req: Request, res: Response): Promise<void> {
-    const searchFilter = this.parseFilter(req)
+    const { migrations } = await this.nomisMigrationService.getSentencingMigrations(context(res))
 
-    const errors = sentencingMigrationValidator(searchFilter)
-
-    if (errors.length > 0) {
-      res.render('pages/sentencing/sentencingMigration', {
-        errors,
-        migrationViewFilter: searchFilter,
-      })
-    } else {
-      const { migrations } = await this.nomisMigrationService.getSentencingMigrations(context(res), {
-        ...searchFilter,
-        toDateTime: withDefaultTime(searchFilter.toDateTime),
-        fromDateTime: withDefaultTime(searchFilter.fromDateTime),
-      })
-
-      const decoratedMigrations = migrations.map(SentencingMigrationController.withFilter).map(history => ({
-        ...history,
-        applicationInsightsLink: SentencingMigrationController.applicationInsightsUrl(
-          SentencingMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
-        ),
-      }))
-      res.render('pages/sentencing/sentencingMigration', {
-        migrations: decoratedMigrations,
-        migrationViewFilter: searchFilter,
-        errors: [],
-      })
-    }
+    const decoratedMigrations = migrations.map(history => ({
+      ...history,
+      applicationInsightsLink: SentencingMigrationController.applicationInsightsUrl(
+        SentencingMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
+      ),
+    }))
+    res.render('pages/sentencing/sentencingMigration', {
+      migrations: decoratedMigrations,
+    })
   }
 
   async viewFailures(req: Request, res: Response): Promise<void> {
@@ -148,14 +128,6 @@ export default class SentencingMigrationController {
     res.render('pages/sentencing/sentencingMigrationDetails', {
       migration: { ...migration, history: SentencingMigrationController.withFilter(migration.history) },
     })
-  }
-
-  parseFilter(req: Request): MigrationViewFilter {
-    return {
-      toDateTime: req.query.toDateTime as string | undefined,
-      fromDateTime: req.query.fromDateTime as string | undefined,
-      includeOnlyFailures: (req.query.includeOnlyFailures as string) === 'true',
-    }
   }
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {

@@ -15,15 +15,6 @@
   }) }}
 
 
-  {% set filterOptionsHtml %}
-    <form id="filter-form" action="/sentencing-migration" novalidate>
-      {{ govukInput( migrationViewFilter | fromDateInput(errors | findError('fromDateTime')) ) }}
-      {{ govukInput( migrationViewFilter | toDateInput(errors | findError('toDateTime')) ) }}
-      {{ govukCheckboxes( migrationViewFilter | failedOnlyCheckbox ) }}
-    </form>
-  {% endset %}
-
-
   <div class="govuk-grid-row govuk-body">
     <h1 class="govuk-heading-l">Sentencing migration</h1>
 
@@ -39,7 +30,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <div class="moj-filter-layout">
-            <div class="moj-filter-layout__filter">{{ mojFilter(filterOptionsHtml | toSentencingMigrationsListFilter(migrationViewFilter, filterOptionsHtml)) }}</div>
+
           <div class="moj-filter-layout__content" data-qa="migration-results-div">
             <div>
               <div class="govuk-grid-column-full">

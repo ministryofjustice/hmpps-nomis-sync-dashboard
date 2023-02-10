@@ -70,12 +70,11 @@ export default class NomisMigrationService {
     }
   }
 
-  async getSentencingMigrations(context: Context, filter: MigrationViewFilter): Promise<HistoricMigrations> {
-    logger.info(`getting sentencing migrations with filter ${JSON.stringify(filter)}`)
+  async getSentencingMigrations(context: Context): Promise<HistoricMigrations> {
+    logger.info(`getting sentencing migrations`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
         path: `/migrate/sentencing/history`,
-        query: `${removeEmptyPropertiesAndStringify(filter)}`,
       }),
     }
   }
