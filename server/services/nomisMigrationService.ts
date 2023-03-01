@@ -114,7 +114,7 @@ export default class NomisMigrationService {
     })
 
     const info = await NomisMigrationService.restClient(context.token).get<{
-      'last incentives migration': {
+      'last INCENTIVES migration': {
         'records waiting processing': string
         'records that have failed': string
         id: string
@@ -127,12 +127,12 @@ export default class NomisMigrationService {
     return {
       history,
       currentProgress: {
-        recordsFailed: info['last incentives migration']['records that have failed'],
+        recordsFailed: info['last INCENTIVES migration']['records that have failed'],
         recordsMigrated:
-          info['last incentives migration'].id === migrationId
-            ? info['last incentives migration']['records migrated']
+          info['last INCENTIVES migration'].id === migrationId
+            ? info['last INCENTIVES migration']['records migrated']
             : 0,
-        recordsToBeProcessed: info['last incentives migration']['records waiting processing'],
+        recordsToBeProcessed: info['last INCENTIVES migration']['records waiting processing'],
       },
     }
   }
@@ -144,7 +144,7 @@ export default class NomisMigrationService {
     })
 
     const info = await NomisMigrationService.restClient(context.token).get<{
-      'last sentencing migration': {
+      'last SENTENCING_ADJUSTMENTS migration': {
         'records waiting processing': string
         'records that have failed': string
         id: string
@@ -157,12 +157,12 @@ export default class NomisMigrationService {
     return {
       history,
       currentProgress: {
-        recordsFailed: info['last sentencing migration']['records that have failed'],
+        recordsFailed: info['last SENTENCING_ADJUSTMENTS migration']['records that have failed'],
         recordsMigrated:
-          info['last sentencing migration'].id === migrationId
-            ? info['last sentencing migration']['records migrated']
+          info['last SENTENCING_ADJUSTMENTS migration'].id === migrationId
+            ? info['last SENTENCING_ADJUSTMENTS migration']['records migrated']
             : 0,
-        recordsToBeProcessed: info['last sentencing migration']['records waiting processing'],
+        recordsToBeProcessed: info['last SENTENCING_ADJUSTMENTS migration']['records waiting processing'],
       },
     }
   }
