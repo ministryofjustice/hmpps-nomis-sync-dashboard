@@ -741,7 +741,7 @@ describe('NomisMigrationService tests', () => {
           time: '2022-03-28T09:51:17.920Z',
           group: 'uk.gov.justice.digital.hmpps',
         },
-        'last incentives migration': {
+        'last INCENTIVES migration': {
           'records waiting processing': '2367',
           'records currently being processed': '0',
           'records that have failed': '353',
@@ -805,7 +805,7 @@ describe('NomisMigrationService tests', () => {
           time: '2022-03-28T09:51:17.920Z',
           group: 'uk.gov.justice.digital.hmpps',
         },
-        'last incentives migration': {
+        'last INCENTIVES migration': {
           'records waiting processing': '2367',
           'records currently being processed': '0',
           'records that have failed': '353',

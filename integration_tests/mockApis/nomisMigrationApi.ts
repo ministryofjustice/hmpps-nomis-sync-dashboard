@@ -752,7 +752,7 @@ const stubInfoInProgress = ({
           'records migrated': migrated,
           started: '2022-03-14T13:10:54.073256',
         },
-        'last incentives migration': {
+        'last INCENTIVES migration': {
           'records waiting processing': stillToBeProcessed,
           'records currently being processed': '24',
           'records that have failed': failed,
@@ -760,7 +760,7 @@ const stubInfoInProgress = ({
           'records migrated': migrated,
           started: '2022-03-14T13:10:54.073256',
         },
-        'last sentencing migration': {
+        'last SENTENCING_ADJUSTMENTS migration': {
           'records waiting processing': stillToBeProcessed,
           'records currently being processed': '24',
           'records that have failed': failed,
@@ -918,7 +918,7 @@ const stubInfoCompleted = (migrationId: string): SuperAgentRequest =>
           'records migrated': 999,
           started: '2022-03-14T13:10:54.073256',
         },
-        'last incentives migration': {
+        'last INCENTIVES migration': {
           'records waiting processing': '0',
           'records currently being processed': '0',
           'records that have failed': '999',
@@ -926,7 +926,7 @@ const stubInfoCompleted = (migrationId: string): SuperAgentRequest =>
           'records migrated': 999,
           started: '2022-03-14T13:10:54.073256',
         },
-        'last sentencing migration': {
+        'last SENTENCING_ADJUSTMENTS migration': {
           'records waiting processing': '0',
           'records currently being processed': '0',
           'records that have failed': '999',
