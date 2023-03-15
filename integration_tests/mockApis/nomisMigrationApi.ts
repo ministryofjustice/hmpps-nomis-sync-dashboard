@@ -744,7 +744,7 @@ const stubInfoInProgress = ({
           time: '2022-03-28T09:51:17.920Z',
           group: 'uk.gov.justice.digital.hmpps',
         },
-        'last visits migration': {
+        'last VISITS migration': {
           'records waiting processing': stillToBeProcessed,
           'records currently being processed': '24',
           'records that have failed': failed,
@@ -910,7 +910,7 @@ const stubInfoCompleted = (migrationId: string): SuperAgentRequest =>
           time: '2022-03-28T09:51:17.920Z',
           group: 'uk.gov.justice.digital.hmpps',
         },
-        'last visits migration': {
+        'last VISITS migration': {
           'records waiting processing': '0',
           'records currently being processed': '0',
           'records that have failed': '999',
