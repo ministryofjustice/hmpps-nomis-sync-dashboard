@@ -99,10 +99,10 @@ export default class NomisMigrationService {
     return {
       history,
       currentProgress: {
-        recordsFailed: info['last visits migration']['records that have failed'],
+        recordsFailed: info['last VISITS migration']['records that have failed'],
         recordsMigrated:
-          info['last visits migration'].id === migrationId ? info['last visits migration']['records migrated'] : 0,
-        recordsToBeProcessed: info['last visits migration']['records waiting processing'],
+          info['last VISITS migration'].id === migrationId ? info['last VISITS migration']['records migrated'] : 0,
+        recordsToBeProcessed: info['last VISITS migration']['records waiting processing'],
       },
     }
   }
