@@ -140,7 +140,7 @@ export default class SentencingMigrationController {
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
-    | where message contains 'Will not migrate sentencing adjustment since it is migrated already,'
+    | where message contains 'Will not migrate the adjustment since it is migrated already,'
     | where timestamp between (datetime(${SentencingMigrationController.toISODateTime(
       startedDate,
     )}) .. datetime(${SentencingMigrationController.toISODateTime(endedDate)}))
