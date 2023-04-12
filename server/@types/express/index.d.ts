@@ -20,11 +20,6 @@ declare module 'express-session' {
     count: number
   }
 
-  interface StartIncentivesMigrationForm extends MigrationForm {
-    fromDate?: string
-    toDate?: string
-  }
-
   interface StartSentencingMigrationForm extends MigrationForm {
     fromDate?: string
     toDate?: string
@@ -35,7 +30,6 @@ declare module 'express-session' {
     returnTo: string
     nowInMinutes: number
     startVisitsMigrationForm: StartVisitsMigrationForm
-    startIncentivesMigrationForm: StartIncentivesMigrationForm
     startSentencingMigrationForm: StartSentencingMigrationForm
   }
 }

@@ -1,14 +1,8 @@
 import { type RequestHandler, Router } from 'express'
 
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
-import incentiveMigrationRoutes from './incentiveMigration/incentiveMigrationRouter'
 import sentencingMigrationRoutes from './sentencingMigration/sentencingMigrationRouter'
-import {
-  extractRoles,
-  MIGRATE_INCENTIVES_ROLE,
-  MIGRATE_SENTENCING_ROLE,
-  MIGRATE_VISITS_ROLE,
-} from '../authentication/roles'
+import { extractRoles, MIGRATE_SENTENCING_ROLE, MIGRATE_VISITS_ROLE } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import { Services } from '../services'
@@ -28,14 +22,6 @@ export default function routes(services: Services): Router {
           description: 'Migration and synchronisation information',
           href: '/visits-migration',
           roles: [MIGRATE_VISITS_ROLE],
-          enabled: true,
-        },
-        {
-          id: 'incentives-migration',
-          heading: 'Incentives migration',
-          description: 'Migration and synchronisation information',
-          href: '/incentives-migration',
-          roles: [MIGRATE_INCENTIVES_ROLE],
           enabled: true,
         },
         {
@@ -62,7 +48,6 @@ export default function routes(services: Services): Router {
   })
 
   visitMigrationRoutes(router, services)
-  incentiveMigrationRoutes(router, services)
   sentencingMigrationRoutes(router, services)
   return router
 }

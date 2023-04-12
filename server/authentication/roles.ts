@@ -2,7 +2,6 @@ import type { Response } from 'express'
 import jwtDecode from 'jwt-decode'
 
 const MIGRATE_VISITS_ROLE = 'ROLE_MIGRATE_VISITS'
-const MIGRATE_INCENTIVES_ROLE = 'ROLE_MIGRATE_INCENTIVES'
 const MIGRATE_SENTENCING_ROLE = 'ROLE_MIGRATE_SENTENCING'
 
 const extractRoles = (res: Response): Array<string> => {
@@ -11,4 +10,4 @@ const extractRoles = (res: Response): Array<string> => {
   return (decodedToken && decodedToken.authorities) || []
 }
 
-export { MIGRATE_VISITS_ROLE, MIGRATE_INCENTIVES_ROLE, MIGRATE_SENTENCING_ROLE, extractRoles }
+export { MIGRATE_VISITS_ROLE, MIGRATE_SENTENCING_ROLE, extractRoles }
