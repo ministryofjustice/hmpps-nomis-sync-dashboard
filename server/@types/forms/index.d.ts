@@ -6,11 +6,6 @@ declare module 'forms' {
     toDateTime?: string
     action?: 'startMigration' | 'viewEstimatedCount'
   }
-  export interface StartIncentivesMigrationForm {
-    fromDate?: string
-    toDate?: string
-    action?: 'startMigration' | 'viewEstimatedCount'
-  }
 
   export interface StartSentencingMigrationForm {
     fromDate?: string
