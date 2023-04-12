@@ -205,7 +205,7 @@ export default class NomisMigrationService {
   async cancelSentencingMigration(migrationId: string, context: Context): Promise<void> {
     logger.info(`cancelling a sentencing migration`)
     return NomisMigrationService.restClient(context.token).post<void>({
-      path: `/migrate/${migrationId}/cancel`,
+      path: `/migrate/sentencing/${migrationId}/cancel`,
     })
   }
 
