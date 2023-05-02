@@ -36,6 +36,7 @@ describe('visitsMigrationController', () => {
             migrationType: 'VISITS',
             status: 'COMPLETED',
             id: '2022-03-14T10:13:56',
+            isNew: false,
           },
           {
             migrationId: '2022-03-14T11:45:12',
@@ -48,6 +49,7 @@ describe('visitsMigrationController', () => {
             migrationType: 'VISITS',
             status: 'COMPLETED',
             id: '2022-03-14T11:45:12',
+            isNew: false,
           },
         ],
       }
@@ -343,6 +345,7 @@ describe('visitsMigrationController', () => {
           migrationType: 'VISITS',
           status: 'COMPLETED',
           id: '2022-03-14T10:13:56',
+          isNew: false,
         },
         currentProgress: {
           recordsFailed: '0',

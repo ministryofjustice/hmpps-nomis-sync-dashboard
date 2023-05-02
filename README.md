@@ -59,6 +59,7 @@ Or run tests with the cypress UI:
 Example of command to generate types from an api:
 
 `npx openapi-typescript  https://prisoner-nomis-migration-dev.hmpps.service.justice.gov.uk/v3/api-docs --output server/@types/migrationImport/index.d.ts`
+
 `npx openapi-typescript  https://nomis-prsner-dev.aks-dev-1.studio-hosting.service.justice.gov.uk/v3/api-docs --output server/@types/nomisPrisonerImport/index.d.ts`
 
 ## Operational Instructions for Visits Migration

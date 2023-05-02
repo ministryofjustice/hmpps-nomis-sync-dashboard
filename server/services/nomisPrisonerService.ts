@@ -40,6 +40,16 @@ export default class NomisPrisonerService {
     return response.totalElements
   }
 
+  async getAppointmentsMigrationEstimatedCount(filter: GetAdjustmentsByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for appointments migration estimated count`)
+    const response = await NomisPrisonerService.restClient(token).get<PageAdjustmentIdResponse>({
+      path: `/appointments/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
+  }
+
   async getVisitRooms(prisonId: string, futureVisits: boolean, context: Context): Promise<VisitRoomCountResponse[]> {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     return NomisPrisonerService.restClient(token).get<VisitRoomCountResponse[]>({

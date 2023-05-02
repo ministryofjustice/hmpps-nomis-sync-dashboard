@@ -32,7 +32,7 @@
           The <b>Failed</b> number represents the number of records that failed to migrate. A failed record is held in a dead letter queue. It may take a long time before any records that are destined to fail actaully appear in this number because they retried serveral times, each time going to the back of the queue.
         </p>    
         <p>
-          The <b>Failed</b> number techincally is just the current number records on the dead letter queue. So messages that have not been fixed from the previous migration would appear in this number, hence it is important a new migration should not be started before any failed records from previous migrations are delt with (either fixed or discarded).
+          The <b>Failed</b> number technically is just the current number of records on the dead letter queue. So messages that have not been fixed from the previous migration would appear in this number, hence it is important a new migration should not be started before any failed records from previous migrations are delt with (either fixed or discarded).
         </p>  
         <p>
           <b>Note:</b> Since the numbers are counts from the AWS SQS messaging system, that itself are just approximations, numbers can go up and down when the <b>Refresh</b> button is pressed.
@@ -153,7 +153,7 @@
             }
           ]
         }) }}
-      </div  
+      </div
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
