@@ -25,12 +25,19 @@ declare module 'express-session' {
     toDate?: string
   }
 
+  interface StartAppointmentsMigrationForm extends MigrationForm {
+    fromDate?: string
+    toDate?: string
+    prisonIds?: string
+  }
+
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
     nowInMinutes: number
     startVisitsMigrationForm: StartVisitsMigrationForm
     startSentencingMigrationForm: StartSentencingMigrationForm
+    startAppointmentsMigrationForm: StartAppointmentsMigrationForm
   }
 }
 

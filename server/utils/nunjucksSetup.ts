@@ -5,7 +5,7 @@ import * as pathModule from 'path'
 import moment from 'moment'
 import querystring, { ParsedUrlQueryInput } from 'querystring'
 import { Error } from '../validation/validation'
-import { VisitsMigrationViewFilter, MigrationViewFilter } from '../@types/dashboard'
+import { VisitsMigrationViewFilter, MigrationViewFilter, AppointmentsMigrationViewFilter } from '../@types/dashboard'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -151,20 +151,23 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     },
   )
 
-  njkEnv.addFilter('prisonSearchInput', (migrationViewFilter: VisitsMigrationViewFilter) => {
-    return {
-      label: {
-        text: 'Prison search',
-        classes: 'govuk-label--m',
-      },
-      id: 'prisonId',
-      name: 'prisonId',
-      hint: {
-        text: 'Search for a prison by code',
-      },
-      value: migrationViewFilter?.prisonId,
-    }
-  })
+  njkEnv.addFilter(
+    'prisonSearchInput',
+    (migrationViewFilter: VisitsMigrationViewFilter | AppointmentsMigrationViewFilter) => {
+      return {
+        label: {
+          text: 'Prison search',
+          classes: 'govuk-label--m',
+        },
+        id: 'prisonId',
+        name: 'prisonId',
+        hint: {
+          text: 'Search for a prison by code',
+        },
+        value: migrationViewFilter?.prisonId,
+      }
+    },
+  )
 
   njkEnv.addFilter('toDateInput', (migrationViewFilter: MigrationViewFilter, error: string) => {
     return {

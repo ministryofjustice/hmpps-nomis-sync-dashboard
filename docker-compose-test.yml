@@ -5,6 +5,7 @@ services:
     image: 'bitnami/redis:5.0'
     networks:
       - hmpps_int
+    container_name: redis-dash
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
@@ -14,7 +15,7 @@ services:
     image: rodolpheche/wiremock
     networks:
     - hmpps_int
-    container_name: wiremock
+    container_name: wiremock-dash
     restart: always
     ports:
       - "9091:8080"

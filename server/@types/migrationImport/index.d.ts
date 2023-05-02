@@ -22,20 +22,20 @@ export interface paths {
     post: operations['migrateVisits']
   }
   '/migrate/sentencing/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_VISITS</b> */
+    /** Requires role <b>MIGRATE_SENTENCING</b> */
     post: operations['cancel_1']
   }
   '/migrate/sentencing': {
     /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b> */
     post: operations['migrateSentencing']
   }
-  '/migrate/incentives/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_VISITS</b> */
+  '/migrate/appointments/{migrationId}/cancel': {
+    /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
     post: operations['cancel_2']
   }
-  '/migrate/incentives': {
-    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCENTIVES</b> */
-    post: operations['migrateIncentives']
+  '/migrate/appointments': {
+    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_APPOINTMENTS</b> */
+    post: operations['migrateAppointments']
   }
   '/queue-admin/get-dlq-messages/{dlqName}': {
     get: operations['getDlqMessages']
@@ -60,12 +60,12 @@ export interface paths {
     /** The records are un-paged and requires role <b>MIGRATE_SENTENCING</b> */
     get: operations['getAll_1']
   }
-  '/migrate/incentives/history/{migrationId}': {
-    /** Requires role <b>MIGRATE_INCENTIVES</b> */
+  '/migrate/appointments/history/{migrationId}': {
+    /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
     get: operations['get_2']
   }
-  '/migrate/incentives/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_INCENTIVES</b> */
+  '/migrate/appointments/history': {
+    /** The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b> */
     get: operations['getAll_2']
   }
   '/history': {
@@ -137,7 +137,7 @@ export interface components {
     }
     MigrationContextVisitsMigrationFilter: {
       /** @enum {string} */
-      type: 'VISITS' | 'INCENTIVES' | 'SENTENCING'
+      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -160,34 +160,39 @@ export interface components {
     }
     MigrationContextSentencingMigrationFilter: {
       /** @enum {string} */
-      type: 'VISITS' | 'INCENTIVES' | 'SENTENCING'
+      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['SentencingMigrationFilter']
     }
-    /** @description Filter specifying what should be migrated from NOMIS to Incentives service */
-    IncentivesMigrationFilter: {
+    /** @description Filter specifying what should be migrated from NOMIS to Appointments service */
+    AppointmentsMigrationFilter: {
       /**
        * Format: date
-       * @description Only include incentives issued on or after this date
+       * @description Only include appointments on or after this date
        * @example 2020-03-23
        */
       fromDate?: string
       /**
        * Format: date
-       * @description Only include incentives issued before or on this date
+       * @description Only include appointments before or on this date
        * @example 2020-03-24
        */
       toDate?: string
+      /**
+       * @description Only include appointments for these prison ids
+       * @example ['MDI','LEI']
+       */
+      prisonIds: string[]
     }
-    MigrationContextIncentivesMigrationFilter: {
+    MigrationContextAppointmentsMigrationFilter: {
       /** @enum {string} */
-      type: 'VISITS' | 'INCENTIVES' | 'SENTENCING'
+      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
-      body: components['schemas']['IncentivesMigrationFilter']
+      body: components['schemas']['AppointmentsMigrationFilter']
     }
     GetDlqResult: {
       /** Format: int32 */
@@ -224,10 +229,11 @@ export interface components {
       /** Format: int64 */
       recordsFailed: number
       /** @enum {string} */
-      migrationType: 'VISITS' | 'INCENTIVES' | 'SENTENCING'
+      migrationType: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
       /** @enum {string} */
       status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
       id: string
+      isNew: boolean
     }
   }
 }
@@ -332,7 +338,7 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_VISITS</b> */
+  /** Requires role <b>MIGRATE_SENTENCING</b> */
   cancel_1: {
     parameters: {
       path: {
@@ -391,7 +397,7 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_VISITS</b> */
+  /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
   cancel_2: {
     parameters: {
       path: {
@@ -422,13 +428,13 @@ export interface operations {
       }
     }
   }
-  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCENTIVES</b> */
-  migrateIncentives: {
+  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_APPOINTMENTS</b> */
+  migrateAppointments: {
     responses: {
       /** Migration process started */
       202: {
         content: {
-          'application/json': components['schemas']['MigrationContextIncentivesMigrationFilter']
+          'application/json': components['schemas']['MigrationContextAppointmentsMigrationFilter']
         }
       }
       /** Unauthorized to access this endpoint */
@@ -446,7 +452,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['IncentivesMigrationFilter']
+        'application/json': components['schemas']['AppointmentsMigrationFilter']
       }
     }
   }
@@ -641,7 +647,7 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_INCENTIVES</b> */
+  /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
   get_2: {
     parameters: {
       path: {
@@ -650,7 +656,7 @@ export interface operations {
       }
     }
     responses: {
-      /** The incentive migration history record */
+      /** The migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
@@ -676,7 +682,7 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATE_INCENTIVES</b> */
+  /** The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b> */
   getAll_2: {
     parameters: {
       query: {
@@ -689,7 +695,7 @@ export interface operations {
       }
     }
     responses: {
-      /** All incentives migration history records */
+      /** All migration history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]

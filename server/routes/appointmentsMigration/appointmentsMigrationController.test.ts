@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import SentencingMigrationController from './sentencingMigrationController'
+import AppointmentsMigrationController from './appointmentsMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
-describe('sentencingMigrationController', () => {
+describe('appointmentsMigrationController', () => {
   const req = {
     query: {},
     session: {},
@@ -20,19 +20,19 @@ describe('sentencingMigrationController', () => {
     jest.resetAllMocks()
   })
 
-  describe('getSentencingMigrations', () => {
+  describe('getAppointmentsMigrations', () => {
     it('should decorate the returned migrations', async () => {
-      const sentencingMigrationResponse: HistoricMigrations = {
+      const appointmentsMigrationResponse: HistoricMigrations = {
         migrations: [
           {
             migrationId: '2022-03-30T10:13:56',
             whenStarted: '2022-03-30T10:13:56.878627',
             whenEnded: '2022-03-30T10:14:07.531409',
             estimatedRecordCount: 0,
-            filter: '{"fromDate":"2022-03-04"}',
+            filter: '{"fromDate":"2022-03-04", "prisonIds": ["MDI"]}',
             recordsMigrated: 0,
             recordsFailed: 0,
-            migrationType: 'SENTENCING_ADJUSTMENTS',
+            migrationType: 'APPOINTMENTS',
             status: 'COMPLETED',
             id: '2022-03-14T10:13:56',
             isNew: false,
@@ -42,10 +42,10 @@ describe('sentencingMigrationController', () => {
             whenStarted: '2022-03-14T11:45:12.615759',
             whenEnded: '2022-03-14T13:26:10.047061',
             estimatedRecordCount: 205630,
-            filter: '{}',
+            filter: '{"prisonIds": ["MDI"]}',
             recordsMigrated: 1,
             recordsFailed: 162794,
-            migrationType: 'SENTENCING_ADJUSTMENTS',
+            migrationType: 'APPOINTMENTS',
             status: 'COMPLETED',
             id: '2022-03-14T11:45:12',
             isNew: false,
@@ -59,12 +59,13 @@ describe('sentencingMigrationController', () => {
           whenStarted: '2022-03-30T10:13:56.878627',
           whenEnded: '2022-03-30T10:14:07.531409',
           estimatedRecordCount: 0,
-          filter: '{"fromDate":"2022-03-04"}',
+          filter: '{"fromDate":"2022-03-04", "prisonIds": ["MDI"]}',
           recordsMigrated: 0,
           recordsFailed: 0,
-          migrationType: 'SENTENCING_ADJUSTMENTS',
+          migrationType: 'APPOINTMENTS',
           status: 'COMPLETED',
           id: '2022-03-14T10:13:56',
+          isNew: false,
           applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-30T09:13:56.878Z')), // BST was 2022-03-30T10:13:56.878627
         },
         {
@@ -72,34 +73,42 @@ describe('sentencingMigrationController', () => {
           whenStarted: '2022-03-14T11:45:12.615759',
           whenEnded: '2022-03-14T13:26:10.047061',
           estimatedRecordCount: 205630,
-          filter: '{}',
+          filter: '{"prisonIds": ["MDI"]}',
           recordsMigrated: 1,
           recordsFailed: 162794,
-          migrationType: 'SENTENCING_ADJUSTMENTS',
+          migrationType: 'APPOINTMENTS',
           status: 'COMPLETED',
           id: '2022-03-14T11:45:12',
+          isNew: false,
           applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-14T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
-      nomisMigrationService.getSentencingMigrations.mockResolvedValue(sentencingMigrationResponse)
+      nomisMigrationService.getAppointmentsMigrations.mockResolvedValue(appointmentsMigrationResponse)
 
-      await new SentencingMigrationController(nomisMigrationService, nomisPrisonerService).getSentencingMigrations(
+      await new AppointmentsMigrationController(nomisMigrationService, nomisPrisonerService).getAppointmentsMigrations(
         req,
         res,
       )
       expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/sentencing/sentencingMigration', {
+      expect(res.render).toBeCalledWith('pages/appointments/appointmentsMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
         ]),
+        migrationViewFilter: expect.objectContaining({
+          fromDateTime: undefined,
+          toDateTime: undefined,
+          includeOnlyFailures: false,
+          prisonId: undefined,
+        }),
+        errors: expect.arrayContaining([]),
       })
     })
   })
 
   describe('viewFailures', () => {
     beforeEach(() => {
-      nomisMigrationService.getSentencingFailures.mockResolvedValue({
+      nomisMigrationService.getAppointmentsFailures.mockResolvedValue({
         messagesFoundCount: 353,
         messagesReturnedCount: 5,
         messages: [
@@ -115,8 +124,8 @@ describe('sentencingMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new SentencingMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
-      expect(res.render).toBeCalledWith('pages/sentencing/sentencingMigrationFailures', {
+      await new AppointmentsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      expect(res.render).toBeCalledWith('pages/appointments/appointmentsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
             expect.objectContaining({
@@ -133,20 +142,21 @@ describe('sentencingMigrationController', () => {
     })
   })
 
-  describe('postStartSentencingMigration', () => {
+  describe('postStartAppointmentsMigration', () => {
     describe('with validation error', () => {
       it('should return an error response', async () => {
         req.body = {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
           toDate: 'banana',
+          prisonIds: 'MDI',
         }
-        await new SentencingMigrationController(
+        await new AppointmentsMigrationController(
           nomisMigrationService,
           nomisPrisonerService,
-        ).postStartSentencingMigration(req, res)
+        ).postStartAppointmentsMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
-        expect(res.redirect).toHaveBeenCalledWith('/sentencing-migration/amend')
+        expect(res.redirect).toHaveBeenCalledWith('/appointments-migration/amend')
       })
     })
   })

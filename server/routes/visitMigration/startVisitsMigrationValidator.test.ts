@@ -2,7 +2,7 @@ import type { StartVisitsMigrationForm } from 'forms'
 import validate from './startVisitsMigrationValidator'
 
 describe('startVisitsMigrationValidator', () => {
-  it('should no errors when everthing is valid', () => {
+  it('should be no errors when everything is valid', () => {
     const form: StartVisitsMigrationForm = {
       ...validForm,
       action: 'startMigration',
