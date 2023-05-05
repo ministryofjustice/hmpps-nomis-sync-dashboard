@@ -59,8 +59,8 @@ export default defineConfig({
         stubGetAppointmentsMigrationDetailsStarted: nomisMigrationApi.stubGetAppointmentsMigrationDetailsStarted,
         stubGetAppointmentsMigrationDetailsCompleted: nomisMigrationApi.stubGetAppointmentsMigrationDetailsCompleted,
 
-        stubInfoInProgress: nomisMigrationApi.stubInfoInProgress,
-        stubInfoCompleted: nomisMigrationApi.stubInfoCompleted,
+        stubMigrationInProgress: nomisMigrationApi.stubMigrationInProgress,
+        stubMigrationInProgressCompleted: nomisMigrationApi.stubMigrationInProgressCompleted,
 
         stubGetVisitMigrationRoomUsage: nomisMigrationApi.stubGetVisitMigrationRoomUsage,
         stubGetVisitRoomMappings: mappingApi.stubGetVisitRoomMappings,

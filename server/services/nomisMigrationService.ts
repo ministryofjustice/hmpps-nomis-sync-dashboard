@@ -1,15 +1,16 @@
 import querystring from 'querystring'
 import type {
+  AppointmentsMigrationFilter,
   GetDlqResult,
+  InProgressMigration,
+  MigrationContextAppointmentsMigrationFilter,
+  MigrationContextSentencingMigrationFilter,
   MigrationContextVisitsMigrationFilter,
   MigrationHistory,
-  VisitsMigrationFilter,
-  RoomMappingsResponse,
   PurgeQueueResult,
+  RoomMappingsResponse,
   SentencingMigrationFilter,
-  MigrationContextSentencingMigrationFilter,
-  AppointmentsMigrationFilter,
-  MigrationContextAppointmentsMigrationFilter,
+  VisitsMigrationFilter,
 } from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
@@ -26,8 +27,8 @@ export interface HistoricMigrations {
 export interface HistoricMigrationDetails {
   history: MigrationHistory
   currentProgress: {
-    recordsFailed: string
-    recordsToBeProcessed: string
+    recordsFailed: number
+    recordsToBeProcessed: number
     recordsMigrated: number
   }
 }
@@ -66,24 +67,16 @@ export default class NomisMigrationService {
       path: `/migrate/visits/history/${migrationId}`,
     })
 
-    const info = await NomisMigrationService.restClient(context.token).get<{
-      'last visits migration': {
-        'records waiting processing': string
-        'records that have failed': string
-        id: string
-        'records migrated': number
-      }
-    }>({
-      path: `/info`,
+    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
+      path: `/migrate/visits/active-migration`,
     })
 
     return {
       history,
       currentProgress: {
-        recordsFailed: info['last VISITS migration']['records that have failed'],
-        recordsMigrated:
-          info['last VISITS migration'].id === migrationId ? info['last VISITS migration']['records migrated'] : 0,
-        recordsToBeProcessed: info['last VISITS migration']['records waiting processing'],
+        recordsFailed: inProgressMigration.recordsFailed,
+        recordsMigrated: inProgressMigration.migrationId === migrationId ? inProgressMigration.recordsMigrated : 0,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
       },
     }
   }
@@ -149,26 +142,16 @@ export default class NomisMigrationService {
       path: `/migrate/sentencing/history/${migrationId}`,
     })
 
-    const info = await NomisMigrationService.restClient(context.token).get<{
-      'last SENTENCING_ADJUSTMENTS migration': {
-        'records waiting processing': string
-        'records that have failed': string
-        id: string
-        'records migrated': number
-      }
-    }>({
-      path: `/info`,
+    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
+      path: `/migrate/sentencing/active-migration`,
     })
 
     return {
       history,
       currentProgress: {
-        recordsFailed: info['last SENTENCING_ADJUSTMENTS migration']['records that have failed'],
-        recordsMigrated:
-          info['last SENTENCING_ADJUSTMENTS migration'].id === migrationId
-            ? info['last SENTENCING_ADJUSTMENTS migration']['records migrated']
-            : 0,
-        recordsToBeProcessed: info['last SENTENCING_ADJUSTMENTS migration']['records waiting processing'],
+        recordsFailed: inProgressMigration.recordsFailed,
+        recordsMigrated: inProgressMigration.recordsMigrated,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
       },
     }
   }
@@ -234,26 +217,16 @@ export default class NomisMigrationService {
       path: `/migrate/appointments/history/${migrationId}`,
     })
 
-    const info = await NomisMigrationService.restClient(context.token).get<{
-      'last APPOINTMENTS migration': {
-        'records waiting processing': string
-        'records that have failed': string
-        id: string
-        'records migrated': number
-      }
-    }>({
-      path: `/info`,
+    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
+      path: `/migrate/appointments/active-migration`,
     })
 
     return {
       history,
       currentProgress: {
-        recordsFailed: info['last APPOINTMENTS migration']['records that have failed'],
-        recordsMigrated:
-          info['last APPOINTMENTS migration'].id === migrationId
-            ? info['last APPOINTMENTS migration']['records migrated']
-            : 0,
-        recordsToBeProcessed: info['last APPOINTMENTS migration']['records waiting processing'],
+        recordsFailed: inProgressMigration.recordsFailed,
+        recordsMigrated: inProgressMigration.recordsMigrated,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
       },
     }
   }

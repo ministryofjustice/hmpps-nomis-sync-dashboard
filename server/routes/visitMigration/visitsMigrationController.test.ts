@@ -348,8 +348,8 @@ describe('visitsMigrationController', () => {
           isNew: false,
         },
         currentProgress: {
-          recordsFailed: '0',
-          recordsToBeProcessed: '0',
+          recordsFailed: 0,
+          recordsToBeProcessed: 0,
           recordsMigrated: 0,
         },
       }

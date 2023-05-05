@@ -52,6 +52,10 @@ export interface paths {
     /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
     get: operations['getAll']
   }
+  '/migrate/visits/active-migration': {
+    /** Requires role <b>MIGRATE_VISITS</b> */
+    get: operations['getActiveMigrationDetails']
+  }
   '/migrate/sentencing/history/{migrationId}': {
     /** Requires role <b>MIGRATE_SENTENCING</b> */
     get: operations['get_1']
@@ -60,6 +64,10 @@ export interface paths {
     /** The records are un-paged and requires role <b>MIGRATE_SENTENCING</b> */
     get: operations['getAll_1']
   }
+  '/migrate/sentencing/active-migration': {
+    /** Requires role <b>MIGRATE_SENTENCING</b> */
+    get: operations['getActiveMigrationDetails_1']
+  }
   '/migrate/appointments/history/{migrationId}': {
     /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
     get: operations['get_2']
@@ -67,6 +75,10 @@ export interface paths {
   '/migrate/appointments/history': {
     /** The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b> */
     get: operations['getAll_2']
+  }
+  '/migrate/appointments/active-migration': {
+    /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
+    get: operations['getActiveMigrationDetails_2']
   }
   '/history': {
     /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
@@ -234,6 +246,25 @@ export interface components {
       status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
       id: string
       isNew: boolean
+    }
+    InProgressMigration: {
+      /** Format: int64 */
+      recordsMigrated?: number
+      /** Format: int32 */
+      toBeProcessedCount?: number
+      /** Format: int32 */
+      beingProcessedCount?: number
+      /** Format: int32 */
+      recordsFailed?: number
+      migrationId?: string
+      /** @example 2021-07-05T10:35:17 */
+      whenStarted?: string
+      /** Format: int64 */
+      estimatedRecordCount?: number
+      /** @enum {string} */
+      migrationType?: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
+      /** @enum {string} */
+      status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
     }
   }
 }
@@ -579,6 +610,29 @@ export interface operations {
       }
     }
   }
+  /** Requires role <b>MIGRATE_VISITS</b> */
+  getActiveMigrationDetails: {
+    responses: {
+      /** Only called during an active migration from the UI - assumes latest migration is active */
+      200: {
+        content: {
+          'application/json': components['schemas']['InProgressMigration']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Requires role <b>MIGRATE_SENTENCING</b> */
   get_1: {
     parameters: {
@@ -647,6 +701,29 @@ export interface operations {
       }
     }
   }
+  /** Requires role <b>MIGRATE_SENTENCING</b> */
+  getActiveMigrationDetails_1: {
+    responses: {
+      /** Only called during an active migration from the UI - assumes latest migration is active */
+      200: {
+        content: {
+          'application/json': components['schemas']['InProgressMigration']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
   get_2: {
     parameters: {
@@ -699,6 +776,29 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
+  getActiveMigrationDetails_2: {
+    responses: {
+      /** Only called during an active migration from the UI - assumes latest migration is active */
+      200: {
+        content: {
+          'application/json': components['schemas']['InProgressMigration']
         }
       }
       /** Unauthorized to access this endpoint */
