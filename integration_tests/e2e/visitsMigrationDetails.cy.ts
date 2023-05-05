@@ -9,7 +9,9 @@ context('Visit Migration Details', () => {
   context('while migration is in progress', () => {
     beforeEach(() => {
       cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
-      cy.task('stubInfoInProgress', {
+      cy.task('stubMigrationInProgress', {
+        domain: 'visits',
+        type: 'VISITS',
         migrationId,
         migrated: 1000,
         failed: 100,
@@ -31,7 +33,7 @@ context('Visit Migration Details', () => {
   context('after migration has completed', () => {
     beforeEach(() => {
       cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
-      cy.task('stubInfoCompleted', migrationId)
+      cy.task('stubMigrationInProgressCompleted', { domain: 'visits', type: 'VISITS', migrationId })
       cy.task('stubGetVisitsMigrationDetailsCompleted', {
         migrationId,
         whenEnded: '2022-03-28T14:59:24.657071',
