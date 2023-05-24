@@ -714,7 +714,7 @@ const defaultAppointmentsMigrationHistory: MigrationHistory[] = [
     whenStarted: '2022-03-15T11:00:35.406626',
     whenEnded: '2022-03-15T11:00:45.990485',
     estimatedRecordCount: 4,
-    filter: '{"fromDate":"2022-03-15"}',
+    filter: '{"toDate":"2022-04-17", "prisonIds": ["MDI","SWI"]}',
     recordsMigrated: 0,
     recordsFailed: 4,
     migrationType: 'APPOINTMENTS',
