@@ -17,5 +17,6 @@ generic-service:
     APPINSIGHTS_COMPONENT: "nomisapi-t3"
 
 generic-prometheus-alerts:
+  businessHoursOnly: true
   alertSeverity: syscon
 
