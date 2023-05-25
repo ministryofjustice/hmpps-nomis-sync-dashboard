@@ -34,7 +34,7 @@ export default class AppointmentsMigrationController {
 
     const { migrations } = await this.nomisMigrationService.getAppointmentsMigrations(context(res))
 
-    const decoratedMigrations = migrations.map(history => ({
+    const decoratedMigrations = migrations.map(AppointmentsMigrationController.withFilter).map(history => ({
       ...history,
       applicationInsightsLink: AppointmentsMigrationController.applicationInsightsUrl(
         AppointmentsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
