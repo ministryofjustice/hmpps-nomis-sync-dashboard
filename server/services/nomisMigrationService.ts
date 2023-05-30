@@ -17,7 +17,7 @@ import type HmppsAuthClient from '../data/hmppsAuthClient'
 import RestClient from '../data/restClient'
 import config from '../config'
 import logger from '../../logger'
-import { VisitsMigrationViewFilter } from '../@types/dashboard'
+import { MigrationViewFilter } from '../@types/dashboard'
 import { GetVisitsByFilter } from '../@types/nomisPrisoner'
 
 export interface HistoricMigrations {
@@ -51,7 +51,7 @@ export default class NomisMigrationService {
     return new RestClient('Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
   }
 
-  async getVisitsMigrations(context: Context, filter: VisitsMigrationViewFilter): Promise<HistoricMigrations> {
+  async getVisitsMigrations(context: Context, filter: MigrationViewFilter): Promise<HistoricMigrations> {
     logger.info(`getting migrations with filter ${JSON.stringify(filter)}`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
@@ -202,11 +202,12 @@ export default class NomisMigrationService {
     return NomisMigrationService.getAnyDLQName('migrationsentencing-health', token)
   }
 
-  async getAppointmentsMigrations(context: Context): Promise<HistoricMigrations> {
-    logger.info(`getting appointments migrations`)
+  async getAppointmentsMigrations(context: Context, filter: MigrationViewFilter): Promise<HistoricMigrations> {
+    logger.info(`getting appointments migrations with filter ${JSON.stringify(filter)}`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
         path: `/migrate/appointments/history`,
+        query: `${removeEmptyPropertiesAndStringify(filter)}`,
       }),
     }
   }

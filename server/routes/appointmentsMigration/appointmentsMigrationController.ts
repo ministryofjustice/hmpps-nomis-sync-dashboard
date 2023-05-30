@@ -8,7 +8,9 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startAppointmentsMigrationValidator from './startAppointmentsMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
-import { AppointmentsMigrationViewFilter } from '../../@types/dashboard'
+import { MigrationViewFilter } from '../../@types/dashboard'
+import appointmentsMigrationValidator from './appointmentsMigrationValidator'
+import { withDefaultTime } from '../../utils/utils'
 
 interface Filter {
   prisonIds?: string[]
@@ -32,19 +34,35 @@ export default class AppointmentsMigrationController {
   async getAppointmentsMigrations(req: Request, res: Response): Promise<void> {
     const searchFilter = this.parseFilter(req)
 
-    const { migrations } = await this.nomisMigrationService.getAppointmentsMigrations(context(res))
+    const errors = appointmentsMigrationValidator(searchFilter)
 
-    const decoratedMigrations = migrations.map(AppointmentsMigrationController.withFilter).map(history => ({
-      ...history,
-      applicationInsightsLink: AppointmentsMigrationController.applicationInsightsUrl(
-        AppointmentsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
-      ),
-    }))
-    res.render('pages/appointments/appointmentsMigration', {
-      migrations: decoratedMigrations,
-      migrationViewFilter: searchFilter,
-      errors: [],
-    })
+    if (errors.length > 0) {
+      res.render('pages/appointments/appointmentsMigration', {
+        errors,
+        migrationViewFilter: searchFilter,
+      })
+    } else {
+      const { migrations } = await this.nomisMigrationService.getAppointmentsMigrations(context(res), {
+        ...searchFilter,
+        toDateTime: withDefaultTime(searchFilter.toDateTime),
+        fromDateTime: withDefaultTime(searchFilter.fromDateTime),
+      })
+
+      const decoratedMigrations = migrations.map(AppointmentsMigrationController.withFilter).map(history => ({
+        ...history,
+        applicationInsightsLink: AppointmentsMigrationController.applicationInsightsUrl(
+          AppointmentsMigrationController.alreadyMigratedApplicationInsightsQuery(
+            history.whenStarted,
+            history.whenEnded,
+          ),
+        ),
+      }))
+      res.render('pages/appointments/appointmentsMigration', {
+        migrations: decoratedMigrations,
+        migrationViewFilter: searchFilter,
+        errors: [],
+      })
+    }
   }
 
   async startNewAppointmentsMigration(req: Request, res: Response): Promise<void> {
@@ -153,7 +171,7 @@ export default class AppointmentsMigrationController {
     return value
   }
 
-  parseFilter(req: Request): AppointmentsMigrationViewFilter {
+  parseFilter(req: Request): MigrationViewFilter {
     return {
       prisonId: req.query.prisonId as string | undefined,
       toDateTime: req.query.toDateTime as string | undefined,
@@ -172,7 +190,7 @@ export default class AppointmentsMigrationController {
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
-    | where message contains 'Will not migrate the adjustment since it is migrated already,'
+    | where message contains 'Will not migrate the appointment since it is migrated already,'
     | where timestamp between (datetime(${AppointmentsMigrationController.toISODateTime(
       startedDate,
     )}) .. datetime(${AppointmentsMigrationController.toISODateTime(endedDate)}))
