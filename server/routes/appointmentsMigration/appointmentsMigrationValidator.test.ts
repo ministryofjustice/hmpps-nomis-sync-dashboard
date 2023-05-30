@@ -1,4 +1,4 @@
-import validate from './visitsMigrationValidator'
+import validate from './appointmentsMigrationValidator'
 import { MigrationViewFilter } from '../../@types/dashboard'
 
 describe('visitsMigrationValidator', () => {

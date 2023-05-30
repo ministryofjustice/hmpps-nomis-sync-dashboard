@@ -6,7 +6,7 @@ import NomisPrisonerService from '../../services/nomisPrisonerService'
 import trimForm from '../../utils/trim'
 import startVisitsMigrationValidator from './startVisitsMigrationValidator'
 import { MigrationHistory, VisitsMigrationFilter } from '../../@types/migration'
-import { VisitsMigrationViewFilter } from '../../@types/dashboard'
+import { MigrationViewFilter } from '../../@types/dashboard'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import visitsMigrationValidator from './visitsMigrationValidator'
 import logger from '../../../logger'
@@ -107,7 +107,7 @@ export default class VisitsMigrationController {
     const result = await this.visitMigrationService.deleteVisitsFailures(context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startVisitsMigrationForm }
-    this.postStartVisitMigration(req, res)
+    await this.postStartVisitMigration(req, res)
   }
 
   async postStartVisitMigrationPreview(req: Request, res: Response): Promise<void> {
@@ -171,7 +171,7 @@ export default class VisitsMigrationController {
     return value
   }
 
-  parseFilter(req: Request): VisitsMigrationViewFilter {
+  parseFilter(req: Request): MigrationViewFilter {
     return {
       prisonId: req.query.prisonId as string | undefined,
       toDateTime: req.query.toDateTime as string | undefined,

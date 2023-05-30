@@ -5,7 +5,7 @@ import * as pathModule from 'path'
 import moment from 'moment'
 import querystring, { ParsedUrlQueryInput } from 'querystring'
 import { Error } from '../validation/validation'
-import { VisitsMigrationViewFilter, MigrationViewFilter, AppointmentsMigrationViewFilter } from '../@types/dashboard'
+import { MigrationViewFilter } from '../@types/dashboard'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -152,22 +152,60 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
   )
 
   njkEnv.addFilter(
-    'prisonSearchInput',
-    (migrationViewFilter: VisitsMigrationViewFilter | AppointmentsMigrationViewFilter) => {
+    'toAppointmentsMigrationsListFilter',
+    (filterOptionsHtml: string, migrationViewFilter: MigrationViewFilter) => {
+      const hrefBase = '/appointments-migration?'
+      const prisonFilterTags = getPrisonFilterTags(migrationViewFilter, hrefBase)
+      const toDateFilterTags = getToDateFilterTags(migrationViewFilter, hrefBase)
+      const fromDateFilterTags = getFromDateFilterTags(migrationViewFilter, hrefBase)
+      const failedFilterTags = getFailedFilterTags(migrationViewFilter, hrefBase)
+
       return {
-        label: {
-          text: 'Prison search',
-          classes: 'govuk-label--m',
+        heading: {
+          text: 'Filter',
         },
-        id: 'prisonId',
-        name: 'prisonId',
-        hint: {
-          text: 'Search for a prison by code',
+        selectedFilters: {
+          heading: {
+            text: 'Selected filters',
+          },
+          clearLink: {
+            text: 'Clear filters',
+            href: '/appointments-migration',
+          },
+          categories: [
+            {
+              items: prisonFilterTags,
+            },
+            {
+              items: fromDateFilterTags,
+            },
+            {
+              items: toDateFilterTags,
+            },
+            {
+              items: failedFilterTags,
+            },
+          ],
         },
-        value: migrationViewFilter?.prisonId,
+        optionsHtml: filterOptionsHtml,
       }
     },
   )
+
+  njkEnv.addFilter('prisonSearchInput', (migrationViewFilter: MigrationViewFilter) => {
+    return {
+      label: {
+        text: 'Prison search',
+        classes: 'govuk-label--m',
+      },
+      id: 'prisonId',
+      name: 'prisonId',
+      hint: {
+        text: 'Search for a prison by code',
+      },
+      value: migrationViewFilter?.prisonId,
+    }
+  })
 
   njkEnv.addFilter('toDateInput', (migrationViewFilter: MigrationViewFilter, error: string) => {
     return {
@@ -215,7 +253,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     }
   })
 
-  function getPrisonFilterTags(migrationViewFilter: VisitsMigrationViewFilter, hrefBase: string) {
+  function getPrisonFilterTags(migrationViewFilter: MigrationViewFilter, hrefBase: string) {
     const { prisonId, ...newFilter }: ParsedUrlQueryInput = migrationViewFilter
     if (prisonId) {
       return [

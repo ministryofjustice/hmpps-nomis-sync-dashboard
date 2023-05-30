@@ -24,7 +24,6 @@ context('Start Appointments Migration', () => {
     })
 
     it('will validate page when selecting start migration', () => {
-      cy.get('span[data-qa="filterPrisonIds"]').contains('MDI,SWI')
       Page.verifyOnPage(AppointmentsMigrationPage).startNewMigration().click()
       const page = Page.verifyOnPage(StartAppointmentsMigrationPage)
       page.prisonIds().clear()

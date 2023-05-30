@@ -38,7 +38,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <div class="moj-filter-layout">
-          <div class="moj-filter-layout__filter">{{ mojFilter(filterOptionsHtml | toPrisonListFilter(migrationViewFilter, filterOptionsHtml)) }}</div>
+          <div class="moj-filter-layout__filter">{{ mojFilter(filterOptionsHtml | toAppointmentsMigrationsListFilter(migrationViewFilter, filterOptionsHtml)) }}</div>
           <div class="moj-filter-layout__content" data-qa="migration-results-div">
             <div>
               <div class="govuk-grid-column-full">
@@ -47,7 +47,6 @@
 
                   {% set rows = [] %}
                   {% for u in migrations %}
-
 
                     {% set cellHtml %}
                       <div class="govuk-!-margin-bottom-5">
