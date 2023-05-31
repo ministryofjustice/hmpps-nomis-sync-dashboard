@@ -31,7 +31,7 @@ export default class AppointmentsMigrationController {
   async getAppointmentsMigrations(req: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getAppointmentsMigrations(context(res))
 
-    const decoratedMigrations = migrations.map(history => ({
+    const decoratedMigrations = migrations.map(AppointmentsMigrationController.withFilter).map(history => ({
       ...history,
       applicationInsightsLink: AppointmentsMigrationController.applicationInsightsUrl(
         AppointmentsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
@@ -175,14 +175,17 @@ export default class AppointmentsMigrationController {
   }
 
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
+    filterPrisonIds?: string
     filterToDate?: string
     filterFromDate?: string
   } {
     const filter: Filter = JSON.parse(migration.filter)
+    const filterPrisonIds = filter.prisonIds?.join()
     const filterToDate = filter.toDate
     const filterFromDate = filter.fromDate
     return {
       ...migration,
+      ...(filterPrisonIds && { filterPrisonIds }),
       ...(filterToDate && { filterToDate }),
       ...(filterFromDate && { filterFromDate }),
     }

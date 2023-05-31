@@ -94,6 +94,27 @@
                             </div>
                           {% endif %}
                           </div>
+
+                        <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                          <div class="govuk-grid-column-full govuk-!-margin-bottom-3 govuk-!-margin-top-2">
+                            <span class="govuk-label--s govuk-!-font-weight-bold">Migration properties:</span>
+                          </div>
+                          {% if u.filterPrisonIds %}
+                            <div class="govuk-grid-column-full">
+                              <span class="govuk-label--s">Prisons:</span><span data-qa="filterPrisonIds" class="govuk-!-margin-left-2">{{ u.filterPrisonIds }}</span>
+                            </div>
+                          {% endif %}
+                          {% if u.filterFromDate %}
+                            <div class="govuk-grid-column-full">
+                              <span class="govuk-label--s">From date:</span><span data-qa="filterFromDate" class="govuk-!-margin-left-2">{{ u.filterFromDate | formatDate('D MMMM YYYY') }}</span>
+                            </div>
+                          {% endif %}
+                          {% if u.filterToDate %}
+                            <div class="govuk-grid-column-full">
+                              <span class="govuk-label--s">To date:</span><span data-qa="filterToDate" class="govuk-!-margin-left-2"> {{ u.filterToDate | formatDate('D MMMM YYYY') }}</span>
+                            </div>
+                          {% endif %}
+                        </div>
                       </div>
                     {% endset %}
 
