@@ -203,11 +203,18 @@ export default class NomisMigrationService {
   }
 
   async getAppointmentsMigrations(context: Context, filter: MigrationViewFilter): Promise<HistoricMigrations> {
-    logger.info(`getting appointments migrations with filter ${JSON.stringify(filter)}`)
+    const genericFilter = {
+      toDateTime: filter.toDateTime,
+      fromDateTime: filter.fromDateTime,
+      includeOnlyFailures: filter.includeOnlyFailures,
+      migrationTypes: 'APPOINTMENTS',
+      filterContains: filter.prisonId?.toUpperCase(),
+    }
+    logger.info(`getting appointments migrations with filter ${JSON.stringify(genericFilter)}`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
-        path: `/migrate/appointments/history`,
-        query: `${removeEmptyPropertiesAndStringify(filter)}`,
+        path: `/history`,
+        query: `${removeEmptyPropertiesAndStringify(genericFilter)}`,
       }),
     }
   }

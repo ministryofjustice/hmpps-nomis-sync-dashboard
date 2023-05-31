@@ -30,10 +30,11 @@ context('Appointment Migration Homepage', () => {
 
       const migrationPage = AppointmentsMigrationPage.goTo()
 
+      migrationPage.prisons().type('MDI')
       migrationPage.fromDateTime().type('2022-03-12')
       migrationPage.toDateTime().type('2022-03-15')
 
-      cy.get('span[data-qa="filterPrisonIds"]').contains('MDI,SWI')
+      migrationPage.applyFiltersButton().click()
 
       migrationPage.migrationResultsRow(0).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T10:13:56')
