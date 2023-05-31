@@ -13,6 +13,8 @@ export default class AppointmentsMigrationPage extends Page {
 
   applyFiltersButton = () => cy.contains('Apply filters')
 
+  prisons = () => cy.get('#prisonId')
+
   fromDateTime = () => cy.get('#fromDateTime')
 
   toDateTime = () => cy.get('#toDateTime')

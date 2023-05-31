@@ -650,7 +650,7 @@ const stubListOfAppointmentsMigrationHistory = (
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-migration-api/migrate/appointments/history?.*',
+      urlPattern: '/nomis-migration-api/history?.*',
     },
     response: {
       status: 200,
