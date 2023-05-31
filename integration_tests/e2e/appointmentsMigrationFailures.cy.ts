@@ -12,7 +12,7 @@ context('Appointment Migration Failures', () => {
       cy.task('stubGetAppointmentsFailures')
       cy.signIn()
     })
-    it('should failures rows', () => {
+    it('should see failures rows', () => {
       const page = AppointmentsMigrationFailuresPage.goTo()
       page.rows().should('have.length', 5)
     })

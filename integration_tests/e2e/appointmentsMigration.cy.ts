@@ -30,12 +30,6 @@ context('Appointment Migration Homepage', () => {
 
       const migrationPage = AppointmentsMigrationPage.goTo()
 
-      migrationPage.prisons().type('MDI')
-      migrationPage.fromDateTime().type('2022-03-12')
-      migrationPage.toDateTime().type('2022-03-15')
-
-      migrationPage.applyFiltersButton().click()
-
       migrationPage.migrationResultsRow(0).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T10:13:56')
         cy.get('[data-qa=whenStarted]').should('contain.text', '14 March 2022 - 10:13')
@@ -44,11 +38,9 @@ context('Appointment Migration Homepage', () => {
         cy.get('[data-qa=migratedCount]').should('contain.text', '0')
         cy.get('[data-qa=failedCount]').should('contain.text', '0')
         cy.get('[data-qa=estimatedCount]').should('contain.text', '0')
-        cy.get('[data-qa=filterPrisonIds]').should('not.exist')
-        cy.get('[data-qa=filterToDate]').should('not.exist')
-        cy.get('[data-qa=filterFromDate]').should('contain.text', '4 March 2022')
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('not.exist')
+        cy.get('[data-qa=already-migrated-link]').should('not.exist')
       })
       migrationPage.migrationResultsRow(1).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T11:45:12')
@@ -58,9 +50,6 @@ context('Appointment Migration Homepage', () => {
         cy.get('[data-qa=migratedCount]').should('contain.text', '1')
         cy.get('[data-qa=failedCount]').should('contain.text', '162794')
         cy.get('[data-qa=estimatedCount]').should('contain.text', '205630')
-        cy.get('[data-qa=filterPrisonIds]').should('not.exist')
-        cy.get('[data-qa=filterToDate]').should('not.exist')
-        cy.get('[data-qa=filterFromDate]').should('not.exist')
         cy.get('[data-qa=progress-link]').should('contain.text', 'View progress')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
         cy.get('[data-qa=already-migrated-link]').should('contain.text', 'View Insights')
@@ -73,9 +62,6 @@ context('Appointment Migration Homepage', () => {
         cy.get('[data-qa=migratedCount]').should('contain.text', '0')
         cy.get('[data-qa=failedCount]').should('contain.text', '4')
         cy.get('[data-qa=estimatedCount]').should('contain.text', '4')
-        cy.get('[data-qa=filterPrisonIds]').should('contain.text', 'MDI,SWI')
-        cy.get('[data-qa=filterToDate]').should('contain.text', '17 April 2022')
-        cy.get('[data-qa=filterFromDate]').should('not.exist')
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
@@ -85,19 +71,6 @@ context('Appointment Migration Homepage', () => {
         cy.get('[data-qa=failures-link]').click()
       })
       Page.verifyOnPage(AppointmentsMigrationFailuresPage)
-    })
-
-    it('will validate the dates when filtering', () => {
-      const migrationPage = AppointmentsMigrationPage.goTo()
-
-      migrationPage.fromDateTime().type('invalid')
-      migrationPage.toDateTime().type('1971-67-12')
-
-      migrationPage.applyFiltersButton().click()
-
-      const pageWithErrors = Page.verifyOnPage(AppointmentsMigrationPage)
-      pageWithErrors.fromDateTimeError().contains('Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23')
-      pageWithErrors.toDateTimeError().contains('Enter a real date time, like 2020-03-23T12:00:00 or 2020-03-23')
     })
   })
 

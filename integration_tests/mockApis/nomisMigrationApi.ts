@@ -650,7 +650,7 @@ const stubListOfAppointmentsMigrationHistory = (
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-migration-api/history?.*',
+      urlPattern: '/nomis-migration-api/migrate/appointments/history?.*',
     },
     response: {
       status: 200,
@@ -714,7 +714,6 @@ const defaultAppointmentsMigrationHistory: MigrationHistory[] = [
     whenStarted: '2022-03-15T11:00:35.406626',
     whenEnded: '2022-03-15T11:00:45.990485',
     estimatedRecordCount: 4,
-    filter: '{"toDate":"2022-04-17", "prisonIds": ["MDI","SWI"]}',
     recordsMigrated: 0,
     recordsFailed: 4,
     migrationType: 'APPOINTMENTS',
