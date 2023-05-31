@@ -95,12 +95,6 @@ describe('appointmentsMigrationController', () => {
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
         ]),
-        migrationViewFilter: expect.objectContaining({
-          fromDateTime: undefined,
-          toDateTime: undefined,
-          includeOnlyFailures: false,
-          prisonId: undefined,
-        }),
         errors: expect.arrayContaining([]),
       })
     })

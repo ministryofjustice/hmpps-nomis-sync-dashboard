@@ -202,19 +202,11 @@ export default class NomisMigrationService {
     return NomisMigrationService.getAnyDLQName('migrationsentencing-health', token)
   }
 
-  async getAppointmentsMigrations(context: Context, filter: MigrationViewFilter): Promise<HistoricMigrations> {
-    const genericFilter = {
-      toDateTime: filter.toDateTime,
-      fromDateTime: filter.fromDateTime,
-      includeOnlyFailures: filter.includeOnlyFailures,
-      migrationTypes: 'APPOINTMENTS',
-      filterContains: filter.prisonId?.toUpperCase(),
-    }
-    logger.info(`getting appointments migrations with filter ${JSON.stringify(genericFilter)}`)
+  async getAppointmentsMigrations(context: Context): Promise<HistoricMigrations> {
+    logger.info(`getting appointments migrations`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
-        path: `/history`,
-        query: `${removeEmptyPropertiesAndStringify(genericFilter)}`,
+        path: `/migrate/appointments/history`,
       }),
     }
   }
