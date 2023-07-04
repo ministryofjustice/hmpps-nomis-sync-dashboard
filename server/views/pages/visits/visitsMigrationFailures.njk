@@ -18,17 +18,7 @@
       <h1 class="govuk-heading-l govuk-!-margin-top-7">Visits migration failures</h1>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-          {% set notificationBannerHtml %}
-          <p><b>Note:</b> because reading the dead letter queue has the side effect of changing the visibility of records, refreshing this page within a minute can return different results.</p>
-          {% endset %}
-          {{ govukNotificationBanner({
-            html: notificationBannerHtml
-          }) }}
-        </div>
-      </div>      
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          <p>All records that on the main dead letter queue are displayed. These may include records from other migration runs.
+          <p>All records that are on the main dead letter queue are displayed. These may include records from other migration runs.
             If a record that failed at the point of the migration was subsequently fixed (or discarded) then it will no longer be shown on this page.
           </p>
 
