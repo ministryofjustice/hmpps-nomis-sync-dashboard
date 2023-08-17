@@ -43,7 +43,7 @@ export default function routes(router: Router, services: Services): Router {
   get('/adjudications-migration/details', (req, res) =>
     adjudicationsMigrationController.adjudicationsMigrationDetails(req, res),
   )
-  post('/appointments-migration/cancel', (req, res) => adjudicationsMigrationController.cancelMigration(req, res))
+  post('/adjudications-migration/cancel', (req, res) => adjudicationsMigrationController.cancelMigration(req, res))
 
   return router
 }
