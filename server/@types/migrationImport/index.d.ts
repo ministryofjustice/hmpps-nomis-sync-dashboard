@@ -37,6 +37,14 @@ export interface paths {
     /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_APPOINTMENTS</b> */
     post: operations['migrateAppointments']
   }
+  '/migrate/adjudications/{migrationId}/cancel': {
+    /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    post: operations['cancel_3']
+  }
+  '/migrate/adjudications': {
+    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    post: operations['migrateAdjudications']
+  }
   '/queue-admin/get-dlq-messages/{dlqName}': {
     get: operations['getDlqMessages']
   }
@@ -80,9 +88,21 @@ export interface paths {
     /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
     get: operations['getActiveMigrationDetails_2']
   }
+  '/migrate/adjudications/history/{migrationId}': {
+    /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    get: operations['get_3']
+  }
+  '/migrate/adjudications/history': {
+    /** The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    get: operations['getAll_3']
+  }
+  '/migrate/adjudications/active-migration': {
+    /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    get: operations['getActiveMigrationDetails_3']
+  }
   '/history': {
     /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
-    get: operations['getAll_3']
+    get: operations['getAll_4']
     /** This is only required for test environments and requires role <b>MIGRATION_ADMIN</b> */
     delete: operations['deleteAll']
   }
@@ -149,7 +169,7 @@ export interface components {
     }
     MigrationContextVisitsMigrationFilter: {
       /** @enum {string} */
-      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
+      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS' | 'ADJUDICATIONS' | 'ACTIVITIES'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -172,7 +192,7 @@ export interface components {
     }
     MigrationContextSentencingMigrationFilter: {
       /** @enum {string} */
-      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
+      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS' | 'ADJUDICATIONS' | 'ACTIVITIES'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -200,11 +220,39 @@ export interface components {
     }
     MigrationContextAppointmentsMigrationFilter: {
       /** @enum {string} */
-      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
+      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS' | 'ADJUDICATIONS' | 'ACTIVITIES'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['AppointmentsMigrationFilter']
+    }
+    /** @description Filter specifying what should be migrated from NOMIS to the Adjudications service */
+    AdjudicationsMigrationFilter: {
+      /**
+       * Format: date
+       * @description Only include adjudications created on or after this date
+       * @example 2020-03-23
+       */
+      fromDate?: string
+      /**
+       * Format: date
+       * @description Only include adjudications created before or on this date
+       * @example 2020-03-24
+       */
+      toDate?: string
+      /**
+       * @description Only include adjudications for these prison ids
+       * @example ['MDI','LEI']
+       */
+      prisonIds: string[]
+    }
+    MigrationContextAdjudicationsMigrationFilter: {
+      /** @enum {string} */
+      type: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS' | 'ADJUDICATIONS' | 'ACTIVITIES'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: components['schemas']['AdjudicationsMigrationFilter']
     }
     GetDlqResult: {
       /** Format: int32 */
@@ -241,7 +289,7 @@ export interface components {
       /** Format: int64 */
       recordsFailed: number
       /** @enum {string} */
-      migrationType: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
+      migrationType: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS' | 'ADJUDICATIONS' | 'ACTIVITIES'
       /** @enum {string} */
       status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
       id: string
@@ -262,7 +310,7 @@ export interface components {
       /** Format: int64 */
       estimatedRecordCount?: number
       /** @enum {string} */
-      migrationType?: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS'
+      migrationType?: 'VISITS' | 'SENTENCING_ADJUSTMENTS' | 'APPOINTMENTS' | 'ADJUDICATIONS' | 'ACTIVITIES'
       /** @enum {string} */
       status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
     }
@@ -484,6 +532,65 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['AppointmentsMigrationFilter']
+      }
+    }
+  }
+  /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+  cancel_3: {
+    parameters: {
+      path: {
+        /** Migration Id */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** Cancellation request accepted */
+      202: unknown
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** No running migration found with migration id */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+  migrateAdjudications: {
+    responses: {
+      /** Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextAdjudicationsMigrationFilter']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to start migration */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdjudicationsMigrationFilter']
       }
     }
   }
@@ -815,8 +922,99 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
+  /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+  get_3: {
+    parameters: {
+      path: {
+        /** Migration Id */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** The migration history record */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Migration not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b> */
   getAll_3: {
+    parameters: {
+      query: {
+        /** Only include migrations started after this date time */
+        fromDateTime?: string
+        /** Only include migrations started before this date time */
+        toDateTime?: string
+        /** When true only include migrations that had at least one failure */
+        includeOnlyFailures?: boolean
+      }
+    }
+    responses: {
+      /** All migration history records */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory'][]
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+  getActiveMigrationDetails_3: {
+    responses: {
+      /** Only called during an active migration from the UI - assumes latest migration is active */
+      200: {
+        content: {
+          'application/json': components['schemas']['InProgressMigration']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
+  getAll_4: {
     parameters: {
       query: {
         /** List of migration types, when omitted all migration types will be returned */
