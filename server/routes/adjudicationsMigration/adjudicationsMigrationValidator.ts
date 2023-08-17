@@ -8,8 +8,6 @@ export default function validate(form: MigrationViewFilter): Express.ValidationE
       fromDateTime: 'datetime',
       toDateTime: 'datetime',
     },
-    {
-      'required.prisonIds': 'Enter one or more prison IDs',
-    },
+    {},
   )
 }

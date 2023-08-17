@@ -10,13 +10,13 @@ describe('startAdjudicationsMigrationValidator', () => {
     expect(validate(form)).toHaveLength(0)
   })
 
-  it('should reject empty prisonIds', () => {
+  it('should allow empty prisonIds', () => {
     const form: StartAdjudicationsMigrationForm = {
       ...validForm,
       prisonIds: '',
     }
 
-    expect(validate(form)).toContainEqual({ href: '#prisonIds', text: 'Enter one or more prison IDs' })
+    expect(validate(form)).toHaveLength(0)
   })
 
   it('should reject invalid fromDate', () => {

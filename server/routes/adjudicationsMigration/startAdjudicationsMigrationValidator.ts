@@ -5,12 +5,9 @@ export default function validate(form: StartAdjudicationsMigrationForm): Express
   return validateForm(
     form,
     {
-      prisonIds: 'required',
       fromDate: 'date',
       toDate: 'date',
     },
-    {
-      'required.prisonIds': 'Enter one or more prison IDs',
-    },
+    {},
   )
 }
