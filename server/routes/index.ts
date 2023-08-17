@@ -3,11 +3,13 @@ import { type RequestHandler, Router } from 'express'
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
 import sentencingMigrationRoutes from './sentencingMigration/sentencingMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
+import adjudicationsMigrationRoutes from './adjudicationsMigration/adjudicationsMigrationRouter'
 import {
   extractRoles,
   MIGRATE_SENTENCING_ROLE,
   MIGRATE_VISITS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
+  MIGRATE_ADJUDICATIONS_ROLE,
 } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
@@ -47,6 +49,14 @@ export default function routes(services: Services): Router {
           enabled: true,
         },
         {
+          id: 'adjudications-migration',
+          heading: 'Adjudications migration',
+          description: 'Migration and synchronisation information',
+          href: '/adjudications-migration',
+          roles: [MIGRATE_ADJUDICATIONS_ROLE],
+          enabled: true,
+        },
+        {
           id: 'room-mappings',
           heading: 'Visit room mappings',
           description: 'Manage visit room mappings between NOMIS and VSIP',
@@ -64,5 +74,6 @@ export default function routes(services: Services): Router {
   visitMigrationRoutes(router, services)
   sentencingMigrationRoutes(router, services)
   appointmentsMigrationRoutes(router, services)
+  adjudicationsMigrationRoutes(router, services)
   return router
 }
