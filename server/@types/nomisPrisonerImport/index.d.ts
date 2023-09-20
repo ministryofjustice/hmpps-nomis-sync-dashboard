@@ -23,15 +23,15 @@ export interface paths {
   '/prisoners/{offenderNo}/visits/{visitId}/cancel': {
     put: operations['cancelVisit']
   }
-  '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}': {
-    /** Get an non-association given the two offender numbers. Requires role NOMIS_NON_ASSOCIATIONS */
-    get: operations['getNonAssociation']
+  '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/sequence/{typeSequence}': {
     /** Updates an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS */
     put: operations['updateNonAssociation']
+    /** Deletes the specified non-association detail record. if there was only one, the parent NA record is deleted too. Requires role NOMIS_NON_ASSOCIATIONS */
+    delete: operations['deleteNonAssociation']
   }
-  '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/close': {
+  '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/sequence/{typeSequence}/close': {
     /** Closes an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS */
-    put: operations['cancelNonAssociation']
+    put: operations['closeNonAssociation']
   }
   '/key-date-adjustments/{adjustmentId}': {
     /** Requires role NOMIS_SENTENCING. Retrieves a key date adjustment by id */
@@ -67,6 +67,16 @@ export interface paths {
     /** Cancels an existing appointment. Requires role NOMIS_APPOINTMENTS */
     put: operations['cancelAppointment']
   }
+  '/adjudications/adjudication-number/{adjudicationNumber}/repairs': {
+    /** List of repairs are refreshed so this operation may result in any combinations of inserts, updates or deletes. Requires ROLE_NOMIS_ADJUDICATIONS */
+    put: operations['updateRepairs']
+  }
+  '/adjudications/adjudication-number/{adjudicationNumber}/hearings/{hearingId}': {
+    /** Updates a hearing for a given adjudication and hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS */
+    put: operations['updateHearing']
+    /** Deletes a hearing for a given adjudication and hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS */
+    delete: operations['deleteHearing']
+  }
   '/activities/{courseActivityId}': {
     /** Gets activity details including schedule rules and pay rates. Requires role NOMIS_ACTIVITIES */
     get: operations['getActivity']
@@ -78,6 +88,10 @@ export interface paths {
   '/activities/{courseActivityId}/schedule': {
     /** Updates a course schedule. Requires role NOMIS_ACTIVITIES */
     put: operations['updateCourseSchedule']
+  }
+  '/activities/{courseActivityId}/end': {
+    /** Ends a course activity and all active attendances with end date today. Requires role NOMIS_ACTIVITIES */
+    put: operations['endActivity']
   }
   '/activities/{courseActivityId}/allocation': {
     /** Creates or updates a prisoner's allocation to an activity. Requires role NOMIS_ACTIVITIES */
@@ -127,6 +141,16 @@ export interface paths {
     /** Creates a new appointment. Requires role NOMIS_APPOINTMENTS */
     post: operations['createAppointment']
   }
+  '/adjudications/adjudication-number/{adjudicationNumber}/hearings': {
+    /** Creates a hearing for a given adjudication. Requires ROLE_NOMIS_ADJUDICATIONS */
+    post: operations['createHearing']
+  }
+  '/adjudications/adjudication-number/{adjudicationNumber}/hearings/{hearingId}/result': {
+    /** Creates a hearing result for a given hearing. DPS only supports 1 result per hearing. Requires ROLE_NOMIS_ADJUDICATIONS */
+    post: operations['createHearingResult']
+    /** Deletes a hearing result for a given adjudication and hearing Id. The result sequence is always 1 for synchronising DPS migrated/created data. Requires ROLE_NOMIS_ADJUDICATIONS */
+    delete: operations['deleteHearingResult']
+  }
   '/activities': {
     /** Creates a new activity and associated pay rates. Requires role NOMIS_ACTIVITIES */
     post: operations['createActivity']
@@ -147,8 +171,16 @@ export interface paths {
     /** Requires role SYNCHRONISATION_REPORTING. */
     get: operations['getPrisonerIdentifiers']
   }
+  '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}': {
+    /** Get the open non-association for the two offender numbers. Requires role NOMIS_NON_ASSOCIATIONS */
+    get: operations['getNonAssociation']
+  }
+  '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/all': {
+    /** Get all non-associations for the two offender numbers, including expired. Requires role NOMIS_NON_ASSOCIATIONS */
+    get: operations['getNonAssociationDetails']
+  }
   '/non-associations/ids': {
-    /** Retrieves a paged list of incentive composite ids by filter. Requires ROLE_NOMIS_NON_ASSOCIATIONS. */
+    /** Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_NON_ASSOCIATIONS. */
     get: operations['getNonAssociationsByFilter']
   }
   '/incentives/ids': {
@@ -186,6 +218,14 @@ export interface paths {
   '/adjustments/ids': {
     /** Retrieves a paged list of adjustment ids by filter. Requires ROLE_NOMIS_SENTENCING. */
     get: operations['getAdjustmentsByFilter']
+  }
+  '/adjudications/hearings/{hearingId}': {
+    /** Retrieves a hearing by the hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS */
+    get: operations['getAdjudicationHearing']
+  }
+  '/adjudications/hearings/{hearingId}/result': {
+    /** Retrieves a hearing result by the nomis hearing id. DPS migrated and synchronised hearing results always have a result sequence of 1 Requires ROLE_NOMIS_ADJUDICATIONS */
+    get: operations['getAdjudicationHearingResult']
   }
   '/adjudications/charges/ids': {
     /** Retrieves a paged list of adjudication charge ids by filter. Requires ROLE_NOMIS_ADJUDICATIONS. */
@@ -292,19 +332,16 @@ export interface components {
       comments?: string
       /**
        * @description Whether the absence is excused
-       * @default false
        * @example true
        */
       unexcusedAbsence: boolean
       /**
        * @description Whether the absence is authorised
-       * @default false
        * @example true
        */
       authorisedAbsence: boolean
       /**
        * @description Whether the attendance is to be paid
-       * @default false
        * @example true
        */
       paid: boolean
@@ -359,18 +396,8 @@ export interface components {
        */
       outcome: 'VISCANC' | 'OFFCANC' | 'ADMIN' | 'NSHOW'
     }
-    /** @description Offender individual schedule creation request */
-    CreateNonAssociationRequest: {
-      /**
-       * @description Noms id of the prisoner
-       * @example A1234DF
-       */
-      offenderNo: string
-      /**
-       * @description Noms id of the other prisoner
-       * @example A1234EG
-       */
-      nsOffenderNo: string
+    /** @description Offender NonAssociation update request */
+    UpdateNonAssociationRequest: {
       /**
        * @description Reason code of the first prisoner, domain NON_ASSO_RSN
        * @example VIC
@@ -386,6 +413,10 @@ export interface components {
        * @example WING
        */
       type: string
+      /**
+       * @description Free text name of staff member
+       * @example Joe Bloggs
+       */
       authorisedBy?: string
       /**
        * Format: date
@@ -591,6 +622,61 @@ export interface components {
        */
       comment?: string
     }
+    CodeDescription: {
+      code: string
+      description: string
+    }
+    /** @description The repairs required due to the damage */
+    Repair: {
+      type: components['schemas']['CodeDescription']
+      comment?: string
+      cost?: number
+      /** @description Username of person who created the record in NOMIS */
+      createdByUsername: string
+    }
+    UpdateRepairsResponse: {
+      /** @description The repairs required due to the damage */
+      repairs: components['schemas']['Repair'][]
+    }
+    /** @description Current list of repairs required due to damage */
+    RepairToUpdateOrAdd: {
+      /**
+       * @description NOMIS repair type code
+       * @enum {string}
+       */
+      typeCode: 'CLEA' | 'DECO' | 'ELEC' | 'FABR' | 'LOCK' | 'PLUM'
+      /** @description Description of repair required by damage */
+      comment?: string
+    }
+    /** @description Repairs required due to damage. Any items not in this list will be removed from the Adjudication in NOMIS */
+    UpdateRepairsRequest: {
+      /** @description Current list of repairs required due to damage */
+      repairs: components['schemas']['RepairToUpdateOrAdd'][]
+    }
+    /** @description Hearing update fields */
+    UpdateHearingRequest: {
+      /**
+       * @description Type of hearing
+       * @example GOV
+       */
+      hearingType: string
+      /**
+       * Format: date
+       * @description Hearing date
+       */
+      hearingDate: string
+      /**
+       * Format: partial-time
+       * @description Hearing time
+       */
+      hearingTime: string
+      /**
+       * Format: int64
+       * @description location id for the hearing
+       * @example 123456
+       */
+      internalLocationId: number
+    }
     /** @description Course schedule request */
     CourseScheduleRequest: {
       /**
@@ -680,15 +766,9 @@ export interface components {
        * @example true
        */
       friday: boolean
-      /**
-       * @description Scheduled on Saturday
-       * @example false
-       */
+      /** @description Scheduled on Saturday */
       saturday: boolean
-      /**
-       * @description Scheduled on Sunday
-       * @example false
-       */
+      /** @description Scheduled on Sunday */
       sunday: boolean
     }
     /** @description Course activity update request */
@@ -731,6 +811,8 @@ export interface components {
       scheduleRules: components['schemas']['ScheduleRuleRequest'][]
       /** @description Exclude bank holidays? */
       excludeBankHolidays: boolean
+      /** @description Outside work? */
+      outsideWork: boolean
       /** @description Program Service code (from activity category) */
       programCode: string
       /** @description Schedules */
@@ -984,10 +1066,6 @@ export interface components {
       /** @description hearings associated with this adjudication */
       hearings: components['schemas']['Hearing'][]
     }
-    CodeDescription: {
-      code: string
-      description: string
-    }
     Evidence: {
       type: components['schemas']['CodeDescription']
       /** Format: date */
@@ -1036,6 +1114,24 @@ export interface components {
       createdDateTime: string
       /** @description Username of person who created the record in NOMIS */
       createdByUsername: string
+      /** @description List of hearing notifications */
+      notifications: components['schemas']['HearingNotification'][]
+    }
+    /** @description List of hearing notifications */
+    HearingNotification: {
+      /**
+       * Format: date
+       * @description Hearing notification date
+       */
+      deliveryDate: string
+      /**
+       * Format: partial-time
+       * @description Hearing notification time
+       */
+      deliveryTime: string
+      /** @description Notification comment */
+      comment?: string
+      notifiedStaff: components['schemas']['Staff']
     }
     HearingResult: {
       pleaFindingType?: components['schemas']['CodeDescription']
@@ -1072,6 +1168,8 @@ export interface components {
       consecutiveAward?: components['schemas']['HearingResultAward']
       /** Format: int32 */
       chargeSequence: number
+      /** Format: int64 */
+      adjudicationNumber: number
     }
     InternalLocation: {
       /**
@@ -1102,15 +1200,15 @@ export interface components {
       lastName: string
       /** @description Username of person who created the record in NOMIS where this prisoner is used */
       createdByUsername: string
-    }
-    /** @description The repairs required due to the damage */
-    Repair: {
-      type: components['schemas']['CodeDescription']
+      /**
+       * Format: date
+       * @description date added in NOMIS to the adjudication incident
+       */
+      dateAddedToIncident: string
+      /** @description comment about why they were added to the adjudication incident */
       comment?: string
-      cost?: number
-      /** @description Username of person who created the record in NOMIS */
-      createdByUsername: string
     }
+    /** @description Staff notified */
     Staff: {
       /** @description Username of first account related to staff */
       username: string
@@ -1124,7 +1222,14 @@ export interface components {
       /** @description Last name of staff member */
       lastName: string
       /** @description Username of person who created the record in NOMIS where this staff is used */
-      createdByUsername: string
+      createdByUsername?: string
+      /**
+       * Format: date
+       * @description date added in NOMIS to the adjudication incident
+       */
+      dateAddedToIncident?: string
+      /** @description comment about why they were added to the adjudication incident */
+      comment?: string
     }
     /** @description Charges associated with this adjudication */
     ChargeToCreate: {
@@ -1213,26 +1318,17 @@ export interface components {
       prisonId: string
       /**
        * @description Prisoners numbers that witnessed the incident
-       * @example [
-       *   "A1234AA",
-       *   "A1234AB"
-       * ]
+       * @example A1234AA,A1234AB
        */
       prisonerVictimsOffenderNumbers: string[]
       /**
        * @description Staff usernames that witnessed the incident
-       * @example [
-       *   "A.BARNES",
-       *   "M.ABDULLAH"
-       * ]
+       * @example A.BARNES,M.ABDULLAH
        */
       staffWitnessesUsernames: string[]
       /**
        * @description Staff usernames that were victims in the incident
-       * @example [
-       *   "A.BARNES",
-       *   "M.ABDULLAH"
-       * ]
+       * @example A.BARNES,M.ABDULLAH
        */
       staffVictimsUsernames: string[]
       /** @description The repairs required due to the damage */
@@ -1333,8 +1429,119 @@ export interface components {
        */
       active: boolean
     }
+    /** @description Offender individual schedule creation request */
+    CreateNonAssociationRequest: {
+      /**
+       * @description Noms id of the prisoner
+       * @example A1234DF
+       */
+      offenderNo: string
+      /**
+       * @description Noms id of the other prisoner
+       * @example A1234EG
+       */
+      nsOffenderNo: string
+      /**
+       * @description Reason code of the first prisoner, domain NON_ASSO_RSN
+       * @example VIC
+       */
+      reason: string
+      /**
+       * @description Reason code of the other prisoner, domain NON_ASSO_RSN
+       * @example PER
+       */
+      recipReason: string
+      /**
+       * @description Type code, domain NON_ASSO_TYP
+       * @example WING
+       */
+      type: string
+      /**
+       * @description Free text name of staff member
+       * @example Joe Bloggs
+       */
+      authorisedBy?: string
+      /**
+       * Format: date
+       * @description Effective date
+       * @example 2022-08-12
+       */
+      effectiveDate: string
+      /**
+       * @description Comment
+       * @example Some comment
+       */
+      comment?: string
+    }
+    /** @description Non-association creation response */
+    CreateNonAssociationResponse: {
+      /**
+       * Format: int32
+       * @description The created offender_na_details type sequence number
+       */
+      typeSequence: number
+    }
     ReorderRequest: {
       codeList: string[]
+    }
+    /** @description Provides the generated hearing ID after creation */
+    CreateHearingResponse: {
+      /**
+       * Format: int64
+       * @description The Id for the created Hearing
+       */
+      hearingId: number
+    }
+    /** @description Hearing to be created */
+    CreateHearingRequest: {
+      /**
+       * @description Type of hearing
+       * @example GOV
+       */
+      hearingType: string
+      /**
+       * Format: date
+       * @description Hearing date
+       */
+      hearingDate: string
+      /**
+       * Format: partial-time
+       * @description Hearing time
+       */
+      hearingTime: string
+      /** @description agency id of hearing */
+      agencyId: string
+      /**
+       * Format: int64
+       * @description location id for the hearing
+       * @example 123456
+       */
+      internalLocationId: number
+    }
+    /** @description Provides the generated hearing result composite ID after creation */
+    CreateHearingResultResponse: {
+      /** Format: int64 */
+      hearingId: number
+      /** Format: int32 */
+      resultSequence: number
+    }
+    /** @description Hearing result to be created */
+    CreateHearingResultRequest: {
+      /**
+       * @description adjudicator username for the hearing record
+       * @example ASMITH_GEN
+       */
+      adjudicatorUsername?: string
+      /**
+       * @description The offender's plea code on this charge
+       * @example NOT_GUILTY
+       */
+      pleaFindingCode: string
+      /**
+       * @description Finding code
+       * @example GUILTY
+       */
+      findingCode: string
     }
     /** @description Course activity creation request */
     CreateActivityRequest: {
@@ -1384,6 +1591,8 @@ export interface components {
       scheduleRules: components['schemas']['ScheduleRuleRequest'][]
       /** @description Exclude bank holidays? */
       excludeBankHolidays: boolean
+      /** @description Outside work? */
+      outsideWork: boolean
     }
     /** @description the lead visitor */
     LeadVisitor: {
@@ -1478,17 +1687,17 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['VisitIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      pageable?: components['schemas']['PageableObject']
       /** Format: int32 */
       numberOfElements?: number
       last?: boolean
+      pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
     PageableObject: {
@@ -1580,23 +1789,84 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['PrisonerId'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      pageable?: components['schemas']['PageableObject']
       /** Format: int32 */
       numberOfElements?: number
       last?: boolean
+      pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
     PrisonerId: {
       /** Format: int64 */
       bookingId: number
       offenderNo: string
+    }
+    /** @description Appointment information */
+    NonAssociationResponse: {
+      /**
+       * @description Noms id of the prisoner
+       * @example A1234DF
+       */
+      offenderNo: string
+      /**
+       * @description Noms id of the other prisoner
+       * @example A1234EG
+       */
+      nsOffenderNo: string
+      /**
+       * Format: int32
+       * @description Sequence number
+       * @example 1
+       */
+      typeSequence: number
+      /**
+       * @description Reason code of the first prisoner, domain NON_ASSO_RSN
+       * @example VIC
+       */
+      reason: string
+      /**
+       * @description Reason code of the other prisoner, domain NON_ASSO_RSN
+       * @example PER
+       */
+      recipReason: string
+      /**
+       * @description Type code, domain NON_ASSO_TYP
+       * @example WING
+       */
+      type: string
+      /**
+       * @description Free text name of staff member
+       * @example Joe Bloggs
+       */
+      authorisedBy?: string
+      /**
+       * @description Last updated by
+       * @example JSMITH_GEN
+       */
+      updatedBy: string
+      /**
+       * Format: date
+       * @description Effective date
+       * @example 2022-08-12
+       */
+      effectiveDate: string
+      /**
+       * Format: date
+       * @description Expiry date, open if null
+       * @example 2022-08-12
+       */
+      expiryDate?: string
+      /**
+       * @description Comment
+       * @example Some comment
+       */
+      comment?: string
     }
     /** @description Non association id */
     NonAssociationIdResponse: {
@@ -1610,17 +1880,17 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['NonAssociationIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      pageable?: components['schemas']['PageableObject']
       /** Format: int32 */
       numberOfElements?: number
       last?: boolean
+      pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
     /** @description Key date adjustment */
@@ -1681,17 +1951,17 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['IncentiveIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      pageable?: components['schemas']['PageableObject']
       /** Format: int32 */
       numberOfElements?: number
       last?: boolean
+      pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
     /** @description Incentive information */
@@ -1751,21 +2021,32 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AppointmentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      pageable?: components['schemas']['PageableObject']
       /** Format: int32 */
       numberOfElements?: number
       last?: boolean
+      pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
     /** @description Allocation to an activity */
     GetAllocationResponse: {
+      /**
+       * @description Prison ID
+       * @example BXI
+       */
+      prisonId: string
+      /**
+       * Format: int64
+       * @description Nomis Course Activity ID
+       * @example 1234
+       */
+      courseActivityId: number
       /**
        * @description Nomis ID
        * @example A1234BC
@@ -1799,10 +2080,7 @@ export interface components {
        * @example WDRAWN
        */
       endReasonCode?: string
-      /**
-       * @description Whether the prisoner is currently suspended from the course
-       * @example false
-       */
+      /** @description Whether the prisoner is currently suspended from the course */
       suspended: boolean
       /**
        * @description Pay band
@@ -1824,6 +2102,24 @@ export interface components {
        */
       allocationId: number
     }
+    PageFindActiveAllocationIdsResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      first?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['FindActiveAllocationIdsResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      last?: boolean
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
     /** @description Adjustment id */
     AdjustmentIdResponse: {
       /**
@@ -1839,17 +2135,17 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjustmentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      pageable?: components['schemas']['PageableObject']
       /** Format: int32 */
       numberOfElements?: number
       last?: boolean
+      pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
     /** @description adjudication id */
@@ -1872,17 +2168,17 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjudicationChargeIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      pageable?: components['schemas']['PageableObject']
       /** Format: int32 */
       numberOfElements?: number
       last?: boolean
+      pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
     /** @description The requested adjudication charge and associated adjudication details. Note: the adjudication may have other charges associated with it */
@@ -1982,10 +2278,7 @@ export interface components {
        * @example BAS
        */
       minimumIncentiveLevel: string
-      /**
-       * @description Whether the course runs on bank holidays
-       * @example false
-       */
+      /** @description Whether the course runs on bank holidays */
       excludeBankHolidays: boolean
       /**
        * @description Half or Full day (H or F)
@@ -1996,6 +2289,8 @@ export interface components {
       scheduleRules: components['schemas']['ScheduleRulesResponse'][]
       /** @description Pay rates available */
       payRates: components['schemas']['PayRatesResponse'][]
+      /** @description Outside work flag */
+      outsideWork: boolean
     }
     /** @description Activity Pay Rates */
     PayRatesResponse: {
@@ -2073,6 +2368,24 @@ export interface components {
        * @example 1
        */
       courseActivityId: number
+    }
+    PageFindActiveActivityIdsResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      first?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['FindActiveActivityIdsResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      last?: boolean
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
     }
   }
 }
@@ -2291,43 +2604,6 @@ export interface operations {
       }
     }
   }
-  /** Get an non-association given the two offender numbers. Requires role NOMIS_NON_ASSOCIATIONS */
-  getNonAssociation: {
-    parameters: {
-      path: {
-        /** Offender */
-        offenderNo: string
-        /** Non-association offender */
-        nsOffenderNo: string
-      }
-    }
-    responses: {
-      /** NonAssociation information with created id */
-      200: {
-        content: {
-          'application/json': components['schemas']['CreateNonAssociationRequest']
-        }
-      }
-      /** Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** Booking, location and timestamp combination does not exist */
-      404: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
   /** Updates an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS */
   updateNonAssociation: {
     parameters: {
@@ -2336,15 +2612,13 @@ export interface operations {
         offenderNo: string
         /** Non-association offender */
         nsOffenderNo: string
+        /** Sequence number. Amend this specific detail record */
+        typeSequence: number
       }
     }
     responses: {
-      /** Successfully updated non-association */
-      200: {
-        content: {
-          'application/json': unknown
-        }
-      }
+      /** Successfully amended non-association */
+      200: unknown
       /** Invalid data such as reason or type do not exist etc. */
       400: {
         content: {
@@ -2363,7 +2637,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Offender does not exist */
+      /** Non-association does not exist */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -2372,25 +2646,64 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['CreateNonAssociationRequest']
+        'application/json': components['schemas']['UpdateNonAssociationRequest']
       }
     }
   }
-  /** Closes an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS */
-  cancelNonAssociation: {
+  /** Deletes the specified non-association detail record. if there was only one, the parent NA record is deleted too. Requires role NOMIS_NON_ASSOCIATIONS */
+  deleteNonAssociation: {
     parameters: {
       path: {
         /** Offender */
         offenderNo: string
         /** Non-association offender */
         nsOffenderNo: string
+        /** Sequence number. Close this specific detail record */
+        typeSequence: number
       }
     }
     responses: {
       /** Success */
-      200: {
+      200: unknown
+      /** Unauthorized to access this endpoint */
+      401: {
         content: {
-          'application/json': components['schemas']['CreateNonAssociationRequest']
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Non-association does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Closes an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS */
+  closeNonAssociation: {
+    parameters: {
+      path: {
+        /** Offender */
+        offenderNo: string
+        /** Non-association offender */
+        nsOffenderNo: string
+        /** Sequence number. Close this specific detail record */
+        typeSequence: number
+      }
+    }
+    responses: {
+      /** Success */
+      200: unknown
+      /** Non-association is already closed */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** Unauthorized to access this endpoint */
@@ -2405,7 +2718,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Event id does not exist */
+      /** Non-association does not exist */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -2798,6 +3111,121 @@ export interface operations {
       }
     }
   }
+  /** List of repairs are refreshed so this operation may result in any combinations of inserts, updates or deletes. Requires ROLE_NOMIS_ADJUDICATIONS */
+  updateRepairs: {
+    parameters: {
+      path: {
+        /** Adjudication number */
+        adjudicationNumber: string
+      }
+    }
+    responses: {
+      /** Repairs updated */
+      200: {
+        content: {
+          'application/json': components['schemas']['UpdateRepairsResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Adjudication does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateRepairsRequest']
+      }
+    }
+  }
+  /** Updates a hearing for a given adjudication and hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS */
+  updateHearing: {
+    parameters: {
+      path: {
+        /** Adjudication number */
+        adjudicationNumber: string
+        /** Hearing Id */
+        hearingId: string
+      }
+    }
+    responses: {
+      /** Updated Hearing Returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['UpdateHearingRequest']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Hearing does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateHearingRequest']
+      }
+    }
+  }
+  /** Deletes a hearing for a given adjudication and hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS */
+  deleteHearing: {
+    parameters: {
+      path: {
+        /** Adjudication number */
+        adjudicationNumber: string
+        /** Hearing Id */
+        hearingId: string
+      }
+    }
+    responses: {
+      /** Hearing deleted */
+      200: unknown
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Adjudication does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Gets activity details including schedule rules and pay rates. Requires role NOMIS_ACTIVITIES */
   getActivity: {
     parameters: {
@@ -2952,6 +3380,47 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['CourseScheduleRequest']
+      }
+    }
+  }
+  /** Ends a course activity and all active attendances with end date today. Requires role NOMIS_ACTIVITIES */
+  endActivity: {
+    parameters: {
+      path: {
+        /** Course activity id */
+        courseActivityId: string
+      }
+      query: {
+        /** End comment */
+        endComment?: string
+      }
+    }
+    responses: {
+      /** Activity ended */
+      200: unknown
+      /** Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
@@ -3252,7 +3721,7 @@ export interface operations {
       /** Successfully created non-association */
       201: {
         content: {
-          'application/json': unknown
+          'application/json': components['schemas']['CreateNonAssociationResponse']
         }
       }
       /** Invalid data such as booking or location do not exist etc. */
@@ -3397,6 +3866,121 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': components['schemas']['CreateAppointmentRequest']
+      }
+    }
+  }
+  /** Creates a hearing for a given adjudication. Requires ROLE_NOMIS_ADJUDICATIONS */
+  createHearing: {
+    parameters: {
+      path: {
+        /** Adjudication number */
+        adjudicationNumber: string
+      }
+    }
+    responses: {
+      /** Hearing Created Returned */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateHearingResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Adjudication does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateHearingRequest']
+      }
+    }
+  }
+  /** Creates a hearing result for a given hearing. DPS only supports 1 result per hearing. Requires ROLE_NOMIS_ADJUDICATIONS */
+  createHearingResult: {
+    parameters: {
+      path: {
+        /** Adjudication number */
+        adjudicationNumber: string
+        /** Nomis Hearing Id */
+        hearingId: string
+      }
+    }
+    responses: {
+      /** Hearing result created */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateHearingResultResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Hearing does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateHearingResultRequest']
+      }
+    }
+  }
+  /** Deletes a hearing result for a given adjudication and hearing Id. The result sequence is always 1 for synchronising DPS migrated/created data. Requires ROLE_NOMIS_ADJUDICATIONS */
+  deleteHearingResult: {
+    parameters: {
+      path: {
+        /** Adjudication number */
+        adjudicationNumber: string
+        /** Hearing Id */
+        hearingId: string
+      }
+    }
+    responses: {
+      /** Hearing result deleted */
+      200: unknown
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Adjudication does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
@@ -3555,13 +4139,89 @@ export interface operations {
       }
     }
   }
-  /** Retrieves a paged list of incentive composite ids by filter. Requires ROLE_NOMIS_NON_ASSOCIATIONS. */
+  /** Get the open non-association for the two offender numbers. Requires role NOMIS_NON_ASSOCIATIONS */
+  getNonAssociation: {
+    parameters: {
+      path: {
+        /** Offender */
+        offenderNo: string
+        /** Non-association offender */
+        nsOffenderNo: string
+      }
+      query: {
+        /** Sequence number. If present, get this detail record, otherwise get the open record if there is one. */
+        typeSequence?: number
+      }
+    }
+    responses: {
+      /** Non-association information */
+      200: {
+        content: {
+          'application/json': components['schemas']['NonAssociationResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** No open non-association exists for these offender numbers, or one of the offenders does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Get all non-associations for the two offender numbers, including expired. Requires role NOMIS_NON_ASSOCIATIONS */
+  getNonAssociationDetails: {
+    parameters: {
+      path: {
+        /** Offender */
+        offenderNo: string
+        /** Non-association offender */
+        nsOffenderNo: string
+      }
+    }
+    responses: {
+      /** List of non-associations */
+      200: {
+        content: {
+          'application/json': components['schemas']['NonAssociationResponse'][]
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Non-association does not exist, or one of the offenders does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_NON_ASSOCIATIONS. */
   getNonAssociationsByFilter: {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
-        /** Filter results by prison ids (returns all prisons if not specified) */
-        prisonIds?: string[]
         /** Filter results by non-associations that were created on or after the given date */
         fromDate?: string
         /** Filter results by non-associations that were created on or before the given date */
@@ -3581,7 +4241,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
+      /** Forbidden to access this endpoint when role NOMIS_NON_ASSOCIATIONS not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -3849,7 +4509,7 @@ export interface operations {
       /** OK */
       200: {
         content: {
-          'application/json': components['schemas']['FindActiveAllocationIdsResponse']
+          'application/json': components['schemas']['PageFindActiveAllocationIdsResponse']
         }
       }
       /** Invalid request */
@@ -3904,6 +4564,76 @@ export interface operations {
       }
       /** Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Retrieves a hearing by the hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS */
+  getAdjudicationHearing: {
+    parameters: {
+      path: {
+        /** NOMIS Hearing Id */
+        hearingId: string
+      }
+    }
+    responses: {
+      /** Hearing Information Returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['AdjudicationResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Hearing does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Retrieves a hearing result by the nomis hearing id. DPS migrated and synchronised hearing results always have a result sequence of 1 Requires ROLE_NOMIS_ADJUDICATIONS */
+  getAdjudicationHearingResult: {
+    parameters: {
+      path: {
+        /** NOMIS Hearing Id */
+        hearingId: string
+      }
+    }
+    responses: {
+      /** Hearing Information Returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['AdjudicationResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Hearing result does not exist */
+      404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
@@ -4033,7 +4763,7 @@ export interface operations {
       /** OK */
       200: {
         content: {
-          'application/json': components['schemas']['FindActiveActivityIdsResponse']
+          'application/json': components['schemas']['PageFindActiveActivityIdsResponse']
         }
       }
       /** Invalid request */
@@ -4111,3 +4841,5 @@ export interface operations {
     }
   }
 }
+
+export interface external {}

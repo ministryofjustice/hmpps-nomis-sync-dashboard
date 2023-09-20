@@ -1,9 +1,13 @@
 import querystring from 'querystring'
 import type {
+  ActivitiesMigrationFilter,
+  AllocationsMigrationFilter,
   AppointmentsMigrationFilter,
   AdjudicationsMigrationFilter,
   GetDlqResult,
   InProgressMigration,
+  MigrationContextActivitiesMigrationFilter,
+  MigrationContextAllocationsMigrationFilter,
   MigrationContextAppointmentsMigrationFilter,
   MigrationContextSentencingMigrationFilter,
   MigrationContextVisitsMigrationFilter,
@@ -277,6 +281,156 @@ export default class NomisMigrationService {
 
   private static async getAppointmentsDLQName(token: string): Promise<string> {
     return NomisMigrationService.getAnyDLQName('migrationappointments-health', token)
+  }
+
+  async getActivitiesMigrations(context: Context): Promise<HistoricMigrations> {
+    logger.info(`getting activities migrations`)
+    return {
+      migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
+        path: `/migrate/activities/history`,
+      }),
+    }
+  }
+
+  async getActivitiesMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
+    logger.info(`getting details for activities migration ${migrationId}`)
+    const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
+      path: `/migrate/activities/history/${migrationId}`,
+    })
+
+    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
+      path: `/migrate/activities/active-migration`,
+    })
+
+    return {
+      history,
+      currentProgress: {
+        recordsFailed: inProgressMigration.recordsFailed,
+        recordsMigrated: inProgressMigration.recordsMigrated,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
+      },
+    }
+  }
+
+  async startActivitiesMigration(
+    filter: ActivitiesMigrationFilter,
+    context: Context,
+  ): Promise<MigrationContextActivitiesMigrationFilter> {
+    logger.info(`starting an activities migration`)
+    return NomisMigrationService.restClient(context.token).post<MigrationContextActivitiesMigrationFilter>({
+      path: `/migrate/activities`,
+      data: filter,
+    })
+  }
+
+  async getActivitiesFailures(context: Context): Promise<GetDlqResult> {
+    logger.info(`getting messages on activities DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getActivitiesDLQName(token)
+
+    return NomisMigrationService.restClient(token).get<GetDlqResult>({
+      path: `/queue-admin/get-dlq-messages/${dlqName}`,
+    })
+  }
+
+  async deleteActivitiesFailures(context: Context): Promise<PurgeQueueResult> {
+    logger.info(`deleting messages on activities DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getActivitiesDLQName(token)
+
+    return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
+      path: `/queue-admin/purge-queue/${dlqName}`,
+    })
+  }
+
+  async getActivitiesDLQMessageCount(context: Context): Promise<string> {
+    return NomisMigrationService.getAnyDLQMessageCount('migrationactivities-health', context.token)
+  }
+
+  async cancelActivitiesMigration(migrationId: string, context: Context): Promise<void> {
+    logger.info(`cancelling an activities migration`)
+    return NomisMigrationService.restClient(context.token).post<void>({
+      path: `/migrate/activities/${migrationId}/cancel`,
+    })
+  }
+
+  private static async getActivitiesDLQName(token: string): Promise<string> {
+    return NomisMigrationService.getAnyDLQName('migrationactivities-health', token)
+  }
+
+  async getAllocationsMigrations(context: Context): Promise<HistoricMigrations> {
+    logger.info(`getting allocations migrations`)
+    return {
+      migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
+        path: `/migrate/allocations/history`,
+      }),
+    }
+  }
+
+  async getAllocationsMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
+    logger.info(`getting details for allocations migration ${migrationId}`)
+    const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
+      path: `/migrate/allocations/history/${migrationId}`,
+    })
+
+    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
+      path: `/migrate/allocations/active-migration`,
+    })
+
+    return {
+      history,
+      currentProgress: {
+        recordsFailed: inProgressMigration.recordsFailed,
+        recordsMigrated: inProgressMigration.recordsMigrated,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
+      },
+    }
+  }
+
+  async startAllocationsMigration(
+    filter: AllocationsMigrationFilter,
+    context: Context,
+  ): Promise<MigrationContextAllocationsMigrationFilter> {
+    logger.info(`starting an allocations migration`)
+    return NomisMigrationService.restClient(context.token).post<MigrationContextAllocationsMigrationFilter>({
+      path: `/migrate/allocations`,
+      data: filter,
+    })
+  }
+
+  async getAllocationsFailures(context: Context): Promise<GetDlqResult> {
+    logger.info(`getting messages on allocations DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getAllocationsDLQName(token)
+
+    return NomisMigrationService.restClient(token).get<GetDlqResult>({
+      path: `/queue-admin/get-dlq-messages/${dlqName}`,
+    })
+  }
+
+  async deleteAllocationsFailures(context: Context): Promise<PurgeQueueResult> {
+    logger.info(`deleting messages on allocations DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getAllocationsDLQName(token)
+
+    return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
+      path: `/queue-admin/purge-queue/${dlqName}`,
+    })
+  }
+
+  async getAllocationsDLQMessageCount(context: Context): Promise<string> {
+    return NomisMigrationService.getAnyDLQMessageCount('migrationallocations-health', context.token)
+  }
+
+  async cancelAllocationsMigration(migrationId: string, context: Context): Promise<void> {
+    logger.info(`cancelling an allocations migration`)
+    return NomisMigrationService.restClient(context.token).post<void>({
+      path: `/migrate/allocations/${migrationId}/cancel`,
+    })
+  }
+
+  private static async getAllocationsDLQName(token: string): Promise<string> {
+    return NomisMigrationService.getAnyDLQName('migrationallocations-health', token)
   }
 
   async getAdjudicationsMigrations(context: Context): Promise<HistoricMigrations> {

@@ -9,6 +9,10 @@ import {
   VisitRoomCountResponse,
   PageAdjudicationIdResponse,
   GetAdjudicationChargeIdsByFilter,
+  GetActivitiesByFilter,
+  GetAllocationsByFilter,
+  PageActivitiesIdResponse,
+  PageAllocationsIdResponse,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
@@ -47,6 +51,26 @@ export default class NomisPrisonerService {
     logger.info(`getting details for appointments migration estimated count`)
     const response = await NomisPrisonerService.restClient(token).get<PageAdjustmentIdResponse>({
       path: `/appointments/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
+  }
+
+  async getActivitiesMigrationEstimatedCount(filter: GetActivitiesByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for activities migration estimated count`)
+    const response = await NomisPrisonerService.restClient(token).get<PageActivitiesIdResponse>({
+      path: `/activities/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
+  }
+
+  async getAllocationsMigrationEstimatedCount(filter: GetAllocationsByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for allocations migration estimated count`)
+    const response = await NomisPrisonerService.restClient(token).get<PageAllocationsIdResponse>({
+      path: `/allocations/ids`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements
