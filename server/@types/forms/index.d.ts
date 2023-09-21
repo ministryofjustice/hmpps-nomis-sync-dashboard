@@ -20,6 +20,12 @@ declare module 'forms' {
     action?: 'startMigration' | 'viewEstimatedCount'
   }
 
+  export interface StartActivitiesMigrationForm {
+    prisonId?: string
+    courseActivityId?: number
+    action?: 'startMigration' | 'viewEstimatedCount'
+  }
+
   export interface StartAdjudicationsMigrationForm {
     prisonIds?: string
     fromDate?: string
