@@ -1696,8 +1696,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     PageableObject: {
@@ -1798,8 +1798,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     PrisonerId: {
@@ -1889,8 +1889,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     /** @description Key date adjustment */
@@ -1960,8 +1960,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     /** @description Incentive information */
@@ -2030,8 +2030,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     /** @description Allocation to an activity */
@@ -2116,8 +2116,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     /** @description Adjustment id */
@@ -2144,8 +2144,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     /** @description adjudication id */
@@ -2177,8 +2177,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
     /** @description The requested adjudication charge and associated adjudication details. Note: the adjudication may have other charges associated with it */
@@ -2383,8 +2383,8 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
-      last?: boolean
       pageable?: components['schemas']['PageableObject']
+      last?: boolean
       empty?: boolean
     }
   }
@@ -4502,7 +4502,7 @@ export interface operations {
         /** Exclude program codes */
         excludeProgramCode?: string
         /** Course Activity ID */
-        courseActivityId?: string
+        courseActivityId?: number
       }
     }
     responses: {
@@ -4756,7 +4756,7 @@ export interface operations {
         /** Exclude program codes */
         excludeProgramCode?: string
         /** Course Activity ID */
-        courseActivityId?: string
+        courseActivityId?: number
       }
     }
     responses: {

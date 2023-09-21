@@ -31,6 +31,11 @@ declare module 'express-session' {
     prisonIds?: string
   }
 
+  interface StartActivitiesMigrationForm extends MigrationForm {
+    prisonId?: string
+    courseActivityId?: number
+  }
+
   interface StartAdjudicationsMigrationForm extends MigrationForm {
     fromDate?: string
     toDate?: string
@@ -43,6 +48,7 @@ declare module 'express-session' {
     nowInMinutes: number
     startVisitsMigrationForm: StartVisitsMigrationForm
     startSentencingMigrationForm: StartSentencingMigrationForm
+    startActivitiesMigrationForm: StartActivitiesMigrationForm
     startAppointmentsMigrationForm: StartAppointmentsMigrationForm
     startAdjudicationsMigrationForm: StartAdjudicationsMigrationForm
   }
