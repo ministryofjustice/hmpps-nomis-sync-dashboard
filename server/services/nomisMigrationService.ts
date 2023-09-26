@@ -17,6 +17,8 @@ import type {
   RoomMappingsResponse,
   SentencingMigrationFilter,
   VisitsMigrationFilter,
+  PageActivitiesIdResponse,
+  PageAllocationsIdResponse,
 } from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
@@ -24,7 +26,7 @@ import RestClient from '../data/restClient'
 import config from '../config'
 import logger from '../../logger'
 import { MigrationViewFilter } from '../@types/dashboard'
-import { GetVisitsByFilter } from '../@types/nomisPrisoner'
+import { GetActivitiesByFilter, GetAllocationsByFilter, GetVisitsByFilter } from '../@types/nomisPrisoner'
 
 export interface HistoricMigrations {
   migrations: Array<MigrationHistory>
@@ -358,6 +360,16 @@ export default class NomisMigrationService {
     return NomisMigrationService.getAnyDLQName('migrationactivities-health', token)
   }
 
+  async getActivitiesMigrationEstimatedCount(filter: GetActivitiesByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for activities migration estimated count`)
+    const response = await NomisMigrationService.restClient(token).get<PageActivitiesIdResponse>({
+      path: `/migrate/activities/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
+  }
+
   async getAllocationsMigrations(context: Context): Promise<HistoricMigrations> {
     logger.info(`getting allocations migrations`)
     return {
@@ -431,6 +443,16 @@ export default class NomisMigrationService {
 
   private static async getAllocationsDLQName(token: string): Promise<string> {
     return NomisMigrationService.getAnyDLQName('migrationallocations-health', token)
+  }
+
+  async getAllocationsMigrationEstimatedCount(filter: GetAllocationsByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for allocations migration estimated count`)
+    const response = await NomisMigrationService.restClient(token).get<PageAllocationsIdResponse>({
+      path: `/migrate/allocations/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
   }
 
   async getAdjudicationsMigrations(context: Context): Promise<HistoricMigrations> {
