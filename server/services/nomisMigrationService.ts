@@ -361,9 +361,8 @@ export default class NomisMigrationService {
   }
 
   async getActivitiesMigrationEstimatedCount(filter: GetActivitiesByFilter, context: Context): Promise<number> {
-    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     logger.info(`getting details for activities migration estimated count`)
-    const response = await NomisMigrationService.restClient(token).get<PageActivitiesIdResponse>({
+    const response = await NomisMigrationService.restClient(context.token).get<PageActivitiesIdResponse>({
       path: `/migrate/activities/ids`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
@@ -446,9 +445,8 @@ export default class NomisMigrationService {
   }
 
   async getAllocationsMigrationEstimatedCount(filter: GetAllocationsByFilter, context: Context): Promise<number> {
-    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     logger.info(`getting details for allocations migration estimated count`)
-    const response = await NomisMigrationService.restClient(token).get<PageAllocationsIdResponse>({
+    const response = await NomisMigrationService.restClient(context.token).get<PageAllocationsIdResponse>({
       path: `/migrate/allocations/ids`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
