@@ -29,7 +29,7 @@ export default function routes(router: Router, services: Services): Router {
   post('/allocations-migration/start/preview', (req, res) =>
     allocationsMigrationController.postStartAllocationsMigrationPreview(req, res),
   )
-  post('/allocations-migration/start/delete-faiures', (req, res) =>
+  post('/allocations-migration/start/delete-failures', (req, res) =>
     allocationsMigrationController.postClearDLQAllocationsMigrationPreview(req, res),
   )
   get('/allocations-migration/start/confirmation', (req, res) =>

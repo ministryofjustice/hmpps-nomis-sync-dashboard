@@ -27,7 +27,7 @@ export default function routes(router: Router, services: Services): Router {
   post('/activities-migration/start/preview', (req, res) =>
     activitiesMigrationController.postStartActivitiesMigrationPreview(req, res),
   )
-  post('/activities-migration/start/delete-faiures', (req, res) =>
+  post('/activities-migration/start/delete-failures', (req, res) =>
     activitiesMigrationController.postClearDLQActivitiesMigrationPreview(req, res),
   )
   get('/activities-migration/start/confirmation', (req, res) =>

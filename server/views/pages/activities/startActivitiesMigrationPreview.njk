@@ -73,7 +73,7 @@
 
                     {% set summaryRows = [] %}
 
-                    {{ summaryRow(form.prisonId, "Prison code", summaryRows, "prison-code") }}
+                    {{ summaryRow(form.prisonId, "Prison code", summaryRows, "prison-id") }}
                     {{ summaryRow(form.courseActivityId, "Single course activity to migrate", summaryRows, "course-activity-id") }}
 
                     {{ govukSummaryList({
