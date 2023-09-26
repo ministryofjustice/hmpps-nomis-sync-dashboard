@@ -3,6 +3,7 @@ import { type RequestHandler, Router } from 'express'
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
 import sentencingMigrationRoutes from './sentencingMigration/sentencingMigrationRouter'
 import activitiesMigrationRoutes from './activitiesMigration/activitiesMigrationRouter'
+import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
 import adjudicationsMigrationRoutes from './adjudicationsMigration/adjudicationsMigrationRouter'
 import {
@@ -10,6 +11,7 @@ import {
   MIGRATE_SENTENCING_ROLE,
   MIGRATE_VISITS_ROLE,
   MIGRATE_ACTIVITIES_ROLE,
+  MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_ADJUDICATIONS_ROLE,
 } from '../authentication/roles'
@@ -51,6 +53,14 @@ export default function routes(services: Services): Router {
           enabled: true,
         },
         {
+          id: 'allocations-migration',
+          heading: 'Allocations migration',
+          description: 'Migration and synchronisation information',
+          href: '/allocations-migration',
+          roles: [MIGRATE_ALLOCATIONS_ROLE],
+          enabled: true,
+        },
+        {
           id: 'appointments-migration',
           heading: 'Appointments migration',
           description: 'Migration and synchronisation information',
@@ -84,6 +94,7 @@ export default function routes(services: Services): Router {
   visitMigrationRoutes(router, services)
   sentencingMigrationRoutes(router, services)
   activitiesMigrationRoutes(router, services)
+  allocationsMigrationRoutes(router, services)
   appointmentsMigrationRoutes(router, services)
   adjudicationsMigrationRoutes(router, services)
   return router

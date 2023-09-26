@@ -1,4 +1,4 @@
-import Page from '../page'
+import Page, { PageElement } from '../page'
 
 export default class StartAllocationsMigrationPage extends Page {
   constructor() {
@@ -6,6 +6,12 @@ export default class StartAllocationsMigrationPage extends Page {
   }
 
   startMigrationButton = () => cy.contains('Start migration')
+
+  prisonIdChangeLink = (): PageElement => cy.get('[data-qa=prison-id]')
+
+  prisonIdRow = (): PageElement => cy.get('[data-qa=prison-id]').parent().parent()
+
+  courseActivityIdRow = (): PageElement => cy.get('[data-qa=course-activity-id]').parent().parent()
 
   estimateSummary = () => cy.get('#estimateSummary')
 

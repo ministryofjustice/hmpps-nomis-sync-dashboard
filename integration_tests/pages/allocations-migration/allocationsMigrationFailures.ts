@@ -8,7 +8,7 @@ export default class AllocationsMigrationFailuresPage extends Page {
   rows = (): PageElement => cy.get('table tbody tr')
 
   static goTo(): AllocationsMigrationFailuresPage {
-    cy.visit('/activities-migration/failures')
+    cy.visit('/allocations-migration/failures')
     return Page.verifyOnPage(AllocationsMigrationFailuresPage)
   }
 }
