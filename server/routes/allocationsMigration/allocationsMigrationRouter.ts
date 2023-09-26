@@ -13,10 +13,7 @@ export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  const allocationsMigrationController = new AllocationsMigrationController(
-    services.nomisMigrationService,
-    services.nomisPrisonerService,
-  )
+  const allocationsMigrationController = new AllocationsMigrationController(services.nomisMigrationService)
   get('/allocations-migration', (req, res) => allocationsMigrationController.getAllocationsMigrations(req, res))
   get('/allocations-migration/failures', (req, res) => allocationsMigrationController.viewFailures(req, res))
   get('/allocations-migration/start', (req, res) =>

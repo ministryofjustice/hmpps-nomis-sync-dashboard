@@ -13,10 +13,7 @@ export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  const activitiesMigrationController = new ActivitiesMigrationController(
-    services.nomisMigrationService,
-    services.nomisPrisonerService,
-  )
+  const activitiesMigrationController = new ActivitiesMigrationController(services.nomisMigrationService)
   get('/activities-migration', (req, res) => activitiesMigrationController.getActivitiesMigrations(req, res))
   get('/activities-migration/failures', (req, res) => activitiesMigrationController.viewFailures(req, res))
   get('/activities-migration/start', (req, res) => activitiesMigrationController.startNewActivitiesMigration(req, res))

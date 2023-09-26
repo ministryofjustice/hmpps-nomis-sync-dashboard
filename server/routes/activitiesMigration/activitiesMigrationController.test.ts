@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import ActivitiesMigrationController from './activitiesMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
-import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
 describe('activitiesMigrationController', () => {
   const req = {
@@ -85,10 +84,7 @@ describe('activitiesMigrationController', () => {
       ]
       nomisMigrationService.getActivitiesMigrations.mockResolvedValue(activitiesMigrationResponse)
 
-      await new ActivitiesMigrationController(nomisMigrationService, nomisPrisonerService).getActivitiesMigrations(
-        req,
-        res,
-      )
+      await new ActivitiesMigrationController(nomisMigrationService).getActivitiesMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/activities/activitiesMigration', {
         migrations: expect.arrayContaining([
@@ -118,7 +114,7 @@ describe('activitiesMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new ActivitiesMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      await new ActivitiesMigrationController(nomisMigrationService).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/activities/activitiesMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -143,10 +139,7 @@ describe('activitiesMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
         }
-        await new ActivitiesMigrationController(
-          nomisMigrationService,
-          nomisPrisonerService,
-        ).postStartActivitiesMigration(req, res)
+        await new ActivitiesMigrationController(nomisMigrationService).postStartActivitiesMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID' }])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/amend')
       })

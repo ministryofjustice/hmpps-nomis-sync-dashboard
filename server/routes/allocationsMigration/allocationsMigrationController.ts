@@ -7,7 +7,6 @@ import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startAllocationsMigrationValidator from './startAllocationsMigrationValidator'
-import NomisPrisonerService from '../../services/nomisPrisonerService'
 
 interface Filter {
   prisonId?: string
@@ -22,10 +21,7 @@ function context(res: Response): Context {
 }
 
 export default class AllocationsMigrationController {
-  constructor(
-    private readonly nomisMigrationService: NomisMigrationService,
-    private readonly nomisPrisonerService: NomisPrisonerService,
-  ) {}
+  constructor(private readonly nomisMigrationService: NomisMigrationService) {}
 
   async getAllocationsMigrations(req: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getAllocationsMigrations(context(res))
@@ -64,7 +60,7 @@ export default class AllocationsMigrationController {
       res.redirect('/allocations-migration/amend')
     } else {
       const filter = AllocationsMigrationController.toFilter(req.session.startAllocationsMigrationForm)
-      const count = await this.nomisPrisonerService.getAllocationsMigrationEstimatedCount(filter, context(res))
+      const count = await this.nomisMigrationService.getAllocationsMigrationEstimatedCount(filter, context(res))
       const dlqCountString = await this.nomisMigrationService.getAllocationsDLQMessageCount(context(res))
       logger.info(`${dlqCountString} failures found`)
 

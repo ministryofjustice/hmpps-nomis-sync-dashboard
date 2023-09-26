@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import AllocationsMigrationController from './allocationsMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
-import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
 describe('allocationsMigrationController', () => {
   const req = {
@@ -85,10 +84,7 @@ describe('allocationsMigrationController', () => {
       ]
       nomisMigrationService.getAllocationsMigrations.mockResolvedValue(allocationsMigrationResponse)
 
-      await new AllocationsMigrationController(nomisMigrationService, nomisPrisonerService).getAllocationsMigrations(
-        req,
-        res,
-      )
+      await new AllocationsMigrationController(nomisMigrationService).getAllocationsMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/allocations/allocationsMigration', {
         migrations: expect.arrayContaining([
@@ -118,7 +114,7 @@ describe('allocationsMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new AllocationsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      await new AllocationsMigrationController(nomisMigrationService).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/allocations/allocationsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -143,10 +139,7 @@ describe('allocationsMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
         }
-        await new AllocationsMigrationController(
-          nomisMigrationService,
-          nomisPrisonerService,
-        ).postStartAllocationsMigration(req, res)
+        await new AllocationsMigrationController(nomisMigrationService).postStartAllocationsMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID' }])
         expect(res.redirect).toHaveBeenCalledWith('/allocations-migration/amend')
       })

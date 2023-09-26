@@ -124,6 +124,10 @@ export interface paths {
     /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
     get: operations['getActiveMigrationDetails_3']
   }
+  '/migrate/allocations/ids': {
+    /** Searches for active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES */
+    get: operations['findAllocationsToMigrate']
+  }
   '/migrate/allocations/history/{migrationId}': {
     /** Requires role <b>MIGRATE_ACTIVITIES</b> */
     get: operations['get_4']
@@ -147,6 +151,10 @@ export interface paths {
   '/migrate/adjudications/active-migration': {
     /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
     get: operations['getActiveMigrationDetails_5']
+  }
+  '/migrate/activities/ids': {
+    /** Searches for active course activities with allocated prisoners (excluding DPS program services). Requires role MIGRATE_ACTIVITIES */
+    get: operations['findActivitiesToMigrate']
   }
   '/migrate/activities/history/{migrationId}': {
     /** Requires role <b>MIGRATE_ACTIVITIES</b> */
@@ -494,6 +502,66 @@ export interface components {
         | 'NON_ASSOCIATIONS'
       /** @enum {string} */
       status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
+    }
+    FindActiveAllocationIdsResponse: {
+      /** Format: int64 */
+      allocationId: number
+    }
+    PageFindActiveAllocationIdsResponse: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['FindActiveAllocationIdsResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
+      last?: boolean
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    PageableObject: {
+      /** Format: int64 */
+      offset?: number
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      pageSize?: number
+      paged?: boolean
+      unpaged?: boolean
+      /** Format: int32 */
+      pageNumber?: number
+    }
+    SortObject: {
+      empty?: boolean
+      sorted?: boolean
+      unsorted?: boolean
+    }
+    FindActiveActivityIdsResponse: {
+      /** Format: int64 */
+      courseActivityId: number
+    }
+    PageFindActiveActivityIdsResponse: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['FindActiveActivityIdsResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
+      last?: boolean
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
     }
   }
 }
@@ -1371,6 +1439,53 @@ export interface operations {
       }
     }
   }
+  /** Searches for active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES */
+  findAllocationsToMigrate: {
+    parameters: {
+      query: {
+        /** Page number */
+        page?: string
+        /** Page size */
+        size?: string
+        /** Prison id */
+        prisonId: string
+        /** Course Activity ID */
+        courseActivityId?: number
+      }
+    }
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageFindActiveAllocationIdsResponse']
+        }
+      }
+      /** Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   /** Requires role <b>MIGRATE_ACTIVITIES</b> */
   get_4: {
     parameters: {
@@ -1547,6 +1662,53 @@ export interface operations {
       }
       /** Incorrect permissions to access this endpoint */
       403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /** Searches for active course activities with allocated prisoners (excluding DPS program services). Requires role MIGRATE_ACTIVITIES */
+  findActivitiesToMigrate: {
+    parameters: {
+      query: {
+        /** Page number */
+        page?: string
+        /** Page size */
+        size?: string
+        /** Prison id */
+        prisonId: string
+        /** Course Activity ID */
+        courseActivityId?: number
+      }
+    }
+    responses: {
+      /** OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageFindActiveActivityIdsResponse']
+        }
+      }
+      /** Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** Not found */
+      404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }

@@ -7,7 +7,6 @@ import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startActivitiesMigrationValidator from './startActivitiesMigrationValidator'
-import NomisPrisonerService from '../../services/nomisPrisonerService'
 
 interface Filter {
   prisonId?: string
@@ -22,10 +21,7 @@ function context(res: Response): Context {
 }
 
 export default class ActivitiesMigrationController {
-  constructor(
-    private readonly nomisMigrationService: NomisMigrationService,
-    private readonly nomisPrisonerService: NomisPrisonerService,
-  ) {}
+  constructor(private readonly nomisMigrationService: NomisMigrationService) {}
 
   async getActivitiesMigrations(req: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getActivitiesMigrations(context(res))
@@ -64,7 +60,7 @@ export default class ActivitiesMigrationController {
       res.redirect('/activities-migration/amend')
     } else {
       const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
-      const count = await this.nomisPrisonerService.getActivitiesMigrationEstimatedCount(filter, context(res))
+      const count = await this.nomisMigrationService.getActivitiesMigrationEstimatedCount(filter, context(res))
       const dlqCountString = await this.nomisMigrationService.getActivitiesDLQMessageCount(context(res))
       logger.info(`${dlqCountString} failures found`)
 
