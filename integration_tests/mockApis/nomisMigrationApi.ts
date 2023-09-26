@@ -472,6 +472,28 @@ const stubHealth = (): SuperAgentRequest =>
               messagesOnDlq: '153',
             },
           },
+          'migrationactivities-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-activitiesmigration_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-activitiesmigration_dlq',
+              messagesOnDlq: '153',
+            },
+          },
+          'migrationallocations-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-allocationsmigration_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-allocationsmigration_dlq',
+              messagesOnDlq: '153',
+            },
+          },
         },
         groups: ['liveness', 'readiness'],
       },
@@ -895,6 +917,584 @@ const stubGetAppointmentsMigrationDetailsCompleted = ({
     },
   })
 
+const stubListOfActivitiesMigrationHistory = (
+  migrationHistory: MigrationHistory[] = defaultActivitiesMigrationHistory,
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/migrate/activities/history?.*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: migrationHistory,
+    },
+  })
+
+const stubStartActivitiesMigration = (
+  response: unknown = {
+    migrationId: '2022-03-23T11:11:56',
+    estimatedCount: 2,
+    body: {
+      prisonId: 'MDI',
+    },
+  },
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/nomis-migration-api/migrate/activities',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
+const defaultActivitiesMigrationHistory: MigrationHistory[] = [
+  {
+    migrationId: '2022-03-14T10:13:56',
+    whenStarted: '2022-03-14T10:13:56.878627',
+    whenEnded: '2022-03-14T10:14:07.531409',
+    estimatedRecordCount: 0,
+    filter: '{"prisonId": "MDI"}',
+    recordsMigrated: 0,
+    recordsFailed: 0,
+    migrationType: 'ACTIVITIES',
+    status: 'COMPLETED',
+    id: '2022-03-14T10:13:56',
+    isNew: false,
+  },
+  {
+    migrationId: '2022-03-14T11:45:12',
+    whenStarted: '2022-03-14T11:45:12.615759',
+    estimatedRecordCount: 205630,
+    filter: '{"prisonId": "WWI", "courseActivityId": 123456}',
+    recordsMigrated: 1,
+    recordsFailed: 162794,
+    migrationType: 'ACTIVITIES',
+    status: 'STARTED',
+    id: '2022-03-14T11:45:12',
+    isNew: false,
+  },
+  {
+    migrationId: '2022-03-15T11:00:35',
+    whenStarted: '2022-03-15T11:00:35.406626',
+    whenEnded: '2022-03-15T11:00:45.990485',
+    estimatedRecordCount: 4,
+    filter: '{"prisonId": "WWI"}',
+    recordsMigrated: 0,
+    recordsFailed: 4,
+    migrationType: 'ACTIVITIES',
+    status: 'COMPLETED',
+    id: '2022-03-15T11:00:35',
+    isNew: false,
+  },
+]
+
+const defaultActivitiesFailures = {
+  messagesFoundCount: 353,
+  messagesReturnedCount: 5,
+  messages: [
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {
+            courseActivityId: 123456,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: 'afeb75fd-a2aa-41c4-9ede-b6bfe9590d36',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {
+            courseActivityId: 123457,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: '86b96f0e-2ac3-445c-b3ac-0a4d525d371e',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123458,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: '7e37a1e0-f041-42bc-9c2d-1da82d3bb83b',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123459,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: '8d87f4d7-7846-48b2-ae93-5a7878dba502',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123460,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: '230dcb1f-3391-4630-b907-3923ec9e0ee4',
+    },
+  ],
+}
+
+const stubGetActivitiesFailures = (failures: unknown = defaultActivitiesFailures): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-activitiesmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: failures,
+    },
+  })
+
+const stubDeleteActivitiesFailures = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-activitiesmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        messagesFoundCount: 5,
+      },
+    },
+  })
+
+const stubGetActivitiesMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/activities/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded: null,
+        estimatedRecordCount: 202,
+        filter: '{"prisonId":"MDI"}',
+        recordsMigrated: 12091,
+        recordsFailed: 123,
+        migrationType: 'ACTIVITIES',
+        status: 'STARTED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubGetActivitiesMigrationDetailsCompleted = ({
+  migrationId,
+  migrated,
+  failed,
+  whenEnded,
+}: {
+  migrationId: string
+  migrated: number
+  failed: string
+  whenEnded: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/activities/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded,
+        estimatedRecordCount: 202,
+        filter: '{"prisonId":"MDI"}',
+        recordsMigrated: migrated,
+        recordsFailed: failed,
+        migrationType: 'ACTIVITIES',
+        status: 'COMPLETED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubGetActivitiesMigrationEstimatedCount = (count: number): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPath: '/nomis-migration-api/migrate/activities/ids',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        content: [
+          {
+            courseActivityId: 12345,
+          },
+        ],
+        pageable: {
+          sort: {
+            empty: false,
+            sorted: true,
+            unsorted: false,
+          },
+          offset: 0,
+          pageSize: 1,
+          pageNumber: 0,
+          paged: true,
+          unpaged: false,
+        },
+        last: false,
+        totalPages: count,
+        totalElements: count,
+        size: 1,
+        number: 0,
+        sort: {
+          empty: false,
+          sorted: true,
+          unsorted: false,
+        },
+        first: true,
+        numberOfElements: 1,
+        empty: false,
+      },
+    },
+  })
+
+const stubListOfAllocationsMigrationHistory = (
+  migrationHistory: MigrationHistory[] = defaultAllocationsMigrationHistory,
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/migrate/allocations/history?.*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: migrationHistory,
+    },
+  })
+
+const stubStartAllocationsMigration = (
+  response: unknown = {
+    migrationId: '2022-03-23T11:11:56',
+    estimatedCount: 2,
+    body: {
+      prisonId: 'MDI',
+    },
+  },
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/nomis-migration-api/migrate/allocations',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
+const defaultAllocationsMigrationHistory: MigrationHistory[] = [
+  {
+    migrationId: '2022-03-14T10:13:56',
+    whenStarted: '2022-03-14T10:13:56.878627',
+    whenEnded: '2022-03-14T10:14:07.531409',
+    estimatedRecordCount: 0,
+    filter: '{"prisonId": "MDI"}',
+    recordsMigrated: 0,
+    recordsFailed: 0,
+    migrationType: 'ALLOCATIONS',
+    status: 'COMPLETED',
+    id: '2022-03-14T10:13:56',
+    isNew: false,
+  },
+  {
+    migrationId: '2022-03-14T11:45:12',
+    whenStarted: '2022-03-14T11:45:12.615759',
+    estimatedRecordCount: 205630,
+    filter: '{"prisonId": "WWI", "courseActivityId": 123456}',
+    recordsMigrated: 1,
+    recordsFailed: 162794,
+    migrationType: 'ALLOCATIONS',
+    status: 'STARTED',
+    id: '2022-03-14T11:45:12',
+    isNew: false,
+  },
+  {
+    migrationId: '2022-03-15T11:00:35',
+    whenStarted: '2022-03-15T11:00:35.406626',
+    whenEnded: '2022-03-15T11:00:45.990485',
+    estimatedRecordCount: 4,
+    filter: '{"prisonId": "WWI"}',
+    recordsMigrated: 0,
+    recordsFailed: 4,
+    migrationType: 'ALLOCATIONS',
+    status: 'COMPLETED',
+    id: '2022-03-15T11:00:35',
+    isNew: false,
+  },
+]
+
+const defaultAllocationsFailures = {
+  messagesFoundCount: 353,
+  messagesReturnedCount: 5,
+  messages: [
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {
+            courseActivityId: 123456,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: 'afeb75fd-a2aa-41c4-9ede-b6bfe9590d36',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {
+            courseActivityId: 123457,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: '86b96f0e-2ac3-445c-b3ac-0a4d525d371e',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123458,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: '7e37a1e0-f041-42bc-9c2d-1da82d3bb83b',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123459,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: '8d87f4d7-7846-48b2-ae93-5a7878dba502',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123460,
+          },
+        },
+        type: 'MIGRATE_ACTIVITIES',
+      },
+      messageId: '230dcb1f-3391-4630-b907-3923ec9e0ee4',
+    },
+  ],
+}
+
+const stubGetAllocationsFailures = (failures: unknown = defaultAllocationsFailures): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-allocationsmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: failures,
+    },
+  })
+
+const stubDeleteAllocationsFailures = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-allocationsmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        messagesFoundCount: 5,
+      },
+    },
+  })
+
+const stubGetAllocationsMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/allocations/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded: null,
+        estimatedRecordCount: 202,
+        filter: '{"prisonId":"MDI"}',
+        recordsMigrated: 12091,
+        recordsFailed: 123,
+        migrationType: 'ALLOCATIONS',
+        status: 'STARTED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubGetAllocationsMigrationDetailsCompleted = ({
+  migrationId,
+  migrated,
+  failed,
+  whenEnded,
+}: {
+  migrationId: string
+  migrated: number
+  failed: string
+  whenEnded: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/allocations/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded,
+        estimatedRecordCount: 202,
+        filter: '{"prisonId":"MDI"}',
+        recordsMigrated: migrated,
+        recordsFailed: failed,
+        migrationType: 'ALLOCATIONS',
+        status: 'COMPLETED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubGetAllocationsMigrationEstimatedCount = (count: number): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPath: '/nomis-migration-api/migrate/allocations/ids',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        content: [
+          {
+            courseActivityId: 12345,
+          },
+        ],
+        pageable: {
+          sort: {
+            empty: false,
+            sorted: true,
+            unsorted: false,
+          },
+          offset: 0,
+          pageSize: 1,
+          pageNumber: 0,
+          paged: true,
+          unpaged: false,
+        },
+        last: false,
+        totalPages: count,
+        totalElements: count,
+        size: 1,
+        number: 0,
+        sort: {
+          empty: false,
+          sorted: true,
+          unsorted: false,
+        },
+        first: true,
+        numberOfElements: 1,
+        empty: false,
+      },
+    },
+  })
+
 const stubGetVisitMigrationRoomUsage = (): SuperAgentRequest =>
   stubFor({
     request: {
@@ -944,6 +1544,22 @@ export default {
   stubDeleteAppointmentsFailures,
   stubGetAppointmentsMigrationDetailsStarted,
   stubGetAppointmentsMigrationDetailsCompleted,
+
+  stubListOfActivitiesMigrationHistory,
+  stubStartActivitiesMigration,
+  stubGetActivitiesFailures,
+  stubDeleteActivitiesFailures,
+  stubGetActivitiesMigrationDetailsStarted,
+  stubGetActivitiesMigrationDetailsCompleted,
+  stubGetActivitiesMigrationEstimatedCount,
+
+  stubListOfAllocationsMigrationHistory,
+  stubStartAllocationsMigration,
+  stubGetAllocationsFailures,
+  stubDeleteAllocationsFailures,
+  stubGetAllocationsMigrationDetailsStarted,
+  stubGetAllocationsMigrationDetailsCompleted,
+  stubGetAllocationsMigrationEstimatedCount,
 
   stubNomisMigrationPing,
   stubHealth,
