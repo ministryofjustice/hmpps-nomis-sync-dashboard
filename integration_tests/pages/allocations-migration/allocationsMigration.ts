@@ -2,7 +2,7 @@ import Page, { PageElement } from '../page'
 
 export default class AllocationsMigrationPage extends Page {
   constructor() {
-    super('Activities migration')
+    super('Allocations migration')
   }
 
   startNewMigration = (): PageElement => cy.contains('Start new migration')

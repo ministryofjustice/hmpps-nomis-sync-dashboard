@@ -140,7 +140,7 @@ describe('allocationsMigrationController', () => {
           action: 'startMigration',
         }
         await new AllocationsMigrationController(nomisMigrationService).postStartAllocationsMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID' }])
+        expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID.' }])
         expect(res.redirect).toHaveBeenCalledWith('/allocations-migration/amend')
       })
     })
