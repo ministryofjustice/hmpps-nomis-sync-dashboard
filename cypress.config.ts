@@ -62,7 +62,7 @@ export default defineConfig({
         stubStartActivitiesMigration: nomisMigrationApi.stubStartActivitiesMigration,
         stubGetActivitiesFailures: nomisMigrationApi.stubGetActivitiesFailures,
         stubDeleteActivitiesFailures: nomisMigrationApi.stubDeleteActivitiesFailures,
-        stubGetActivitiesMigrationEstimatedCount: nomisPrisonerApi.stubGetActivitiesMigrationEstimatedCount,
+        stubGetActivitiesMigrationEstimatedCount: nomisMigrationApi.stubGetActivitiesMigrationEstimatedCount,
         stubGetActivitiesMigrationDetailsStarted: nomisMigrationApi.stubGetActivitiesMigrationDetailsStarted,
         stubGetActivitiesMigrationDetailsCompleted: nomisMigrationApi.stubGetActivitiesMigrationDetailsCompleted,
 
@@ -70,7 +70,7 @@ export default defineConfig({
         stubStartAllocationsMigration: nomisMigrationApi.stubStartActivitiesMigration,
         stubGetAllocationsFailures: nomisMigrationApi.stubGetActivitiesFailures,
         stubDeleteAllocationsFailures: nomisMigrationApi.stubDeleteActivitiesFailures,
-        stubGetAllocationsMigrationEstimatedCount: nomisPrisonerApi.stubGetActivitiesMigrationEstimatedCount,
+        stubGetAllocationsMigrationEstimatedCount: nomisMigrationApi.stubGetActivitiesMigrationEstimatedCount,
         stubGetAllocationsMigrationDetailsStarted: nomisMigrationApi.stubGetActivitiesMigrationDetailsStarted,
         stubGetAllocationsMigrationDetailsCompleted: nomisMigrationApi.stubGetActivitiesMigrationDetailsCompleted,
 

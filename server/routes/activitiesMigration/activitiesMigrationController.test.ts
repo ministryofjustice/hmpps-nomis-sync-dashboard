@@ -140,7 +140,7 @@ describe('activitiesMigrationController', () => {
           action: 'startMigration',
         }
         await new ActivitiesMigrationController(nomisMigrationService).postStartActivitiesMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID' }])
+        expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID.' }])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/amend')
       })
     })

@@ -2,12 +2,14 @@ import { type RequestHandler, Router } from 'express'
 
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
 import sentencingMigrationRoutes from './sentencingMigration/sentencingMigrationRouter'
+import activitiesMigrationRoutes from './activitiesMigration/activitiesMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
 import adjudicationsMigrationRoutes from './adjudicationsMigration/adjudicationsMigrationRouter'
 import {
   extractRoles,
   MIGRATE_SENTENCING_ROLE,
   MIGRATE_VISITS_ROLE,
+  MIGRATE_ACTIVITIES_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_ADJUDICATIONS_ROLE,
 } from '../authentication/roles'
@@ -38,6 +40,14 @@ export default function routes(services: Services): Router {
           description: 'Migration and synchronisation information',
           href: '/sentencing-migration',
           roles: [MIGRATE_SENTENCING_ROLE],
+          enabled: true,
+        },
+        {
+          id: 'activities-migration',
+          heading: 'Activities migration',
+          description: 'Migration and synchronisation information',
+          href: '/activities-migration',
+          roles: [MIGRATE_ACTIVITIES_ROLE],
           enabled: true,
         },
         {
@@ -73,6 +83,7 @@ export default function routes(services: Services): Router {
 
   visitMigrationRoutes(router, services)
   sentencingMigrationRoutes(router, services)
+  activitiesMigrationRoutes(router, services)
   appointmentsMigrationRoutes(router, services)
   adjudicationsMigrationRoutes(router, services)
   return router
