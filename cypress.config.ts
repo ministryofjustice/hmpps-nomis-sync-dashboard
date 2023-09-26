@@ -58,6 +58,22 @@ export default defineConfig({
         stubGetAppointmentsMigrationDetailsStarted: nomisMigrationApi.stubGetAppointmentsMigrationDetailsStarted,
         stubGetAppointmentsMigrationDetailsCompleted: nomisMigrationApi.stubGetAppointmentsMigrationDetailsCompleted,
 
+        stubListOfActivitiesMigrationHistory: nomisMigrationApi.stubListOfActivitiesMigrationHistory,
+        stubStartActivitiesMigration: nomisMigrationApi.stubStartActivitiesMigration,
+        stubGetActivitiesFailures: nomisMigrationApi.stubGetActivitiesFailures,
+        stubDeleteActivitiesFailures: nomisMigrationApi.stubDeleteActivitiesFailures,
+        stubGetActivitiesMigrationEstimatedCount: nomisPrisonerApi.stubGetActivitiesMigrationEstimatedCount,
+        stubGetActivitiesMigrationDetailsStarted: nomisMigrationApi.stubGetActivitiesMigrationDetailsStarted,
+        stubGetActivitiesMigrationDetailsCompleted: nomisMigrationApi.stubGetActivitiesMigrationDetailsCompleted,
+
+        stubListOfAllocationsMigrationHistory: nomisMigrationApi.stubListOfActivitiesMigrationHistory,
+        stubStartAllocationsMigration: nomisMigrationApi.stubStartActivitiesMigration,
+        stubGetAllocationsFailures: nomisMigrationApi.stubGetActivitiesFailures,
+        stubDeleteAllocationsFailures: nomisMigrationApi.stubDeleteActivitiesFailures,
+        stubGetAllocationsMigrationEstimatedCount: nomisPrisonerApi.stubGetActivitiesMigrationEstimatedCount,
+        stubGetAllocationsMigrationDetailsStarted: nomisMigrationApi.stubGetActivitiesMigrationDetailsStarted,
+        stubGetAllocationsMigrationDetailsCompleted: nomisMigrationApi.stubGetActivitiesMigrationDetailsCompleted,
+
         stubMigrationInProgress: nomisMigrationApi.stubMigrationInProgress,
         stubMigrationInProgressCompleted: nomisMigrationApi.stubMigrationInProgressCompleted,
 
