@@ -146,7 +146,7 @@ export default class AllocationsMigrationController {
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
-    | where message contains 'Will not migrate the allocation since it is migrated already,'
+    | where message startswith 'Will not migrate the courseActivityId'
     | where timestamp between (datetime(${AllocationsMigrationController.toISODateTime(
       startedDate,
     )}) .. datetime(${AllocationsMigrationController.toISODateTime(endedDate)}))

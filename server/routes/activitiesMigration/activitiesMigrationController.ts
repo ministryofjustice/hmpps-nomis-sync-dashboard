@@ -146,7 +146,7 @@ export default class ActivitiesMigrationController {
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
-    | where message contains 'Will not migrate the activity since it is migrated already,'
+    | where message startswith 'Will not migrate the courseActivityId'
     | where timestamp between (datetime(${ActivitiesMigrationController.toISODateTime(
       startedDate,
     )}) .. datetime(${ActivitiesMigrationController.toISODateTime(endedDate)}))
