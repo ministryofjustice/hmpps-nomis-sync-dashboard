@@ -41,6 +41,7 @@ context('Activities Migration Homepage', () => {
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('not.exist')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
+        cy.get('[data-qa=end-activities-link]').should('exist')
       })
       migrationPage.migrationResultsRow(1).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T11:45:12')
@@ -53,6 +54,7 @@ context('Activities Migration Homepage', () => {
         cy.get('[data-qa=progress-link]').should('contain.text', 'View progress')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
         cy.get('[data-qa=already-migrated-link]').should('contain.text', 'View Insights')
+        cy.get('[data-qa=end-activities-link]').should('exist')
       })
       migrationPage.migrationResultsRow(2).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-15T11:00:35')
@@ -65,6 +67,7 @@ context('Activities Migration Homepage', () => {
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
+        cy.get('[data-qa=end-activities-link]').should('exist')
       })
 
       migrationPage.migrationResultsRow(1).within(() => {

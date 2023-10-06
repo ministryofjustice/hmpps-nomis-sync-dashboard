@@ -345,6 +345,25 @@ export default class NomisMigrationService {
     })
   }
 
+  async endMigratedActivities(context: Context, migrationId: string): Promise<string> {
+    logger.info(`Ending NOMIS activities for migrationId=${migrationId}`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+
+    try {
+      await NomisMigrationService.restClient(token).put<void>({
+        path: `/migrate/activities/${migrationId}/end`,
+      })
+    } catch (e) {
+      switch (e.status) {
+        case 404:
+          return 'Not found'
+        default:
+          return 'Error'
+      }
+    }
+    return 'OK'
+  }
+
   async getActivitiesDLQMessageCount(context: Context): Promise<string> {
     return NomisMigrationService.getAnyDLQMessageCount('migrationactivities-health', context.token)
   }

@@ -34,6 +34,7 @@ export default class ActivitiesMigrationController {
     }))
     res.render('pages/activities/activitiesMigration', {
       migrations: decoratedMigrations,
+      endMigratedActivitiesResult: req.session.endMigratedActivitiesResult,
       errors: [],
     })
   }
@@ -81,6 +82,13 @@ export default class ActivitiesMigrationController {
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startActivitiesMigrationForm }
     await this.postStartActivitiesMigration(req, res)
+  }
+
+  async postEndMigratedActivities(req: Request, res: Response): Promise<void> {
+    const { migrationId } = req.query as { migrationId: string }
+    const result = await this.nomisMigrationService.endMigratedActivities(context(res), migrationId)
+    req.session.endMigratedActivitiesResult = { migrationId, result }
+    res.redirect('/activities-migration')
   }
 
   async postStartActivitiesMigrationPreview(req: Request, res: Response): Promise<void> {
