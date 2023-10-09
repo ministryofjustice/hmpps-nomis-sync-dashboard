@@ -11,7 +11,7 @@ export default class ActivitiesMigrationPage extends Page {
 
   migrationResultsRow = (rowNumber): PageElement => cy.get('[data-qa=migration-results-div] tbody > tr').eq(rowNumber)
 
-  endNomisActivities = (resultRow: PageElement) => resultRow.find('[data-qa=end-activities-link]')
+  endNomisActivities = (resultRow: PageElement) => resultRow.find('[data-qa=end-activities-button]')
 
   endActivitiesResult = (resultRow: PageElement) => resultRow.find('[data-qa=end-activities-result]')
 
