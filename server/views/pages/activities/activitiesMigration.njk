@@ -112,7 +112,13 @@
                         </div>
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full">
-                            <a data-qa="end-activities-link" class="govuk-link" href="/activities-migration/end-activities?migrationId={{ u.migrationId }}">End NOMIS activities</a>
+                            {% set endNomisLink = "/activities-migration/end-activities?migrationId=" + u.migrationId %}
+                            {{ govukButton({
+                              text: "End NOMIS activities",
+                              href: endNomisLink,
+                              isStartButton: false,
+                              attributes: { 'data-qa': 'end-activities-button' }
+                            }) }}
                             {% if endMigratedActivitiesResult.migrationId == u.migrationId %}
                               {% if endMigratedActivitiesResult.result == 'OK' %}
                                 {% set resultClass = 'result-success' %}
