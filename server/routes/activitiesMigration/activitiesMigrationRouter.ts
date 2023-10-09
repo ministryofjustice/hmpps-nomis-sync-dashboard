@@ -35,6 +35,8 @@ export default function routes(router: Router, services: Services): Router {
   )
   get('/activities-migration/details', (req, res) => activitiesMigrationController.activitiesMigrationDetails(req, res))
   post('/activities-migration/cancel', (req, res) => activitiesMigrationController.cancelMigration(req, res))
-
+  get('/activities-migration/end-activities', (req, res) =>
+    activitiesMigrationController.postEndMigratedActivities(req, res),
+  )
   return router
 }

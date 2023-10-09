@@ -65,6 +65,7 @@ export default defineConfig({
         stubGetActivitiesMigrationEstimatedCount: nomisMigrationApi.stubGetActivitiesMigrationEstimatedCount,
         stubGetActivitiesMigrationDetailsStarted: nomisMigrationApi.stubGetActivitiesMigrationDetailsStarted,
         stubGetActivitiesMigrationDetailsCompleted: nomisMigrationApi.stubGetActivitiesMigrationDetailsCompleted,
+        stubEndActivities: nomisMigrationApi.stubEndActivities,
 
         stubListOfAllocationsMigrationHistory: nomisMigrationApi.stubListOfAllocationsMigrationHistory,
         stubStartAllocationsMigration: nomisMigrationApi.stubStartAllocationsMigration,

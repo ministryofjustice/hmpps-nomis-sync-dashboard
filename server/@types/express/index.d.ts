@@ -20,6 +20,11 @@ declare module 'express-session' {
     count: number
   }
 
+  interface EndMigratedActivitiesResult {
+    migrationId: string
+    result: string
+  }
+
   interface StartSentencingMigrationForm extends MigrationForm {
     fromDate?: string
     toDate?: string
@@ -57,6 +62,7 @@ declare module 'express-session' {
     startAllocationsMigrationForm: StartAllocationsMigrationForm
     startAppointmentsMigrationForm: StartAppointmentsMigrationForm
     startAdjudicationsMigrationForm: StartAdjudicationsMigrationForm
+    endMigratedActivitiesResult: EndMigratedActivitiesResult
   }
 }
 

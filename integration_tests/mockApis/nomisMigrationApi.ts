@@ -1223,6 +1223,17 @@ const stubListOfAllocationsMigrationHistory = (
     },
   })
 
+const stubEndActivities = (status: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/nomis-migration-api/migrate/activities/.*/end',
+    },
+    response: {
+      status,
+    },
+  })
+
 const stubStartAllocationsMigration = (
   response: unknown = {
     migrationId: '2022-03-23T11:11:56',
@@ -1552,6 +1563,7 @@ export default {
   stubGetActivitiesMigrationDetailsStarted,
   stubGetActivitiesMigrationDetailsCompleted,
   stubGetActivitiesMigrationEstimatedCount,
+  stubEndActivities,
 
   stubListOfAllocationsMigrationHistory,
   stubStartAllocationsMigration,
