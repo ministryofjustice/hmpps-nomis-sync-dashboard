@@ -110,6 +110,13 @@
                             </div>
                           {% endif %}
                         </div>
+
+                        <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                          <div class="govuk-grid-column-one-third">
+                            <a data-qa="migrate-allocations-link" class="govuk-link" href="/allocations-migration/start?prisonId={{ u.filterPrisonId }}&courseActivityId={{ u.filterCourseActivityId }}">Migrate Allocations</a>
+                          </div>
+                        </div>
+
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full">
                             {% set endNomisLink = "/activities-migration/end-activities?migrationId=" + u.migrationId %}

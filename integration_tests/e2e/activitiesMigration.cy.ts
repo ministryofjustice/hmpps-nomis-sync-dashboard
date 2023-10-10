@@ -2,6 +2,7 @@ import IndexPage from '../pages/index'
 import Page from '../pages/page'
 import ActivitiesMigrationPage from '../pages/activities-migration/activitiesMigration'
 import ActivitiesMigrationFailuresPage from '../pages/activities-migration/activitiesMigrationFailures'
+import StarAllocationsMigrationPage from '../pages/allocations-migration/startAllocationsMigration'
 
 context('Activities Migration Homepage', () => {
   beforeEach(() => {
@@ -74,6 +75,20 @@ context('Activities Migration Homepage', () => {
         cy.get('[data-qa=failures-link]').click()
       })
       Page.verifyOnPage(ActivitiesMigrationFailuresPage)
+    })
+
+    it('should click through to allocation migration', () => {
+      cy.task('stubHealth')
+
+      const migrationPage = ActivitiesMigrationPage.goTo()
+
+      migrationPage.migrationResultsRow(1).within(() => {
+        cy.get('[data-qa=migrate-allocations-link]').click()
+      })
+
+      const allocationPage = Page.verifyOnPage(StarAllocationsMigrationPage)
+      allocationPage.prisonId().should('have.value', 'WWI')
+      allocationPage.courseActivityId().should('have.value', '123456')
     })
   })
 
