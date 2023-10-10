@@ -5,7 +5,7 @@ export default class ActivitiesMigrationPage extends Page {
     super('Activities migration')
   }
 
-  startNewMigration = (): PageElement => cy.contains('Start new migration')
+  startNewMigration = (): PageElement => cy.get('[data-qa=start-new-migration]')
 
   migrationResultsDiv = (): PageElement => cy.get('[data-qa=migration-results-div]')
 

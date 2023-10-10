@@ -40,6 +40,9 @@ export default class AllocationsMigrationController {
 
   async startNewAllocationsMigration(req: Request, res: Response): Promise<void> {
     delete req.session.startAllocationsMigrationForm
+    if (req.query.prisonId || req.query.courseActivityId) {
+      req.session.startAllocationsMigrationForm = { ...req.query }
+    }
     await this.startAllocationsMigration(req, res)
   }
 

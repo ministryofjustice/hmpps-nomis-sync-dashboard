@@ -5,6 +5,7 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% set pageTitle = applicationName + " - Activities migration" %}
 
@@ -18,11 +19,23 @@
     <h1 class="govuk-heading-l">Activities migration</h1>
 
     <div>
+      {% set migrationInstructionsHtml %}
+        <p>Start a migration by pressing the "Start new migration" button and entering a single prison ID. You can optionally enter a single CRS_ACTY_ID to migrate a single Course Activity instead of all Course Activities. This will migrate <strong>active</strong> Course Activities from NOMIS to DPS. By "active" we mean the activity has not ended and has at least one prisoner allocated to attend.</p>
+        <p>All activities migrated to DPS will be synchronised back to NOMIS as <strong>new</strong> activities under the new program service codes. We are using a 1 way sync from DPS -> NOMIS so the old NOMIS activities are now redundant.</p>
+        <p>When the activity migration is complete and has been checked, click on the "Migrate Allocations" link and migrate the allocated prisoners to DPS. This will migrate all allocated prisoners onto the new activities and also synchronise them back to NOMIS. Note that ended or waiting allocations will not be migrated.</p>
+        <p>When the allocation migration is complete and has been checked we need to end all of the old NOMIS activities as they have been replaced by the migrated activities in DPS. Press the "End NOMIS activities" button to end all of the old activities and also end any allocations for those activities.</p>
+      {% endset %}
+      {{ govukDetails({
+        summaryText: "How do I run an Activities migration?",
+        html: migrationInstructionsHtml,
+        id: "activities-migration-details"
+      }) }}
       {{ govukButton({
         text: "Start new migration",
         href: "/activities-migration/start",
         isStartButton: true,
-        classes: "float-right"
+        classes: "float-right",
+        attributes: { "data-qa": "start-new-migration" }
       }) }}
     </div>
 
@@ -110,6 +123,13 @@
                             </div>
                           {% endif %}
                         </div>
+
+                        <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                          <div class="govuk-grid-column-one-third">
+                            <a data-qa="migrate-allocations-link" class="govuk-link" href="/allocations-migration/start?prisonId={{ u.filterPrisonId }}&courseActivityId={{ u.filterCourseActivityId }}">Migrate Allocations</a>
+                          </div>
+                        </div>
+
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full">
                             {% set endNomisLink = "/activities-migration/end-activities?migrationId=" + u.migrationId %}
