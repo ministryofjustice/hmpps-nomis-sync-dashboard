@@ -1,5 +1,5 @@
 import type { Response } from 'express'
-import jwtDecode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 const MIGRATE_VISITS_ROLE = 'ROLE_MIGRATE_VISITS'
 const MIGRATE_SENTENCING_ROLE = 'ROLE_MIGRATE_SENTENCING'
