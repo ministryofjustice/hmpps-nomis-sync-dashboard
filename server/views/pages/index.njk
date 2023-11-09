@@ -6,26 +6,26 @@
 
 {% block content %}
 
-    <div class="govuk-width-container">
-        <h1 class="govuk-heading-l govuk-!-margin-top-7">NOMIS migration and synchronisation dashboard</h1>
-    </div>
+  <div class="govuk-width-container">
+    <h1 class="govuk-heading-l govuk-!-margin-top-7">NOMIS migration and synchronisation dashboard</h1>
+  </div>
 
-    <div class="homepage-content">
-        <div class="govuk-width-container">
-            <ul class="govuk-grid-row card-group">
-                {% for dashboard in dashboards %}
-                    <li class="govuk-grid-column-one-third card-group__item">
-                        {{ card({
-                            "href": dashboard.href,
-                            "clickable": "true",
-                            "heading": dashboard.heading,
-                            "description": dashboard.description,
-                            "id": dashboard.id
-                        }) }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+  <div class="homepage-content">
+    <div class="govuk-width-container">
+      <ul class="govuk-grid-row card-group">
+        {% for dashboard in dashboards %}
+          <li class="govuk-grid-column-one-third card-group__item">
+            {{ card({
+              "href": dashboard.href,
+              "clickable": "true",
+              "heading": dashboard.heading,
+              "description": dashboard.description,
+              "id": dashboard.id
+            }) }}
+          </li>
+        {% endfor %}
+      </ul>
     </div>
+  </div>
 
 {% endblock %}
