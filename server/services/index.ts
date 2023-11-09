@@ -6,14 +6,15 @@ import NomisPrisonerService from './nomisPrisonerService'
 import MappingService from './mappingService'
 
 export const services = () => {
-  const { hmppsAuthClient } = dataAccess()
+  const { hmppsAuthClient, applicationInfo, manageUsersApiClient } = dataAccess()
 
-  const userService = new UserService(hmppsAuthClient)
+  const userService = new UserService(manageUsersApiClient)
   const nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
   const nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
   const mappingService = new MappingService(hmppsAuthClient)
 
   return {
+    applicationInfo,
     userService,
     nomisMigrationService,
     nomisPrisonerService,

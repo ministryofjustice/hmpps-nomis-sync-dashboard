@@ -10,11 +10,13 @@ generic-service:
   env:
     INGRESS_URL: "https://nomis-sync-dashboard-dev.hmpps.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
+    MANAGE_USERS_API_URL: "https://manage-users-api-dev.hmpps.service.justice.gov.uk"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api-dev.prison.service.justice.gov.uk"
     NOMIS_MIGRATION_API_URL: "https://prisoner-nomis-migration-dev.hmpps.service.justice.gov.uk"
     NOMIS_PRISONER_API_URL: "https://nomis-prisoner-api-dev.prison.service.justice.gov.uk"
     MAPPING_API_URL: "https://nomis-sync-prisoner-mapping-dev.hmpps.service.justice.gov.uk"
     APPINSIGHTS_COMPONENT: "nomisapi-t3"
+    ENVIRONMENT_NAME: DEV
 
 generic-prometheus-alerts:
   businessHoursOnly: true

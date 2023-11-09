@@ -8,7 +8,7 @@ import ActivitiesMigrationPage from '../pages/activities-migration/activitiesMig
 context('Start Activities Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {

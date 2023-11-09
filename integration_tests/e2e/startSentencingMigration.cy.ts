@@ -9,7 +9,7 @@ import SentencingMigrationPage from '../pages/sentencing-migration/sentencingMig
 context('Start Sentencing Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('With MIGRATE_SENTENCING role', () => {
     beforeEach(() => {

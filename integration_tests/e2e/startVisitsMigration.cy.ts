@@ -8,7 +8,7 @@ import VisitsMigrationPage from '../pages/visits-migration/visitsMigration'
 context('Start Visits Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
@@ -104,7 +104,7 @@ context('Start Visits Migration', () => {
       })
       cy.task('stubHealth')
       cy.task('stubGetVisitsFailures')
-      cy.task('stubDeleteFailures')
+      cy.task('stubDeleteVisitsFailures')
 
       Page.verifyOnPage(VisitsMigrationPage).startNewMigration().click()
       cy.task('stubGetVisitMigrationEstimatedCount', 100_988)

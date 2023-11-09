@@ -17,12 +17,11 @@ import {
 } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
-import { Services } from '../services'
+import type { Services } from '../services'
 
 export default function routes(services: Services): Router {
   const router = Router()
-
-  const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
+  const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
   get('/', (req, res, next) => {
     const roles = extractRoles(res)

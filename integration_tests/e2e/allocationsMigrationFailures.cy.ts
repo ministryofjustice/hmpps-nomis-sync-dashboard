@@ -3,7 +3,7 @@ import AllocationsMigrationFailuresPage from '../pages/allocations-migration/all
 context('Allocations Migration Failures', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('navigating directly to page', () => {
     beforeEach(() => {

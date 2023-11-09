@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { Response } from 'superagent'
 
-import { stubFor, getRequests } from './wiremock'
+import { stubFor, getMatchingRequests } from './wiremock'
 import tokenVerification from './tokenVerification'
 
 const createToken = (roles: string[]) => {
@@ -18,10 +18,12 @@ const createToken = (roles: string[]) => {
 }
 
 const getSignInUrl = (): Promise<string> =>
-  getRequests().then(data => {
+  getMatchingRequests({
+    method: 'GET',
+    urlPath: '/auth/oauth/authorize',
+  }).then(data => {
     const { requests } = data.body
-    const stateParam = requests[0].request.queryParams.state
-    const stateValue = stateParam ? stateParam.values[0] : requests[1].request.queryParams.state.values[0]
+    const stateValue = requests[requests.length - 1].queryParams.state.values[0]
     return `/sign-in/callback?code=codexxxx&state=${stateValue}`
   })
 
@@ -116,45 +118,10 @@ const token = (roles: string[]) =>
     },
   })
 
-const stubUser = () =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/auth/api/user/me',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        staffId: 231232,
-        username: 'USER1',
-        active: true,
-        name: 'john smith',
-      },
-    },
-  })
-
-const stubUserRoles = () =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/auth/api/user/me/roles',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: [{ roleCode: 'SOME_USER_ROLE' }],
-    },
-  })
-
 export default {
   getSignInUrl,
-  stubPing: (): Promise<[Response, Response]> => Promise.all([ping(), tokenVerification.stubPing()]),
+  stubAuthPing: (): Promise<[Response, Response]> =>
+    Promise.all([ping(), tokenVerification.stubTokenVerificationPing()]),
   stubSignIn: (roles: string[]): Promise<[Response, Response, Response, Response, Response, Response]> =>
     Promise.all([favicon(), redirect(), signOut(), manageDetails(), token(roles), tokenVerification.stubVerifyToken()]),
-  stubUser: (): Promise<[Response, Response]> => Promise.all([stubUser(), stubUserRoles()]),
 }

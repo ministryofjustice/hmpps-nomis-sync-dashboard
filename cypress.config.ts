@@ -1,6 +1,7 @@
 import { defineConfig } from 'cypress'
 import { resetStubs } from './integration_tests/mockApis/wiremock'
 import auth from './integration_tests/mockApis/auth'
+import manageUsersApi from './integration_tests/mockApis/manageUsersApi'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import nomisMigrationApi from './integration_tests/mockApis/nomisMigrationApi'
 import nomisPrisonerApi from './integration_tests/mockApis/nomisPrisonerApi'
@@ -22,66 +23,12 @@ export default defineConfig({
     setupNodeEvents(on) {
       on('task', {
         reset: resetStubs,
-
-        getSignInUrl: auth.getSignInUrl,
-        stubSignIn: auth.stubSignIn,
-
-        stubAuthUser: auth.stubUser,
-        stubAuthPing: auth.stubPing,
-
-        stubTokenVerificationPing: tokenVerification.stubPing,
-        stubHealth: nomisMigrationApi.stubHealth,
-        stubNomisPrisonerPing: nomisPrisonerApi.stubNomisPrisonerPing,
-        stubNomisMigrationPing: nomisMigrationApi.stubNomisMigrationPing,
-
-        stubListOfVisitsMigrationHistory: nomisMigrationApi.stubListOfVisitsMigrationHistory,
-        stubStartVisitsMigration: nomisMigrationApi.stubStartVisitsMigration,
-        stubGetVisitsFailures: nomisMigrationApi.stubGetVisitsFailures,
-        stubDeleteFailures: nomisMigrationApi.stubDeleteVisitsFailures,
-        stubGetVisitMigrationEstimatedCount: nomisPrisonerApi.stubGetVisitMigrationEstimatedCount,
-        stubGetVisitsMigrationDetailsStarted: nomisMigrationApi.stubGetVisitsMigrationDetailsStarted,
-        stubGetVisitsMigrationDetailsCompleted: nomisMigrationApi.stubGetVisitsMigrationDetailsCompleted,
-
-        stubListOfSentencingMigrationHistory: nomisMigrationApi.stubListOfSentencingMigrationHistory,
-        stubStartSentencingMigration: nomisMigrationApi.stubStartSentencingMigration,
-        stubGetSentencingFailures: nomisMigrationApi.stubGetSentencingFailures,
-        stubDeleteSentencingFailures: nomisMigrationApi.stubDeleteSentencingFailures,
-        stubGetSentencingMigrationEstimatedCount: nomisPrisonerApi.stubGetSentencingMigrationEstimatedCount,
-        stubGetSentencingMigrationDetailsStarted: nomisMigrationApi.stubGetSentencingMigrationDetailsStarted,
-        stubGetSentencingMigrationDetailsCompleted: nomisMigrationApi.stubGetSentencingMigrationDetailsCompleted,
-
-        stubListOfAppointmentsMigrationHistory: nomisMigrationApi.stubListOfAppointmentsMigrationHistory,
-        stubStartAppointmentsMigration: nomisMigrationApi.stubStartAppointmentsMigration,
-        stubGetAppointmentsFailures: nomisMigrationApi.stubGetAppointmentsFailures,
-        stubDeleteAppointmentsFailures: nomisMigrationApi.stubDeleteAppointmentsFailures,
-        stubGetAppointmentsMigrationEstimatedCount: nomisPrisonerApi.stubGetAppointmentsMigrationEstimatedCount,
-        stubGetAppointmentsMigrationDetailsStarted: nomisMigrationApi.stubGetAppointmentsMigrationDetailsStarted,
-        stubGetAppointmentsMigrationDetailsCompleted: nomisMigrationApi.stubGetAppointmentsMigrationDetailsCompleted,
-
-        stubListOfActivitiesMigrationHistory: nomisMigrationApi.stubListOfActivitiesMigrationHistory,
-        stubStartActivitiesMigration: nomisMigrationApi.stubStartActivitiesMigration,
-        stubGetActivitiesFailures: nomisMigrationApi.stubGetActivitiesFailures,
-        stubDeleteActivitiesFailures: nomisMigrationApi.stubDeleteActivitiesFailures,
-        stubGetActivitiesMigrationEstimatedCount: nomisMigrationApi.stubGetActivitiesMigrationEstimatedCount,
-        stubGetActivitiesMigrationDetailsStarted: nomisMigrationApi.stubGetActivitiesMigrationDetailsStarted,
-        stubGetActivitiesMigrationDetailsCompleted: nomisMigrationApi.stubGetActivitiesMigrationDetailsCompleted,
-        stubEndActivities: nomisMigrationApi.stubEndActivities,
-
-        stubListOfAllocationsMigrationHistory: nomisMigrationApi.stubListOfAllocationsMigrationHistory,
-        stubStartAllocationsMigration: nomisMigrationApi.stubStartAllocationsMigration,
-        stubGetAllocationsFailures: nomisMigrationApi.stubGetAllocationsFailures,
-        stubDeleteAllocationsFailures: nomisMigrationApi.stubDeleteAllocationsFailures,
-        stubGetAllocationsMigrationEstimatedCount: nomisMigrationApi.stubGetAllocationsMigrationEstimatedCount,
-        stubGetAllocationsMigrationDetailsStarted: nomisMigrationApi.stubGetAllocationsMigrationDetailsStarted,
-        stubGetAllocationsMigrationDetailsCompleted: nomisMigrationApi.stubGetAllocationsMigrationDetailsCompleted,
-
-        stubMigrationInProgress: nomisMigrationApi.stubMigrationInProgress,
-        stubMigrationInProgressCompleted: nomisMigrationApi.stubMigrationInProgressCompleted,
-
-        stubGetVisitMigrationRoomUsage: nomisMigrationApi.stubGetVisitMigrationRoomUsage,
-        stubGetVisitRoomMappings: mappingApi.stubGetVisitRoomMappings,
-        stubGetVisitRoomUsage: nomisPrisonerApi.stubGetVisitRoomUsage,
-        stubAddVisitsRoomMapping: mappingApi.stubAddVisitsRoomMapping,
+        ...auth,
+        ...manageUsersApi,
+        ...tokenVerification,
+        ...nomisMigrationApi,
+        ...nomisPrisonerApi,
+        ...mappingApi,
       })
     },
     baseUrl: 'http://localhost:3007',

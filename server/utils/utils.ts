@@ -13,8 +13,16 @@ const isBlank = (str: string): boolean => !str || /^\s*$/.test(str)
  */
 const properCaseName = (name: string): string => (isBlank(name) ? '' : name.split('-').map(properCase).join('-'))
 
-const convertToTitleCase = (sentence: string): string =>
+export const convertToTitleCase = (sentence: string): string =>
   isBlank(sentence) ? '' : sentence.split(' ').map(properCaseName).join(' ')
+
+export const initialiseName = (fullName?: string): string | null => {
+  // this check is for the authError page
+  if (!fullName) return null
+
+  const array = fullName.split(' ')
+  return `${array[0][0]}. ${array.reverse()[0]}`
+}
 
 export const withDefaultTime = (value?: string): string | undefined => {
   if (value) {
@@ -22,5 +30,3 @@ export const withDefaultTime = (value?: string): string | undefined => {
   }
   return value
 }
-
-export default convertToTitleCase

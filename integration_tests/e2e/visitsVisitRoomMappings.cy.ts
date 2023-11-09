@@ -6,7 +6,7 @@ import AddRoomMappingPage from '../pages/visits-room-mapping/addRoomMappings'
 context('Visit Room Mappings', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
 
   context('With VISIT MAPPINGS role', () => {
