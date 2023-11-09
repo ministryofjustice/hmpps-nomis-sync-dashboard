@@ -7,7 +7,7 @@ import StarAllocationsMigrationPage from '../pages/allocations-migration/startAl
 context('Activities Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {

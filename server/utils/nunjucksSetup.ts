@@ -1,24 +1,29 @@
 /* eslint-disable no-param-reassign */
+import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
-import * as pathModule from 'path'
 import moment from 'moment'
 import querystring, { ParsedUrlQueryInput } from 'querystring'
+import { initialiseName } from './utils'
+import { ApplicationInfo } from '../applicationInfo'
+import config from '../config'
 import { Error } from '../validation/validation'
 import { MigrationViewFilter } from '../@types/dashboard'
 
 const production = process.env.NODE_ENV === 'production'
 
-export default function nunjucksSetup(app: express.Express, path: pathModule.PlatformPath): nunjucks.Environment {
+export default function nunjucksSetup(app: express.Express, applicationInfo: ApplicationInfo): nunjucks.Environment {
   app.set('view engine', 'njk')
 
   app.locals.asset_path = '/assets/'
   app.locals.applicationName = 'NOMIS Migration and Synchronisation Dashboard'
+  app.locals.environmentName = config.environmentName
+  app.locals.environmentNameColour = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
 
   // Cachebusting version string
   if (production) {
-    // Version only changes on reboot
-    app.locals.version = Date.now().toString()
+    // Version only changes with new commits
+    app.locals.version = applicationInfo.gitShortHash
   } else {
     // Version changes every request
     app.use((req, res, next) => {
@@ -41,14 +46,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     },
   )
 
-  njkEnv.addFilter('initialiseName', (fullName: string) => {
-    // this check is for the authError page
-    if (!fullName) {
-      return null
-    }
-    const array = fullName.split(' ')
-    return `${array[0][0]}. ${array.reverse()[0]}`
-  })
+  njkEnv.addFilter('initialiseName', initialiseName)
 
   njkEnv.addFilter('formatDate', (value, format) => (value ? moment(value).format(format) : null))
   njkEnv.addFilter('json', (value, excludeProperties: string[] = []) => {

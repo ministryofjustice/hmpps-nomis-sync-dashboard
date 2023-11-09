@@ -6,7 +6,7 @@ import AppointmentsMigrationFailuresPage from '../pages/appointments-migration/a
 context('Appointment Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('With MIGRATE_APPOINTMENTS role', () => {
     beforeEach(() => {

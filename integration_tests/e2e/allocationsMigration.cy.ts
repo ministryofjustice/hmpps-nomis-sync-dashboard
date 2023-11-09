@@ -6,7 +6,7 @@ import AllocationsMigrationFailuresPage from '../pages/allocations-migration/all
 context('Allocations Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {

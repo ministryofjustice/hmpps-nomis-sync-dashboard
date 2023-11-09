@@ -4,7 +4,7 @@ context('Visit Migration Details', () => {
   const migrationId = '2022-03-28T14:28:04'
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('while migration is in progress', () => {
     beforeEach(() => {

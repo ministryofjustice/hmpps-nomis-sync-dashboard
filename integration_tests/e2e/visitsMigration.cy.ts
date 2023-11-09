@@ -6,7 +6,7 @@ import VisitsMigrationFailuresPage from '../pages/visits-migration/visitsMigrati
 context('Visit Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
   })
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
