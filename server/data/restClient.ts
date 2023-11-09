@@ -21,14 +21,6 @@ interface RequestWithBody extends Request {
   retry?: boolean
 }
 
-interface PostRequest {
-  path?: string
-  headers?: Record<string, string>
-  responseType?: string
-  data?: Record<string, unknown>
-  raw?: boolean
-}
-
 interface StreamRequest {
   path?: string
   headers?: Record<string, string>
