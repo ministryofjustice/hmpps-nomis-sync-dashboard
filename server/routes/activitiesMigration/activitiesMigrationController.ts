@@ -7,6 +7,8 @@ import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startActivitiesMigrationValidator from './startActivitiesMigrationValidator'
+import NomisPrisonerService from '../../services/nomisPrisonerService'
+import { IncentiveLevel } from '../../@types/nomisPrisoner'
 
 interface Filter {
   prisonId?: string
@@ -21,7 +23,10 @@ function context(res: Response): Context {
 }
 
 export default class ActivitiesMigrationController {
-  constructor(private readonly nomisMigrationService: NomisMigrationService) {}
+  constructor(
+    private readonly nomisMigrationService: NomisMigrationService,
+    private readonly nomisPrisonerService: NomisPrisonerService,
+  ) {}
 
   async getActivitiesMigrations(req: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getActivitiesMigrations(context(res))
@@ -60,20 +65,48 @@ export default class ActivitiesMigrationController {
       req.flash('errors', errors)
       res.redirect('/activities-migration/amend')
     } else {
-      const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
-      const count = await this.nomisMigrationService.getActivitiesMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getActivitiesDLQMessageCount(context(res))
-      logger.info(`${dlqCountString} failures found`)
-
-      req.session.startActivitiesMigrationForm.estimatedCount = count.toLocaleString()
-      req.session.startActivitiesMigrationForm.dlqCount = dlqCountString.toLocaleString()
+      await this.previewChecks(req, res, errors)
+      if (errors.length > 0) {
+        req.flash('errors', errors)
+      }
       res.redirect('/activities-migration/start/preview')
     }
+  }
+
+  async previewChecks(req: Request, res: Response, errors: Express.ValidationError[]): Promise<void> {
+    const { prisonId } = req.session.startActivitiesMigrationForm
+    const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
+    await Promise.all([
+      this.nomisMigrationService.getActivitiesMigrationEstimatedCount(filter, context(res)).catch(error => {
+        errors.push({ text: `Failed to get count due to error: ${error.data.userMessage}`, href: '' })
+        return 0
+      }),
+
+      this.nomisMigrationService.getActivitiesDLQMessageCount(context(res)).catch(error => {
+        errors.push({
+          text: `Failed to get DLQ count due to error: ${error.data?.message || error.message}`,
+          href: '',
+        })
+        return 0
+      }),
+
+      this.nomisPrisonerService.getPrisonIncentiveLevels(prisonId, context(res)).catch(error => {
+        errors.push({ text: `Failed to check incentive levels due to error: ${error.data.userMessage}`, href: '' })
+        return []
+      }),
+    ]).then(([estimatedCount, dlqCount, incentiveLevels]) => {
+      req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
+      req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
+      req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
+        (level: IncentiveLevel) => level.code,
+      )
+    })
   }
 
   async startActivitiesMigrationPreview(req: Request, res: Response): Promise<void> {
     res.render('pages/activities/startActivitiesMigrationPreview', {
       form: req.session.startActivitiesMigrationForm,
+      errors: req.flash('errors'),
     })
   }
 

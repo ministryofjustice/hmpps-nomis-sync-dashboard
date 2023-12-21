@@ -9,6 +9,7 @@ import {
   VisitRoomCountResponse,
   PageAdjudicationIdResponse,
   GetAdjudicationChargeIdsByFilter,
+  IncentiveLevel,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
@@ -69,6 +70,13 @@ export default class NomisPrisonerService {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     return NomisPrisonerService.restClient(token).get<VisitRoomCountResponse[]>({
       path: `/visits/rooms/usage-count?prisonIds=${prisonId}&visitTypes=SCON&futureVisitsOnly=${futureVisits}`,
+    })
+  }
+
+  async getPrisonIncentiveLevels(prisonId: string, context: Context): Promise<IncentiveLevel[]> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return NomisPrisonerService.restClient(token).get<IncentiveLevel[]>({
+      path: `/prisons/${prisonId}/incentive-levels`,
     })
   }
 }

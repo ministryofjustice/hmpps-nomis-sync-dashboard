@@ -12,3 +12,4 @@ export type GetAdjudicationChargeIdsByFilter = Omit<
 export type GetActivitiesByFilter = Omit<operations['findActiveActivities']['parameters']['query'], 'pageRequest'>
 export type GetAllocationsByFilter = Omit<operations['findActiveAllocations']['parameters']['query'], 'pageRequest'>
 export type VisitRoomCountResponse = components['schemas']['VisitRoomCountResponse']
+export type IncentiveLevel = components['schemas']['IncentiveLevel']
