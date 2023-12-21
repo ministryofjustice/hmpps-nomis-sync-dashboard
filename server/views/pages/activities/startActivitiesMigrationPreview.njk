@@ -37,6 +37,9 @@
                             <p class="govuk-notification-banner__heading" id="estimateSummary">
                                 Estimated number of Activities entities to be migrated: {{ form.estimatedCount }}
                             </p>
+                            <p class="govuk-notification-banner__heading" id="estimateSummary">
+                                Active incentive levels for {{ form.prisonId }}: {{ form.incentiveLevelIds }}
+                            </p>
                         {% endset %}
 
                         {{ govukNotificationBanner({
