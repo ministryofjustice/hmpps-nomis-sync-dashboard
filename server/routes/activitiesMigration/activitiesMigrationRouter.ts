@@ -41,5 +41,6 @@ export default function routes(router: Router, services: Services): Router {
   get('/activities-migration/end-activities', (req, res) =>
     activitiesMigrationController.postEndMigratedActivities(req, res),
   )
+  get('/activities-migration/activate-prison', (req, res) => activitiesMigrationController.postActivatePrison(req, res))
   return router
 }

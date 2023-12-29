@@ -18,4 +18,12 @@ export default class StartActivitiesMigrationPage extends Page {
   dlqWarning = () => cy.get('#dlqWarning')
 
   clearDlqMessages = () => cy.get('[data-qa=delete-dlq-button]')
+
+  incentiveLevels = () => cy.get('#incentiveLevels')
+
+  featureSwitch = () => cy.get('#featureSwitch')
+
+  activateFeatureSwitch = () => cy.get('[data-qa=activate-prison-button]')
+
+  errorSummary = () => cy.get('.govuk-error-summary')
 }

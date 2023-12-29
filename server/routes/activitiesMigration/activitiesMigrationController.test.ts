@@ -144,6 +144,7 @@ describe('activitiesMigrationController', () => {
         { code: 'ENT', description: 'Entry' },
         { code: 'STD', description: 'Standard' },
       ])
+      nomisPrisonerService.checkServiceAgencySwitch.mockResolvedValue(true)
     })
 
     describe('with validation error', () => {

@@ -41,8 +41,8 @@ context('Start Activities Migration', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetActivitiesFailures')
+      cy.task('stubHealth', '0')
+      cy.task('stubGetActivitiesWithFailures')
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
@@ -53,12 +53,6 @@ context('Start Activities Migration', () => {
 
       page.continueButton().click()
       const previewPage = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
-      previewPage.estimateSummary().contains('Estimated number of Activities entities to be migrated: 100,988')
-      previewPage
-        .dlqWarning()
-        .contains(
-          'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration',
-        )
 
       previewPage.prisonIdRow().contains('MDI')
       previewPage.courseActivityIdRow().contains('123456')
@@ -87,8 +81,8 @@ context('Start Activities Migration', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetActivitiesFailures')
+      cy.task('stubHealth', '153')
+      cy.task('stubGetActivitiesWithFailures')
       cy.task('stubDeleteActivitiesFailures')
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
@@ -112,6 +106,84 @@ context('Start Activities Migration', () => {
       previewPageAgain.startMigrationButton().click()
 
       Page.verifyOnPage(StartActivitiesMigrationConfirmationPage)
+    })
+
+    it('Shows successful preview check details', () => {
+      cy.task('stubStartActivitiesMigration', {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 100_988,
+      })
+      cy.task('stubHealth', '0')
+      cy.task('stubGetActivitiesNoFailures')
+
+      Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
+      cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
+      cy.task('stubCheckServiceAgencySwitch')
+      cy.task('stubGetPrisonIncentiveLevels')
+
+      const page = Page.verifyOnPage(StartActivitiesMigrationPage)
+      page.prisonId().type('MDI')
+
+      page.continueButton().click()
+      const previewPage = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
+      previewPage.estimateSummary().contains('Estimated number of Activities entities to be migrated: 100,988')
+      previewPage.incentiveLevels().contains('BAS,STD,ENH')
+      previewPage.featureSwitch().should('not.exist')
+      previewPage.activateFeatureSwitch().should('not.exist')
+    })
+
+    it('Shows errors returned from preview checks', () => {
+      cy.task('stubStartActivitiesMigration', {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 100_988,
+      })
+      cy.task('stubHealth', '0')
+      cy.task('stubGetActivitiesNoFailures')
+
+      Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
+      cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
+      cy.task('stubCheckServiceAgencySwitchErrors')
+      cy.task('stubGetPrisonIncentiveLevelsErrors')
+
+      const page = Page.verifyOnPage(StartActivitiesMigrationPage)
+      page.prisonId().type('MDI')
+      page.continueButton().click()
+
+      const previewPage = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
+      previewPage.errorSummary().contains('Failed to check incentive levels')
+      previewPage.errorSummary().contains('Failed to check if ACTIVITY feature switch turned on')
+      previewPage.featureSwitch().should('not.exist')
+      previewPage.activateFeatureSwitch().should('not.exist')
+    })
+
+    it('Turns on NOMIS feature switch if not already active', () => {
+      cy.task('stubStartActivitiesMigration', {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 100_988,
+      })
+      cy.task('stubHealth', '0')
+      cy.task('stubGetActivitiesNoFailures')
+
+      Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
+      cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
+      cy.task('stubGetPrisonIncentiveLevels')
+      cy.task('stubCheckServiceAgencySwitchNotFound')
+      cy.task('stubPostServiceAgencySwitch')
+      cy.task('stubCheckServiceAgencySwitchAfterNotFound')
+
+      const page = Page.verifyOnPage(StartActivitiesMigrationPage)
+      page.prisonId().type('MDI')
+      page.continueButton().click()
+
+      const previewPage = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
+      previewPage.featureSwitch().should('exist')
+      previewPage.activateFeatureSwitch().should('exist')
+      previewPage.activateFeatureSwitch().click()
+
+      const amendPage = Page.verifyOnPage(StartActivitiesMigrationPage)
+      amendPage.continueButton().click()
+      Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
+      previewPage.featureSwitch().should('not.exist')
     })
   })
 })

@@ -42,6 +42,7 @@ declare module 'express-session' {
     prisonId?: string
     courseActivityId?: number
     incentiveLevelIds?: string[]
+    prisonSwitchedOn: boolean | string
   }
 
   interface StartAllocationsMigrationForm extends MigrationForm {

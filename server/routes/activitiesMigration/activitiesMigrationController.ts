@@ -94,12 +94,21 @@ export default class ActivitiesMigrationController {
         errors.push({ text: `Failed to check incentive levels due to error: ${error.data.userMessage}`, href: '' })
         return []
       }),
-    ]).then(([estimatedCount, dlqCount, incentiveLevels]) => {
+
+      this.nomisPrisonerService.checkServiceAgencySwitch(prisonId, 'ACTIVITY', context(res)).catch(error => {
+        errors.push({
+          text: `Failed to check if ACTIVITY feature switch turned on for ${prisonId}: ${error.data.userMessage}`,
+          href: '',
+        })
+        return 'Error checking ACTIVITY feature switch'
+      }),
+    ]).then(([estimatedCount, dlqCount, incentiveLevels, featureSwitchOn]) => {
       req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
       req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
       req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
         (level: IncentiveLevel) => level.code,
       )
+      req.session.startActivitiesMigrationForm.prisonSwitchedOn = featureSwitchOn
     })
   }
 
@@ -122,6 +131,12 @@ export default class ActivitiesMigrationController {
     const result = await this.nomisMigrationService.endMigratedActivities(context(res), migrationId)
     req.session.endMigratedActivitiesResult = { migrationId, result }
     res.redirect('/activities-migration')
+  }
+
+  async postActivatePrison(req: Request, res: Response): Promise<void> {
+    const { serviceName, prisonId } = req.query as { serviceName: string; prisonId: string }
+    await this.nomisPrisonerService.createServiceAgencySwitch(prisonId, serviceName, context(res))
+    res.redirect('/activities-migration/amend')
   }
 
   async postStartActivitiesMigrationPreview(req: Request, res: Response): Promise<void> {
