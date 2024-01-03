@@ -35,13 +35,13 @@
                     {% if form.estimatedCount %}
                         {% set html %}
                             <p class="govuk-notification-banner__heading" id="estimateSummary">
-                                Estimated number of Activities entities to be migrated: {{ form.estimatedCount }}
+                                Estimated number of Activities entities to be migrated: {{ form.estimatedCount }}.
                             </p>
                             <p class="govuk-notification-banner__heading" id="incentiveLevels">
-                                Active incentive levels for {{ form.prisonId }}: {{ form.incentiveLevelIds }}
+                                Active incentive levels for {{ form.prisonId }}: {{ form.incentiveLevelIds }}.
                             </p>
-                            {% if not form.prisonSwitchedOn %}
-                                <p class="govuk-notification-banner__heading" id="featureSwitch">
+                            {% if not form.prisonSwitchedOnNomis %}
+                                <p class="govuk-notification-banner__heading" id="nomisFeatureSwitch">
                                     NOMIS feature switch not turned on for {{ form.prisonId }}. Turn on now?
                                     {% set activate_prison_link = "/activities-migration/activate-prison?prisonId=" + form.prisonId + "&serviceName=ACTIVITY" %}
                                     {{ govukButton({
@@ -50,6 +50,11 @@
                                       isStartButton: false,
                                       attributes: { 'data-qa': 'activate-prison-button' }
                                     }) }}
+                                </p>
+                            {% endif %}
+                            {% if not form.prisonSwitchedOnDps %}
+                                <p class="govuk-notification-banner__heading" id="dpsFeatureSwitch">
+                                    DPS feature switch not turned on for {{ form.prisonId }}.
                                 </p>
                             {% endif %}
                         {% endset %}

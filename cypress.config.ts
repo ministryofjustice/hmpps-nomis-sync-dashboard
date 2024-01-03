@@ -6,6 +6,7 @@ import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import nomisMigrationApi from './integration_tests/mockApis/nomisMigrationApi'
 import nomisPrisonerApi from './integration_tests/mockApis/nomisPrisonerApi'
 import mappingApi from './integration_tests/mockApis/mappingApi'
+import activitiesApi from './integration_tests/mockApis/activitiesApi'
 
 export default defineConfig({
   chromeWebSecurity: false,
@@ -27,6 +28,7 @@ export default defineConfig({
         ...nomisMigrationApi,
         ...nomisPrisonerApi,
         ...mappingApi,
+        ...activitiesApi,
       })
     },
     baseUrl: 'http://localhost:3007',
