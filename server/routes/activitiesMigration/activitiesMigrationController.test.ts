@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
+import moment from 'moment'
 import ActivitiesMigrationController from './activitiesMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
+import activitiesService from '../testutils/mockActivitiesService'
 
 describe('activitiesMigrationController', () => {
   const req = {
@@ -85,10 +87,11 @@ describe('activitiesMigrationController', () => {
       ]
       nomisMigrationService.getActivitiesMigrations.mockResolvedValue(activitiesMigrationResponse)
 
-      await new ActivitiesMigrationController(nomisMigrationService, nomisPrisonerService).getActivitiesMigrations(
-        req,
-        res,
-      )
+      await new ActivitiesMigrationController(
+        nomisMigrationService,
+        nomisPrisonerService,
+        activitiesService,
+      ).getActivitiesMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/activities/activitiesMigration', {
         migrations: expect.arrayContaining([
@@ -117,8 +120,13 @@ describe('activitiesMigrationController', () => {
         ],
       })
     })
+
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new ActivitiesMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      await new ActivitiesMigrationController(
+        nomisMigrationService,
+        nomisPrisonerService,
+        activitiesService,
+      ).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/activities/activitiesMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -145,6 +153,13 @@ describe('activitiesMigrationController', () => {
         { code: 'STD', description: 'Standard' },
       ])
       nomisPrisonerService.checkServiceAgencySwitch.mockResolvedValue(true)
+      activitiesService.getRolloutPrison.mockResolvedValue({
+        prisonCode: 'MDI',
+        activitiesRolledOut: true,
+        activitiesRolloutDate: '2023-01-01',
+        appointmentsRolledOut: true,
+        appointmentsRolloutDate: '2023-01-01',
+      })
     })
 
     describe('with validation error', () => {
@@ -156,11 +171,13 @@ describe('activitiesMigrationController', () => {
         await new ActivitiesMigrationController(
           nomisMigrationService,
           nomisPrisonerService,
+          activitiesService,
         ).postStartActivitiesMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID.' }])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/amend')
       })
     })
+
     describe('with preview check errors', () => {
       it('should show errors from get activity count', async () => {
         nomisMigrationService.getActivitiesMigrationEstimatedCount.mockRejectedValue({
@@ -177,12 +194,14 @@ describe('activitiesMigrationController', () => {
         await new ActivitiesMigrationController(
           nomisMigrationService,
           nomisPrisonerService,
+          activitiesService,
         ).postStartActivitiesMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [
           { href: '', text: 'Failed to get count due to error: Not found: prison XXX does not exist' },
         ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
+
       it('should show errors from get DLQ count', async () => {
         nomisMigrationService.getActivitiesDLQMessageCount.mockRejectedValue({
           data: {
@@ -198,12 +217,14 @@ describe('activitiesMigrationController', () => {
         await new ActivitiesMigrationController(
           nomisMigrationService,
           nomisPrisonerService,
+          activitiesService,
         ).postStartActivitiesMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [
           { href: '', text: 'Failed to get DLQ count due to error: Gateway Timeout' },
         ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
+
       it('should show errors from get prison incentive levels', async () => {
         nomisPrisonerService.getPrisonIncentiveLevels.mockRejectedValue({
           data: {
@@ -219,6 +240,7 @@ describe('activitiesMigrationController', () => {
         await new ActivitiesMigrationController(
           nomisMigrationService,
           nomisPrisonerService,
+          activitiesService,
         ).postStartActivitiesMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [
           { href: '', text: 'Failed to check incentive levels due to error: Not found: Prison XXX does not exist' },
@@ -226,6 +248,7 @@ describe('activitiesMigrationController', () => {
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
     })
+
     describe('with no errors', () => {
       it('should show results of preview checks', async () => {
         req.body = {
@@ -236,10 +259,59 @@ describe('activitiesMigrationController', () => {
         await new ActivitiesMigrationController(
           nomisMigrationService,
           nomisPrisonerService,
+          activitiesService,
         ).postStartActivitiesMigration(req, res)
         expect(req.session.startActivitiesMigrationForm.estimatedCount).toBe('10')
         expect(req.session.startActivitiesMigrationForm.dlqCount).toBe('20')
         expect(req.session.startActivitiesMigrationForm.incentiveLevelIds.sort()).toEqual(['STD', 'ENT'].sort())
+        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis).toEqual(true)
+        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(true)
+        expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
+      })
+
+      it('should show DPS feature switch warning if not rolled out', async () => {
+        activitiesService.getRolloutPrison.mockResolvedValue({
+          prisonCode: 'MDI',
+          activitiesRolledOut: false,
+          activitiesRolloutDate: null,
+          appointmentsRolledOut: true,
+          appointmentsRolloutDate: '2023-01-01',
+        })
+
+        req.body = {
+          _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
+          action: 'startMigration',
+          prisonId: 'XXX',
+        }
+        await new ActivitiesMigrationController(
+          nomisMigrationService,
+          nomisPrisonerService,
+          activitiesService,
+        ).postStartActivitiesMigration(req, res)
+        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(false)
+        expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
+      })
+
+      it('should show DPS feature switch warning if not rolled out YET', async () => {
+        activitiesService.getRolloutPrison.mockResolvedValue({
+          prisonCode: 'MDI',
+          activitiesRolledOut: false,
+          activitiesRolloutDate: moment().add(1, 'days').format('YYYY-MM-DD'),
+          appointmentsRolledOut: true,
+          appointmentsRolloutDate: '2023-01-01',
+        })
+
+        req.body = {
+          _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
+          action: 'startMigration',
+          prisonId: 'XXX',
+        }
+        await new ActivitiesMigrationController(
+          nomisMigrationService,
+          nomisPrisonerService,
+          activitiesService,
+        ).postStartActivitiesMigration(req, res)
+        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(false)
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
     })

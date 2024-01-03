@@ -21,9 +21,11 @@ export default class StartActivitiesMigrationPage extends Page {
 
   incentiveLevels = () => cy.get('#incentiveLevels')
 
-  featureSwitch = () => cy.get('#featureSwitch')
+  nomisFeatureSwitch = () => cy.get('#nomisFeatureSwitch')
 
   activateFeatureSwitch = () => cy.get('[data-qa=activate-prison-button]')
+
+  dpsFeatureSwitch = () => cy.get('#dpsFeatureSwitch')
 
   errorSummary = () => cy.get('.govuk-error-summary')
 }

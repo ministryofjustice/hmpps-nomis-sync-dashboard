@@ -4,10 +4,12 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import ActivitiesMigrationController from './activitiesMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import ActivitiesService from '../../services/activitiesService'
 
 export interface Services {
   nomisMigrationService: NomisMigrationService
   nomisPrisonerService: NomisPrisonerService
+  activitiesService: ActivitiesService
 }
 export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -16,6 +18,7 @@ export default function routes(router: Router, services: Services): Router {
   const activitiesMigrationController = new ActivitiesMigrationController(
     services.nomisMigrationService,
     services.nomisPrisonerService,
+    services.activitiesService,
   )
   get('/activities-migration', (req, res) => activitiesMigrationController.getActivitiesMigrations(req, res))
   get('/activities-migration/failures', (req, res) => activitiesMigrationController.viewFailures(req, res))

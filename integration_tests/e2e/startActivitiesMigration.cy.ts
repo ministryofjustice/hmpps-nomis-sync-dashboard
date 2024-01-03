@@ -120,6 +120,7 @@ context('Start Activities Migration', () => {
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
       cy.task('stubCheckServiceAgencySwitch')
       cy.task('stubGetPrisonIncentiveLevels')
+      cy.task('stubGetDpsPrisonRollout')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -128,8 +129,9 @@ context('Start Activities Migration', () => {
       const previewPage = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
       previewPage.estimateSummary().contains('Estimated number of Activities entities to be migrated: 100,988')
       previewPage.incentiveLevels().contains('BAS,STD,ENH')
-      previewPage.featureSwitch().should('not.exist')
+      previewPage.nomisFeatureSwitch().should('not.exist')
       previewPage.activateFeatureSwitch().should('not.exist')
+      previewPage.dpsFeatureSwitch().should('not.exist')
     })
 
     it('Shows errors returned from preview checks', () => {
@@ -144,6 +146,7 @@ context('Start Activities Migration', () => {
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
       cy.task('stubCheckServiceAgencySwitchErrors')
       cy.task('stubGetPrisonIncentiveLevelsErrors')
+      cy.task('stubGetDpsPrisonRolloutErrors')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -152,8 +155,10 @@ context('Start Activities Migration', () => {
       const previewPage = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
       previewPage.errorSummary().contains('Failed to check incentive levels')
       previewPage.errorSummary().contains('Failed to check if ACTIVITY feature switch turned on')
-      previewPage.featureSwitch().should('not.exist')
+      previewPage.errorSummary().contains('Failed to check if prison MDI is switched on in DPS')
+      previewPage.nomisFeatureSwitch().should('not.exist')
       previewPage.activateFeatureSwitch().should('not.exist')
+      previewPage.dpsFeatureSwitch().should('not.exist')
     })
 
     it('Turns on NOMIS feature switch if not already active', () => {
@@ -167,6 +172,7 @@ context('Start Activities Migration', () => {
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
       cy.task('stubGetPrisonIncentiveLevels')
+      cy.task('stubGetDpsPrisonRollout')
       cy.task('stubCheckServiceAgencySwitchNotFound')
       cy.task('stubPostServiceAgencySwitch')
       cy.task('stubCheckServiceAgencySwitchAfterNotFound')
@@ -176,14 +182,14 @@ context('Start Activities Migration', () => {
       page.continueButton().click()
 
       const previewPage = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
-      previewPage.featureSwitch().should('exist')
+      previewPage.nomisFeatureSwitch().should('exist')
       previewPage.activateFeatureSwitch().should('exist')
       previewPage.activateFeatureSwitch().click()
 
       const amendPage = Page.verifyOnPage(StartActivitiesMigrationPage)
       amendPage.continueButton().click()
       Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
-      previewPage.featureSwitch().should('not.exist')
+      previewPage.nomisFeatureSwitch().should('not.exist')
     })
   })
 })

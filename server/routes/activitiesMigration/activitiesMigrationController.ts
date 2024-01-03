@@ -2,13 +2,14 @@ import { Request, Response } from 'express'
 import { StartActivitiesMigrationForm } from 'express-session'
 import moment from 'moment'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
-import { MigrationHistory, ActivitiesMigrationFilter } from '../../@types/migration'
+import { ActivitiesMigrationFilter, MigrationHistory } from '../../@types/migration'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startActivitiesMigrationValidator from './startActivitiesMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import { IncentiveLevel } from '../../@types/nomisPrisoner'
+import ActivitiesService from '../../services/activitiesService'
 
 interface Filter {
   prisonId?: string
@@ -26,6 +27,7 @@ export default class ActivitiesMigrationController {
   constructor(
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
+    private readonly activitiesService: ActivitiesService,
   ) {}
 
   async getActivitiesMigrations(req: Request, res: Response): Promise<void> {
@@ -102,13 +104,25 @@ export default class ActivitiesMigrationController {
         })
         return 'Error checking ACTIVITY feature switch'
       }),
-    ]).then(([estimatedCount, dlqCount, incentiveLevels, featureSwitchOn]) => {
+
+      this.activitiesService.getRolloutPrison(prisonId, context(res)).catch(error => {
+        errors.push({
+          text: `Failed to check if prison ${prisonId} is switched on in DPS due to error: ${error.message}`,
+          href: '',
+        })
+        return null
+      }),
+    ]).then(([estimatedCount, dlqCount, incentiveLevels, nomisFeatureSwitchOn, dpsPrisonRollout]) => {
       req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
       req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
       req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
         (level: IncentiveLevel) => level.code,
       )
-      req.session.startActivitiesMigrationForm.prisonSwitchedOn = featureSwitchOn
+      req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis = nomisFeatureSwitchOn
+      req.session.startActivitiesMigrationForm.prisonSwitchedOnDps =
+        dpsPrisonRollout === null ||
+        (dpsPrisonRollout.activitiesRolledOut &&
+          dpsPrisonRollout.activitiesRolloutDate <= moment().format('YYYY-MM-DD'))
     })
   }
 
