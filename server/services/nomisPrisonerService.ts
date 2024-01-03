@@ -79,4 +79,30 @@ export default class NomisPrisonerService {
       path: `/prisons/${prisonId}/incentive-levels`,
     })
   }
+
+  async checkServiceAgencySwitch(prisonId: string, serviceName: string, context: Context): Promise<boolean> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    try {
+      await NomisPrisonerService.restClient(token).get<void>({
+        path: `/service-prisons/${serviceName}/prison/${prisonId}`,
+      })
+    } catch (error) {
+      if (error.status === 404) {
+        return false
+      }
+      throw error
+    }
+    return true
+  }
+
+  async createServiceAgencySwitch(prisonId: string, serviceName: string, context: Context): Promise<void> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    try {
+      await NomisPrisonerService.restClient(token).post<void>({
+        path: `/service-prisons/${serviceName}/prison/${prisonId}`,
+      })
+    } catch (error) {
+      logger.info(`Failed to turn on ${serviceName} service for ${prisonId}`)
+    }
+  }
 }

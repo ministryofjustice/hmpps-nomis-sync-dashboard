@@ -186,10 +186,114 @@ const stubGetVisitRoomUsage = (prison: string): SuperAgentRequest =>
     },
   })
 
+const stubCheckServiceAgencySwitch = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+    },
+    response: {
+      status: 204,
+    },
+  })
+
+const stubPostServiceAgencySwitch = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+    },
+    response: {
+      status: 201,
+    },
+  })
+
+const stubCheckServiceAgencySwitchNotFound = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+    },
+    response: {
+      status: 404,
+    },
+    scenarioName: 'Switch not found',
+    requiredScenarioState: 'Started',
+    newScenarioState: 'Not found',
+  })
+
+const stubCheckServiceAgencySwitchAfterNotFound = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+    },
+    response: {
+      status: 204,
+    },
+    scenarioName: 'Switch not found',
+    requiredScenarioState: 'Not found',
+  })
+
+const stubCheckServiceAgencySwitchErrors = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+    },
+    response: {
+      status: 504,
+    },
+  })
+
+const stubGetPrisonIncentiveLevels = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-prisoner-api/prisons/.*/incentive-levels`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: [
+        {
+          code: 'BAS',
+          description: 'Basic',
+        },
+        {
+          code: 'STD',
+          description: 'Standard',
+        },
+        {
+          code: 'ENH',
+          description: 'Enhanced',
+        },
+      ],
+    },
+  })
+
+const stubGetPrisonIncentiveLevelsErrors = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-prisoner-api/prisons/.*/incentive-levels`,
+    },
+    response: {
+      status: 504,
+    },
+  })
+
 export default {
   stubNomisPrisonerPing,
   stubGetVisitMigrationEstimatedCount,
   stubGetSentencingMigrationEstimatedCount,
   stubGetAppointmentsMigrationEstimatedCount,
   stubGetVisitRoomUsage,
+  stubCheckServiceAgencySwitch,
+  stubPostServiceAgencySwitch,
+  stubCheckServiceAgencySwitchNotFound,
+  stubCheckServiceAgencySwitchAfterNotFound,
+  stubCheckServiceAgencySwitchErrors,
+  stubGetPrisonIncentiveLevels,
+  stubGetPrisonIncentiveLevelsErrors,
 }

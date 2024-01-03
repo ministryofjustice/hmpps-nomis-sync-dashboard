@@ -425,7 +425,7 @@ const defaultSentencingFailures = {
   ],
 }
 
-const stubHealth = (): SuperAgentRequest =>
+const stubHealth = (failures: string = '153'): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -447,7 +447,7 @@ const stubHealth = (): SuperAgentRequest =>
               messagesInFlight: '0',
               dlqStatus: 'UP',
               dlqName: 'dps-syscon-dev-visitsmigration_dlq',
-              messagesOnDlq: '153',
+              messagesOnDlq: `${failures}`,
             },
           },
           'migrationsentencing-health': {
@@ -458,7 +458,7 @@ const stubHealth = (): SuperAgentRequest =>
               messagesInFlight: '0',
               dlqStatus: 'UP',
               dlqName: 'dps-syscon-dev-sentencingmigration_dlq',
-              messagesOnDlq: '153',
+              messagesOnDlq: `${failures}`,
             },
           },
           'migrationappointments-health': {
@@ -469,7 +469,7 @@ const stubHealth = (): SuperAgentRequest =>
               messagesInFlight: '0',
               dlqStatus: 'UP',
               dlqName: 'dps-syscon-dev-appointmentsmigration_dlq',
-              messagesOnDlq: '153',
+              messagesOnDlq: `${failures}`,
             },
           },
           'migrationactivities-health': {
@@ -480,7 +480,7 @@ const stubHealth = (): SuperAgentRequest =>
               messagesInFlight: '0',
               dlqStatus: 'UP',
               dlqName: 'dps-syscon-dev-activitiesmigration_dlq',
-              messagesOnDlq: '153',
+              messagesOnDlq: `${failures}`,
             },
           },
           'migrationallocations-health': {
@@ -491,7 +491,7 @@ const stubHealth = (): SuperAgentRequest =>
               messagesInFlight: '0',
               dlqStatus: 'UP',
               dlqName: 'dps-syscon-dev-allocationsmigration_dlq',
-              messagesOnDlq: '153',
+              messagesOnDlq: `${failures}`,
             },
           },
         },
@@ -996,7 +996,7 @@ const defaultActivitiesMigrationHistory: MigrationHistory[] = [
   },
 ]
 
-const defaultActivitiesFailures = {
+const activitiesFailures = {
   messagesFoundCount: 353,
   messagesReturnedCount: 5,
   messages: [
@@ -1068,7 +1068,28 @@ const defaultActivitiesFailures = {
   ],
 }
 
-const stubGetActivitiesFailures = (failures: unknown = defaultActivitiesFailures): SuperAgentRequest =>
+const noActivitiesFailures = {
+  messagesFoundCount: 0,
+  messagesReturnedCount: 0,
+  messages: [],
+}
+
+const stubGetActivitiesWithFailures = (failures: unknown = activitiesFailures): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-activitiesmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: failures,
+    },
+  })
+
+const stubGetActivitiesNoFailures = (failures: unknown = noActivitiesFailures): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -1558,7 +1579,8 @@ export default {
 
   stubListOfActivitiesMigrationHistory,
   stubStartActivitiesMigration,
-  stubGetActivitiesFailures,
+  stubGetActivitiesNoFailures,
+  stubGetActivitiesWithFailures,
   stubDeleteActivitiesFailures,
   stubGetActivitiesMigrationDetailsStarted,
   stubGetActivitiesMigrationDetailsCompleted,

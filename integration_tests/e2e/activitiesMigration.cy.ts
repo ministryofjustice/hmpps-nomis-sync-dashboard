@@ -27,7 +27,7 @@ context('Activities Migration Homepage', () => {
 
     it('should display list of migrations', () => {
       cy.task('stubHealth')
-      cy.task('stubGetActivitiesFailures')
+      cy.task('stubGetActivitiesNoFailures')
 
       const migrationPage = ActivitiesMigrationPage.goTo()
 

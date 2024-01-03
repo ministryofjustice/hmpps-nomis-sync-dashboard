@@ -37,9 +37,21 @@
                             <p class="govuk-notification-banner__heading" id="estimateSummary">
                                 Estimated number of Activities entities to be migrated: {{ form.estimatedCount }}
                             </p>
-                            <p class="govuk-notification-banner__heading" id="estimateSummary">
+                            <p class="govuk-notification-banner__heading" id="incentiveLevels">
                                 Active incentive levels for {{ form.prisonId }}: {{ form.incentiveLevelIds }}
                             </p>
+                            {% if not form.prisonSwitchedOn %}
+                                <p class="govuk-notification-banner__heading" id="featureSwitch">
+                                    NOMIS feature switch not turned on for {{ form.prisonId }}. Turn on now?
+                                    {% set activate_prison_link = "/activities-migration/activate-prison?prisonId=" + form.prisonId + "&serviceName=ACTIVITY" %}
+                                    {{ govukButton({
+                                      text: "Activate Prison",
+                                      href: activate_prison_link,
+                                      isStartButton: false,
+                                      attributes: { 'data-qa': 'activate-prison-button' }
+                                    }) }}
+                                </p>
+                            {% endif %}
                         {% endset %}
 
                         {{ govukNotificationBanner({

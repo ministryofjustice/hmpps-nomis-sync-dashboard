@@ -88,4 +88,35 @@ describe('NomisPrisonerService tests', () => {
       expect(count).toEqual(205630)
     })
   })
+
+  describe('checkServiceAgencySwitch', () => {
+    beforeEach(() => {
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+    })
+    it('should return true if found', async () => {
+      fakeNomisPrisonerService.get('/service-prisons/ACTIVITY/prison/BXI').reply(200)
+
+      const response = await nomisPrisonerService.checkServiceAgencySwitch('BXI', 'ACTIVITY', { username: 'some user' })
+
+      expect(response).toBeTruthy()
+    })
+    it('should return false if not found', async () => {
+      fakeNomisPrisonerService.get('/service-prisons/ACTIVITY/prison/BXI').reply(404)
+
+      const response = await nomisPrisonerService.checkServiceAgencySwitch('BXI', 'ACTIVITY', { username: 'some user' })
+
+      expect(response).toBeFalsy()
+    })
+    it('should throw for any other error', () => {
+      fakeNomisPrisonerService
+        .get('/service-prisons/ACTIVITY/prison/BXI')
+        .reply(504, { message: 'Gateway Timeout' })
+        .persist(true)
+
+      expect(async () => {
+        await nomisPrisonerService.checkServiceAgencySwitch('BXI', 'ACTIVITY', { username: 'some user' })
+      }).rejects.toThrow()
+    })
+  })
 })
