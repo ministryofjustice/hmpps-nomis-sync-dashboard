@@ -64,6 +64,8 @@ Example of command to generate types from an api:
 
 `npx openapi-typescript  https://nomis-prisoner-api-dev.prison.service.justice.gov.uk/v3/api-docs --output server/@types/nomisPrisonerImport/index.d.ts`
 
+`npx openapi-typescript https://activities-api-dev.prison.service.justice.gov.uk/v3/api-docs  --output server/@types/activitiesImport/index.d.ts`
+
 ## Operational Instructions for Visits Migration
 
 ### Overview
