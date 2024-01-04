@@ -45,6 +45,7 @@ declare module 'express-session' {
     prisonSwitchedOnNomis: boolean | string
     prisonSwitchedOnDps: boolean | null
     dpsPayBandsExist: boolean | null
+    dpsPrisonRegimeExists: boolean | null
   }
 
   interface StartAllocationsMigrationForm extends MigrationForm {

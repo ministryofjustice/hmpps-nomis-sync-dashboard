@@ -120,19 +120,39 @@ export default class ActivitiesMigrationController {
         })
         return null
       }),
-    ]).then(([estimatedCount, dlqCount, incentiveLevels, nomisFeatureSwitchOn, dpsPrisonRollout, dpsPayBandsExist]) => {
-      req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
-      req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
-      req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
-        (level: IncentiveLevel) => level.code,
-      )
-      req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis = nomisFeatureSwitchOn
-      req.session.startActivitiesMigrationForm.prisonSwitchedOnDps =
-        dpsPrisonRollout === null ||
-        (dpsPrisonRollout.activitiesRolledOut &&
-          dpsPrisonRollout.activitiesRolloutDate <= moment().format('YYYY-MM-DD'))
-      req.session.startActivitiesMigrationForm.dpsPayBandsExist = dpsPayBandsExist === null || dpsPayBandsExist
-    })
+
+      this.activitiesService.checkPrisonRegimeExists(prisonId, context(res)).catch(error => {
+        errors.push({
+          text: `Failed to check if prison ${prisonId} has slot times configured in DPS due to error: ${error.message}`,
+          href: '',
+        })
+        return null
+      }),
+    ]).then(
+      ([
+        estimatedCount,
+        dlqCount,
+        incentiveLevels,
+        nomisFeatureSwitchOn,
+        dpsPrisonRollout,
+        dpsPayBandsExist,
+        dpsPrisonRegimeExists,
+      ]) => {
+        req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
+        req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
+        req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
+          (level: IncentiveLevel) => level.code,
+        )
+        req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis = nomisFeatureSwitchOn
+        req.session.startActivitiesMigrationForm.prisonSwitchedOnDps =
+          dpsPrisonRollout === null ||
+          (dpsPrisonRollout.activitiesRolledOut &&
+            dpsPrisonRollout.activitiesRolloutDate <= moment().format('YYYY-MM-DD'))
+        req.session.startActivitiesMigrationForm.dpsPayBandsExist = dpsPayBandsExist === null || dpsPayBandsExist
+        req.session.startActivitiesMigrationForm.dpsPrisonRegimeExists =
+          dpsPrisonRegimeExists === null || dpsPrisonRegimeExists
+      },
+    )
   }
 
   async startActivitiesMigrationPreview(req: Request, res: Response): Promise<void> {
