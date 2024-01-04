@@ -121,6 +121,7 @@ context('Start Activities Migration', () => {
       cy.task('stubCheckServiceAgencySwitch')
       cy.task('stubGetPrisonIncentiveLevels')
       cy.task('stubGetDpsPrisonRollout')
+      cy.task('stubGetDpsPayBands')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -131,7 +132,8 @@ context('Start Activities Migration', () => {
       previewPage.incentiveLevels().contains('BAS,STD,ENH')
       previewPage.nomisFeatureSwitch().should('not.exist')
       previewPage.activateFeatureSwitch().should('not.exist')
-      previewPage.dpsFeatureSwitch().should('not.exist')
+      previewPage.dpsFeatureSwitch().should('exist')
+      previewPage.dpsPayBands().should('exist')
     })
 
     it('Shows errors returned from preview checks', () => {
@@ -147,6 +149,7 @@ context('Start Activities Migration', () => {
       cy.task('stubCheckServiceAgencySwitchErrors')
       cy.task('stubGetPrisonIncentiveLevelsErrors')
       cy.task('stubGetDpsPrisonRolloutErrors')
+      cy.task('stubGetDpsPayBandsErrors')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -156,9 +159,11 @@ context('Start Activities Migration', () => {
       previewPage.errorSummary().contains('Failed to check incentive levels')
       previewPage.errorSummary().contains('Failed to check if ACTIVITY feature switch turned on')
       previewPage.errorSummary().contains('Failed to check if prison MDI is switched on in DPS')
+      previewPage.errorSummary().contains('Failed to check if prison MDI has pay bands in DPS')
       previewPage.nomisFeatureSwitch().should('not.exist')
       previewPage.activateFeatureSwitch().should('not.exist')
       previewPage.dpsFeatureSwitch().should('not.exist')
+      previewPage.dpsPayBands().should('not.exist')
     })
 
     it('Turns on NOMIS feature switch if not already active', () => {

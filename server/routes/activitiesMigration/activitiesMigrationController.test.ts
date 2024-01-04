@@ -160,6 +160,7 @@ describe('activitiesMigrationController', () => {
         appointmentsRolledOut: true,
         appointmentsRolloutDate: '2023-01-01',
       })
+      activitiesService.checkPrisonPayBandsExist.mockResolvedValue(true)
     })
 
     describe('with validation error', () => {
@@ -266,6 +267,7 @@ describe('activitiesMigrationController', () => {
         expect(req.session.startActivitiesMigrationForm.incentiveLevelIds.sort()).toEqual(['STD', 'ENT'].sort())
         expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis).toEqual(true)
         expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(true)
+        expect(req.session.startActivitiesMigrationForm.dpsPayBandsExist).toEqual(true)
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
 

@@ -44,6 +44,7 @@ declare module 'express-session' {
     incentiveLevelIds?: string[]
     prisonSwitchedOnNomis: boolean | string
     prisonSwitchedOnDps: boolean | null
+    dpsPayBandsExist: boolean | null
   }
 
   interface StartAllocationsMigrationForm extends MigrationForm {

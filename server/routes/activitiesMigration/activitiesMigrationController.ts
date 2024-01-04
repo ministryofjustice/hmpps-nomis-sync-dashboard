@@ -112,7 +112,15 @@ export default class ActivitiesMigrationController {
         })
         return null
       }),
-    ]).then(([estimatedCount, dlqCount, incentiveLevels, nomisFeatureSwitchOn, dpsPrisonRollout]) => {
+
+      this.activitiesService.checkPrisonPayBandsExist(prisonId, context(res)).catch(error => {
+        errors.push({
+          text: `Failed to check if prison ${prisonId} has pay bands in DPS due to error: ${error.message}`,
+          href: '',
+        })
+        return null
+      }),
+    ]).then(([estimatedCount, dlqCount, incentiveLevels, nomisFeatureSwitchOn, dpsPrisonRollout, dpsPayBandsExist]) => {
       req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
       req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
       req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
@@ -123,6 +131,7 @@ export default class ActivitiesMigrationController {
         dpsPrisonRollout === null ||
         (dpsPrisonRollout.activitiesRolledOut &&
           dpsPrisonRollout.activitiesRolloutDate <= moment().format('YYYY-MM-DD'))
+      req.session.startActivitiesMigrationForm.dpsPayBandsExist = dpsPayBandsExist === null || dpsPayBandsExist
     })
   }
 
