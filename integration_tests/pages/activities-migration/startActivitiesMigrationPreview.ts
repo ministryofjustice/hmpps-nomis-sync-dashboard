@@ -29,5 +29,7 @@ export default class StartActivitiesMigrationPage extends Page {
 
   dpsPayBands = () => cy.get('#dpsPayBands')
 
+  dpsPrisonRegime = () => cy.get('#dpsPrisonRegime')
+
   errorSummary = () => cy.get('.govuk-error-summary')
 }

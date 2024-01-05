@@ -55,9 +55,33 @@ const stubGetDpsPayBandsErrors = (): SuperAgentRequest =>
     },
   })
 
+const stubGetDpsPrisonRegime = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/activities-api/prison/prison-regime/.*',
+    },
+    response: {
+      status: 404,
+    },
+  })
+
+const stubGetDpsPrisonRegimeErrors = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/activities-api/prison/prison-regime/.*',
+    },
+    response: {
+      status: 500,
+    },
+  })
+
 export default {
   stubGetDpsPrisonRollout,
   stubGetDpsPrisonRolloutErrors,
   stubGetDpsPayBands,
   stubGetDpsPayBandsErrors,
+  stubGetDpsPrisonRegime,
+  stubGetDpsPrisonRegimeErrors,
 }
