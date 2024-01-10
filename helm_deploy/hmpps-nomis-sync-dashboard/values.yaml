@@ -26,6 +26,7 @@ generic-service:
   # Environment variables to load into the deployment
   env:
     NODE_ENV: "production"
+    REDIS_ENABLED: "true"
     REDIS_TLS_ENABLED: "true"
     TOKEN_VERIFICATION_ENABLED: "true"
     APPLICATION_INSIGHTS_URL: "https://portal.azure.com/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade"
