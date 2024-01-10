@@ -2,7 +2,7 @@ import nock from 'nock'
 import ActivitiesService from './activitiesService'
 import config from '../config'
 import HmppsAuthClient from '../data/hmppsAuthClient'
-import TokenStore from '../data/tokenStore'
+import TokenStore from '../data/tokenStore/redisTokenStore'
 
 jest.mock('../data/hmppsAuthClient')
 describe('activitiesService tests', () => {
