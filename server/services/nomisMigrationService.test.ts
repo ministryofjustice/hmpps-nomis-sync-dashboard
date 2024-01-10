@@ -2,7 +2,7 @@ import nock from 'nock'
 import NomisMigrationService from './nomisMigrationService'
 import config from '../config'
 import HmppsAuthClient from '../data/hmppsAuthClient'
-import TokenStore from '../data/tokenStore'
+import TokenStore from '../data/tokenStore/redisTokenStore'
 
 jest.mock('../data/hmppsAuthClient')
 describe('NomisMigrationService tests', () => {
