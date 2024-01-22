@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { StartActivitiesMigrationForm } from 'express-session'
 import moment from 'moment'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
-import { ActivitiesMigrationFilter, MigrationHistory } from '../../@types/migration'
+import { ActivitiesMigrationFilter, FindSuspendedAllocationsResponse, MigrationHistory } from '../../@types/migration'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
@@ -128,6 +128,14 @@ export default class ActivitiesMigrationController {
         })
         return null
       }),
+
+      this.nomisMigrationService.findActivitiesSuspendedAllocations(filter, context(res)).catch(error => {
+        errors.push({
+          text: `Failed to find suspended allocations due to error: ${error.message}`,
+          href: '',
+        })
+        return []
+      }),
     ]).then(
       ([
         estimatedCount,
@@ -137,6 +145,7 @@ export default class ActivitiesMigrationController {
         dpsPrisonRollout,
         dpsPayBandsExist,
         dpsPrisonRegimeExists,
+        nomisSuspendedAllocations,
       ]) => {
         req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
         req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
@@ -151,8 +160,21 @@ export default class ActivitiesMigrationController {
         req.session.startActivitiesMigrationForm.dpsPayBandsExist = dpsPayBandsExist === null || dpsPayBandsExist
         req.session.startActivitiesMigrationForm.dpsPrisonRegimeExists =
           dpsPrisonRegimeExists === null || dpsPrisonRegimeExists
+        req.session.startActivitiesMigrationForm.suspendedAllocations =
+          this.suspendedAllocationCsv(nomisSuspendedAllocations)
       },
     )
+  }
+
+  private suspendedAllocationCsv(allocations: FindSuspendedAllocationsResponse[]): string[] {
+    const body = allocations
+      .map(
+        (allocation: FindSuspendedAllocationsResponse) =>
+          `${allocation.courseActivityDescription}, ${allocation.courseActivityId}, ${allocation.offenderNo},`,
+      )
+      .sort()
+    body.unshift(`Activity Description, Activity ID, Prisoner Number,`)
+    return body
   }
 
   async startActivitiesMigrationPreview(req: Request, res: Response): Promise<void> {

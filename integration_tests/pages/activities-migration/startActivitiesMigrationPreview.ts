@@ -31,5 +31,7 @@ export default class StartActivitiesMigrationPage extends Page {
 
   dpsPrisonRegime = () => cy.get('#dpsPrisonRegime')
 
+  nomisSuspendedAllocations = () => cy.get('#nomisSuspendedAllocations')
+
   errorSummary = () => cy.get('.govuk-error-summary')
 }

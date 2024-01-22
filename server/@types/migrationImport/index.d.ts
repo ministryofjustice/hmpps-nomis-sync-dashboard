@@ -13,173 +13,311 @@ export interface paths {
   '/queue-admin/purge-queue/{queueName}': {
     put: operations['purgeQueue']
   }
+  '/migrate/activities/{migrationId}/end': {
+    /**
+     * End all activities and allocations for a migration
+     * @description Get all NOMIS activities migrated on a migrationId and ends them all. Requires role MIGRATE_ACTIVITIES
+     */
+    put: operations['endMigratedActivities']
+  }
   '/migrate/visits/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_VISITS</b> */
+    /**
+     * Cancels a running migration. The actual cancellation might take several minutes to complete
+     * @description Requires role <b>MIGRATE_VISITS</b>
+     */
     post: operations['cancel']
   }
   '/migrate/visits': {
-    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b> */
+    /**
+     * Starts a visit migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b>
+     */
     post: operations['migrateVisits']
   }
   '/migrate/sentencing/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_SENTENCING</b> */
+    /**
+     * Cancels a running migration. The actual cancellation might take several minutes to complete
+     * @description Requires role <b>MIGRATE_SENTENCING</b>
+     */
     post: operations['cancel_1']
   }
   '/migrate/sentencing': {
-    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b> */
+    /**
+     * Starts a sentencing migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b>
+     */
     post: operations['migrateSentencing']
   }
   '/migrate/non-associations/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+    /**
+     * Cancels a running migration. The actual cancellation might take several minutes to complete
+     * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     */
     post: operations['cancel_2']
   }
   '/migrate/non-associations': {
-    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+    /**
+     * Starts an nonAssociations migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     */
     post: operations['migrateNonAssociations']
   }
   '/migrate/appointments/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
+    /**
+     * Cancels a running migration. The actual cancellation might take several minutes to complete
+     * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
+     */
     post: operations['cancel_3']
   }
   '/migrate/appointments': {
-    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_APPOINTMENTS</b> */
+    /**
+     * Starts an appointments migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_APPOINTMENTS</b>
+     */
     post: operations['migrateAppointments']
   }
   '/migrate/allocations/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Cancels a running migration. The actual cancellation might take several minutes to complete
+     * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     post: operations['cancel_4']
   }
   '/migrate/allocations': {
-    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Starts an allocations migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     post: operations['migrateAllocations']
   }
   '/migrate/adjudications/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    /**
+     * Cancels a running migration. The actual cancellation might take several minutes to complete
+     * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
+     */
     post: operations['cancel_5']
   }
   '/migrate/adjudications': {
-    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    /**
+     * Starts an adjudications migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ADJUDICATIONS</b>
+     */
     post: operations['migrateAdjudications']
   }
   '/migrate/activities/{migrationId}/cancel': {
-    /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Cancels a running migration. The actual cancellation might take several minutes to complete
+     * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     post: operations['cancel_6']
   }
   '/migrate/activities': {
-    /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Starts an activities migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     post: operations['migrateActivities']
   }
   '/queue-admin/get-dlq-messages/{dlqName}': {
     get: operations['getDlqMessages']
   }
   '/migrate/visits/rooms/usage': {
-    /** Retrieves a list of rooms with usage count and vsip mapping for the (filtered) visits */
+    /**
+     * get visit room usage and mappings by filter
+     * @description Retrieves a list of rooms with usage count and vsip mapping for the (filtered) visits
+     */
     get: operations['getVisitRoomUsageDetailsByFilter']
   }
   '/migrate/visits/history/{migrationId}': {
-    /** Requires role <b>MIGRATE_VISITS</b> */
+    /**
+     * Gets a specific migration history record
+     * @description Requires role <b>MIGRATE_VISITS</b>
+     */
     get: operations['get']
   }
   '/migrate/visits/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
+    /**
+     * Lists all filtered migration history records un-paged for visits
+     * @description The records are un-paged and requires role <b>MIGRATE_VISITS</b>
+     */
     get: operations['getAll']
   }
   '/migrate/visits/active-migration': {
-    /** Requires role <b>MIGRATE_VISITS</b> */
+    /**
+     * Gets active/currently running migration data, using migration record and migration queues
+     * @description Requires role <b>MIGRATE_VISITS</b>
+     */
     get: operations['getActiveMigrationDetails']
   }
   '/migrate/sentencing/history/{migrationId}': {
-    /** Requires role <b>MIGRATE_SENTENCING</b> */
+    /**
+     * Gets a specific migration history record
+     * @description Requires role <b>MIGRATE_SENTENCING</b>
+     */
     get: operations['get_1']
   }
   '/migrate/sentencing/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_SENTENCING</b> */
+    /**
+     * Lists all filtered migration history records un-paged for sentencing
+     * @description The records are un-paged and requires role <b>MIGRATE_SENTENCING</b>
+     */
     get: operations['getAll_1']
   }
   '/migrate/sentencing/active-migration': {
-    /** Requires role <b>MIGRATE_SENTENCING</b> */
+    /**
+     * Gets active/currently running migration data, using migration record and migration queues
+     * @description Requires role <b>MIGRATE_SENTENCING</b>
+     */
     get: operations['getActiveMigrationDetails_1']
   }
   '/migrate/non-associations/history/{migrationId}': {
-    /** Requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+    /**
+     * Gets a specific migration history record
+     * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     */
     get: operations['get_2']
   }
   '/migrate/non-associations/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+    /**
+     * Lists all filtered migration history records un-paged for nonAssociations
+     * @description The records are un-paged and requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     */
     get: operations['getAll_2']
   }
   '/migrate/non-associations/active-migration': {
-    /** Requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+    /**
+     * Gets active/currently running migration data, using migration record and migration queues
+     * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     */
     get: operations['getActiveMigrationDetails_2']
   }
   '/migrate/appointments/history/{migrationId}': {
-    /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
+    /**
+     * Gets a specific migration history record
+     * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
+     */
     get: operations['get_3']
   }
   '/migrate/appointments/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b> */
+    /**
+     * Lists all filtered migration history records un-paged for appointments
+     * @description The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b>
+     */
     get: operations['getAll_3']
   }
   '/migrate/appointments/active-migration': {
-    /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
+    /**
+     * Gets active/currently running migration data, using migration record and migration queues
+     * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
+     */
     get: operations['getActiveMigrationDetails_3']
   }
+  '/migrate/allocations/suspended': {
+    /**
+     * Find suspended allocations eligible for migration
+     * @description Searches for suspended active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
+     */
+    get: operations['findSuspendedAllocationsToMigrate']
+  }
   '/migrate/allocations/ids': {
-    /** Searches for active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES */
+    /**
+     * Find paged allocations eligible for migration
+     * @description Searches for active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
+     */
     get: operations['findAllocationsToMigrate']
   }
   '/migrate/allocations/history/{migrationId}': {
-    /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Gets a specific migration history record
+     * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     get: operations['get_4']
   }
   '/migrate/allocations/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Lists all filtered migration history records un-paged for allocations
+     * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     get: operations['getAll_4']
   }
   '/migrate/allocations/active-migration': {
-    /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Gets active/currently running migration data, using migration record and migration queues
+     * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     get: operations['getActiveMigrationDetails_4']
   }
   '/migrate/adjudications/history/{migrationId}': {
-    /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    /**
+     * Gets a specific migration history record
+     * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
+     */
     get: operations['get_5']
   }
   '/migrate/adjudications/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    /**
+     * Lists all filtered migration history records un-paged for adjudications
+     * @description The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b>
+     */
     get: operations['getAll_5']
   }
   '/migrate/adjudications/active-migration': {
-    /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+    /**
+     * Gets active/currently running migration data, using migration record and migration queues
+     * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
+     */
     get: operations['getActiveMigrationDetails_5']
   }
   '/migrate/activities/ids': {
-    /** Searches for active course activities with allocated prisoners (excluding DPS program services). Requires role MIGRATE_ACTIVITIES */
+    /**
+     * Find paged activities eligible for migration
+     * @description Searches for active course activities with allocated prisoners (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
+     */
     get: operations['findActivitiesToMigrate']
   }
   '/migrate/activities/history/{migrationId}': {
-    /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Gets a specific migration history record
+     * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     get: operations['get_6']
   }
   '/migrate/activities/history': {
-    /** The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Lists all filtered migration history records un-paged for activities
+     * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     get: operations['getAll_6']
   }
   '/migrate/activities/active-migration': {
-    /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+    /**
+     * Gets active/currently running migration data, using migration record and migration queues
+     * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+     */
     get: operations['getActiveMigrationDetails_6']
   }
   '/history': {
-    /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
+    /**
+     * Lists all filtered migration history
+     * @description The records are un-paged and requires role <b>MIGRATION_ADMIN</b>
+     */
     get: operations['getAll_7']
-    /** This is only required for test environments and requires role <b>MIGRATION_ADMIN</b> */
+    /**
+     * Deletes all migration history records
+     * @description This is only required for test environments and requires role <b>MIGRATION_ADMIN</b>
+     */
     delete: operations['deleteAll']
   }
 }
 
+export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     DlqMessage: {
-      body: { [key: string]: { [key: string]: unknown } }
+      body: {
+        [key: string]: Record<string, never>
+      }
       messageId: string
     }
     RetryDlqResult: {
@@ -209,8 +347,13 @@ export interface components {
       prisonIds: string[]
       /**
        * @description List of visit types to migrate
-       * @default SCON
-       * @example SCON,OFFI
+       * @default [
+       *   "SCON"
+       * ]
+       * @example [
+       *   "SCON",
+       *   "OFFI"
+       * ]
        */
       visitTypes: string[]
       /**
@@ -223,7 +366,11 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       toDateTime?: string
-      /** @description When true exclude visits without an associated room (visits created during the VSIP synchronisation process), defaults to false. Only required during testing when mapping records are manually deleted */
+      /**
+       * @description When true exclude visits without an associated room (visits created during the VSIP synchronisation process), defaults to false. Only required during testing when mapping records are manually deleted
+       * @default false
+       * @example false
+       */
       ignoreMissingRoom: boolean
     }
     MigrationContextVisitsMigrationFilter: {
@@ -503,6 +650,12 @@ export interface components {
       /** @enum {string} */
       status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
     }
+    FindSuspendedAllocationsResponse: {
+      offenderNo: string
+      /** Format: int64 */
+      courseActivityId: number
+      courseActivityDescription: string
+    }
     FindActiveAllocationIdsResponse: {
       /** Format: int64 */
       allocationId: number
@@ -513,13 +666,13 @@ export interface components {
       /** Format: int32 */
       totalPages?: number
       first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveAllocationIdsResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -531,10 +684,10 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       pageSize?: number
-      paged?: boolean
-      unpaged?: boolean
       /** Format: int32 */
       pageNumber?: number
+      unpaged?: boolean
+      paged?: boolean
     }
     SortObject: {
       empty?: boolean
@@ -551,20 +704,29 @@ export interface components {
       /** Format: int32 */
       totalPages?: number
       first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveActivityIdsResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
   }
+  responses: never
+  parameters: never
+  requestBodies: never
+  headers: never
+  pathItems: never
 }
+
+export type $defs = Record<string, never>
+
+export type external = Record<string, never>
 
 export interface operations {
   retryDlq: {
@@ -574,7 +736,7 @@ export interface operations {
       }
     }
     responses: {
-      /** OK */
+      /** @description OK */
       200: {
         content: {
           '*/*': components['schemas']['RetryDlqResult']
@@ -584,7 +746,7 @@ export interface operations {
   }
   retryAllDlqs: {
     responses: {
-      /** OK */
+      /** @description OK */
       200: {
         content: {
           '*/*': components['schemas']['RetryDlqResult'][]
@@ -599,7 +761,7 @@ export interface operations {
       }
     }
     responses: {
-      /** OK */
+      /** @description OK */
       200: {
         content: {
           '*/*': components['schemas']['PurgeQueueResult']
@@ -607,30 +769,41 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_VISITS</b> */
-  cancel: {
+  /**
+   * End all activities and allocations for a migration
+   * @description Get all NOMIS activities migrated on a migrationId and ends them all. Requires role MIGRATE_ACTIVITIES
+   */
+  endMigratedActivities: {
     parameters: {
       path: {
-        /** Migration Id */
+        /** @description Migration ID */
         migrationId: string
       }
     }
     responses: {
-      /** Cancellation request accepted */
-      202: unknown
-      /** Unauthorized to access this endpoint */
+      /** @description OK */
+      200: {
+        content: never
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No running migration found with migration id */
+      /** @description Not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -638,58 +811,108 @@ export interface operations {
       }
     }
   }
-  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b> */
-  migrateVisits: {
-    responses: {
-      /** Migration process started */
-      202: {
-        content: {
-          'application/json': components['schemas']['MigrationContextVisitsMigrationFilter']
-        }
+  /**
+   * Cancels a running migration. The actual cancellation might take several minutes to complete
+   * @description Requires role <b>MIGRATE_VISITS</b>
+   */
+  cancel: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
       }
-      /** Unauthorized to access this endpoint */
+    }
+    responses: {
+      /** @description Cancellation request accepted */
+      202: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to start migration */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
+      /** @description No running migration found with migration id */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
     }
+  }
+  /**
+   * Starts a visit migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b>
+   */
+  migrateVisits: {
     requestBody: {
       content: {
         'application/json': components['schemas']['VisitsMigrationFilter']
       }
     }
-  }
-  /** Requires role <b>MIGRATE_SENTENCING</b> */
-  cancel_1: {
-    parameters: {
-      path: {
-        /** Migration Id */
-        migrationId: string
-      }
-    }
     responses: {
-      /** Cancellation request accepted */
-      202: unknown
-      /** Unauthorized to access this endpoint */
+      /** @description Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextVisitsMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to start migration */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No running migration found with migration id */
+    }
+  }
+  /**
+   * Cancels a running migration. The actual cancellation might take several minutes to complete
+   * @description Requires role <b>MIGRATE_SENTENCING</b>
+   */
+  cancel_1: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** @description Cancellation request accepted */
+      202: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No running migration found with migration id */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -697,58 +920,69 @@ export interface operations {
       }
     }
   }
-  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b> */
+  /**
+   * Starts a sentencing migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b>
+   */
   migrateSentencing: {
-    responses: {
-      /** Migration process started */
-      202: {
-        content: {
-          'application/json': components['schemas']['MigrationContextSentencingMigrationFilter']
-        }
-      }
-      /** Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** Incorrect permissions to start migration */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
     requestBody: {
       content: {
         'application/json': components['schemas']['SentencingMigrationFilter']
       }
     }
-  }
-  /** Requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
-  cancel_2: {
-    parameters: {
-      path: {
-        /** Migration Id */
-        migrationId: string
-      }
-    }
     responses: {
-      /** Cancellation request accepted */
-      202: unknown
-      /** Unauthorized to access this endpoint */
+      /** @description Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextSentencingMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to start migration */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No running migration found with migration id */
+    }
+  }
+  /**
+   * Cancels a running migration. The actual cancellation might take several minutes to complete
+   * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   */
+  cancel_2: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** @description Cancellation request accepted */
+      202: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No running migration found with migration id */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -756,58 +990,69 @@ export interface operations {
       }
     }
   }
-  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+  /**
+   * Starts an nonAssociations migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   */
   migrateNonAssociations: {
-    responses: {
-      /** Migration process started */
-      202: {
-        content: {
-          'application/json': components['schemas']['MigrationContextNonAssociationsMigrationFilter']
-        }
-      }
-      /** Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** Incorrect permissions to start migration */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
     requestBody: {
       content: {
         'application/json': components['schemas']['NonAssociationsMigrationFilter']
       }
     }
-  }
-  /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
-  cancel_3: {
-    parameters: {
-      path: {
-        /** Migration Id */
-        migrationId: string
-      }
-    }
     responses: {
-      /** Cancellation request accepted */
-      202: unknown
-      /** Unauthorized to access this endpoint */
+      /** @description Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextNonAssociationsMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to start migration */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No running migration found with migration id */
+    }
+  }
+  /**
+   * Cancels a running migration. The actual cancellation might take several minutes to complete
+   * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
+   */
+  cancel_3: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** @description Cancellation request accepted */
+      202: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No running migration found with migration id */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -815,58 +1060,69 @@ export interface operations {
       }
     }
   }
-  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_APPOINTMENTS</b> */
+  /**
+   * Starts an appointments migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_APPOINTMENTS</b>
+   */
   migrateAppointments: {
-    responses: {
-      /** Migration process started */
-      202: {
-        content: {
-          'application/json': components['schemas']['MigrationContextAppointmentsMigrationFilter']
-        }
-      }
-      /** Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** Incorrect permissions to start migration */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
     requestBody: {
       content: {
         'application/json': components['schemas']['AppointmentsMigrationFilter']
       }
     }
-  }
-  /** Requires role <b>MIGRATE_ACTIVITIES</b> */
-  cancel_4: {
-    parameters: {
-      path: {
-        /** Migration Id */
-        migrationId: string
-      }
-    }
     responses: {
-      /** Cancellation request accepted */
-      202: unknown
-      /** Unauthorized to access this endpoint */
+      /** @description Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextAppointmentsMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to start migration */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No running migration found with migration id */
+    }
+  }
+  /**
+   * Cancels a running migration. The actual cancellation might take several minutes to complete
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
+  cancel_4: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** @description Cancellation request accepted */
+      202: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No running migration found with migration id */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -874,58 +1130,69 @@ export interface operations {
       }
     }
   }
-  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b> */
+  /**
+   * Starts an allocations migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
   migrateAllocations: {
-    responses: {
-      /** Migration process started */
-      202: {
-        content: {
-          'application/json': components['schemas']['MigrationContextAllocationsMigrationFilter']
-        }
-      }
-      /** Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** Incorrect permissions to start migration */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
     requestBody: {
       content: {
         'application/json': components['schemas']['AllocationsMigrationFilter']
       }
     }
-  }
-  /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
-  cancel_5: {
-    parameters: {
-      path: {
-        /** Migration Id */
-        migrationId: string
-      }
-    }
     responses: {
-      /** Cancellation request accepted */
-      202: unknown
-      /** Unauthorized to access this endpoint */
+      /** @description Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextAllocationsMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to start migration */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No running migration found with migration id */
+    }
+  }
+  /**
+   * Cancels a running migration. The actual cancellation might take several minutes to complete
+   * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
+   */
+  cancel_5: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** @description Cancellation request accepted */
+      202: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No running migration found with migration id */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -933,58 +1200,69 @@ export interface operations {
       }
     }
   }
-  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+  /**
+   * Starts an adjudications migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ADJUDICATIONS</b>
+   */
   migrateAdjudications: {
-    responses: {
-      /** Migration process started */
-      202: {
-        content: {
-          'application/json': components['schemas']['MigrationContextAdjudicationsMigrationFilter']
-        }
-      }
-      /** Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** Incorrect permissions to start migration */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
     requestBody: {
       content: {
         'application/json': components['schemas']['AdjudicationsMigrationFilter']
       }
     }
-  }
-  /** Requires role <b>MIGRATE_ACTIVITIES</b> */
-  cancel_6: {
-    parameters: {
-      path: {
-        /** Migration Id */
-        migrationId: string
-      }
-    }
     responses: {
-      /** Cancellation request accepted */
-      202: unknown
-      /** Unauthorized to access this endpoint */
+      /** @description Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextAdjudicationsMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to start migration */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No running migration found with migration id */
+    }
+  }
+  /**
+   * Cancels a running migration. The actual cancellation might take several minutes to complete
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
+  cancel_6: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** @description Cancellation request accepted */
+      202: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No running migration found with migration id */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -992,45 +1270,48 @@ export interface operations {
       }
     }
   }
-  /** Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b> */
+  /**
+   * Starts an activities migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
   migrateActivities: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ActivitiesMigrationFilter']
+      }
+    }
     responses: {
-      /** Migration process started */
+      /** @description Migration process started */
       202: {
         content: {
           'application/json': components['schemas']['MigrationContextActivitiesMigrationFilter']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to start migration */
+      /** @description Incorrect permissions to start migration */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['ActivitiesMigrationFilter']
-      }
-    }
   }
   getDlqMessages: {
     parameters: {
+      query?: {
+        maxMessages?: number
+      }
       path: {
         dlqName: string
       }
-      query: {
-        maxMessages?: number
-      }
     }
     responses: {
-      /** OK */
+      /** @description OK */
       200: {
         content: {
           '*/*': components['schemas']['GetDlqResult']
@@ -1038,34 +1319,49 @@ export interface operations {
       }
     }
   }
-  /** Retrieves a list of rooms with usage count and vsip mapping for the (filtered) visits */
+  /**
+   * get visit room usage and mappings by filter
+   * @description Retrieves a list of rooms with usage count and vsip mapping for the (filtered) visits
+   */
   getVisitRoomUsageDetailsByFilter: {
     parameters: {
-      query: {
-        /** Filter results by prison ids (returns all prisons if not specified) */
+      query?: {
+        /**
+         * @description Filter results by prison ids (returns all prisons if not specified)
+         * @example ['MDI','LEI']
+         */
         prisonIds?: string[]
-        /** Filter results by visitType (returns all types if not specified) */
+        /**
+         * @description Filter results by visitType (returns all types if not specified)
+         * @example ['SCON','OFFI']
+         */
         visitTypes?: string[]
-        /** Filter results by visits that start on or after the given timestamp */
+        /**
+         * @description Filter results by visits that start on or after the given timestamp
+         * @example 2021-11-03T09:00:00
+         */
         fromDateTime?: string
-        /** Filter results by visits that start on or before the given timestamp */
+        /**
+         * @description Filter results by visits that start on or before the given timestamp
+         * @example 2021-11-03T09:00:00
+         */
         toDateTime?: string
       }
     }
     responses: {
-      /** list of visit room and count is returned */
+      /** @description list of visit room and count is returned */
       200: {
         content: {
           'application/json': components['schemas']['VisitRoomUsageResponse'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to start migration */
+      /** @description Incorrect permissions to start migration */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1073,34 +1369,40 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_VISITS</b> */
+  /**
+   * Gets a specific migration history record
+   * @description Requires role <b>MIGRATE_VISITS</b>
+   */
   get: {
     parameters: {
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
     }
     responses: {
-      /** The visit migration history record */
+      /** @description The visit migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Migration not found */
+      /** @description Migration not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1108,34 +1410,49 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATE_VISITS</b> */
+  /**
+   * Lists all filtered migration history records un-paged for visits
+   * @description The records are un-paged and requires role <b>MIGRATE_VISITS</b>
+   */
   getAll: {
     parameters: {
-      query: {
-        /** Only include migrations started after this date time */
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
         fromDateTime?: string
-        /** Only include migrations started before this date time */
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
         toDateTime?: string
-        /** When true only include migrations that had at least one failure */
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
         includeOnlyFailures?: boolean
-        /** Specify the prison associated with the migration */
+        /**
+         * @description Specify the prison associated with the migration
+         * @example HEI
+         */
         prisonId?: string
       }
     }
     responses: {
-      /** All visit migration history records */
+      /** @description All visit migration history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1143,22 +1460,25 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_VISITS</b> */
+  /**
+   * Gets active/currently running migration data, using migration record and migration queues
+   * @description Requires role <b>MIGRATE_VISITS</b>
+   */
   getActiveMigrationDetails: {
     responses: {
-      /** Only called during an active migration from the UI - assumes latest migration is active */
+      /** @description Only called during an active migration from the UI - assumes latest migration is active */
       200: {
         content: {
           'application/json': components['schemas']['InProgressMigration']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1166,34 +1486,40 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_SENTENCING</b> */
+  /**
+   * Gets a specific migration history record
+   * @description Requires role <b>MIGRATE_SENTENCING</b>
+   */
   get_1: {
     parameters: {
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
     }
     responses: {
-      /** The sentencing migration history record */
+      /** @description The sentencing migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Migration not found */
+      /** @description Migration not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1201,32 +1527,44 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATE_SENTENCING</b> */
+  /**
+   * Lists all filtered migration history records un-paged for sentencing
+   * @description The records are un-paged and requires role <b>MIGRATE_SENTENCING</b>
+   */
   getAll_1: {
     parameters: {
-      query: {
-        /** Only include migrations started after this date time */
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
         fromDateTime?: string
-        /** Only include migrations started before this date time */
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
         toDateTime?: string
-        /** When true only include migrations that had at least one failure */
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
         includeOnlyFailures?: boolean
       }
     }
     responses: {
-      /** All sentencing migration history records */
+      /** @description All sentencing migration history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1234,22 +1572,25 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_SENTENCING</b> */
+  /**
+   * Gets active/currently running migration data, using migration record and migration queues
+   * @description Requires role <b>MIGRATE_SENTENCING</b>
+   */
   getActiveMigrationDetails_1: {
     responses: {
-      /** Only called during an active migration from the UI - assumes latest migration is active */
+      /** @description Only called during an active migration from the UI - assumes latest migration is active */
       200: {
         content: {
           'application/json': components['schemas']['InProgressMigration']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1257,34 +1598,40 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+  /**
+   * Gets a specific migration history record
+   * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   */
   get_2: {
     parameters: {
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
     }
     responses: {
-      /** The migration history record */
+      /** @description The migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Migration not found */
+      /** @description Migration not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1292,32 +1639,44 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+  /**
+   * Lists all filtered migration history records un-paged for nonAssociations
+   * @description The records are un-paged and requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   */
   getAll_2: {
     parameters: {
-      query: {
-        /** Only include migrations started after this date time */
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
         fromDateTime?: string
-        /** Only include migrations started before this date time */
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
         toDateTime?: string
-        /** When true only include migrations that had at least one failure */
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
         includeOnlyFailures?: boolean
       }
     }
     responses: {
-      /** All migration history records */
+      /** @description All migration history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1325,22 +1684,25 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_NON_ASSOCIATIONS</b> */
+  /**
+   * Gets active/currently running migration data, using migration record and migration queues
+   * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   */
   getActiveMigrationDetails_2: {
     responses: {
-      /** Only called during an active migration from the UI - assumes latest migration is active */
+      /** @description Only called during an active migration from the UI - assumes latest migration is active */
       200: {
         content: {
           'application/json': components['schemas']['InProgressMigration']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1348,34 +1710,40 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
+  /**
+   * Gets a specific migration history record
+   * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
+   */
   get_3: {
     parameters: {
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
     }
     responses: {
-      /** The migration history record */
+      /** @description The migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Migration not found */
+      /** @description Migration not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1383,32 +1751,44 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b> */
+  /**
+   * Lists all filtered migration history records un-paged for appointments
+   * @description The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b>
+   */
   getAll_3: {
     parameters: {
-      query: {
-        /** Only include migrations started after this date time */
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
         fromDateTime?: string
-        /** Only include migrations started before this date time */
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
         toDateTime?: string
-        /** When true only include migrations that had at least one failure */
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
         includeOnlyFailures?: boolean
       }
     }
     responses: {
-      /** All migration history records */
+      /** @description All migration history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1416,22 +1796,25 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_APPOINTMENTS</b> */
+  /**
+   * Gets active/currently running migration data, using migration record and migration queues
+   * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
+   */
   getActiveMigrationDetails_3: {
     responses: {
-      /** Only called during an active migration from the UI - assumes latest migration is active */
+      /** @description Only called during an active migration from the UI - assumes latest migration is active */
       200: {
         content: {
           'application/json': components['schemas']['InProgressMigration']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1439,46 +1822,89 @@ export interface operations {
       }
     }
   }
-  /** Searches for active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES */
-  findAllocationsToMigrate: {
+  /**
+   * Find suspended allocations eligible for migration
+   * @description Searches for suspended active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
+   */
+  findSuspendedAllocationsToMigrate: {
     parameters: {
       query: {
-        /** Page number */
-        page?: string
-        /** Page size */
-        size?: string
-        /** Prison id */
+        /** @description Prison id */
         prisonId: string
-        /** Course Activity ID */
+        /** @description Course Activity ID */
         courseActivityId?: number
       }
     }
     responses: {
-      /** OK */
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['FindSuspendedAllocationsResponse'][]
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Find paged allocations eligible for migration
+   * @description Searches for active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
+   */
+  findAllocationsToMigrate: {
+    parameters: {
+      query: {
+        /** @description Page number */
+        page?: string
+        /** @description Page size */
+        size?: string
+        /** @description Prison id */
+        prisonId: string
+        /** @description Course Activity ID */
+        courseActivityId?: number
+      }
+    }
+    responses: {
+      /** @description OK */
       200: {
         content: {
           'application/json': components['schemas']['PageFindActiveAllocationIdsResponse']
         }
       }
-      /** Invalid request */
+      /** @description Invalid request */
       400: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Not found */
+      /** @description Not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1486,34 +1912,40 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+  /**
+   * Gets a specific migration history record
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
   get_4: {
     parameters: {
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
     }
     responses: {
-      /** The migration history record */
+      /** @description The migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Migration not found */
+      /** @description Migration not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1521,32 +1953,44 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b> */
+  /**
+   * Lists all filtered migration history records un-paged for allocations
+   * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
+   */
   getAll_4: {
     parameters: {
-      query: {
-        /** Only include migrations started after this date time */
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
         fromDateTime?: string
-        /** Only include migrations started before this date time */
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
         toDateTime?: string
-        /** When true only include migrations that had at least one failure */
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
         includeOnlyFailures?: boolean
       }
     }
     responses: {
-      /** All migration history records */
+      /** @description All migration history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1554,22 +1998,25 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+  /**
+   * Gets active/currently running migration data, using migration record and migration queues
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
   getActiveMigrationDetails_4: {
     responses: {
-      /** Only called during an active migration from the UI - assumes latest migration is active */
+      /** @description Only called during an active migration from the UI - assumes latest migration is active */
       200: {
         content: {
           'application/json': components['schemas']['InProgressMigration']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1577,34 +2024,40 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+  /**
+   * Gets a specific migration history record
+   * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
+   */
   get_5: {
     parameters: {
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
     }
     responses: {
-      /** The migration history record */
+      /** @description The migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Migration not found */
+      /** @description Migration not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1612,32 +2065,44 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b> */
+  /**
+   * Lists all filtered migration history records un-paged for adjudications
+   * @description The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b>
+   */
   getAll_5: {
     parameters: {
-      query: {
-        /** Only include migrations started after this date time */
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
         fromDateTime?: string
-        /** Only include migrations started before this date time */
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
         toDateTime?: string
-        /** When true only include migrations that had at least one failure */
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
         includeOnlyFailures?: boolean
       }
     }
     responses: {
-      /** All migration history records */
+      /** @description All migration history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1645,22 +2110,25 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_ADJUDICATIONS</b> */
+  /**
+   * Gets active/currently running migration data, using migration record and migration queues
+   * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
+   */
   getActiveMigrationDetails_5: {
     responses: {
-      /** Only called during an active migration from the UI - assumes latest migration is active */
+      /** @description Only called during an active migration from the UI - assumes latest migration is active */
       200: {
         content: {
           'application/json': components['schemas']['InProgressMigration']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1668,46 +2136,49 @@ export interface operations {
       }
     }
   }
-  /** Searches for active course activities with allocated prisoners (excluding DPS program services). Requires role MIGRATE_ACTIVITIES */
+  /**
+   * Find paged activities eligible for migration
+   * @description Searches for active course activities with allocated prisoners (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
+   */
   findActivitiesToMigrate: {
     parameters: {
       query: {
-        /** Page number */
+        /** @description Page number */
         page?: string
-        /** Page size */
+        /** @description Page size */
         size?: string
-        /** Prison id */
+        /** @description Prison id */
         prisonId: string
-        /** Course Activity ID */
+        /** @description Course Activity ID */
         courseActivityId?: number
       }
     }
     responses: {
-      /** OK */
+      /** @description OK */
       200: {
         content: {
           'application/json': components['schemas']['PageFindActiveActivityIdsResponse']
         }
       }
-      /** Invalid request */
+      /** @description Invalid request */
       400: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Forbidden, requires role NOMIS_ACTIVITIES */
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Not found */
+      /** @description Not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1715,34 +2186,40 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+  /**
+   * Gets a specific migration history record
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
   get_6: {
     parameters: {
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
     }
     responses: {
-      /** The migration history record */
+      /** @description The migration history record */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Migration not found */
+      /** @description Migration not found */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1750,32 +2227,44 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b> */
+  /**
+   * Lists all filtered migration history records un-paged for activities
+   * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
+   */
   getAll_6: {
     parameters: {
-      query: {
-        /** Only include migrations started after this date time */
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
         fromDateTime?: string
-        /** Only include migrations started before this date time */
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
         toDateTime?: string
-        /** When true only include migrations that had at least one failure */
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
         includeOnlyFailures?: boolean
       }
     }
     responses: {
-      /** All migration history records */
+      /** @description All migration history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1783,22 +2272,25 @@ export interface operations {
       }
     }
   }
-  /** Requires role <b>MIGRATE_ACTIVITIES</b> */
+  /**
+   * Gets active/currently running migration data, using migration record and migration queues
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
   getActiveMigrationDetails_6: {
     responses: {
-      /** Only called during an active migration from the UI - assumes latest migration is active */
+      /** @description Only called during an active migration from the UI - assumes latest migration is active */
       200: {
         content: {
           'application/json': components['schemas']['InProgressMigration']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1806,36 +2298,54 @@ export interface operations {
       }
     }
   }
-  /** The records are un-paged and requires role <b>MIGRATION_ADMIN</b> */
+  /**
+   * Lists all filtered migration history
+   * @description The records are un-paged and requires role <b>MIGRATION_ADMIN</b>
+   */
   getAll_7: {
     parameters: {
-      query: {
-        /** List of migration types, when omitted all migration types will be returned */
+      query?: {
+        /**
+         * @description List of migration types, when omitted all migration types will be returned
+         * @example VISITS
+         */
         migrationTypes?: string[]
-        /** Only include migrations started after this date time */
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
         fromDateTime?: string
-        /** Only include migrations started before this date time */
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
         toDateTime?: string
-        /** When true only include migrations that had at least one failure */
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
         includeOnlyFailures?: boolean
-        /** Specify a word of phrase that will appear in the filter related to the migration */
+        /**
+         * @description Specify a word of phrase that will appear in the filter related to the migration
+         * @example HEI
+         */
         filterContains?: string
       }
     }
     responses: {
-      /** All history records */
+      /** @description All history records */
       200: {
         content: {
           'application/json': components['schemas']['MigrationHistory'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1843,18 +2353,23 @@ export interface operations {
       }
     }
   }
-  /** This is only required for test environments and requires role <b>MIGRATION_ADMIN</b> */
+  /**
+   * Deletes all migration history records
+   * @description This is only required for test environments and requires role <b>MIGRATION_ADMIN</b>
+   */
   deleteAll: {
     responses: {
-      /** All history records deleted */
-      204: never
-      /** Unauthorized to access this endpoint */
+      /** @description All history records deleted */
+      204: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Incorrect permissions to access this endpoint */
+      /** @description Incorrect permissions to access this endpoint */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -1863,5 +2378,3 @@ export interface operations {
     }
   }
 }
-
-export interface external {}

@@ -162,6 +162,11 @@ describe('activitiesMigrationController', () => {
       })
       activitiesService.checkPrisonPayBandsExist.mockResolvedValue(true)
       activitiesService.checkPrisonRegimeExists.mockResolvedValue(true)
+      nomisMigrationService.findActivitiesSuspendedAllocations.mockResolvedValue([
+        { courseActivityDescription: 'Kitchens PM', courseActivityId: 12345, offenderNo: 'A1234AA' },
+        { courseActivityDescription: 'Kitchens PM', courseActivityId: 12345, offenderNo: 'B1234BB' },
+        { courseActivityDescription: 'Kitchens AM', courseActivityId: 12346, offenderNo: 'A1234AA' },
+      ])
     })
 
     describe('with validation error', () => {
@@ -270,6 +275,12 @@ describe('activitiesMigrationController', () => {
         expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(true)
         expect(req.session.startActivitiesMigrationForm.dpsPayBandsExist).toEqual(true)
         expect(req.session.startActivitiesMigrationForm.dpsPrisonRegimeExists).toEqual(true)
+        expect(req.session.startActivitiesMigrationForm.suspendedAllocations).toEqual([
+          `Activity Description, Activity ID, Prisoner Number,`,
+          `Kitchens AM, 12346, A1234AA,`,
+          `Kitchens PM, 12345, A1234AA,`,
+          `Kitchens PM, 12345, B1234BB,`,
+        ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
 
