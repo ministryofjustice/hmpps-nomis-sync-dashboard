@@ -167,7 +167,7 @@ export default class ActivitiesMigrationController {
   }
 
   private suspendedAllocationCsv(allocations: FindSuspendedAllocationsResponse[]): string[] {
-    if (!allocations) return []
+    if (allocations.length === 0) return []
     const body = allocations
       .map(
         (allocation: FindSuspendedAllocationsResponse) =>
