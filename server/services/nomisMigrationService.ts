@@ -1,24 +1,25 @@
 import querystring from 'querystring'
 import type {
   ActivitiesMigrationFilter,
+  AdjudicationsMigrationFilter,
   AllocationsMigrationFilter,
   AppointmentsMigrationFilter,
-  AdjudicationsMigrationFilter,
+  FindSuspendedAllocationsResponse,
   GetDlqResult,
   InProgressMigration,
   MigrationContextActivitiesMigrationFilter,
+  MigrationContextAdjudicationsMigrationFilter,
   MigrationContextAllocationsMigrationFilter,
   MigrationContextAppointmentsMigrationFilter,
   MigrationContextSentencingMigrationFilter,
   MigrationContextVisitsMigrationFilter,
-  MigrationContextAdjudicationsMigrationFilter,
   MigrationHistory,
+  PageActivitiesIdResponse,
+  PageAllocationsIdResponse,
   PurgeQueueResult,
   RoomMappingsResponse,
   SentencingMigrationFilter,
   VisitsMigrationFilter,
-  PageActivitiesIdResponse,
-  PageAllocationsIdResponse,
 } from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
@@ -384,6 +385,17 @@ export default class NomisMigrationService {
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements
+  }
+
+  async findActivitiesSuspendedAllocations(
+    filter: ActivitiesMigrationFilter,
+    context: Context,
+  ): Promise<FindSuspendedAllocationsResponse[]> {
+    logger.info(`finding suspended allocations for activities migration`)
+    return NomisMigrationService.restClient(context.token).get<FindSuspendedAllocationsResponse[]>({
+      path: `/migrate/allocations/suspended`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
   }
 
   async getAllocationsMigrations(context: Context): Promise<HistoricMigrations> {

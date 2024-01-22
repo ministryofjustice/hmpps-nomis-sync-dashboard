@@ -29,7 +29,7 @@
         <div class="govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full">
-                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new activities migration - preview</h1>
+                    <h1 class="govuk-heading-l govuk-!-margin-top-7" id="startActivitiesMigrationPreviewPage">Start a new activities migration - preview</h1>
                 </div>
                 <div class="govuk-grid-column-two-thirds">
                     {% if form.estimatedCount %}
@@ -60,6 +60,13 @@
                             {% if not form.dpsPrisonRegimeExists %}
                                 <p class="govuk-notification-banner__heading" id="dpsPrisonRegime">
                                     DPS has no slot times configured for prison {{ form.prisonId }}.
+                                </p>
+                            {% endif %}
+                            {% if form.suspendedAllocations|length %}
+                                <p class="govuk-notification-banner__heading" id="nomisSuspendedAllocations">
+                                    Found suspended allocations in NOMIS for prison {{ form.prisonId }}.
+                                    <a href="#" id='copy-suspended-link'">Copy</a>
+                                    <textarea class="govuk-visually-hidden" id="copy-suspended-text" rows="{{ form.suspendedAllocations|length }}" cols="200" readonly>{{ form.suspendedAllocations|join("\n") }}</textarea>
                                 </p>
                             {% endif %}
                         {% endset %}
