@@ -162,7 +162,7 @@ describe('activitiesMigrationController', () => {
       })
       activitiesService.checkPrisonPayBandsExist.mockResolvedValue(true)
       activitiesService.checkPrisonRegimeExists.mockResolvedValue(true)
-      nomisMigrationService.findActivitiesSuspendedAllocations.mockResolvedValue([
+      nomisPrisonerService.findActivitiesSuspendedAllocations.mockResolvedValue([
         { courseActivityDescription: 'Kitchens PM', courseActivityId: 12345, offenderNo: 'A1234AA' },
         { courseActivityDescription: 'Kitchens PM', courseActivityId: 12345, offenderNo: 'B1234BB' },
         { courseActivityDescription: 'Kitchens AM', courseActivityId: 12346, offenderNo: 'A1234AA' },

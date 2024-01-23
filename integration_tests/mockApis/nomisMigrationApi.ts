@@ -1527,36 +1527,6 @@ const stubGetAllocationsMigrationEstimatedCount = (count: number): SuperAgentReq
     },
   })
 
-const stubFindSuspendedAllocations = (): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/nomis-migration-api/migrate/allocations/suspended.*',
-    },
-    response: {
-      status: 200,
-      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: [
-        {
-          offenderNo: 'A1234AA',
-          courseActivityId: 12345,
-          courseActivityDescription: 'Kitchens AM',
-        },
-      ],
-    },
-  })
-
-const stubFindSuspendedAllocationsErrors = (): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/nomis-migration-api/migrate/allocations/suspended/.*',
-    },
-    response: {
-      status: 500,
-    },
-  })
-
 const stubGetVisitMigrationRoomUsage = (): SuperAgentRequest =>
   stubFor({
     request: {
@@ -1624,8 +1594,6 @@ export default {
   stubGetAllocationsMigrationDetailsStarted,
   stubGetAllocationsMigrationDetailsCompleted,
   stubGetAllocationsMigrationEstimatedCount,
-  stubFindSuspendedAllocations,
-  stubFindSuspendedAllocationsErrors,
 
   stubNomisMigrationPing,
   stubHealth,

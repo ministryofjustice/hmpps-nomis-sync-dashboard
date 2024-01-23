@@ -4,7 +4,6 @@ import type {
   AdjudicationsMigrationFilter,
   AllocationsMigrationFilter,
   AppointmentsMigrationFilter,
-  FindSuspendedAllocationsResponse,
   GetDlqResult,
   InProgressMigration,
   MigrationContextActivitiesMigrationFilter,
@@ -385,17 +384,6 @@ export default class NomisMigrationService {
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements
-  }
-
-  async findActivitiesSuspendedAllocations(
-    filter: ActivitiesMigrationFilter,
-    context: Context,
-  ): Promise<FindSuspendedAllocationsResponse[]> {
-    logger.info(`finding suspended allocations for activities migration`)
-    return NomisMigrationService.restClient(context.token).get<FindSuspendedAllocationsResponse[]>({
-      path: `/migrate/allocations/suspended`,
-      query: `${querystring.stringify({ ...filter, size: 1 })}`,
-    })
   }
 
   async getAllocationsMigrations(context: Context): Promise<HistoricMigrations> {

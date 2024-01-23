@@ -14,6 +14,8 @@ import {
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
 import type HmppsAuthClient from '../data/hmppsAuthClient'
+import type { ActivitiesMigrationFilter } from '../@types/migration'
+import type { FindSuspendedAllocationsResponse } from '../@types/nomisPrisoner'
 
 export default class NomisPrisonerService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
@@ -104,5 +106,22 @@ export default class NomisPrisonerService {
     } catch (error) {
       logger.info(`Failed to turn on ${serviceName} service for ${prisonId}`)
     }
+  }
+
+  async findActivitiesSuspendedAllocations(
+    filter: ActivitiesMigrationFilter,
+    activityCategories: string[],
+    context: Context,
+  ): Promise<FindSuspendedAllocationsResponse[]> {
+    logger.info(`finding suspended allocations for activities migration`)
+    const queryParams = {
+      ...filter,
+      excludeProgramCodes: activityCategories,
+    }
+
+    return NomisPrisonerService.restClient(context.token).get<FindSuspendedAllocationsResponse[]>({
+      path: `/allocations/suspended`,
+      query: querystring.stringify(queryParams),
+    })
   }
 }

@@ -39,6 +39,13 @@ export interface paths {
     /** Cancel a visit */
     put: operations['cancelVisit']
   }
+  '/prisoners/{offenderNo}/sentencing/court-cases/{caseId}/court-appearances/{eventId}': {
+    /**
+     * Updates Court Appearance
+     * @description Required role NOMIS_SENTENCING Updates a new Court Appearance for the offender,latest booking and given Court Case
+     */
+    put: operations['updateCourtAppearance']
+  }
   '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/sequence/{typeSequence}': {
     /**
      * Updates an existing non-association
@@ -227,6 +234,18 @@ export interface paths {
      */
     put: operations['endActivities']
   }
+  '/service-prisons/{serviceCode}/prison/{prisonId}': {
+    /**
+     * Check if a service is turned on for a prison
+     * @description Check if a prison is turned on for a service. Requires role NOMIS_ACTIVITIES
+     */
+    get: operations['checkServicePrison']
+    /**
+     * Turn on a service for a prison
+     * @description Turn on a service for a prison. Requires role NOMIS_ACTIVITIES
+     */
+    post: operations['createServicePrison']
+  }
   '/prisoners/{offenderNo}/visits': {
     /**
      * Creates a new visit
@@ -245,6 +264,13 @@ export interface paths {
      * @description Required role NOMIS_SENTENCING Creates a new Court Case for the offender and latest booking
      */
     post: operations['createCourtCase']
+  }
+  '/prisoners/{offenderNo}/sentencing/court-cases/{caseId}/court-appearances': {
+    /**
+     * Creates a new Court Appearance
+     * @description Required role NOMIS_SENTENCING Creates a new Court Appearance for the offender,latest booking and given Court Case
+     */
+    post: operations['createCourtAppearance']
   }
   '/prisoners/{offenderNo}/adjudications': {
     /**
@@ -389,6 +415,20 @@ export interface paths {
      */
     get: operations['getServicePrisons']
   }
+  '/questionnaires/{questionnaireId}': {
+    /**
+     * Get incident questionnaire details
+     * @description Gets incident questionnaire details. Requires role NOMIS_INCIDENTS
+     */
+    get: operations['getQuestionnaire']
+  }
+  '/questionnaires/ids': {
+    /**
+     * get questionnaire IDs by filter
+     * @description Retrieves a paged list of incident questionnaire ids by filter. Requires ROLE_NOMIS_INCIDENTS.
+     */
+    get: operations['getIdsByFilter']
+  }
   '/prisons/{prisonId}/incentive-levels': {
     /**
      * Retrieve a list of active incentive levels for a prison
@@ -466,6 +506,20 @@ export interface paths {
      */
     get: operations['getNonAssociationsByFilter']
   }
+  '/incidents/{incidentId}': {
+    /**
+     * Get incident details
+     * @description Gets incident details. Requires role NOMIS_INCIDENTS
+     */
+    get: operations['getIncident']
+  }
+  '/incidents/ids': {
+    /**
+     * get incident IDs by filter
+     * @description Retrieves a paged list of incident ids by filter. Requires ROLE_NOMIS_INCIDENTS.
+     */
+    get: operations['getIdsByFilter_1']
+  }
   '/incentives/ids': {
     /**
      * get incentives (a.k.a IEP) by filter
@@ -522,12 +576,26 @@ export interface paths {
      */
     get: operations['getAllocation']
   }
+  '/allocations/suspended': {
+    /**
+     * Find suspended allocations
+     * @description Searches for suspended prisoners on active course allocations. Requires role NOMIS_ACTIVITIES
+     */
+    get: operations['findSuspendedAllocations']
+  }
   '/allocations/reconciliation/{prisonId}': {
     /**
      * Get data for an allocation sync reconciliation
      * @description Gets the number of active allocations for each booking in the prison
      */
     get: operations['getAllocationReconciliationSummary']
+  }
+  '/allocations/missing-pay-bands': {
+    /**
+     * Find allocations with missing pay bands
+     * @description Searches for prisoners allocated to a course activity without a pay band assigned. Requires role NOMIS_ACTIVITIES
+     */
+    get: operations['findAllocationsWithMissingPayBands']
   }
   '/allocations/ids': {
     /**
@@ -750,6 +818,30 @@ export interface components {
        * @enum {string}
        */
       outcome: 'VISCANC' | 'OFFCANC' | 'ADMIN' | 'NSHOW'
+    }
+    /** @description Court Event */
+    CourtAppearanceRequest: {
+      /** @example 2021-07-05T10:35:17 */
+      eventDateTime: string
+      courtEventType: string
+      courtId: string
+      outcomeReasonCode?: string
+      /** @example 2021-07-05T10:35:17 */
+      nextEventDateTime?: string
+      courtEventCharges: components['schemas']['OffenderChargeRequest'][]
+      nextCourtId?: string
+    }
+    /** @description Court Event */
+    OffenderChargeRequest: {
+      offenceCode: string
+      /** Format: int32 */
+      offencesCount?: number
+      /** Format: date */
+      offenceDate?: string
+      /** Format: date */
+      offenceEndDate?: string
+      resultCode1?: string
+      mostSeriousFlag: boolean
     }
     /** @description Offender NonAssociation update request */
     UpdateNonAssociationRequest: {
@@ -1491,22 +1583,31 @@ export interface components {
     }
     /** @description Court case create request */
     CreateCourtCaseRequest: {
-      /**
-       * Format: date
-       * @description Court case start date
-       */
+      /** Format: date */
       startDate: string
-      /** @description Legal Case type */
       legalCaseType: string
-      /** @description Court Id (establishment) */
-      court: string
-      /** @description Case status */
+      courtId: string
       status: string
+      courtAppearance: components['schemas']['CourtAppearanceRequest']
+    }
+    /** @description Create adjustment response */
+    CreateCourtAppearanceResponse: {
+      /** Format: int64 */
+      id: number
+      courtEventChargesIds: components['schemas']['CreateCourtEventChargesResponse'][]
+      /** Format: int64 */
+      nextCourtAppearanceId?: number
     }
     /** @description Create adjustment response */
     CreateCourtCaseResponse: {
       /** Format: int64 */
       id: number
+      courtAppearanceIds: components['schemas']['CreateCourtAppearanceResponse'][]
+    }
+    /** @description Create adjustment response */
+    CreateCourtEventChargesResponse: {
+      /** Format: int64 */
+      offenderChargeId: number
     }
     AdjudicationCharge: {
       offence: components['schemas']['AdjudicationOffence']
@@ -1713,6 +1814,11 @@ export interface components {
       adjudicationNumber: number
       /** @description Username of person who created the record in NOMIS */
       createdByUsername: string
+      /**
+       * @description Date time when the record was created the record in NOMIS
+       * @example 2021-07-05T10:35:17
+       */
+      createdDateTime: string
     }
     InternalLocation: {
       /**
@@ -2259,14 +2365,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['VisitIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -2321,6 +2427,8 @@ export interface components {
        * @description The booking id
        */
       bookingId: number
+      /** @description Indicates whether for this booking the prisoner has been released */
+      hasBeenReleased: boolean
       /** @description The offender number, aka nomsId, prisonerId */
       offenderNo: string
       /**
@@ -2369,6 +2477,164 @@ export interface components {
        */
       description: string
     }
+    /** @description List of Answers to this question */
+    AnswerResponse: {
+      /**
+       * Format: int64
+       * @description The answer id
+       */
+      id: number
+      /** @description The answer text */
+      answer: string
+      /**
+       * Format: int32
+       * @description The answer id used to set the listSequence values
+       * @example 1
+       */
+      answerSequence: number
+      /**
+       * Format: int32
+       * @description The order of the answers
+       * @example 1
+       */
+      listSequence: number
+      /**
+       * @description If the answer is active
+       * @example true
+       */
+      active: boolean
+      /**
+       * Format: date
+       * @description The date the answer is no longer used
+       */
+      expiryDate?: string
+      nextQuestion?: components['schemas']['QuestionResponse']
+      /**
+       * @description If the answer should include a date
+       * @example true
+       */
+      dateRequired: boolean
+      /**
+       * @description If the answer should include a comment
+       * @example true
+       */
+      commentRequired: boolean
+    }
+    /** @description List of Questions (and associated Answers) for this Questionnaire */
+    QuestionResponse: {
+      /**
+       * Format: int64
+       * @description The question id
+       */
+      id: number
+      /** @description The question text */
+      question: string
+      /** @description List of Answers to this question */
+      answers: components['schemas']['AnswerResponse'][]
+      /**
+       * @description If the question is active
+       * @example true
+       */
+      active: boolean
+      /**
+       * Format: date
+       * @description The date the question is no longer used
+       */
+      expiryDate?: string
+      /**
+       * @description If the question has multiple answers
+       * @example true
+       */
+      multipleAnswers: boolean
+      /**
+       * Format: int32
+       * @description The question id used to set the listSequence values
+       * @example 1
+       */
+      questionSequence: number
+      /**
+       * Format: int32
+       * @description The order of the questions
+       * @example 1
+       */
+      listSequence: number
+    }
+    /** @description Questionnaire */
+    QuestionnaireResponse: {
+      /**
+       * Format: int64
+       * @description The unique identifier of the questionnaire
+       */
+      id: number
+      /**
+       * @description A description of the questionnaire
+       * @example Escape from Establishment
+       */
+      description?: string
+      /**
+       * @description Code to identify this questionnaire
+       * @example ESCAPE_EST
+       */
+      code: string
+      /**
+       * @description If the questionnaire is active
+       * @example true
+       */
+      active: boolean
+      /**
+       * Format: int32
+       * @description Sequence value of the questionnaires
+       * @example 1
+       */
+      listSequence: number
+      /** @description List of Questions (and associated Answers) for this Questionnaire */
+      questions: components['schemas']['QuestionResponse'][]
+      /**
+       * Format: date
+       * @description The date the questionnaire is no longer used
+       */
+      expiryDate?: string
+      /**
+       * @description Questionnaire created date
+       * @example 2021-07-05T10:35:17
+       */
+      createdDate: string
+      /** @description Questionnaire created by */
+      createdBy: string
+      /**
+       * @description Questionnaire modified date
+       * @example 2021-07-05T10:35:17
+       */
+      modifiedDate?: string
+      /** @description Questionnaire modified by */
+      modifiedBy?: string
+    }
+    PageQuestionnaireIdResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      first?: boolean
+      last?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['QuestionnaireIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description Questionnaire id */
+    QuestionnaireIdResponse: {
+      /**
+       * Format: int64
+       * @description The questionnaire id
+       */
+      questionnaireId: number
+    }
     /** @description An incentive levels */
     IncentiveLevel: {
       /**
@@ -2396,7 +2662,7 @@ export interface components {
       legalCaseType: components['schemas']['CodeDescription']
       /** Format: date */
       beginDate?: string
-      establishmentId: string
+      courtId: string
       /** Format: int64 */
       combinedCaseId?: number
       /** Format: int64 */
@@ -2421,8 +2687,7 @@ export interface components {
     CourtEventChargeResponse: {
       /** Format: int64 */
       eventId: number
-      /** Format: int64 */
-      offenderChargeId: number
+      offenderCharge: components['schemas']['OffenderChargeResponse']
       /** Format: int32 */
       offencesCount?: number
       /** Format: date */
@@ -2446,24 +2711,20 @@ export interface components {
       /** Format: int64 */
       id: number
       offenderNo: string
-      /** Format: date */
-      eventDate: string
       /** @example 2021-07-05T10:35:17 */
-      startTime: string
+      eventDateTime: string
       courtEventType: components['schemas']['CodeDescription']
       eventStatus: components['schemas']['CodeDescription']
       directionCode?: components['schemas']['CodeDescription']
       judgeName?: string
-      prisonId: string
-      outcomeReasonCode?: string
+      courtId: string
+      outcomeReasonCode?: components['schemas']['CodeDescription']
       commentText?: string
       orderRequestedFlag?: boolean
       holdFlag?: boolean
       nextEventRequestFlag?: boolean
-      /** Format: date */
-      nextEventDate?: string
       /** @example 2021-07-05T10:35:17 */
-      nextEventStartTime?: string
+      nextEventDateTime?: string
       /** @example 2021-07-05T10:35:17 */
       createdDateTime: string
       createdByUsername: string
@@ -2533,14 +2794,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['PrisonerId'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -2672,6 +2933,8 @@ export interface components {
        * @description The booking id
        */
       bookingId: number
+      /** @description Indicates whether for this booking the prisoner has been released */
+      hasBeenReleased: boolean
       /** @description The offender number, aka nomsId, prisonerId */
       offenderNo: string
       adjustmentType: components['schemas']['SentencingAdjustmentType']
@@ -2816,14 +3079,104 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['NonAssociationIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description Incident Details */
+    IncidentResponse: {
+      /**
+       * Format: int64
+       * @description The incident id
+       */
+      id: number
+      /** @description A summary of the incident */
+      title?: string
+      /** @description The incident details */
+      description?: string
+      /** @description Current status code of the incident */
+      status: string
+      /** @description The incident questionnaire type */
+      type: string
+      /** @description If the response is locked ie if the response is completed */
+      lockedResponse: boolean
+      /**
+       * @description The date and time of the incident
+       * @example 2021-07-05T10:35:17
+       */
+      incidentDateTime: string
+      reportedStaff: components['schemas']['Staff']
+      /**
+       * @description The date and time the incident was reported
+       * @example 2021-07-05T10:35:17
+       */
+      reportedDateTime: string
+      /** @description Staff involved in the incident */
+      staffParties: components['schemas']['Staff'][]
+      /** @description Offenders involved in the incident */
+      offenderParties: components['schemas']['Offender'][]
+      /** @description Requirements for completing the incident report */
+      requirements: components['schemas']['Requirement'][]
+      /** @description Questions asked for the incident */
+      questions: components['schemas']['Question'][]
+    }
+    /** @description Offenders involved in the incident */
+    Offender: {
+      /** @description NOMIS id */
+      offenderNo: string
+      /** @description First name of staff member */
+      firstName?: string
+      /** @description Last name of staff member */
+      lastName: string
+    }
+    /** @description Questions asked for the incident */
+    Question: {
+      /** @description The Question being asked */
+      question: string
+    }
+    /** @description Requirements for completing the incident report */
+    Requirement: {
+      /** @description The update required to the incident report */
+      comment?: string
+      /**
+       * Format: date
+       * @description Date the requirement was recorded
+       */
+      date: string
+      staff: components['schemas']['Staff']
+      /** @description The reporting location of the staff */
+      prisonId: string
+    }
+    /** @description Incident id */
+    IncidentIdResponse: {
+      /**
+       * Format: int64
+       * @description The incident id
+       */
+      incidentId: number
+    }
+    PageIncidentIdResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['IncidentIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -2847,14 +3200,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['IncentiveIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -2954,14 +3307,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AppointmentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3083,6 +3436,25 @@ export interface components {
        */
       sunday: boolean
     }
+    /** @description Find suspended prisoners from active allocations */
+    FindSuspendedAllocationsResponse: {
+      /**
+       * @description NOMIS offender number
+       * @example A1234BC
+       */
+      offenderNo: string
+      /**
+       * Format: int64
+       * @description Course Activity ID
+       * @example 1234567
+       */
+      courseActivityId: number
+      /**
+       * @description Course description
+       * @example Kitchens AM
+       */
+      courseActivityDescription: string
+    }
     /** @description Allocation reconciliation check response */
     AllocationReconciliationResponse: {
       /**
@@ -3095,6 +3467,30 @@ export interface components {
        * @example [ { bookingId: 1234567, count: 2 } ]
        */
       bookings: components['schemas']['BookingCount'][]
+    }
+    /** @description Find active allocations with missing pay bands */
+    FindAllocationsMissingPayBandsResponse: {
+      /**
+       * @description NOMIS offender number
+       * @example A1234BC
+       */
+      offenderNo: string
+      /**
+       * @description NOMIS incentive level
+       * @example STD
+       */
+      incentiveLevel: string
+      /**
+       * Format: int64
+       * @description Course Activity ID
+       * @example 1234567
+       */
+      courseActivityId: number
+      /**
+       * @description Course description
+       * @example Kitchens AM
+       */
+      courseActivityDescription: string
     }
     /** @description Find active allocation ids response */
     FindActiveAllocationIdsResponse: {
@@ -3110,14 +3506,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveAllocationIdsResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3138,14 +3534,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjustmentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3171,14 +3567,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjudicationChargeIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3218,6 +3614,8 @@ export interface components {
       investigations: components['schemas']['Investigation'][]
       /** @description hearings associated with this adjudication */
       hearings: components['schemas']['Hearing'][]
+      /** @description indicates if this charge was part of a larger multi-charge adjudication in NOMIS */
+      hasMultipleCharges: boolean
     }
     /** @description Activity details */
     GetActivityResponse: {
@@ -3333,14 +3731,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveActivityIdsResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3617,6 +4015,66 @@ export interface operations {
         }
       }
       /** @description VSIP visit id not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Updates Court Appearance
+   * @description Required role NOMIS_SENTENCING Updates a new Court Appearance for the offender,latest booking and given Court Case
+   */
+  updateCourtAppearance: {
+    parameters: {
+      path: {
+        /**
+         * @description Offender no
+         * @example AB1234A
+         */
+        offenderNo: string
+        /**
+         * @description Case Id
+         * @example 34565
+         */
+        caseId: string
+        /**
+         * @description Case appearance Id
+         * @example 34565
+         */
+        eventId: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtAppearanceRequest']
+      }
+    }
+    responses: {
+      /** @description Court Appearance updated */
+      200: {
+        content: never
+      }
+      /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Court appearance does not exist */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -4983,6 +5441,106 @@ export interface operations {
     }
   }
   /**
+   * Check if a service is turned on for a prison
+   * @description Check if a prison is turned on for a service. Requires role NOMIS_ACTIVITIES
+   */
+  checkServicePrison: {
+    parameters: {
+      path: {
+        /**
+         * @description The code of the service from the EXTERNAL_SERVICES table
+         * @example ACTIVITY
+         */
+        serviceCode: string
+        /**
+         * @description The id of the prison
+         * @example MDI
+         */
+        prisonId: string
+      }
+    }
+    responses: {
+      /** @description OK */
+      204: {
+        content: never
+      }
+      /** @description Bad request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role SYNCHRONISATION_REPORTING */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not Found, the service is not turned on for the prison */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Turn on a service for a prison
+   * @description Turn on a service for a prison. Requires role NOMIS_ACTIVITIES
+   */
+  createServicePrison: {
+    parameters: {
+      path: {
+        /**
+         * @description The code of the service from the EXTERNAL_SERVICES table
+         * @example ACTIVITY
+         */
+        serviceCode: string
+        /**
+         * @description The id of the prison
+         * @example MDI
+         */
+        prisonId: string
+      }
+    }
+    responses: {
+      /** @description Created */
+      201: {
+        content: never
+      }
+      /** @description Bad request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role SYNCHRONISATION_REPORTING */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not Found, the service or prison do not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * Creates a new visit
    * @description Creates a new visit and decrements the visit balance.
    */
@@ -5114,6 +5672,63 @@ export interface operations {
         }
       }
       /** @description Offender does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Creates a new Court Appearance
+   * @description Required role NOMIS_SENTENCING Creates a new Court Appearance for the offender,latest booking and given Court Case
+   */
+  createCourtAppearance: {
+    parameters: {
+      path: {
+        /**
+         * @description Offender no
+         * @example AB1234A
+         */
+        offenderNo: string
+        /**
+         * @description Case Id
+         * @example 34565
+         */
+        caseId: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtAppearanceRequest']
+      }
+    }
+    responses: {
+      /** @description Created Court Appearance */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateCourtAppearanceResponse']
+        }
+      }
+      /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Court case does not exist */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -6024,6 +6639,91 @@ export interface operations {
     }
   }
   /**
+   * Get incident questionnaire details
+   * @description Gets incident questionnaire details. Requires role NOMIS_INCIDENTS
+   */
+  getQuestionnaire: {
+    parameters: {
+      path: {
+        /** @description Incident Questionnaire id */
+        questionnaireId: string
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['QuestionnaireResponse']
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_INCIDENTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * get questionnaire IDs by filter
+   * @description Retrieves a paged list of incident questionnaire ids by filter. Requires ROLE_NOMIS_INCIDENTS.
+   */
+  getIdsByFilter: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /**
+         * @description Filter results by those that were created on or after the given date
+         * @example 2021-11-03
+         */
+        fromDate?: string
+        /**
+         * @description Filter results by those that were created on or before the given date
+         * @example 2021-11-03
+         */
+        toDate?: string
+      }
+    }
+    responses: {
+      /** @description Pageable list of ids are returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageQuestionnaireIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_INCIDENTS not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * Retrieve a list of active incentive levels for a prison
    * @description Retrieve a list of active incentive levels for a prison. Requires role NOMIS_ACTIVITIES
    */
@@ -6486,6 +7186,91 @@ export interface operations {
     }
   }
   /**
+   * Get incident details
+   * @description Gets incident details. Requires role NOMIS_INCIDENTS
+   */
+  getIncident: {
+    parameters: {
+      path: {
+        /** @description Incident id */
+        incidentId: string
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['IncidentResponse']
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_INCIDENTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * get incident IDs by filter
+   * @description Retrieves a paged list of incident ids by filter. Requires ROLE_NOMIS_INCIDENTS.
+   */
+  getIdsByFilter_1: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /**
+         * @description Filter results by those that were created on or after the given date
+         * @example 2021-11-03
+         */
+        fromDate?: string
+        /**
+         * @description Filter results by those that were created on or before the given date
+         * @example 2021-11-03
+         */
+        toDate?: string
+      }
+    }
+    responses: {
+      /** @description Pageable list of ids are returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageIncidentIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_INCIDENTS not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * get incentives (a.k.a IEP) by filter
    * @description Retrieves a paged list of incentive composite ids by filter. Requires ROLE_NOMIS_INCENTIVES.
    */
@@ -6831,6 +7616,48 @@ export interface operations {
     }
   }
   /**
+   * Find suspended allocations
+   * @description Searches for suspended prisoners on active course allocations. Requires role NOMIS_ACTIVITIES
+   */
+  findSuspendedAllocations: {
+    parameters: {
+      query: {
+        /** @description Prison id */
+        prisonId: string
+        /** @description Exclude program codes */
+        excludeProgramCode?: string
+        /** @description Course Activity ID */
+        courseActivityId?: number
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['FindSuspendedAllocationsResponse'][]
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * Get data for an allocation sync reconciliation
    * @description Gets the number of active allocations for each booking in the prison
    */
@@ -6846,6 +7673,48 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['AllocationReconciliationResponse']
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Find allocations with missing pay bands
+   * @description Searches for prisoners allocated to a course activity without a pay band assigned. Requires role NOMIS_ACTIVITIES
+   */
+  findAllocationsWithMissingPayBands: {
+    parameters: {
+      query: {
+        /** @description Prison id */
+        prisonId: string
+        /** @description Exclude program codes */
+        excludeProgramCode?: string
+        /** @description Course Activity ID */
+        courseActivityId?: number
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['FindAllocationsMissingPayBandsResponse'][]
         }
       }
       /** @description Invalid request */
