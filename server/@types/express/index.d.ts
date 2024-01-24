@@ -47,6 +47,7 @@ declare module 'express-session' {
     dpsPayBandsExist: boolean | null
     dpsPrisonRegimeExists: boolean | null
     suspendedAllocations: string[]
+    allocationsMissingPayBands: string[]
   }
 
   interface StartAllocationsMigrationForm extends MigrationForm {

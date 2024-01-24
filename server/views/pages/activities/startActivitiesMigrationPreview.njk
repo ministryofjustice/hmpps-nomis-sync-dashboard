@@ -31,7 +31,7 @@
                 <div class="govuk-grid-column-full">
                     <h1 class="govuk-heading-l govuk-!-margin-top-7" id="startActivitiesMigrationPreviewPage">Start a new activities migration - preview</h1>
                 </div>
-                <div class="govuk-grid-column-two-thirds">
+                <div class="govuk-grid-column-three-quarters">
                     {% if form.estimatedCount %}
                         {% set html %}
                             <p class="govuk-notification-banner__heading" id="estimateSummary">
@@ -67,6 +67,13 @@
                                     Found suspended allocations in NOMIS for prison {{ form.prisonId }}.
                                     <a href="#" id='copy-suspended-link'">Copy</a>
                                     <textarea class="govuk-visually-hidden" id="copy-suspended-text" rows="{{ form.suspendedAllocations|length }}" cols="200" readonly>{{ form.suspendedAllocations|join("\n") }}</textarea>
+                                </p>
+                            {% endif %}
+                            {% if form.allocationsMissingPayBands|length %}
+                                <p class="govuk-notification-banner__heading" id="nomisAllocationsMissingPayBands">
+                                    Found allocations missing pay bands in NOMIS for prison {{ form.prisonId }}.
+                                    <a href="#" id='copy-missing-pay-band-link'">Copy</a>
+                                    <textarea class="govuk-visually-hidden" id="copy-missing-pay-band-text" rows="{{ form.allocationsMissingPayBands|length }}" cols="200" readonly>{{ form.allocationsMissingPayBands|join("\n") }}</textarea>
                                 </p>
                             {% endif %}
                         {% endset %}

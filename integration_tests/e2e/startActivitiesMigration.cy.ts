@@ -125,6 +125,7 @@ context('Start Activities Migration', () => {
       cy.task('stubGetDpsPayBands')
       cy.task('stubGetDpsPrisonRegime')
       cy.task('stubFindSuspendedAllocations')
+      cy.task('stubFindAllocationsWithMissingPayBands')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -139,6 +140,7 @@ context('Start Activities Migration', () => {
       previewPage.dpsPayBands().should('exist')
       previewPage.dpsPrisonRegime().should('exist')
       previewPage.nomisSuspendedAllocations().should('exist')
+      previewPage.nomisAllocationsWithNoPayBands().should('exist')
     })
 
     it('Shows errors returned from preview checks', () => {
@@ -157,6 +159,7 @@ context('Start Activities Migration', () => {
       cy.task('stubGetDpsPayBandsErrors')
       cy.task('stubGetDpsPrisonRegimeErrors')
       cy.task('stubFindSuspendedAllocationsErrors')
+      cy.task('stubFindAllocationsWithMissingPayBandsErrors')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -169,12 +172,14 @@ context('Start Activities Migration', () => {
       previewPage.errorSummary().contains('Failed to check if prison MDI has pay bands in DPS')
       previewPage.errorSummary().contains('Failed to check if prison MDI has slot times configured in DPS')
       previewPage.errorSummary().contains('Failed to find suspended allocations')
+      previewPage.errorSummary().contains('Failed to find allocations with missing pay bands')
       previewPage.nomisFeatureSwitch().should('not.exist')
       previewPage.activateFeatureSwitch().should('not.exist')
       previewPage.dpsFeatureSwitch().should('not.exist')
       previewPage.dpsPayBands().should('not.exist')
       previewPage.dpsPrisonRegime().should('not.exist')
       previewPage.nomisSuspendedAllocations().should('not.exist')
+      previewPage.nomisAllocationsWithNoPayBands().should('not.exist')
     })
 
     it('Turns on NOMIS feature switch if not already active', () => {
@@ -192,6 +197,7 @@ context('Start Activities Migration', () => {
       cy.task('stubGetDpsPayBands')
       cy.task('stubGetDpsPrisonRegime')
       cy.task('stubFindSuspendedAllocations')
+      cy.task('stubFindAllocationsWithMissingPayBands')
       cy.task('stubCheckServiceAgencySwitchNotFound')
       cy.task('stubPostServiceAgencySwitch')
       cy.task('stubCheckServiceAgencySwitchAfterNotFound')

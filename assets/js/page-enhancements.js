@@ -16,7 +16,7 @@ window.pageEnhancements = (($, document) => {
       const text = document.getElementById(textAreaId).value
       await navigator.clipboard.writeText(text)
     }
-    const copyLinkPrefixes = ['copy-suspended']
+    const copyLinkPrefixes = ['copy-suspended', 'copy-missing-pay-band']
     copyLinkPrefixes.forEach(prefix => {
       const copyLink = document.getElementById(`${prefix}-link`)
       const copyTextArea = document.getElementById(`${prefix}-text`)
@@ -35,7 +35,6 @@ window.pageEnhancements = (($, document) => {
   return {
     init: () => {
       $(() => {
-        console.log('initiating page enhancements')
         copyTextToClipboard()
       })
     },

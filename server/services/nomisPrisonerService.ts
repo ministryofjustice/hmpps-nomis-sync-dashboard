@@ -10,6 +10,7 @@ import {
   PageAdjudicationIdResponse,
   GetAdjudicationChargeIdsByFilter,
   IncentiveLevel,
+  FindAllocationsMissingPayBandsResponse,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
@@ -119,8 +120,27 @@ export default class NomisPrisonerService {
       excludeProgramCodes: activityCategories,
     }
 
-    return NomisPrisonerService.restClient(context.token).get<FindSuspendedAllocationsResponse[]>({
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return NomisPrisonerService.restClient(token).get<FindSuspendedAllocationsResponse[]>({
       path: `/allocations/suspended`,
+      query: querystring.stringify(queryParams),
+    })
+  }
+
+  async findAllocationsWithMissingPayBands(
+    filter: ActivitiesMigrationFilter,
+    activityCategories: string[],
+    context: Context,
+  ): Promise<FindAllocationsMissingPayBandsResponse[]> {
+    logger.info(`finding allocations with missing pay bands for activities migration`)
+    const queryParams = {
+      ...filter,
+      excludeProgramCodes: activityCategories,
+    }
+
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return NomisPrisonerService.restClient(token).get<FindAllocationsMissingPayBandsResponse[]>({
+      path: `/allocations/missing-pay-bands`,
       query: querystring.stringify(queryParams),
     })
   }

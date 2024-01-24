@@ -313,6 +313,37 @@ const stubFindSuspendedAllocationsErrors = (): SuperAgentRequest =>
     },
   })
 
+const stubFindAllocationsWithMissingPayBands = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/allocations/missing-pay-bands.*',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: [
+        {
+          offenderNo: 'A1234AA',
+          incentiveLevel: 'STD',
+          courseActivityId: 12345,
+          courseActivityDescription: 'Kitchens AM',
+        },
+      ],
+    },
+  })
+
+const stubFindAllocationsWithMissingPayBandsErrors = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/allocations/missing-pay-bands.*',
+    },
+    response: {
+      status: 500,
+    },
+  })
+
 export default {
   stubNomisPrisonerPing,
   stubGetVisitMigrationEstimatedCount,
@@ -328,4 +359,6 @@ export default {
   stubGetPrisonIncentiveLevelsErrors,
   stubFindSuspendedAllocations,
   stubFindSuspendedAllocationsErrors,
+  stubFindAllocationsWithMissingPayBands,
+  stubFindAllocationsWithMissingPayBandsErrors,
 }
