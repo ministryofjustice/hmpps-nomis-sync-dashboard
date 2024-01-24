@@ -11,6 +11,10 @@ import {
   GetAdjudicationChargeIdsByFilter,
   IncentiveLevel,
   FindAllocationsMissingPayBandsResponse,
+  GetActivitiesByFilter,
+  GetAllocationsByFilter,
+  PageActivitiesIdResponse,
+  PageAllocationsIdResponse,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
@@ -107,6 +111,34 @@ export default class NomisPrisonerService {
     } catch (error) {
       logger.info(`Failed to turn on ${serviceName} service for ${prisonId}`)
     }
+  }
+
+  async getActivitiesMigrationEstimatedCount(
+    filter: GetActivitiesByFilter,
+    activityCategories: string[],
+    context: Context,
+  ): Promise<number> {
+    logger.info(`getting details for activities migration estimated count`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const response = await NomisPrisonerService.restClient(token).get<PageActivitiesIdResponse>({
+      path: `/activities/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1, excludeProgramCodes: activityCategories })}`,
+    })
+    return response.totalElements
+  }
+
+  async getAllocationsMigrationEstimatedCount(
+    filter: GetAllocationsByFilter,
+    activityCategories: string[],
+    context: Context,
+  ): Promise<number> {
+    logger.info(`getting details for allocations migration estimated count`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const response = await NomisPrisonerService.restClient(token).get<PageAllocationsIdResponse>({
+      path: `/allocations/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1, excludeProgramCodes: activityCategories })}`,
+    })
+    return response.totalElements
   }
 
   async findActivitiesSuspendedAllocations(

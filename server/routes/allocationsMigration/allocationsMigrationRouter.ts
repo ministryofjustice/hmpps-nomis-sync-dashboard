@@ -4,16 +4,22 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import AllocationsMigrationController from './allocationsMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import ActivitiesService from '../../services/activitiesService'
 
 export interface Services {
   nomisMigrationService: NomisMigrationService
   nomisPrisonerService: NomisPrisonerService
+  activitiesService: ActivitiesService
 }
 export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  const allocationsMigrationController = new AllocationsMigrationController(services.nomisMigrationService)
+  const allocationsMigrationController = new AllocationsMigrationController(
+    services.nomisMigrationService,
+    services.nomisPrisonerService,
+    services.activitiesService,
+  )
   get('/allocations-migration', (req, res) => allocationsMigrationController.getAllocationsMigrations(req, res))
   get('/allocations-migration/failures', (req, res) => allocationsMigrationController.viewFailures(req, res))
   get('/allocations-migration/start', (req, res) =>

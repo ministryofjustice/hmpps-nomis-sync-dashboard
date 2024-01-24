@@ -84,10 +84,12 @@ export default class ActivitiesMigrationController {
     const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
     const activityCategoriesPromise = this.activitiesService.getActivityCategories(context(res))
     await Promise.all([
-      this.nomisMigrationService.getActivitiesMigrationEstimatedCount(filter, context(res)).catch(error => {
-        errors.push({ text: `Failed to get count due to error: ${error.data.userMessage}`, href: '' })
-        return 0
-      }),
+      this.nomisPrisonerService
+        .getActivitiesMigrationEstimatedCount(filter, await activityCategoriesPromise, context(res))
+        .catch(error => {
+          errors.push({ text: `Failed to get count due to error: ${error.data.userMessage}`, href: '' })
+          return 0
+        }),
 
       this.nomisMigrationService.getActivitiesDLQMessageCount(context(res)).catch(error => {
         errors.push({

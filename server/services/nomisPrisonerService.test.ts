@@ -162,6 +162,194 @@ describe('NomisPrisonerService tests', () => {
     })
   })
 
+  describe('getActivitiesMigrationEstimatedCount', () => {
+    beforeEach(() => {
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+    })
+    it('should return activity count', async () => {
+      fakeNomisPrisonerService
+        .get('/activities/ids')
+        .query({ prisonId: 'BXI', size: 1, excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(200, {
+          content: [
+            {
+              courseActivityId: 103914,
+            },
+            {
+              courseActivityId: 103953,
+            },
+            {
+              courseActivityId: 103954,
+            },
+            {
+              courseActivityId: 104051,
+            },
+            {
+              courseActivityId: 104058,
+            },
+            {
+              courseActivityId: 105869,
+            },
+            {
+              courseActivityId: 108047,
+            },
+            {
+              courseActivityId: 108048,
+            },
+            {
+              courseActivityId: 113703,
+            },
+            {
+              courseActivityId: 113874,
+            },
+          ],
+          pageable: {
+            pageNumber: 4,
+            pageSize: 10,
+            sort: {
+              empty: false,
+              sorted: true,
+              unsorted: false,
+            },
+            offset: 40,
+            paged: true,
+            unpaged: false,
+          },
+          last: false,
+          totalPages: 26,
+          totalElements: 258,
+          first: false,
+          size: 10,
+          number: 4,
+          sort: {
+            empty: false,
+            sorted: true,
+            unsorted: false,
+          },
+          numberOfElements: 10,
+          empty: false,
+        })
+
+      const response = await nomisPrisonerService.getActivitiesMigrationEstimatedCount(
+        { prisonId: 'BXI' },
+        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+        { token: 'some token' },
+      )
+
+      expect(response).toEqual(258)
+    })
+    it('should throw for any error', () => {
+      fakeNomisPrisonerService
+        .get('/activities/ids')
+        .query({ prisonId: 'BXI', size: 1, excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(504, { message: 'Gateway Timeout' })
+        .persist(true)
+
+      expect(async () => {
+        await nomisPrisonerService.getActivitiesMigrationEstimatedCount(
+          { prisonId: 'BXI' },
+          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+          { token: 'some token' },
+        )
+      }).rejects.toThrow()
+    })
+  })
+
+  describe('getAllocationsMigrationEstimatedCount', () => {
+    beforeEach(() => {
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+    })
+    it('should return allocation count', async () => {
+      fakeNomisPrisonerService
+        .get('/allocations/ids')
+        .query({ prisonId: 'BXI', size: 1, excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(200, {
+          content: [
+            {
+              allocationId: 8439948,
+            },
+            {
+              allocationId: 8439949,
+            },
+            {
+              allocationId: 8495978,
+            },
+            {
+              allocationId: 8536920,
+            },
+            {
+              allocationId: 8638174,
+            },
+            {
+              allocationId: 8638187,
+            },
+            {
+              allocationId: 8757213,
+            },
+            {
+              allocationId: 8995620,
+            },
+            {
+              allocationId: 9034752,
+            },
+            {
+              allocationId: 9034797,
+            },
+          ],
+          pageable: {
+            pageNumber: 2,
+            pageSize: 10,
+            sort: {
+              empty: false,
+              sorted: true,
+              unsorted: false,
+            },
+            offset: 20,
+            paged: true,
+            unpaged: false,
+          },
+          last: false,
+          totalPages: 182,
+          totalElements: 1816,
+          first: false,
+          size: 10,
+          number: 2,
+          sort: {
+            empty: false,
+            sorted: true,
+            unsorted: false,
+          },
+          numberOfElements: 10,
+          empty: false,
+        })
+
+      const response = await nomisPrisonerService.getAllocationsMigrationEstimatedCount(
+        { prisonId: 'BXI' },
+        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+        { token: 'some token' },
+      )
+
+      expect(response).toEqual(1816)
+    })
+    it('should throw for any error', () => {
+      fakeNomisPrisonerService
+        .get('/allocations/ids')
+        .query({ prisonId: 'BXI', size: 1, excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(504, { message: 'Gateway Timeout' })
+        .persist(true)
+
+      expect(async () => {
+        await nomisPrisonerService.getAllocationsMigrationEstimatedCount(
+          { prisonId: 'BXI' },
+          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+          { token: 'some token' },
+        )
+      }).rejects.toThrow()
+    })
+  })
+
   describe('findAllocationsWithMissingPayBands', () => {
     beforeEach(() => {
       hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>

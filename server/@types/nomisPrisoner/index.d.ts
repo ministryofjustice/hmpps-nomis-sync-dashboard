@@ -13,5 +13,7 @@ export type GetActivitiesByFilter = Omit<operations['findActiveActivities']['par
 export type GetAllocationsByFilter = Omit<operations['findActiveAllocations']['parameters']['query'], 'pageRequest'>
 export type VisitRoomCountResponse = components['schemas']['VisitRoomCountResponse']
 export type IncentiveLevel = components['schemas']['IncentiveLevel']
+export type PageActivitiesIdResponse = components['schemas']['PageFindActiveActivityIdsResponse']
+export type PageAllocationsIdResponse = components['schemas']['PageFindActiveAllocationIdsResponse']
 export type FindSuspendedAllocationsResponse = components['schemas']['FindSuspendedAllocationsResponse']
 export type FindAllocationsMissingPayBandsResponse = components['schemas']['FindAllocationsMissingPayBandsResponse']
