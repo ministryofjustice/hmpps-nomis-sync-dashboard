@@ -119,4 +119,46 @@ describe('NomisPrisonerService tests', () => {
       }).rejects.toThrow()
     })
   })
+
+  describe('findActivitiesSuspendedAllocations', () => {
+    beforeEach(() => {
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+    })
+    it('should return suspended allocations', async () => {
+      fakeNomisPrisonerService
+        .get('/allocations/suspended')
+        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(200, [
+          { offenderNo: 'A1234AA', courseActivityId: 12345, courseActivityDescription: 'Kitchens AM' },
+          { offenderNo: 'A1234AB', courseActivityId: 12346, courseActivityDescription: 'Kitchens PM' },
+        ])
+
+      const response = await nomisPrisonerService.findActivitiesSuspendedAllocations(
+        { prisonId: 'BXI' },
+        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+        { token: 'some token' },
+      )
+
+      expect(response).toEqual([
+        { offenderNo: 'A1234AA', courseActivityId: 12345, courseActivityDescription: 'Kitchens AM' },
+        { offenderNo: 'A1234AB', courseActivityId: 12346, courseActivityDescription: 'Kitchens PM' },
+      ])
+    })
+    it('should throw for any error', () => {
+      fakeNomisPrisonerService
+        .get('/allocations/suspended')
+        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(504, { message: 'Gateway Timeout' })
+        .persist(true)
+
+      expect(async () => {
+        await nomisPrisonerService.findActivitiesSuspendedAllocations(
+          { prisonId: 'BXI' },
+          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+          { token: 'some token' },
+        )
+      }).rejects.toThrow()
+    })
+  })
 })

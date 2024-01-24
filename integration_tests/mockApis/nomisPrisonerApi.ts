@@ -283,6 +283,36 @@ const stubGetPrisonIncentiveLevelsErrors = (): SuperAgentRequest =>
     },
   })
 
+const stubFindSuspendedAllocations = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/allocations/suspended.*',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: [
+        {
+          offenderNo: 'A1234AA',
+          courseActivityId: 12345,
+          courseActivityDescription: 'Kitchens AM',
+        },
+      ],
+    },
+  })
+
+const stubFindSuspendedAllocationsErrors = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/allocations/suspended/.*',
+    },
+    response: {
+      status: 500,
+    },
+  })
+
 export default {
   stubNomisPrisonerPing,
   stubGetVisitMigrationEstimatedCount,
@@ -296,4 +326,6 @@ export default {
   stubCheckServiceAgencySwitchErrors,
   stubGetPrisonIncentiveLevels,
   stubGetPrisonIncentiveLevelsErrors,
+  stubFindSuspendedAllocations,
+  stubFindSuspendedAllocationsErrors,
 }

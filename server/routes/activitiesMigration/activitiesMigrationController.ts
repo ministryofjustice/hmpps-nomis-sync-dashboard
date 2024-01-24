@@ -2,13 +2,13 @@ import { Request, Response } from 'express'
 import { StartActivitiesMigrationForm } from 'express-session'
 import moment from 'moment'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
-import { ActivitiesMigrationFilter, FindSuspendedAllocationsResponse, MigrationHistory } from '../../@types/migration'
+import { ActivitiesMigrationFilter, MigrationHistory } from '../../@types/migration'
 import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startActivitiesMigrationValidator from './startActivitiesMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
-import { IncentiveLevel } from '../../@types/nomisPrisoner'
+import { FindSuspendedAllocationsResponse, IncentiveLevel } from '../../@types/nomisPrisoner'
 import ActivitiesService from '../../services/activitiesService'
 
 interface Filter {
@@ -78,6 +78,7 @@ export default class ActivitiesMigrationController {
   async previewChecks(req: Request, res: Response, errors: Express.ValidationError[]): Promise<void> {
     const { prisonId } = req.session.startActivitiesMigrationForm
     const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
+    const activityCategories = this.activitiesService.getActivityCategories(context(res))
     await Promise.all([
       this.nomisMigrationService.getActivitiesMigrationEstimatedCount(filter, context(res)).catch(error => {
         errors.push({ text: `Failed to get count due to error: ${error.data.userMessage}`, href: '' })
@@ -129,13 +130,15 @@ export default class ActivitiesMigrationController {
         return null
       }),
 
-      this.nomisMigrationService.findActivitiesSuspendedAllocations(filter, context(res)).catch(error => {
-        errors.push({
-          text: `Failed to find suspended allocations due to error: ${error.message}`,
-          href: '',
-        })
-        return []
-      }),
+      this.nomisPrisonerService
+        .findActivitiesSuspendedAllocations(filter, await activityCategories, context(res))
+        .catch(error => {
+          errors.push({
+            text: `Failed to find suspended allocations due to error: ${error.message}`,
+            href: '',
+          })
+          return []
+        }),
     ]).then(
       ([
         estimatedCount,

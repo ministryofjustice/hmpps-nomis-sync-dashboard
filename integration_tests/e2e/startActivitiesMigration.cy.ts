@@ -9,6 +9,7 @@ context('Start Activities Migration', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubManageUser')
+    cy.task('stubGetActivityCategories')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
