@@ -33,5 +33,7 @@ export default class StartActivitiesMigrationPage extends Page {
 
   nomisSuspendedAllocations = () => cy.get('#nomisSuspendedAllocations')
 
+  nomisAllocationsWithNoPayBands = () => cy.get('#nomisAllocationsMissingPayBands')
+
   errorSummary = () => cy.get('.govuk-error-summary')
 }

@@ -167,6 +167,26 @@ describe('activitiesMigrationController', () => {
         { courseActivityDescription: 'Kitchens PM', courseActivityId: 12345, offenderNo: 'B1234BB' },
         { courseActivityDescription: 'Kitchens AM', courseActivityId: 12346, offenderNo: 'A1234AA' },
       ])
+      nomisPrisonerService.findAllocationsWithMissingPayBands.mockResolvedValue([
+        {
+          courseActivityDescription: 'Kitchens PM',
+          courseActivityId: 12345,
+          offenderNo: 'A1234AA',
+          incentiveLevel: 'STD',
+        },
+        {
+          courseActivityDescription: 'Kitchens PM',
+          courseActivityId: 12345,
+          offenderNo: 'B1234BB',
+          incentiveLevel: 'STD',
+        },
+        {
+          courseActivityDescription: 'Kitchens AM',
+          courseActivityId: 12346,
+          offenderNo: 'A1234AA',
+          incentiveLevel: 'BAS',
+        },
+      ])
     })
 
     describe('with validation error', () => {
@@ -280,6 +300,12 @@ describe('activitiesMigrationController', () => {
           `Kitchens AM, 12346, A1234AA,`,
           `Kitchens PM, 12345, A1234AA,`,
           `Kitchens PM, 12345, B1234BB,`,
+        ])
+        expect(req.session.startActivitiesMigrationForm.allocationsMissingPayBands).toEqual([
+          `Activity Description, Activity ID, Prisoner Number, Incentive Level,`,
+          `Kitchens AM, 12346, A1234AA, BAS,`,
+          `Kitchens PM, 12345, A1234AA, STD,`,
+          `Kitchens PM, 12345, B1234BB, STD,`,
         ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })

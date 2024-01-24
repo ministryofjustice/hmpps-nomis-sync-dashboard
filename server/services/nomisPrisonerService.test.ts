@@ -161,4 +161,66 @@ describe('NomisPrisonerService tests', () => {
       }).rejects.toThrow()
     })
   })
+
+  describe('findAllocationsWithMissingPayBands', () => {
+    beforeEach(() => {
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+    })
+    it('should return allocations missing pay bands', async () => {
+      fakeNomisPrisonerService
+        .get('/allocations/missing-pay-bands')
+        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(200, [
+          {
+            offenderNo: 'A1234AA',
+            incentiveLevel: 'STD',
+            courseActivityId: 12345,
+            courseActivityDescription: 'Kitchens AM',
+          },
+          {
+            offenderNo: 'A1234AB',
+            incentiveLevel: 'BAS',
+            courseActivityId: 12346,
+            courseActivityDescription: 'Kitchens PM',
+          },
+        ])
+
+      const response = await nomisPrisonerService.findAllocationsWithMissingPayBands(
+        { prisonId: 'BXI' },
+        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+        { token: 'some token' },
+      )
+
+      expect(response).toEqual([
+        {
+          offenderNo: 'A1234AA',
+          incentiveLevel: 'STD',
+          courseActivityId: 12345,
+          courseActivityDescription: 'Kitchens AM',
+        },
+        {
+          offenderNo: 'A1234AB',
+          incentiveLevel: 'BAS',
+          courseActivityId: 12346,
+          courseActivityDescription: 'Kitchens PM',
+        },
+      ])
+    })
+    it('should throw for any error', () => {
+      fakeNomisPrisonerService
+        .get('/allocations/missing-pay-bands')
+        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(504, { message: 'Gateway Timeout' })
+        .persist(true)
+
+      expect(async () => {
+        await nomisPrisonerService.findAllocationsWithMissingPayBands(
+          { prisonId: 'BXI' },
+          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+          { token: 'some token' },
+        )
+      }).rejects.toThrow()
+    })
+  })
 })

@@ -12,18 +12,35 @@ window.pageEnhancements = (($, document) => {
     if (!document.getElementById('startActivitiesMigrationPreviewPage')) {
       return
     }
-    async function copyText(textAreaId) {
-      const text = document.getElementById(textAreaId).value
-      await navigator.clipboard.writeText(text)
+    const copyLinkPrefixes = ['copy-suspended', 'copy-missing-pay-band']
+
+    async function copyText(copyLinkPrefix) {
+      clearConfirmations()
+      const text = document.getElementById(`${copyLinkPrefix}-text`).value
+      await navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          document.getElementById(`${copyLinkPrefix}-confirmed`).classList.remove('govuk-visually-hidden')
+        })
+        .catch(() => {
+          document.getElementById(`${copyLinkPrefix}-failed`).classList.remove('govuk-visually-hidden')
+        })
     }
-    const copyLinkPrefixes = ['copy-suspended']
+
+    function clearConfirmations() {
+      copyLinkPrefixes.forEach(prefix => {
+        document.getElementById(`${prefix}-confirmed`).classList.add('govuk-visually-hidden')
+        document.getElementById(`${prefix}-failed`).classList.add('govuk-visually-hidden')
+      })
+    }
+
     copyLinkPrefixes.forEach(prefix => {
       const copyLink = document.getElementById(`${prefix}-link`)
       const copyTextArea = document.getElementById(`${prefix}-text`)
       if (copyLink) {
         if (navigator.clipboard && copyTextArea) {
           copyLink.addEventListener('click', async () => {
-            await copyText(`${prefix}-text`)
+            await copyText(prefix)
           })
         } else {
           copyLink.classList.add('govuk-visually-hidden')
@@ -35,7 +52,6 @@ window.pageEnhancements = (($, document) => {
   return {
     init: () => {
       $(() => {
-        console.log('initiating page enhancements')
         copyTextToClipboard()
       })
     },

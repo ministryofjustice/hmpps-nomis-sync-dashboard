@@ -8,7 +8,11 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startActivitiesMigrationValidator from './startActivitiesMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
-import { FindSuspendedAllocationsResponse, IncentiveLevel } from '../../@types/nomisPrisoner'
+import {
+  FindAllocationsMissingPayBandsResponse,
+  FindSuspendedAllocationsResponse,
+  IncentiveLevel,
+} from '../../@types/nomisPrisoner'
 import ActivitiesService from '../../services/activitiesService'
 
 interface Filter {
@@ -78,7 +82,7 @@ export default class ActivitiesMigrationController {
   async previewChecks(req: Request, res: Response, errors: Express.ValidationError[]): Promise<void> {
     const { prisonId } = req.session.startActivitiesMigrationForm
     const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
-    const activityCategories = this.activitiesService.getActivityCategories(context(res))
+    const activityCategoriesPromise = this.activitiesService.getActivityCategories(context(res))
     await Promise.all([
       this.nomisMigrationService.getActivitiesMigrationEstimatedCount(filter, context(res)).catch(error => {
         errors.push({ text: `Failed to get count due to error: ${error.data.userMessage}`, href: '' })
@@ -131,10 +135,20 @@ export default class ActivitiesMigrationController {
       }),
 
       this.nomisPrisonerService
-        .findActivitiesSuspendedAllocations(filter, await activityCategories, context(res))
+        .findActivitiesSuspendedAllocations(filter, await activityCategoriesPromise, context(res))
         .catch(error => {
           errors.push({
             text: `Failed to find suspended allocations due to error: ${error.message}`,
+            href: '',
+          })
+          return []
+        }),
+
+      this.nomisPrisonerService
+        .findAllocationsWithMissingPayBands(filter, await activityCategoriesPromise, context(res))
+        .catch(error => {
+          errors.push({
+            text: `Failed to find allocations with missing pay bands due to error: ${error.message}`,
             href: '',
           })
           return []
@@ -149,6 +163,7 @@ export default class ActivitiesMigrationController {
         dpsPayBandsExist,
         dpsPrisonRegimeExists,
         nomisSuspendedAllocations,
+        nomisAllocationsMissingPayBands,
       ]) => {
         req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
         req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
@@ -165,6 +180,9 @@ export default class ActivitiesMigrationController {
           dpsPrisonRegimeExists === null || dpsPrisonRegimeExists
         req.session.startActivitiesMigrationForm.suspendedAllocations =
           this.suspendedAllocationCsv(nomisSuspendedAllocations)
+        req.session.startActivitiesMigrationForm.allocationsMissingPayBands = this.allocationMissingPayBandsCsv(
+          nomisAllocationsMissingPayBands,
+        )
       },
     )
   }
@@ -178,6 +196,18 @@ export default class ActivitiesMigrationController {
       )
       .sort()
     body.unshift(`Activity Description, Activity ID, Prisoner Number,`)
+    return body
+  }
+
+  private allocationMissingPayBandsCsv(allocations: FindAllocationsMissingPayBandsResponse[]): string[] {
+    if (allocations.length === 0) return []
+    const body = allocations
+      .map(
+        (allocation: FindAllocationsMissingPayBandsResponse) =>
+          `${allocation.courseActivityDescription}, ${allocation.courseActivityId}, ${allocation.offenderNo}, ${allocation.incentiveLevel},`,
+      )
+      .sort()
+    body.unshift(`Activity Description, Activity ID, Prisoner Number, Incentive Level,`)
     return body
   }
 

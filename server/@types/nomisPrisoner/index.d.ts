@@ -14,3 +14,4 @@ export type GetAllocationsByFilter = Omit<operations['findActiveAllocations']['p
 export type VisitRoomCountResponse = components['schemas']['VisitRoomCountResponse']
 export type IncentiveLevel = components['schemas']['IncentiveLevel']
 export type FindSuspendedAllocationsResponse = components['schemas']['FindSuspendedAllocationsResponse']
+export type FindAllocationsMissingPayBandsResponse = components['schemas']['FindAllocationsMissingPayBandsResponse']
