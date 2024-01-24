@@ -23,9 +23,6 @@ export type MigrationContextAllocationsMigrationFilter =
 export type MigrationContextAdjudicationsMigrationFilter =
   components['schemas']['MigrationContextAdjudicationsMigrationFilter']
 
-export type PageActivitiesIdResponse = components['schemas']['PageFindActiveActivityIdsResponse']
-export type PageAllocationsIdResponse = components['schemas']['PageFindActiveAllocationIdsResponse']
-
 export type GetDlqResult = components['schemas']['GetDlqResult']
 export type PurgeQueueResult = components['schemas']['PurgeQueueResult']
 export type RoomMappingsResponse = components['schemas']['VisitRoomUsageResponse']

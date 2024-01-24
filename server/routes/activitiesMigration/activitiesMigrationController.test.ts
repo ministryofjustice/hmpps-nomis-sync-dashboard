@@ -146,7 +146,7 @@ describe('activitiesMigrationController', () => {
 
   describe('postStartActivitiesMigration', () => {
     beforeEach(() => {
-      nomisMigrationService.getActivitiesMigrationEstimatedCount.mockResolvedValue(10)
+      nomisPrisonerService.getActivitiesMigrationEstimatedCount.mockResolvedValue(10)
       nomisMigrationService.getActivitiesDLQMessageCount.mockResolvedValue('20')
       nomisPrisonerService.getPrisonIncentiveLevels.mockResolvedValue([
         { code: 'ENT', description: 'Entry' },
@@ -207,7 +207,7 @@ describe('activitiesMigrationController', () => {
 
     describe('with preview check errors', () => {
       it('should show errors from get activity count', async () => {
-        nomisMigrationService.getActivitiesMigrationEstimatedCount.mockRejectedValue({
+        nomisPrisonerService.getActivitiesMigrationEstimatedCount.mockRejectedValue({
           data: {
             status: 400,
             userMessage: 'Not found: prison XXX does not exist',
