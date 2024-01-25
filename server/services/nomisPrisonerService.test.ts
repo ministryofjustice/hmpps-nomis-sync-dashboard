@@ -411,4 +411,66 @@ describe('NomisPrisonerService tests', () => {
       }).rejects.toThrow()
     })
   })
+
+  describe('findPayRatesWithUnknownIncentive', () => {
+    beforeEach(() => {
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+    })
+    it('should return pay rates', async () => {
+      fakeNomisPrisonerService
+        .get('/activities/rates-with-unknown-incentives')
+        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(200, [
+          {
+            courseActivityDescription: 'Kitchens AM',
+            courseActivityId: 12345,
+            payBandCode: '5',
+            incentiveLevel: 'STD',
+          },
+          {
+            courseActivityDescription: 'Kitchens PM',
+            courseActivityId: 12346,
+            payBandCode: '6',
+            incentiveLevel: 'BAS',
+          },
+        ])
+
+      const response = await nomisPrisonerService.findPayRatesWithUnknownIncentive(
+        { prisonId: 'BXI' },
+        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+        { token: 'some token' },
+      )
+
+      expect(response).toEqual([
+        {
+          courseActivityDescription: 'Kitchens AM',
+          courseActivityId: 12345,
+          payBandCode: '5',
+          incentiveLevel: 'STD',
+        },
+        {
+          courseActivityDescription: 'Kitchens PM',
+          courseActivityId: 12346,
+          payBandCode: '6',
+          incentiveLevel: 'BAS',
+        },
+      ])
+    })
+    it('should throw for any error', () => {
+      fakeNomisPrisonerService
+        .get('/allocations/rates-with-unknown-incentives')
+        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(504, { message: 'Gateway Timeout' })
+        .persist(true)
+
+      expect(async () => {
+        await nomisPrisonerService.findAllocationsWithMissingPayBands(
+          { prisonId: 'BXI' },
+          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+          { token: 'some token' },
+        )
+      }).rejects.toThrow()
+    })
+  })
 })

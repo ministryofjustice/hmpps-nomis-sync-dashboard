@@ -126,6 +126,7 @@ context('Start Activities Migration', () => {
       cy.task('stubGetDpsPrisonRegime')
       cy.task('stubFindSuspendedAllocations')
       cy.task('stubFindAllocationsWithMissingPayBands')
+      cy.task('stubFindPayRatesWithUnknownIncentive')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -141,6 +142,7 @@ context('Start Activities Migration', () => {
       previewPage.dpsPrisonRegime().should('exist')
       previewPage.nomisSuspendedAllocations().should('exist')
       previewPage.nomisAllocationsWithNoPayBands().should('exist')
+      previewPage.nomisPayRatesUnknownIncentive().should('exist')
     })
 
     it('Shows errors returned from preview checks', () => {
@@ -160,6 +162,7 @@ context('Start Activities Migration', () => {
       cy.task('stubGetDpsPrisonRegimeErrors')
       cy.task('stubFindSuspendedAllocationsErrors')
       cy.task('stubFindAllocationsWithMissingPayBandsErrors')
+      cy.task('stubFindPayRatesWithUnknownIncentiveErrors')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -180,6 +183,7 @@ context('Start Activities Migration', () => {
       previewPage.dpsPrisonRegime().should('not.exist')
       previewPage.nomisSuspendedAllocations().should('not.exist')
       previewPage.nomisAllocationsWithNoPayBands().should('not.exist')
+      previewPage.nomisPayRatesUnknownIncentive().should('not.exist')
     })
 
     it('Turns on NOMIS feature switch if not already active', () => {
@@ -198,6 +202,7 @@ context('Start Activities Migration', () => {
       cy.task('stubGetDpsPrisonRegime')
       cy.task('stubFindSuspendedAllocations')
       cy.task('stubFindAllocationsWithMissingPayBands')
+      cy.task('stubFindPayRatesWithUnknownIncentive')
       cy.task('stubCheckServiceAgencySwitchNotFound')
       cy.task('stubPostServiceAgencySwitch')
       cy.task('stubCheckServiceAgencySwitchAfterNotFound')

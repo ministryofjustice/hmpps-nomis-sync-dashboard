@@ -17,3 +17,4 @@ export type PageActivitiesIdResponse = components['schemas']['PageFindActiveActi
 export type PageAllocationsIdResponse = components['schemas']['PageFindActiveAllocationIdsResponse']
 export type FindSuspendedAllocationsResponse = components['schemas']['FindSuspendedAllocationsResponse']
 export type FindAllocationsMissingPayBandsResponse = components['schemas']['FindAllocationsMissingPayBandsResponse']
+export type FindPayRateWithUnknownIncentiveResponse = components['schemas']['FindPayRateWithUnknownIncentiveResponse']

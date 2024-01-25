@@ -432,6 +432,37 @@ const stubFindAllocationsWithMissingPayBandsErrors = (): SuperAgentRequest =>
     },
   })
 
+const stubFindPayRatesWithUnknownIncentive = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/activities/rates-with-unknown-incentives.*',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: [
+        {
+          courseActivityId: 12345,
+          courseActivityDescription: 'Kitchens AM',
+          payBandCode: '5',
+          incentiveLevel: 'STD',
+        },
+      ],
+    },
+  })
+
+const stubFindPayRatesWithUnknownIncentiveErrors = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/activities/rates-with-unknown-incentives.*',
+    },
+    response: {
+      status: 500,
+    },
+  })
+
 export default {
   stubNomisPrisonerPing,
   stubGetVisitMigrationEstimatedCount,
@@ -451,4 +482,6 @@ export default {
   stubFindSuspendedAllocationsErrors,
   stubFindAllocationsWithMissingPayBands,
   stubFindAllocationsWithMissingPayBandsErrors,
+  stubFindPayRatesWithUnknownIncentive,
+  stubFindPayRatesWithUnknownIncentiveErrors,
 }

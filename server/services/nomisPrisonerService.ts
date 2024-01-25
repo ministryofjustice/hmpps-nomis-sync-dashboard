@@ -15,6 +15,7 @@ import {
   GetAllocationsByFilter,
   PageActivitiesIdResponse,
   PageAllocationsIdResponse,
+  FindPayRateWithUnknownIncentiveResponse,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
@@ -173,6 +174,24 @@ export default class NomisPrisonerService {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     return NomisPrisonerService.restClient(token).get<FindAllocationsMissingPayBandsResponse[]>({
       path: `/allocations/missing-pay-bands`,
+      query: querystring.stringify(queryParams),
+    })
+  }
+
+  async findPayRatesWithUnknownIncentive(
+    filter: ActivitiesMigrationFilter,
+    activityCategories: string[],
+    context: Context,
+  ): Promise<FindPayRateWithUnknownIncentiveResponse[]> {
+    logger.info(`finding activity pay rates with unknown incentives for activities migration`)
+    const queryParams = {
+      ...filter,
+      excludeProgramCodes: activityCategories,
+    }
+
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return NomisPrisonerService.restClient(token).get<FindPayRateWithUnknownIncentiveResponse[]>({
+      path: `/activities/rates-with-unknown-incentives`,
       query: querystring.stringify(queryParams),
     })
   }

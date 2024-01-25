@@ -646,6 +646,13 @@ export interface paths {
      */
     get: operations['getAdjudicationByCharge']
   }
+  '/activities/rates-with-unknown-incentives': {
+    /**
+     * Find activities with pay rates with unknown incentive level
+     * @description Searches for course activities that have an active pay rate with an unknown incentive level. Requires role NOMIS_ACTIVITIES
+     */
+    get: operations['findRatesWithUnknownIncentiveLevel']
+  }
   '/activities/ids': {
     /**
      * Find paged active activities
@@ -2508,7 +2515,7 @@ export interface components {
        * @description The date the answer is no longer used
        */
       expiryDate?: string
-      nextQuestion?: components['schemas']['QuestionResponse']
+      nextQuestion?: components['schemas']['NextQuestionResponse']
       /**
        * @description If the answer should include a date
        * @example true
@@ -2519,6 +2526,16 @@ export interface components {
        * @example true
        */
       commentRequired: boolean
+    }
+    /** @description Question to be asked following this answer */
+    NextQuestionResponse: {
+      /**
+       * Format: int64
+       * @description The question id
+       */
+      id: number
+      /** @description The question text */
+      question: string
     }
     /** @description List of Questions (and associated Answers) for this Questionnaire */
     QuestionResponse: {
@@ -2589,6 +2606,8 @@ export interface components {
       listSequence: number
       /** @description List of Questions (and associated Answers) for this Questionnaire */
       questions: components['schemas']['QuestionResponse'][]
+      /** @description List of Roles allowed for an offender's participation in an incident */
+      offenderRoles: string[]
       /**
        * Format: date
        * @description The date the questionnaire is no longer used
@@ -3140,8 +3159,15 @@ export interface components {
     }
     /** @description Questions asked for the incident */
     Question: {
+      /**
+       * Format: int32
+       * @description The sequence number of the question for this incident
+       */
+      sequence: number
       /** @description The Question being asked */
       question: string
+      /** @description List of Responses to this question */
+      answers: components['schemas']['Response'][]
     }
     /** @description Requirements for completing the incident report */
     Requirement: {
@@ -3155,6 +3181,18 @@ export interface components {
       staff: components['schemas']['Staff']
       /** @description The reporting location of the staff */
       prisonId: string
+    }
+    /** @description List of Responses to this question */
+    Response: {
+      /**
+       * Format: int64
+       * @description The id of the answer
+       */
+      id: number
+      /** @description The answer text */
+      answer: string
+      /** @description Comment added to the response by recording staff */
+      comment?: string
     }
     /** @description Incident id */
     IncidentIdResponse: {
@@ -3716,6 +3754,30 @@ export interface components {
        * @example 3.2
        */
       rate: number
+    }
+    /** @description Find activities with a pay rate with unknown incentive level */
+    FindPayRateWithUnknownIncentiveResponse: {
+      /**
+       * @description Course description
+       * @example Kitchens AM
+       */
+      courseActivityDescription: string
+      /**
+       * Format: int64
+       * @description Course Activity ID
+       * @example 1234567
+       */
+      courseActivityId: number
+      /**
+       * @description Pay band code
+       * @example 5
+       */
+      payBandCode: string
+      /**
+       * @description Incentive level
+       * @example STD
+       */
+      incentiveLevelCode: string
     }
     /** @description Find active activity ids response */
     FindActiveActivityIdsResponse: {
@@ -8041,6 +8103,48 @@ export interface operations {
       }
       /** @description Adjudication or adjudication charge does not exist */
       404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Find activities with pay rates with unknown incentive level
+   * @description Searches for course activities that have an active pay rate with an unknown incentive level. Requires role NOMIS_ACTIVITIES
+   */
+  findRatesWithUnknownIncentiveLevel: {
+    parameters: {
+      query: {
+        /** @description Prison id */
+        prisonId: string
+        /** @description Exclude program codes */
+        excludeProgramCode?: string
+        /** @description Course Activity ID */
+        courseActivityId?: number
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['FindPayRateWithUnknownIncentiveResponse'][]
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
