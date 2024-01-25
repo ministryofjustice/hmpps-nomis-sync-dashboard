@@ -84,6 +84,17 @@
                                     </p>
                                 </span>
                             {% endif %}
+                            {% if form.payRatesUnknownIncentive|length %}
+                                <span>
+                                    <p class="govuk-notification-banner__heading" id="nomisPayRatesUnknownIncentive">
+                                        Found pay rates in NOMIS without an active incentive level for prison {{ form.prisonId }}.
+                                        <a href="#" id='copy-pay-rates-no-incentive-link'">Copy</a>
+                                        <span class="govuk-visually-hidden result-success" id="copy-pay-rates-no-incentive-confirmed">OK</span>
+                                        <span class="govuk-visually-hidden result-error" id="copy-pay-rates-no-incentive-failed">Fail</span>
+                                        <textarea class="govuk-visually-hidden" id="copy-pay-rates-no-incentive-text" rows="{{ form.payRatesUnknownIncentive|length }}" cols="200" readonly>{{ form.payRatesUnknownIncentive|join("\n") }}</textarea>
+                                    </p>
+                                </span>
+                            {% endif %}
                         {% endset %}
 
                         {{ govukNotificationBanner({

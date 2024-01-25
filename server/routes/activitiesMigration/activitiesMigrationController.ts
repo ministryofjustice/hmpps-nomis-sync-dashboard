@@ -10,6 +10,7 @@ import startActivitiesMigrationValidator from './startActivitiesMigrationValidat
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import {
   FindAllocationsMissingPayBandsResponse,
+  FindPayRateWithUnknownIncentiveResponse,
   FindSuspendedAllocationsResponse,
   IncentiveLevel,
 } from '../../@types/nomisPrisoner'
@@ -155,6 +156,16 @@ export default class ActivitiesMigrationController {
           })
           return []
         }),
+
+      this.nomisPrisonerService
+        .findPayRatesWithUnknownIncentive(filter, await activityCategoriesPromise, context(res))
+        .catch(error => {
+          errors.push({
+            text: `Failed to find pay rates with unknown incentive due to error: ${error.message}`,
+            href: '',
+          })
+          return []
+        }),
     ]).then(
       ([
         estimatedCount,
@@ -166,6 +177,7 @@ export default class ActivitiesMigrationController {
         dpsPrisonRegimeExists,
         nomisSuspendedAllocations,
         nomisAllocationsMissingPayBands,
+        nomisPayRatesUnknownIncentive,
       ]) => {
         req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
         req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
@@ -185,6 +197,8 @@ export default class ActivitiesMigrationController {
         req.session.startActivitiesMigrationForm.allocationsMissingPayBands = this.allocationMissingPayBandsCsv(
           nomisAllocationsMissingPayBands,
         )
+        req.session.startActivitiesMigrationForm.payRatesUnknownIncentive =
+          this.payRatesUnknownIncentiveCsv(nomisPayRatesUnknownIncentive)
       },
     )
   }
@@ -210,6 +224,18 @@ export default class ActivitiesMigrationController {
       )
       .sort()
     body.unshift(`Activity Description, Activity ID, Prisoner Number, Incentive Level,`)
+    return body
+  }
+
+  private payRatesUnknownIncentiveCsv(payRates: FindPayRateWithUnknownIncentiveResponse[]): string[] {
+    if (payRates.length === 0) return []
+    const body = payRates
+      .map(
+        (payRate: FindPayRateWithUnknownIncentiveResponse) =>
+          `${payRate.courseActivityDescription}, ${payRate.courseActivityId}, ${payRate.payBandCode}, ${payRate.incentiveLevelCode},`,
+      )
+      .sort()
+    body.unshift(`Activity Description, Activity ID, Pay Band Code, Incentive Level,`)
     return body
   }
 

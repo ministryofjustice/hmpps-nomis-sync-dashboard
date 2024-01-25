@@ -12,7 +12,7 @@ window.pageEnhancements = (($, document) => {
     if (!document.getElementById('startActivitiesMigrationPreviewPage')) {
       return
     }
-    const copyLinkPrefixes = ['copy-suspended', 'copy-missing-pay-band']
+    const copyLinkPrefixes = ['copy-suspended', 'copy-missing-pay-band', 'copy-pay-rates-no-incentive']
 
     async function copyText(copyLinkPrefix) {
       clearConfirmations()

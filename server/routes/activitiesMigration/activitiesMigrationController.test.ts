@@ -187,6 +187,20 @@ describe('activitiesMigrationController', () => {
           incentiveLevel: 'BAS',
         },
       ])
+      nomisPrisonerService.findPayRatesWithUnknownIncentive.mockResolvedValue([
+        {
+          courseActivityDescription: 'Kitchens AM',
+          courseActivityId: 12346,
+          payBandCode: '6',
+          incentiveLevelCode: 'BAS',
+        },
+        {
+          courseActivityDescription: 'Kitchens PM',
+          courseActivityId: 12345,
+          payBandCode: '5',
+          incentiveLevelCode: 'STD',
+        },
+      ])
     })
 
     describe('with validation error', () => {
@@ -306,6 +320,11 @@ describe('activitiesMigrationController', () => {
           `Kitchens AM, 12346, A1234AA, BAS,`,
           `Kitchens PM, 12345, A1234AA, STD,`,
           `Kitchens PM, 12345, B1234BB, STD,`,
+        ])
+        expect(req.session.startActivitiesMigrationForm.payRatesUnknownIncentive).toEqual([
+          `Activity Description, Activity ID, Pay Band Code, Incentive Level,`,
+          `Kitchens AM, 12346, 6, BAS,`,
+          `Kitchens PM, 12345, 5, STD,`,
         ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
