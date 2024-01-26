@@ -28,10 +28,9 @@ window.pageEnhancements = (($, document) => {
     }
 
     function clearConfirmations() {
-      copyLinkPrefixes.forEach(prefix => {
-        document.getElementById(`${prefix}-confirmed`).classList.add('govuk-visually-hidden')
-        document.getElementById(`${prefix}-failed`).classList.add('govuk-visually-hidden')
-      })
+      for (let confirmation of document.getElementsByClassName('copy-link-confirmation')) {
+        confirmation.classList.add('govuk-visually-hidden')
+      }
     }
 
     copyLinkPrefixes.forEach(prefix => {
