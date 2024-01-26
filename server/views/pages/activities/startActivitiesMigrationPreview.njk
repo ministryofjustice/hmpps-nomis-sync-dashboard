@@ -67,8 +67,8 @@
                                     <p class="govuk-notification-banner__heading" id="nomisSuspendedAllocations">
                                         Found suspended allocations in NOMIS for prison {{ form.prisonId }}.
                                         <a href="#" id='copy-suspended-link'">Copy</a>
-                                        <span class="govuk-visually-hidden result-success" id="copy-suspended-confirmed">OK</span>
-                                        <span class="govuk-visually-hidden result-error" id="copy-suspended-failed">Fail</span>
+                                        <span class="govuk-visually-hidden result-success copy-link-confirmation" id="copy-suspended-confirmed">OK</span>
+                                        <span class="govuk-visually-hidden result-error copy-link-confirmation" id="copy-suspended-failed">Fail</span>
                                         <textarea class="govuk-visually-hidden" id="copy-suspended-text" rows="{{ form.suspendedAllocations|length }}" cols="200" readonly>{{ form.suspendedAllocations|join("\n") }}</textarea>
                                     </p>
                                 </span>
@@ -78,8 +78,8 @@
                                     <p class="govuk-notification-banner__heading" id="nomisAllocationsMissingPayBands">
                                         Found allocations missing pay bands in NOMIS for prison {{ form.prisonId }}.
                                         <a href="#" id='copy-missing-pay-band-link'">Copy</a>
-                                        <span class="govuk-visually-hidden result-success" id="copy-missing-pay-band-confirmed">OK</span>
-                                        <span class="govuk-visually-hidden result-error" id="copy-missing-pay-band-failed">Fail</span>
+                                        <span class="govuk-visually-hidden result-success copy-link-confirmation" id="copy-missing-pay-band-confirmed">OK</span>
+                                        <span class="govuk-visually-hidden result-error copy-link-confirmation" id="copy-missing-pay-band-failed">Fail</span>
                                         <textarea class="govuk-visually-hidden" id="copy-missing-pay-band-text" rows="{{ form.allocationsMissingPayBands|length }}" cols="200" readonly>{{ form.allocationsMissingPayBands|join("\n") }}</textarea>
                                     </p>
                                 </span>
@@ -89,8 +89,8 @@
                                     <p class="govuk-notification-banner__heading" id="nomisPayRatesUnknownIncentive">
                                         Found pay rates in NOMIS without an active incentive level for prison {{ form.prisonId }}.
                                         <a href="#" id='copy-pay-rates-no-incentive-link'">Copy</a>
-                                        <span class="govuk-visually-hidden result-success" id="copy-pay-rates-no-incentive-confirmed">OK</span>
-                                        <span class="govuk-visually-hidden result-error" id="copy-pay-rates-no-incentive-failed">Fail</span>
+                                        <span class="govuk-visually-hidden result-success copy-link-confirmation" id="copy-pay-rates-no-incentive-confirmed">OK</span>
+                                        <span class="govuk-visually-hidden result-error copy-link-confirmation" id="copy-pay-rates-no-incentive-failed">Fail</span>
                                         <textarea class="govuk-visually-hidden" id="copy-pay-rates-no-incentive-text" rows="{{ form.payRatesUnknownIncentive|length }}" cols="200" readonly>{{ form.payRatesUnknownIncentive|join("\n") }}</textarea>
                                     </p>
                                 </span>
