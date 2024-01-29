@@ -44,6 +44,9 @@ export default function routes(router: Router, services: Services): Router {
     appointmentsMigrationController.appointmentsMigrationDetails(req, res),
   )
   post('/appointments-migration/cancel', (req, res) => appointmentsMigrationController.cancelMigration(req, res))
+  get('/appointments-migration/activate-prison', (req, res) =>
+    appointmentsMigrationController.postActivatePrison(req, res),
+  )
 
   return router
 }

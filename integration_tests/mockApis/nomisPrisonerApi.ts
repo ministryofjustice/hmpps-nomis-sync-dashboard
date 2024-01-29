@@ -186,11 +186,11 @@ const stubGetVisitRoomUsage = (prison: string): SuperAgentRequest =>
     },
   })
 
-const stubCheckServiceAgencySwitch = (): SuperAgentRequest =>
+const stubCheckServiceAgencySwitch = (service: string): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+      urlPattern: `/nomis-prisoner-api/service-prisons/${service}/prison/.*`,
     },
     response: {
       status: 204,
@@ -208,11 +208,11 @@ const stubPostServiceAgencySwitch = (): SuperAgentRequest =>
     },
   })
 
-const stubCheckServiceAgencySwitchNotFound = (): SuperAgentRequest =>
+const stubCheckServiceAgencySwitchNotFound = (service: string): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+      urlPattern: `/nomis-prisoner-api/service-prisons/${service}/prison/.*`,
     },
     response: {
       status: 404,
@@ -222,11 +222,11 @@ const stubCheckServiceAgencySwitchNotFound = (): SuperAgentRequest =>
     newScenarioState: 'Not found',
   })
 
-const stubCheckServiceAgencySwitchAfterNotFound = (): SuperAgentRequest =>
+const stubCheckServiceAgencySwitchAfterNotFound = (service: string): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+      urlPattern: `/nomis-prisoner-api/service-prisons/${service}/prison/.*`,
     },
     response: {
       status: 204,
@@ -235,11 +235,11 @@ const stubCheckServiceAgencySwitchAfterNotFound = (): SuperAgentRequest =>
     requiredScenarioState: 'Not found',
   })
 
-const stubCheckServiceAgencySwitchErrors = (): SuperAgentRequest =>
+const stubCheckServiceAgencySwitchErrors = (service: string): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+      urlPattern: `/nomis-prisoner-api/service-prisons/${service}/prison/.*`,
     },
     response: {
       status: 504,

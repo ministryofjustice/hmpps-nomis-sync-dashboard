@@ -137,6 +137,12 @@ describe('appointmentsMigrationController', () => {
   })
 
   describe('postStartAppointmentsMigration', () => {
+    beforeEach(() => {
+      nomisPrisonerService.getAppointmentsMigrationEstimatedCount.mockResolvedValue(10)
+      nomisMigrationService.getAppointmentsDLQMessageCount.mockResolvedValue('20')
+      nomisPrisonerService.checkServiceAgencySwitch.mockResolvedValue(true)
+    })
+
     describe('with validation error', () => {
       it('should return an error response', async () => {
         req.body = {
@@ -151,6 +157,66 @@ describe('appointmentsMigrationController', () => {
         ).postStartAppointmentsMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
         expect(res.redirect).toHaveBeenCalledWith('/appointments-migration/amend')
+      })
+    })
+
+    describe('with preview check errors', () => {
+      it('should show errors from get NOMIS feature switch', async () => {
+        nomisPrisonerService.checkServiceAgencySwitch.mockRejectedValue({
+          data: {
+            status: 503,
+            userMessage: 'Service unavailable',
+          },
+        })
+        req.body = {
+          _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
+          action: 'startMigration',
+          prisonIds: 'XXX,YYY',
+        }
+
+        await new AppointmentsMigrationController(
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartAppointmentsMigration(req, res)
+
+        expect(req.flash).toBeCalledWith('errors', [
+          { href: '', text: 'Failed to check if APPOINTMENTS feature switch turned on for XXX: Service unavailable' },
+          { href: '', text: 'Failed to check if APPOINTMENTS feature switch turned on for YYY: Service unavailable' },
+        ])
+        expect(res.redirect).toHaveBeenCalledWith('/appointments-migration/start/preview')
+      })
+    })
+
+    describe('with no errors', () => {
+      it('should show NOMIS feature switch warning', async () => {
+        nomisPrisonerService.checkServiceAgencySwitch.mockResolvedValue(false)
+        req.body = {
+          _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
+          action: 'startMigration',
+          prisonIds: 'MDI,WWI',
+        }
+
+        await new AppointmentsMigrationController(
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartAppointmentsMigration(req, res)
+
+        expect(req.session.startAppointmentsMigrationForm.prisonsNotSwitchedOnNomis).toEqual(['MDI', 'WWI'])
+      })
+
+      it('should not show NOMIS feature switch warning', async () => {
+        req.body = {
+          _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
+          action: 'startMigration',
+          prisonIds: 'MDI',
+        }
+
+        await new AppointmentsMigrationController(
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartAppointmentsMigration(req, res)
+
+        expect(req.session.startAppointmentsMigrationForm.prisonsNotSwitchedOnNomis).toEqual([])
       })
     })
   })

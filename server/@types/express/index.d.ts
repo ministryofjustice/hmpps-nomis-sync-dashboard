@@ -36,6 +36,7 @@ declare module 'express-session' {
     fromDate?: string
     toDate?: string
     prisonIds?: string
+    prisonsNotSwitchedOnNomis: string[]
   }
 
   interface StartActivitiesMigrationForm extends MigrationForm {
