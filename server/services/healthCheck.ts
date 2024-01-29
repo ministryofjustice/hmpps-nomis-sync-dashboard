@@ -47,6 +47,7 @@ const apiChecks = [
   service('manageUsersApi', `${config.apis.manageUsersApi.url}/health/ping`, config.apis.manageUsersApi.agent),
   service('nomisMigration', `${config.apis.nomisMigration.url}/health/ping`, config.apis.nomisMigration.agent),
   service('nomisPrisoner', `${config.apis.nomisPrisoner.url}/health/ping`, config.apis.nomisPrisoner.agent),
+  service('activitiesApi', `${config.apis.activities.url}/health/ping`, config.apis.activities.agent),
   ...(config.apis.tokenVerification.enabled
     ? [
         service(
