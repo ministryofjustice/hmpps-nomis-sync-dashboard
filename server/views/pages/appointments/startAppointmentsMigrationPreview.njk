@@ -37,6 +37,13 @@
                             <p class="govuk-notification-banner__heading" id="estimateSummary">
                                 Estimated number of Appointments entities to be migrated: {{ form.estimatedCount }}
                             </p>
+                            {% for prisonId in form.prisonsNotSwitchedOnNomis %}
+                                <p class="govuk-notification-banner__heading" id="nomisFeatureSwitch-{{ prisonId }}">
+                                    NOMIS feature switch not turned on for {{ prisonId }}.
+                                    {% set activate_prison_link = "/appointments-migration/activate-prison?prisonId=" + prisonId + "&serviceName=APPOINTMENTS" %}
+                                    <a href="{{ activate_prison_link }}" data-qa="activate-prison-button-{{ prisonId }}">Activate prison</a>
+                                </p>
+                            {% endfor %}
                         {% endset %}
 
                         {{ govukNotificationBanner({

@@ -44,6 +44,7 @@ context('Start Appointments Migration', () => {
       })
       cy.task('stubHealth')
       cy.task('stubGetAppointmentsFailures')
+      cy.task('stubCheckServiceAgencySwitch', 'APPOINTMENTS')
 
       Page.verifyOnPage(AppointmentsMigrationPage).startNewMigration().click()
       cy.task('stubGetAppointmentsMigrationEstimatedCount', 100_988)
@@ -64,6 +65,7 @@ context('Start Appointments Migration', () => {
 
       previewPage.fromDateRow().contains('2020-03-23')
       previewPage.fromDateChangeLink().click()
+      previewPage.activateFeatureSwitch('HEI').should('not.exist')
 
       // amend the from date
       const amendPage = Page.verifyOnPage(StartAppointmentsMigrationPage)
@@ -114,6 +116,36 @@ context('Start Appointments Migration', () => {
       previewPageAgain.startMigrationButton().click()
 
       Page.verifyOnPage(StartAppointmentsMigrationConfirmationPage)
+    })
+
+    it('Turns on NOMIS feature switch if not already active', () => {
+      cy.task('stubStartAppointmentsMigration', {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 100_988,
+      })
+      cy.task('stubHealth')
+      cy.task('stubGetAppointmentsFailures')
+      cy.task('stubDeleteAppointmentsFailures')
+      cy.task('stubCheckServiceAgencySwitchNotFound', 'APPOINTMENTS')
+      cy.task('stubCheckServiceAgencySwitchAfterNotFound', 'APPOINTMENTS')
+
+      Page.verifyOnPage(AppointmentsMigrationPage).startNewMigration().click()
+      cy.task('stubGetAppointmentsMigrationEstimatedCount', 100_988)
+
+      const page = Page.verifyOnPage(StartAppointmentsMigrationPage)
+      page.prisonIds().type('HEI')
+      page.fromDate().type('2020-03-23')
+      page.toDate().type('2020-03-30')
+      page.continueButton().click()
+
+      const previewPage = Page.verifyOnPage(StartAppointmentsMigrationPreviewPage)
+      previewPage.nomisFeatureSwitch('HEI').should('exist')
+      previewPage.activateFeatureSwitch('HEI').click()
+
+      const amendPage = Page.verifyOnPage(StartAppointmentsMigrationPage)
+      amendPage.continueButton().click()
+      Page.verifyOnPage(StartAppointmentsMigrationPreviewPage)
+      previewPage.nomisFeatureSwitch('HEI').should('not.exist')
     })
   })
 })

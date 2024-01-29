@@ -55,6 +55,12 @@ export default class AppointmentsMigrationController {
     })
   }
 
+  async postActivatePrison(req: Request, res: Response): Promise<void> {
+    const { serviceName, prisonId } = req.query as { serviceName: string; prisonId: string }
+    await this.nomisPrisonerService.createServiceAgencySwitch(prisonId, serviceName, context(res))
+    res.redirect('/appointments-migration/amend')
+  }
+
   async postStartAppointmentsMigration(req: Request, res: Response): Promise<void> {
     req.session.startAppointmentsMigrationForm = { ...trimForm(req.body) }
 
@@ -64,15 +70,61 @@ export default class AppointmentsMigrationController {
       req.flash('errors', errors)
       res.redirect('/appointments-migration/amend')
     } else {
-      const filter = AppointmentsMigrationController.toFilter(req.session.startAppointmentsMigrationForm)
-      const count = await this.nomisPrisonerService.getAppointmentsMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getAppointmentsDLQMessageCount(context(res))
-      logger.info(`${dlqCountString} failures found`)
-
-      req.session.startAppointmentsMigrationForm.estimatedCount = count.toLocaleString()
-      req.session.startAppointmentsMigrationForm.dlqCount = dlqCountString.toLocaleString()
+      await this.previewChecks(req, res, errors)
+      if (errors.length > 0) {
+        req.flash('errors', errors)
+      }
       res.redirect('/appointments-migration/start/preview')
     }
+  }
+
+  async previewChecks(req: Request, res: Response, errors: Express.ValidationError[]): Promise<void> {
+    const filter = AppointmentsMigrationController.toFilter(req.session.startAppointmentsMigrationForm)
+    await Promise.all([
+      this.nomisPrisonerService.getAppointmentsMigrationEstimatedCount(filter, context(res)).catch(error => {
+        errors.push({ text: `Failed to get count due to error: ${error.data.userMessage}`, href: '' })
+        return 0
+      }),
+
+      this.nomisMigrationService.getAppointmentsDLQMessageCount(context(res)).catch(error => {
+        errors.push({
+          text: `Failed to get DLQ count due to error: ${error.data?.message || error.message}`,
+          href: '',
+        })
+        return 0
+      }),
+
+      this.getInactiveNomisPrisons(filter, res, errors),
+    ]).then(([estimatedCount, dlqCount, inactiveNomisPrisons]) => {
+      req.session.startAppointmentsMigrationForm.estimatedCount = estimatedCount.toLocaleString()
+      req.session.startAppointmentsMigrationForm.dlqCount = dlqCount.toLocaleString()
+      req.session.startAppointmentsMigrationForm.prisonsNotSwitchedOnNomis = inactiveNomisPrisons
+    })
+  }
+
+  private async getInactiveNomisPrisons(
+    filter: AppointmentsMigrationFilter,
+    res: Response,
+    errors: Express.ValidationError[],
+  ): Promise<string[]> {
+    return (
+      await Promise.all(
+        filter.prisonIds.map(async prisonId => {
+          const switchedOn = await this.nomisPrisonerService
+            .checkServiceAgencySwitch(prisonId, 'APPOINTMENTS', context(res))
+            .catch(error => {
+              errors.push({
+                text: `Failed to check if APPOINTMENTS feature switch turned on for ${prisonId}: ${error.data.userMessage}`,
+                href: '',
+              })
+              return 'Error checking APPOINTMENTS feature switch'
+            })
+          return { prisonId, switchedOn }
+        }),
+      )
+    )
+      .filter(prisonSwitch => prisonSwitch.switchedOn === false)
+      .map(({ prisonId }) => prisonId)
   }
 
   async startAppointmentsMigrationPreview(req: Request, res: Response): Promise<void> {

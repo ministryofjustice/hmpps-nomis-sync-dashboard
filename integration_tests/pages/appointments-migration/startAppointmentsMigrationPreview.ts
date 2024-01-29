@@ -16,4 +16,8 @@ export default class StartAppointmentsMigrationPage extends Page {
   dlqWarning = () => cy.get('#dlqWarning')
 
   clearDlqMessages = () => cy.get('[data-qa=delete-dlq-button]')
+
+  nomisFeatureSwitch = (prisonId: string) => cy.get(`#nomisFeatureSwitch-${prisonId}`)
+
+  activateFeatureSwitch = (prisonId: string) => cy.get(`[data-qa=activate-prison-button-${prisonId}]`)
 }

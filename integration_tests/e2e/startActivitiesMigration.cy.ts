@@ -119,7 +119,7 @@ context('Start Activities Migration', () => {
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
-      cy.task('stubCheckServiceAgencySwitch')
+      cy.task('stubCheckServiceAgencySwitch', 'ACTIVITY')
       cy.task('stubGetPrisonIncentiveLevels')
       cy.task('stubGetDpsPrisonRollout')
       cy.task('stubGetDpsPayBands')
@@ -155,7 +155,7 @@ context('Start Activities Migration', () => {
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
-      cy.task('stubCheckServiceAgencySwitchErrors')
+      cy.task('stubCheckServiceAgencySwitchErrors', 'ACTIVITY')
       cy.task('stubGetPrisonIncentiveLevelsErrors')
       cy.task('stubGetDpsPrisonRolloutErrors')
       cy.task('stubGetDpsPayBandsErrors')
@@ -203,9 +203,9 @@ context('Start Activities Migration', () => {
       cy.task('stubFindSuspendedAllocations')
       cy.task('stubFindAllocationsWithMissingPayBands')
       cy.task('stubFindPayRatesWithUnknownIncentive')
-      cy.task('stubCheckServiceAgencySwitchNotFound')
+      cy.task('stubCheckServiceAgencySwitchNotFound', 'ACTIVITY')
       cy.task('stubPostServiceAgencySwitch')
-      cy.task('stubCheckServiceAgencySwitchAfterNotFound')
+      cy.task('stubCheckServiceAgencySwitchAfterNotFound', 'ACTIVITY')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
