@@ -1,6 +1,19 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 
+const stubActivitiesApiPing = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/activities-api/health/ping',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: { status: 'UP' },
+    },
+  })
+
 const stubGetDpsPrisonRollout = (): SuperAgentRequest =>
   stubFor({
     request: {
@@ -90,6 +103,7 @@ const stubGetActivityCategories = (): SuperAgentRequest =>
   })
 
 export default {
+  stubActivitiesApiPing,
   stubGetDpsPrisonRollout,
   stubGetDpsPrisonRolloutErrors,
   stubGetDpsPayBands,
