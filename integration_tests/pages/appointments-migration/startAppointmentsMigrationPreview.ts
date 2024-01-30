@@ -20,4 +20,6 @@ export default class StartAppointmentsMigrationPage extends Page {
   nomisFeatureSwitch = (prisonId: string) => cy.get(`#nomisFeatureSwitch-${prisonId}`)
 
   activateFeatureSwitch = (prisonId: string) => cy.get(`[data-qa=activate-prison-button-${prisonId}]`)
+
+  nomisAppointmentCounts = () => cy.get('#nomisAppointmentCounts')
 }
