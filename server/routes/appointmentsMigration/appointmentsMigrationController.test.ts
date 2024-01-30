@@ -141,6 +141,7 @@ describe('appointmentsMigrationController', () => {
       nomisPrisonerService.getAppointmentsMigrationEstimatedCount.mockResolvedValue(10)
       nomisMigrationService.getAppointmentsDLQMessageCount.mockResolvedValue('20')
       nomisPrisonerService.checkServiceAgencySwitch.mockResolvedValue(true)
+      nomisPrisonerService.findAppointmentCounts.mockResolvedValue([])
     })
 
     describe('with validation error', () => {
@@ -168,6 +169,12 @@ describe('appointmentsMigrationController', () => {
             userMessage: 'Service unavailable',
           },
         })
+        nomisPrisonerService.findAppointmentCounts.mockRejectedValue({
+          data: {
+            status: 400,
+            userMessage: 'Invalid from date: 2023-02-31',
+          },
+        })
         req.body = {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
@@ -182,6 +189,7 @@ describe('appointmentsMigrationController', () => {
         expect(req.flash).toBeCalledWith('errors', [
           { href: '', text: 'Failed to check if APPOINTMENTS feature switch turned on for XXX: Service unavailable' },
           { href: '', text: 'Failed to check if APPOINTMENTS feature switch turned on for YYY: Service unavailable' },
+          { href: '', text: 'Failed to find appointment summary counts due to error: Invalid from date: 2023-02-31' },
         ])
         expect(res.redirect).toHaveBeenCalledWith('/appointments-migration/start/preview')
       })

@@ -45,6 +45,7 @@ context('Start Appointments Migration', () => {
       cy.task('stubHealth')
       cy.task('stubGetAppointmentsFailures')
       cy.task('stubCheckServiceAgencySwitch', 'APPOINTMENTS')
+      cy.task('stubGetAppointmentCounts')
 
       Page.verifyOnPage(AppointmentsMigrationPage).startNewMigration().click()
       cy.task('stubGetAppointmentsMigrationEstimatedCount', 100_988)
@@ -64,8 +65,9 @@ context('Start Appointments Migration', () => {
         )
 
       previewPage.fromDateRow().contains('2020-03-23')
-      previewPage.fromDateChangeLink().click()
       previewPage.activateFeatureSwitch('HEI').should('not.exist')
+      previewPage.nomisAppointmentCounts().should('exist')
+      previewPage.fromDateChangeLink().click()
 
       // amend the from date
       const amendPage = Page.verifyOnPage(StartAppointmentsMigrationPage)
@@ -95,6 +97,7 @@ context('Start Appointments Migration', () => {
 
       Page.verifyOnPage(AppointmentsMigrationPage).startNewMigration().click()
       cy.task('stubGetAppointmentsMigrationEstimatedCount', 100_988)
+      cy.task('stubGetAppointmentCounts')
 
       const page = Page.verifyOnPage(StartAppointmentsMigrationPage)
       page.prisonIds().type('HEI')
@@ -131,6 +134,7 @@ context('Start Appointments Migration', () => {
 
       Page.verifyOnPage(AppointmentsMigrationPage).startNewMigration().click()
       cy.task('stubGetAppointmentsMigrationEstimatedCount', 100_988)
+      cy.task('stubGetAppointmentCounts')
 
       const page = Page.verifyOnPage(StartAppointmentsMigrationPage)
       page.prisonIds().type('HEI')

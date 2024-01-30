@@ -473,4 +473,85 @@ describe('NomisPrisonerService tests', () => {
       }).rejects.toThrow()
     })
   })
+
+  describe('findAppointmentsCounts', () => {
+    beforeEach(() => {
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+    })
+    it('should return appointment counts', async () => {
+      fakeNomisPrisonerService
+        .get('/appointments/counts')
+        .query({ prisonIds: ['BXI', 'MDI'] })
+        .reply(200, [
+          {
+            prisonId: 'BXI',
+            eventSubType: 'ACTI',
+            future: false,
+            count: 5,
+          },
+          {
+            prisonId: 'BXI',
+            eventSubType: 'ACTI',
+            future: true,
+            count: 7,
+          },
+          {
+            prisonId: 'BXI',
+            eventSubType: 'CABA',
+            future: false,
+            count: 9,
+          },
+          {
+            prisonId: 'MDI',
+            eventSubType: 'ACTI',
+            future: false,
+            count: 12,
+          },
+        ])
+
+      const response = await nomisPrisonerService.findAppointmentCounts(
+        { prisonIds: ['BXI', 'MDI'] },
+        { token: 'some token' },
+      )
+
+      expect(response).toEqual([
+        {
+          prisonId: 'BXI',
+          eventSubType: 'ACTI',
+          future: false,
+          count: 5,
+        },
+        {
+          prisonId: 'BXI',
+          eventSubType: 'ACTI',
+          future: true,
+          count: 7,
+        },
+        {
+          prisonId: 'BXI',
+          eventSubType: 'CABA',
+          future: false,
+          count: 9,
+        },
+        {
+          prisonId: 'MDI',
+          eventSubType: 'ACTI',
+          future: false,
+          count: 12,
+        },
+      ])
+    })
+    it('should throw for any error', () => {
+      fakeNomisPrisonerService
+        .get('/appointments/counts')
+        .query({ prisonIds: ['BXI', 'MDI'] })
+        .reply(504, { message: 'Gateway Timeout' })
+        .persist(true)
+
+      expect(async () => {
+        await nomisPrisonerService.findAppointmentCounts({ prisonIds: ['BXI', 'MDI'] }, { token: 'some token' })
+      }).rejects.toThrow()
+    })
+  })
 })

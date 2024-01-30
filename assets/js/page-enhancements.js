@@ -9,10 +9,18 @@
  */
 window.pageEnhancements = (($, document) => {
   const copyTextToClipboard = () => {
-    if (!document.getElementById('startActivitiesMigrationPreviewPage')) {
+    if (
+      !document.getElementById('startActivitiesMigrationPreviewPage') &&
+      !document.getElementById('startAppointmentsMigrationPreviewPage')
+    ) {
       return
     }
-    const copyLinkPrefixes = ['copy-suspended', 'copy-missing-pay-band', 'copy-pay-rates-no-incentive']
+    const copyLinkPrefixes = [
+      'copy-suspended',
+      'copy-missing-pay-band',
+      'copy-pay-rates-no-incentive',
+      'copy-appointment-counts',
+    ]
 
     async function copyText(copyLinkPrefix) {
       clearConfirmations()

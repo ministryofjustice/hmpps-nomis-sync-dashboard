@@ -8,6 +8,7 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startAppointmentsMigrationValidator from './startAppointmentsMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import { AppointmentCountsResponse } from '../../@types/nomisPrisoner'
 
 interface Filter {
   prisonIds?: string[]
@@ -95,10 +96,19 @@ export default class AppointmentsMigrationController {
       }),
 
       this.getInactiveNomisPrisons(filter, res, errors),
-    ]).then(([estimatedCount, dlqCount, inactiveNomisPrisons]) => {
+
+      this.nomisPrisonerService.findAppointmentCounts(filter, context(res)).catch(error => {
+        errors.push({
+          text: `Failed to find appointment summary counts due to error: ${error.data.userMessage}`,
+          href: '',
+        })
+        return []
+      }),
+    ]).then(([estimatedCount, dlqCount, inactiveNomisPrisons, appointmentCounts]) => {
       req.session.startAppointmentsMigrationForm.estimatedCount = estimatedCount.toLocaleString()
       req.session.startAppointmentsMigrationForm.dlqCount = dlqCount.toLocaleString()
       req.session.startAppointmentsMigrationForm.prisonsNotSwitchedOnNomis = inactiveNomisPrisons
+      req.session.startAppointmentsMigrationForm.appointmentCounts = this.appointmentCountsCsv(appointmentCounts)
     })
   }
 
@@ -125,6 +135,18 @@ export default class AppointmentsMigrationController {
     )
       .filter(prisonSwitch => prisonSwitch.switchedOn === false)
       .map(({ prisonId }) => prisonId)
+  }
+
+  private appointmentCountsCsv(appointmentCounts: AppointmentCountsResponse[]): string[] {
+    if (appointmentCounts.length === 0) return []
+    const body = appointmentCounts
+      .map(
+        (appointmentCount: AppointmentCountsResponse) =>
+          `${appointmentCount.prisonId}, ${appointmentCount.eventSubType}, ${appointmentCount.future}, ${appointmentCount.count},`,
+      )
+      .sort()
+    body.unshift(`Prison, Event Sub Type, Future appointment?, Count,`)
+    return body
   }
 
   async startAppointmentsMigrationPreview(req: Request, res: Response): Promise<void> {

@@ -16,11 +16,12 @@ import {
   PageActivitiesIdResponse,
   PageAllocationsIdResponse,
   FindPayRateWithUnknownIncentiveResponse,
+  AppointmentCountsResponse,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
 import type HmppsAuthClient from '../data/hmppsAuthClient'
-import type { ActivitiesMigrationFilter } from '../@types/migration'
+import type { ActivitiesMigrationFilter, AppointmentsMigrationFilter } from '../@types/migration'
 import type { FindSuspendedAllocationsResponse } from '../@types/nomisPrisoner'
 
 export default class NomisPrisonerService {
@@ -193,6 +194,18 @@ export default class NomisPrisonerService {
     return NomisPrisonerService.restClient(token).get<FindPayRateWithUnknownIncentiveResponse[]>({
       path: `/activities/rates-with-unknown-incentives`,
       query: querystring.stringify(queryParams),
+    })
+  }
+
+  async findAppointmentCounts(
+    filter: AppointmentsMigrationFilter,
+    context: Context,
+  ): Promise<AppointmentCountsResponse[]> {
+    logger.info(`finding appointments summary counts for appointments migration`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return NomisPrisonerService.restClient(token).get<AppointmentCountsResponse[]>({
+      path: `/appointments/counts`,
+      query: querystring.stringify({ ...filter }),
     })
   }
 }

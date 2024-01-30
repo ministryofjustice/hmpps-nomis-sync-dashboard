@@ -562,6 +562,13 @@ export interface paths {
      */
     get: operations['getAppointmentsByFilter']
   }
+  '/appointments/counts': {
+    /**
+     * Get appointment counts by prison, event sub type and future / past. Note that the 'future' is everything from tomorrow onwards.
+     * @description Retrieves counts of appointments for the migration preview. Requires ROLE_NOMIS_APPOINTMENTS.
+     */
+    get: operations['getAppointmentCounts']
+  }
   '/appointments/booking/{bookingId}/location/{locationId}/start/{dateTime}': {
     /**
      * Get an appointment
@@ -2372,14 +2379,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['VisitIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -2633,14 +2640,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['QuestionnaireIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -2813,14 +2820,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['PrisonerId'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3098,18 +3105,56 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['NonAssociationIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
       empty?: boolean
+    }
+    /** @description Historical questionnaire details for the incident */
+    History: {
+      /**
+       * Format: int64
+       * @description The historical incident questionnaire id
+       */
+      questionnaireId: number
+      /** @description The historical incident questionnaire code */
+      questionnaire: string
+      /** @description The historical incident questionnaire description */
+      description?: string
+      /** @description Questions asked for the historical incident questionnaire */
+      questions: components['schemas']['HistoryQuestion'][]
+    }
+    /** @description Questions asked for the historical incident questionnaire */
+    HistoryQuestion: {
+      /**
+       * Format: int32
+       * @description The sequence number of the historical question for this incident
+       */
+      sequence: number
+      /** @description The Question being asked */
+      question: string
+      /** @description Historical list of Responses to this question */
+      answers: components['schemas']['HistoryResponse'][]
+    }
+    /** @description Historical list of Responses to this question */
+    HistoryResponse: {
+      /**
+       * Format: int32
+       * @description The sequence number of the answer
+       */
+      sequence: number
+      /** @description The answer text */
+      answer: string
+      /** @description Comment added to the response by recording staff */
+      comment?: string
     }
     /** @description Incident Details */
     IncidentResponse: {
@@ -3140,15 +3185,17 @@ export interface components {
        */
       reportedDateTime: string
       /** @description Staff involved in the incident */
-      staffParties: components['schemas']['Staff'][]
+      staffParties: components['schemas']['StaffParty'][]
       /** @description Offenders involved in the incident */
-      offenderParties: components['schemas']['Offender'][]
+      offenderParties: components['schemas']['OffenderParty'][]
       /** @description Requirements for completing the incident report */
       requirements: components['schemas']['Requirement'][]
       /** @description Questions asked for the incident */
       questions: components['schemas']['Question'][]
+      /** @description Historical questionnaire details for the incident */
+      history: components['schemas']['History'][]
     }
-    /** @description Offenders involved in the incident */
+    /** @description Offender involved in the incident */
     Offender: {
       /** @description NOMIS id */
       offenderNo: string
@@ -3156,6 +3203,14 @@ export interface components {
       firstName?: string
       /** @description Last name of staff member */
       lastName: string
+    }
+    /** @description Offenders involved in the incident */
+    OffenderParty: {
+      offender: components['schemas']['Offender']
+      role: components['schemas']['CodeDescription']
+      outcome?: components['schemas']['CodeDescription']
+      /** @description General information about the incident */
+      comment?: string
     }
     /** @description Questions asked for the incident */
     Question: {
@@ -3194,6 +3249,13 @@ export interface components {
       /** @description Comment added to the response by recording staff */
       comment?: string
     }
+    /** @description Staff involved in the incident */
+    StaffParty: {
+      staff: components['schemas']['Staff']
+      role: components['schemas']['CodeDescription']
+      /** @description General information about the incident */
+      comment?: string
+    }
     /** @description Incident id */
     IncidentIdResponse: {
       /**
@@ -3207,14 +3269,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['IncidentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3238,14 +3300,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['IncentiveIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3345,18 +3407,32 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AppointmentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
       empty?: boolean
+    }
+    /** @description Appointment counts */
+    AppointmentCountsResponse: {
+      /** @description The prison id */
+      prisonId: string
+      /** @description The event sub type */
+      eventSubType: string
+      /** @description Future appointments? */
+      future: boolean
+      /**
+       * Format: int64
+       * @description The count
+       */
+      count: number
     }
     /** @description Allocation to an activity */
     GetAllocationResponse: {
@@ -3544,14 +3620,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveAllocationIdsResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3572,14 +3648,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjustmentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3605,14 +3681,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjudicationChargeIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3793,14 +3869,14 @@ export interface components {
       totalPages?: number
       /** Format: int64 */
       totalElements?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveActivityIdsResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -7566,6 +7642,51 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['PageAppointmentIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Get appointment counts by prison, event sub type and future / past. Note that the 'future' is everything from tomorrow onwards.
+   * @description Retrieves counts of appointments for the migration preview. Requires ROLE_NOMIS_APPOINTMENTS.
+   */
+  getAppointmentCounts: {
+    parameters: {
+      query: {
+        /**
+         * @description Filter results by prison ids
+         * @example ['MDI','LEI']
+         */
+        prisonIds: string[]
+        /**
+         * @description Filter results by appointments that were created on or after the given date
+         * @example 2021-11-03
+         */
+        fromDate?: string
+        /**
+         * @description Filter results by appointments that were created on or before the given date
+         * @example 2022-04-11
+         */
+        toDate?: string
+      }
+    }
+    responses: {
+      /** @description Appointment counts returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['AppointmentCountsResponse'][]
         }
       }
       /** @description Unauthorized to access this endpoint */

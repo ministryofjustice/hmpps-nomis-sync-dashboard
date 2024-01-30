@@ -463,6 +463,37 @@ const stubFindPayRatesWithUnknownIncentiveErrors = (): SuperAgentRequest =>
     },
   })
 
+const stubGetAppointmentCounts = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/appointments/counts.*',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: [
+        {
+          prisonId: 'MSI',
+          eventSubType: 'ACCA',
+          future: false,
+          count: 20,
+        },
+      ],
+    },
+  })
+
+const stubGetAppointmentCountsErrors = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/appointments/counts.*',
+    },
+    response: {
+      status: 500,
+    },
+  })
+
 export default {
   stubNomisPrisonerPing,
   stubGetVisitMigrationEstimatedCount,
@@ -484,4 +515,6 @@ export default {
   stubFindAllocationsWithMissingPayBandsErrors,
   stubFindPayRatesWithUnknownIncentive,
   stubFindPayRatesWithUnknownIncentiveErrors,
+  stubGetAppointmentCounts,
+  stubGetAppointmentCountsErrors,
 }
