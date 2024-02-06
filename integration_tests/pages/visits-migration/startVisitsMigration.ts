@@ -5,15 +5,13 @@ export default class StartVisitsMigrationPage extends Page {
     super('Start a new visits migration')
   }
 
-  private checkbox = (text: string) => cy.contains('label', text).prev()
+  private checkboxLabel = (text: string) => cy.contains('label', text)
 
   continueButton = () => cy.get('[data-qa=continue-button]')
 
   prisonIds = () => cy.get('#prisonIds')
 
-  socialVisitType = () => this.checkbox('Social visits')
-
-  officalVisitType = () => this.checkbox('Official visits')
+  socialVisitType = () => this.checkboxLabel('Social visits')
 
   fromDateTime = () => cy.get('#fromDateTime')
 
