@@ -29,8 +29,6 @@ context('Start Visits Migration', () => {
       page.prisonIds().clear()
       page.fromDateTime().type('invalid')
       page.toDateTime().type('invalid')
-      page.socialVisitType().uncheck()
-      page.officalVisitType().uncheck()
 
       page.continueButton().click()
 
@@ -56,8 +54,7 @@ context('Start Visits Migration', () => {
       page.prisonIds().type('HEI')
       page.fromDateTime().type('2020-03-23T12:00:00')
       page.toDateTime().type('2020-03-30T10:00:00')
-      page.socialVisitType().check()
-      page.officalVisitType().uncheck()
+      page.socialVisitType().click()
 
       page.continueButton().click()
       const previewPage = Page.verifyOnPage(StartVisitsMigrationPreviewPage)
@@ -114,8 +111,7 @@ context('Start Visits Migration', () => {
       page.prisonIds().type('HEI')
       page.fromDateTime().type('2020-03-23T12:00:00')
       page.toDateTime().type('2020-03-30T10:00:00')
-      page.socialVisitType().check()
-      page.officalVisitType().uncheck()
+      page.socialVisitType().click()
 
       page.continueButton().click()
       const previewPage = Page.verifyOnPage(StartVisitsMigrationPreviewPage)
