@@ -1,0 +1,86 @@
+{% extends "../../partials/layout.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% set pageTitle = applicationName + " - Start a incidents migration" %}
+
+{% block content %}
+  {{ govukBackLink({
+    text: "Back",
+    href: '/incidents-migration'
+  }) }}
+
+  <main class="app-container govuk-body">
+    {% if errors.length > 0 %}
+    {{ govukErrorSummary({
+        titleText: 'There is a problem',
+        errorList: errors,
+        attributes: { 'data-qa-errors': true }
+    }) }}
+    {% endif %}
+
+    <div class="govuk-width-container">
+      <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new incidents migration</h1>
+            </div>
+
+            <div class="govuk-grid-column-two-thirds">
+                <form action="/incidents-migration/start" method="post" novalidate>
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                    {% call govukFieldset({
+                        legend: {
+                            text: "Enter the filter details for the Incidents entities you want to migrate",
+                            classes: "govuk-fieldset__legend--m",
+                            isPageHeading: false
+                        }
+                    }) %}
+
+                        {{ govukInput({
+                            label: {
+                                html: 'Only include Incidents created after or on this date'
+                            },
+                            id: "fromDate",
+                            name: "fromDate",
+                            classes: "govuk-input--width-20",
+                            hint: {
+                                text: "Example 2020-03-23. This optional field indicates the created date"
+                            },
+                            value: form.fromDate,
+                            errorMessage: errors | findError('fromDate')
+                        }) }}
+
+                        {{ govukInput({
+                            label: {
+                                html: 'Only include Incidents entities created before or on this date'
+                            },
+                            id: "toDate",
+                            name: "toDate",
+                            classes: "govuk-input--width-20",
+                            hint: {
+                                text: "Example 2020-03-23. This optional field indicates the created date"
+                            },
+                            value: form.toDate,
+                            errorMessage: errors | findError('toDate')
+                        }) }}
+
+                        <div class="govuk-button-group">
+                            {{ govukButton({
+                                text: "Continue to preview",
+                                name: "action",
+                                value: "startMigration",
+                                attributes: { 'data-qa': 'continue-button' }
+                            }) }}
+                            <a class="govuk-link" href="/incidents-migration">Cancel</a>
+                        </div>
+                    {% endcall %}
+                </form>
+            </div>
+        </div>      
+    </div>
+  </main>
+
+{% endblock %}

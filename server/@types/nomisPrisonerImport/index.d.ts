@@ -321,6 +321,13 @@ export interface paths {
      */
     post: operations['createNonAssociation']
   }
+  '/locations': {
+    /**
+     * Creates a new location
+     * @description Creates a new location. Requires role ROLE_NOMIS_LOCATIONS
+     */
+    post: operations['createLocation']
+  }
   '/incentives/reference-codes': {
     /**
      * Creates a new global incentive level
@@ -485,6 +492,13 @@ export interface paths {
      */
     get: operations['getAdjudicationADASummary']
   }
+  '/prisoner/booking-id/{bookingId}/alerts/{alertSequence}': {
+    /**
+     * get an alert by bookingId and alert sequence
+     * @description Retrieves an prisoner alert. Requires ROLE_NOMIS_ALERTS
+     */
+    get: operations['getAlert']
+  }
   '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}': {
     /**
      * Get an open non-association
@@ -505,6 +519,27 @@ export interface paths {
      * @description Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_NON_ASSOCIATIONS.
      */
     get: operations['getNonAssociationsByFilter']
+  }
+  '/locations/{id}': {
+    /**
+     * Get a location
+     * @description Get the location given the id. Requires role ROLE_NOMIS_LOCATIONS
+     */
+    get: operations['getLocation']
+  }
+  '/locations/key/{key}': {
+    /**
+     * Get a location
+     * @description Get the location given the business key. Requires role ROLE_NOMIS_LOCATIONS
+     */
+    get: operations['getLocationByKey']
+  }
+  '/locations/ids': {
+    /**
+     * get locations by filter
+     * @description Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_LOCATIONS.
+     */
+    get: operations['getLocationsByFilter']
   }
   '/incidents/{incidentId}': {
     /**
@@ -666,6 +701,13 @@ export interface paths {
      * @description Searches for active course activities with allocated prisoners. Requires role NOMIS_ACTIVITIES
      */
     get: operations['findActiveActivities']
+  }
+  '/incident/adjudication-number/{adjudicationNumber}': {
+    /**
+     * **** Used to recover from a duplicate incident creation only ***** Deletes an incident by adjudication number.
+     * @description Deletes an incident by adjudication number. Supports the removal of a duplicate incident without a DPS mapping. Requires ROLE_NOMIS_ADJUDICATIONS
+     */
+    delete: operations['deleteIncident']
   }
   '/attendances/{eventId}': {
     /**
@@ -842,8 +884,23 @@ export interface components {
       outcomeReasonCode?: string
       /** @example 2021-07-05T10:35:17 */
       nextEventDateTime?: string
-      courtEventCharges: components['schemas']['OffenderChargeRequest'][]
+      courtEventChargesToUpdate: components['schemas']['ExistingOffenderChargeRequest'][]
+      courtEventChargesToCreate: components['schemas']['OffenderChargeRequest'][]
       nextCourtId?: string
+    }
+    /** @description Court Event */
+    ExistingOffenderChargeRequest: {
+      /** Format: int64 */
+      offenderChargeId: number
+      offenceCode: string
+      /** Format: int32 */
+      offencesCount?: number
+      /** Format: date */
+      offenceDate?: string
+      /** Format: date */
+      offenceEndDate?: string
+      resultCode1?: string
+      mostSeriousFlag: boolean
     }
     /** @description Court Event */
     OffenderChargeRequest: {
@@ -890,6 +947,12 @@ export interface components {
        * @example Some comment
        */
       comment?: string
+      /**
+       * Format: date
+       * @description Expiry date
+       * @example 2024-08-12
+       */
+      expiryDate?: string
     }
     /** @description Key date adjustment update request */
     UpdateKeyDateAdjustmentRequest: {
@@ -2163,6 +2226,120 @@ export interface components {
        */
       typeSequence: number
     }
+    /** @description Location creation request */
+    CreateLocationRequest: {
+      /**
+       * @description Whether certified for use
+       * @default false
+       * @example true
+       */
+      certified: boolean
+      /**
+       * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
+       * @enum {string}
+       */
+      locationType:
+        | 'ADJU'
+        | 'ADMI'
+        | 'APP'
+        | 'AREA'
+        | 'ASSO'
+        | 'BOOT'
+        | 'BOX'
+        | 'CELL'
+        | 'CLAS'
+        | 'EXER'
+        | 'EXTE'
+        | 'FAIT'
+        | 'GROU'
+        | 'HCEL'
+        | 'HOLD'
+        | 'IGRO'
+        | 'INSI'
+        | 'INTE'
+        | 'LAND'
+        | 'LOCA'
+        | 'MEDI'
+        | 'MOVE'
+        | 'OFFI'
+        | 'OUTS'
+        | 'POSI'
+        | 'RESI'
+        | 'ROOM'
+        | 'RTU'
+        | 'SHEL'
+        | 'SPOR'
+        | 'STOR'
+        | 'TABL'
+        | 'TRAI'
+        | 'TRRM'
+        | 'VIDE'
+        | 'VISIT'
+        | 'WING'
+        | 'WORK'
+      /**
+       * @description Prison code of the location
+       * @example LEI
+       */
+      prisonId: string
+      /**
+       * Format: int64
+       * @description The containing location id
+       * @example 1234567
+       */
+      parentLocationId: number
+      /**
+       * Format: int32
+       * @description Max capacity subject to resources
+       * @example 43
+       */
+      operationalCapacity?: number
+      /**
+       * Format: int32
+       * @description Certified Normal Accommodation capacity
+       * @example 44
+       */
+      cnaCapacity?: number
+      /**
+       * @description Description of location
+       * @example Some description
+       */
+      userDescription?: string
+      /**
+       * @description Usually a number for a cell, a letter for a wing or landing. Used to calculate description
+       * @example 005
+       */
+      locationCode: string
+      /**
+       * @description Housing Unit type, Reference code (HOU_UN_TYPE)
+       * @enum {string}
+       */
+      unitType?: 'HC' | 'HOLC' | 'NA' | 'OU' | 'REC' | 'SEG' | 'SPLC'
+      /**
+       * Format: int32
+       * @description Physical maximum capacity
+       * @example 45
+       */
+      capacity?: number
+      /**
+       * Format: int32
+       * @description Defines the order within parent location
+       */
+      listSequence?: number
+      /**
+       * @description Comment
+       * @example Some comment
+       */
+      comment?: string
+    }
+    /** @description Location creation response */
+    LocationIdResponse: {
+      /**
+       * Format: int64
+       * @description The created agency_internal_locations location id
+       */
+      locationId: number
+    }
     ReorderRequest: {
       codeList: string[]
     }
@@ -3027,10 +3204,79 @@ export interface components {
       bookingId: number
       /** @description Prisoner number related to booking */
       offenderNo: string
-      /** @description List of prisons this person attended during this booking */
-      prisonIds: string[]
       /** @description List of ADAs awarded during this booking period */
       adaSummaries: components['schemas']['ADASummary'][]
+    }
+    /** @description The data held in NOMIS about an alert associated with a prisoner */
+    AlertResponse: {
+      /**
+       * Format: int64
+       * @description The prisoner's bookingId related to this alert
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The sequence primary key within this booking
+       */
+      alertSequence: number
+      alertCode: components['schemas']['CodeDescription']
+      type: components['schemas']['CodeDescription']
+      /**
+       * Format: date
+       * @description Date alert started
+       */
+      date: string
+      /**
+       * Format: date
+       * @description Date alert expired
+       */
+      expiryDate?: string
+      /** @description true if alert is active and has not expired */
+      isActive: boolean
+      /** @description true if alert has been verified by another member of staff */
+      isVerified: boolean
+      /**
+       * @description Free format text of person or department that authorised the alert
+       * @example security
+       */
+      authorisedBy?: string
+      /** @description Free format comment */
+      comment?: string
+      audit: components['schemas']['NomisAudit']
+    }
+    /** @description The data held in NOMIS the person or system that created this record */
+    NomisAudit: {
+      /**
+       * @description Date time record was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDatetime: string
+      /** @description Username of person that created the record (might also be a system) */
+      createUsername: string
+      /** @description Username of person that last modified the record (might also be a system) */
+      modifyUserId?: string
+      /**
+       * @description Date time record was last modified
+       * @example 2021-07-05T10:35:17
+       */
+      modifyDatetime?: string
+      /**
+       * @description Audit Date time
+       * @example 2021-07-05T10:35:17
+       */
+      auditTimestamp?: string
+      /** @description Audit username */
+      auditUserId?: string
+      /** @description NOMIS or DPS module that created the record */
+      auditModuleName?: string
+      /** @description Client userid */
+      auditClientUserId?: string
+      /** @description IP Address where request originated from */
+      auditClientIpAddress?: string
+      /** @description Machine name where request originated from */
+      auditClientWorkstationName?: string
+      /** @description Additional information that is audited */
+      auditAdditionalInfo?: string
     }
     /** @description Appointment information */
     NonAssociationResponse: {
@@ -3118,6 +3364,98 @@ export interface components {
       pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
+    /** @description Location request returned data */
+    LocationResponse: {
+      /**
+       * Format: int64
+       * @description The location id
+       * @example 1234567
+       */
+      locationId: number
+      /**
+       * @description Whether certified for use
+       * @default false
+       * @example true
+       */
+      certified: boolean
+      /**
+       * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
+       * @example LAND
+       */
+      locationType: string
+      /**
+       * @description Prison code of the location
+       * @example LEI
+       */
+      prisonId: string
+      /**
+       * Format: int64
+       * @description The containing location id
+       * @example 1234567
+       */
+      parentLocationId: number
+      /**
+       * Format: int32
+       * @description Max capacity subject to resources
+       * @example 43
+       */
+      operationalCapacity?: number
+      /**
+       * Format: int32
+       * @description Certified Normal Accommodation capacity
+       * @example 44
+       */
+      cnaCapacity?: number
+      /**
+       * @description Description of location
+       * @example Some description
+       */
+      userDescription?: string
+      /**
+       * @description Constructed full code of location
+       * @example WWI-B-2-004
+       */
+      description: string
+      /**
+       * @description Usually a number for a cell, a letter for a wing or landing. Used to calculate description
+       * @example xxxx
+       */
+      locationCode: string
+      /**
+       * Format: int32
+       * @description Physical maximum capacity
+       * @example 45
+       */
+      capacity?: number
+      /**
+       * Format: int32
+       * @description Defines the order within parent location
+       */
+      listSequence?: number
+      /**
+       * @description Comment
+       * @example Some comment
+       */
+      comment?: string
+    }
+    PageLocationIdResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['LocationIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject']
+      first?: boolean
+      last?: boolean
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
     /** @description Historical questionnaire details for the incident */
     History: {
       /**
@@ -3167,6 +3505,7 @@ export interface components {
       title?: string
       /** @description The incident details */
       description?: string
+      prison: components['schemas']['CodeDescription']
       /** @description Current status code of the incident */
       status: string
       /** @description The incident questionnaire type */
@@ -4234,7 +4573,7 @@ export interface operations {
         offenderNo: string
         /**
          * @description Non-association offender
-         * @example A34578ED
+         * @example A4578ED
          */
         nsOffenderNo: string
         /**
@@ -4294,7 +4633,7 @@ export interface operations {
         offenderNo: string
         /**
          * @description Non-association offender
-         * @example A34578ED
+         * @example A4578ED
          */
         nsOffenderNo: string
         /**
@@ -4343,7 +4682,7 @@ export interface operations {
         offenderNo: string
         /**
          * @description Non-association offender
-         * @example A34578ED
+         * @example A4578ED
          */
         nsOffenderNo: string
         /**
@@ -6189,6 +6528,43 @@ export interface operations {
     }
   }
   /**
+   * Creates a new location
+   * @description Creates a new location. Requires role ROLE_NOMIS_LOCATIONS
+   */
+  createLocation: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateLocationRequest']
+      }
+    }
+    responses: {
+      /** @description Successfully created location */
+      201: {
+        content: {
+          'application/json': components['schemas']['LocationIdResponse']
+        }
+      }
+      /** @description Invalid data such as prison or parent do not exist etc. */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role ROLE_NOMIS_LOCATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * Creates a new global incentive level
    * @description Creates a new global incentive level
    */
@@ -7194,6 +7570,52 @@ export interface operations {
     }
   }
   /**
+   * get an alert by bookingId and alert sequence
+   * @description Retrieves an prisoner alert. Requires ROLE_NOMIS_ALERTS
+   */
+  getAlert: {
+    parameters: {
+      path: {
+        /**
+         * @description Booking Id
+         * @example 12345
+         */
+        bookingId: string
+        /**
+         * @description Alert sequence
+         * @example 3
+         */
+        alertSequence: string
+      }
+    }
+    responses: {
+      /** @description Alert Information Returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['AlertResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * Get an open non-association
    * @description Get the open non-association for the two offender numbers. Requires role NOMIS_NON_ASSOCIATIONS
    */
@@ -7214,7 +7636,7 @@ export interface operations {
         offenderNo: string
         /**
          * @description Non-association offender
-         * @example A34578ED
+         * @example A4578ED
          */
         nsOffenderNo: string
       }
@@ -7260,7 +7682,7 @@ export interface operations {
         offenderNo: string
         /**
          * @description Non-association offender
-         * @example A34578ED
+         * @example A4578ED
          */
         nsOffenderNo: string
       }
@@ -7316,6 +7738,119 @@ export interface operations {
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_NON_ASSOCIATIONS not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Get a location
+   * @description Get the location given the id. Requires role ROLE_NOMIS_LOCATIONS
+   */
+  getLocation: {
+    parameters: {
+      path: {
+        /**
+         * @description Location id
+         * @example 12345678
+         */
+        id: number
+      }
+    }
+    responses: {
+      /** @description Location information */
+      200: {
+        content: {
+          'application/json': components['schemas']['LocationResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role ROLE_NOMIS_LOCATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No location exists for this id */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Get a location
+   * @description Get the location given the business key. Requires role ROLE_NOMIS_LOCATIONS
+   */
+  getLocationByKey: {
+    parameters: {
+      path: {
+        /**
+         * @description Location id
+         * @example LEI-B-3-014
+         */
+        key: string
+      }
+    }
+    responses: {
+      /** @description Location information */
+      200: {
+        content: {
+          'application/json': components['schemas']['LocationResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role ROLE_NOMIS_LOCATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No location exists for this id */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * get locations by filter
+   * @description Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_LOCATIONS.
+   */
+  getLocationsByFilter: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+    }
+    responses: {
+      /** @description Pageable list of ids is returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageLocationIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role ROLE_NOMIS_LOCATIONS not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -8315,6 +8850,39 @@ export interface operations {
       }
       /** @description Not found */
       404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * **** Used to recover from a duplicate incident creation only ***** Deletes an incident by adjudication number.
+   * @description Deletes an incident by adjudication number. Supports the removal of a duplicate incident without a DPS mapping. Requires ROLE_NOMIS_ADJUDICATIONS
+   */
+  deleteIncident: {
+    parameters: {
+      path: {
+        /**
+         * @description Adjudication number
+         * @example 12345
+         */
+        adjudicationNumber: string
+      }
+    }
+    responses: {
+      /** @description Incident deleted */
+      200: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }

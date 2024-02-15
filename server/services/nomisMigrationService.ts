@@ -6,10 +6,12 @@ import type {
   AppointmentsMigrationFilter,
   GetDlqResult,
   InProgressMigration,
+  IncidentsMigrationFilter,
   MigrationContextActivitiesMigrationFilter,
   MigrationContextAdjudicationsMigrationFilter,
   MigrationContextAllocationsMigrationFilter,
   MigrationContextAppointmentsMigrationFilter,
+  MigrationContextIncidentsMigrationFilter,
   MigrationContextSentencingMigrationFilter,
   MigrationContextVisitsMigrationFilter,
   MigrationHistory,
@@ -566,5 +568,80 @@ export default class NomisMigrationService {
       path: `/migrate/visits/rooms/usage`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
+  }
+
+  async getIncidentsMigrations(context: Context): Promise<HistoricMigrations> {
+    logger.info(`getting incidents migrations`)
+    return {
+      migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
+        path: `/migrate/incidents/history`,
+      }),
+    }
+  }
+
+  async getIncidentsMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
+    logger.info(`getting details for incidents migration ${migrationId}`)
+    const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
+      path: `/migrate/incidents/history/${migrationId}`,
+    })
+
+    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
+      path: `/migrate/incidents/active-migration`,
+    })
+
+    return {
+      history,
+      currentProgress: {
+        recordsFailed: inProgressMigration.recordsFailed,
+        recordsMigrated: inProgressMigration.recordsMigrated,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
+      },
+    }
+  }
+
+  async startIncidentsMigration(
+    filter: IncidentsMigrationFilter,
+    context: Context,
+  ): Promise<MigrationContextIncidentsMigrationFilter> {
+    logger.info(`starting an incidents migration`)
+    return NomisMigrationService.restClient(context.token).post<MigrationContextIncidentsMigrationFilter>({
+      path: `/migrate/incidents`,
+      data: filter,
+    })
+  }
+
+  async getIncidentsFailures(context: Context): Promise<GetDlqResult> {
+    logger.info(`getting messages on incidents DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getIncidentsDLQName(token)
+
+    return NomisMigrationService.restClient(token).get<GetDlqResult>({
+      path: `/queue-admin/get-dlq-messages/${dlqName}`,
+    })
+  }
+
+  async deleteIncidentsFailures(context: Context): Promise<PurgeQueueResult> {
+    logger.info(`deleting messages on incidents DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getIncidentsDLQName(token)
+
+    return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
+      path: `/queue-admin/purge-queue/${dlqName}`,
+    })
+  }
+
+  async getIncidentsDLQMessageCount(context: Context): Promise<string> {
+    return NomisMigrationService.getAnyDLQMessageCount('migrationincidents-health', context.token)
+  }
+
+  async cancelIncidentsMigration(migrationId: string, context: Context): Promise<void> {
+    logger.info(`cancelling an incidents migration`)
+    return NomisMigrationService.restClient(context.token).post<void>({
+      path: `/migrate/incidents/${migrationId}/cancel`,
+    })
+  }
+
+  private static async getIncidentsDLQName(token: string): Promise<string> {
+    return NomisMigrationService.getAnyDLQName('migrationincidents-health', token)
   }
 }

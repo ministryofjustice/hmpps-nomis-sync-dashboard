@@ -6,6 +6,7 @@ import activitiesMigrationRoutes from './activitiesMigration/activitiesMigration
 import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
 import adjudicationsMigrationRoutes from './adjudicationsMigration/adjudicationsMigrationRouter'
+import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
 import {
   extractRoles,
   MIGRATE_SENTENCING_ROLE,
@@ -14,6 +15,7 @@ import {
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_ADJUDICATIONS_ROLE,
+  MIGRATE_INCIDENTS_ROLE,
 } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
@@ -83,6 +85,14 @@ export default function routes(services: Services): Router {
           roles: [MIGRATE_VISITS_ROLE],
           enabled: true,
         },
+        {
+          id: 'incidents-migration',
+          heading: 'Incidents migration',
+          description: 'Migration and synchronisation information',
+          href: '/incidents-migration',
+          roles: [MIGRATE_INCIDENTS_ROLE],
+          enabled: true,
+        },
       ].filter(
         register =>
           Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled,
@@ -96,5 +106,6 @@ export default function routes(services: Services): Router {
   allocationsMigrationRoutes(router, services)
   appointmentsMigrationRoutes(router, services)
   adjudicationsMigrationRoutes(router, services)
+  incidentsMigrationRoutes(router, services)
   return router
 }

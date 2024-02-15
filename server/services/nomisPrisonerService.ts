@@ -17,6 +17,8 @@ import {
   PageAllocationsIdResponse,
   FindPayRateWithUnknownIncentiveResponse,
   AppointmentCountsResponse,
+  PageIncidentIdResponse,
+  GetIncidentIdsByFilter,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
@@ -70,6 +72,16 @@ export default class NomisPrisonerService {
     logger.info(`getting details for adjudications migration estimated count`)
     const response = await NomisPrisonerService.restClient(token).get<PageAdjudicationIdResponse>({
       path: `/adjudications/charges/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
+  }
+
+  async getIncidentsMigrationEstimatedCount(filter: GetIncidentIdsByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for incidents migration  estimated count`)
+    const response = await NomisPrisonerService.restClient(token).get<PageIncidentIdResponse>({
+      path: `/incidents/ids`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements

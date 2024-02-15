@@ -7,6 +7,7 @@ const MIGRATE_ACTIVITIES_ROLE = 'ROLE_MIGRATE_ACTIVITIES'
 const MIGRATE_ALLOCATIONS_ROLE = 'ROLE_MIGRATE_ACTIVITIES' // This role is deliberately shared with Activities as they are closely related
 const MIGRATE_APPOINTMENTS_ROLE = 'ROLE_MIGRATE_APPOINTMENTS'
 const MIGRATE_ADJUDICATIONS_ROLE = 'ROLE_MIGRATE_ADJUDICATIONS'
+const MIGRATE_INCIDENTS_ROLE = 'ROLE_MIGRATE_INCIDENTS'
 
 const extractRoles = (res: Response): Array<string> => {
   const token = res?.locals?.user?.token
@@ -21,5 +22,6 @@ export {
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_ADJUDICATIONS_ROLE,
+  MIGRATE_INCIDENTS_ROLE,
   extractRoles,
 }
