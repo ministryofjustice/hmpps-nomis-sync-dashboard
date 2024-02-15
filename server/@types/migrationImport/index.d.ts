@@ -48,19 +48,19 @@ export interface paths {
      */
     post: operations['migrateSentencing']
   }
-  '/migrate/non-associations/{migrationId}/cancel': {
+  '/migrate/incidents/{migrationId}/cancel': {
     /**
      * Cancels a running migration. The actual cancellation might take several minutes to complete
-     * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     * @description Requires role <b>MIGRATE_INCIDENTS</b>
      */
     post: operations['cancel_2']
   }
-  '/migrate/non-associations': {
+  '/migrate/incidents': {
     /**
-     * Starts an nonAssociations migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     * Starts an incidents migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCIDENTS</b>
      */
-    post: operations['migrateNonAssociations']
+    post: operations['migrateIncidents']
   }
   '/migrate/appointments/{migrationId}/cancel': {
     /**
@@ -170,24 +170,24 @@ export interface paths {
      */
     get: operations['getActiveMigrationDetails_1']
   }
-  '/migrate/non-associations/history/{migrationId}': {
+  '/migrate/incidents/history/{migrationId}': {
     /**
      * Gets a specific migration history record
-     * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     * @description Requires role <b>MIGRATE_INCIDENTS</b>
      */
     get: operations['get_2']
   }
-  '/migrate/non-associations/history': {
+  '/migrate/incidents/history': {
     /**
-     * Lists all filtered migration history records un-paged for nonAssociations
-     * @description The records are un-paged and requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     * Lists all filtered migration history records un-paged for incidents
+     * @description The records are un-paged and requires role <b>MIGRATE_INCIDENTS</b>
      */
     get: operations['getAll_2']
   }
-  '/migrate/non-associations/active-migration': {
+  '/migrate/incidents/active-migration': {
     /**
      * Gets active/currently running migration data, using migration record and migration queues
-     * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+     * @description Requires role <b>MIGRATE_INCIDENTS</b>
      */
     get: operations['getActiveMigrationDetails_2']
   }
@@ -211,20 +211,6 @@ export interface paths {
      * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
      */
     get: operations['getActiveMigrationDetails_3']
-  }
-  '/migrate/allocations/suspended': {
-    /**
-     * Find suspended allocations eligible for migration
-     * @description Searches for suspended active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
-     */
-    get: operations['findSuspendedAllocationsToMigrate']
-  }
-  '/migrate/allocations/ids': {
-    /**
-     * Find paged allocations eligible for migration
-     * @description Searches for active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
-     */
-    get: operations['findAllocationsToMigrate']
   }
   '/migrate/allocations/history/{migrationId}': {
     /**
@@ -267,13 +253,6 @@ export interface paths {
      * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
      */
     get: operations['getActiveMigrationDetails_5']
-  }
-  '/migrate/activities/ids': {
-    /**
-     * Find paged activities eligible for migration
-     * @description Searches for active course activities with allocated prisoners (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
-     */
-    get: operations['findActivitiesToMigrate']
   }
   '/migrate/activities/history/{migrationId}': {
     /**
@@ -382,7 +361,7 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -412,28 +391,28 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['SentencingMigrationFilter']
     }
-    /** @description Filter specifying what should be migrated from NOMIS to the Non-Associations service */
-    NonAssociationsMigrationFilter: {
+    /** @description Filter specifying what should be migrated from NOMIS to the Incident Reporting service */
+    IncidentsMigrationFilter: {
       /**
        * Format: date
-       * @description Only include non-associations created on or after this date
+       * @description Only include incidents created on or after this date
        * @example 2020-03-23
        */
       fromDate?: string
       /**
        * Format: date
-       * @description Only include non-associations created before or on this date
+       * @description Only include incidents created before or on this date
        * @example 2020-03-24
        */
       toDate?: string
     }
-    MigrationContextNonAssociationsMigrationFilter: {
+    MigrationContextIncidentsMigrationFilter: {
       /** @enum {string} */
       type:
         | 'VISITS'
@@ -442,11 +421,11 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
-      body: components['schemas']['NonAssociationsMigrationFilter']
+      body: components['schemas']['IncidentsMigrationFilter']
     }
     /** @description Filter specifying what should be migrated from NOMIS to Appointments service */
     AppointmentsMigrationFilter: {
@@ -477,7 +456,7 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -506,7 +485,7 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -541,7 +520,7 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -570,7 +549,7 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -618,7 +597,7 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       /** @enum {string} */
       status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
       id: string
@@ -646,75 +625,9 @@ export interface components {
         | 'ADJUDICATIONS'
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
-        | 'NON_ASSOCIATIONS'
+        | 'INCIDENTS'
       /** @enum {string} */
       status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
-    }
-    FindSuspendedAllocationsResponse: {
-      offenderNo: string
-      /** Format: int64 */
-      courseActivityId: number
-      courseActivityDescription: string
-    }
-    FindActiveAllocationIdsResponse: {
-      /** Format: int64 */
-      allocationId: number
-    }
-    PageFindActiveAllocationIdsResponse: {
-      /** Format: int64 */
-      totalElements?: number
-      /** Format: int32 */
-      totalPages?: number
-      first?: boolean
-      last?: boolean
-      /** Format: int32 */
-      size?: number
-      content?: components['schemas']['FindActiveAllocationIdsResponse'][]
-      /** Format: int32 */
-      number?: number
-      sort?: components['schemas']['SortObject']
-      /** Format: int32 */
-      numberOfElements?: number
-      pageable?: components['schemas']['PageableObject']
-      empty?: boolean
-    }
-    PageableObject: {
-      /** Format: int64 */
-      offset?: number
-      sort?: components['schemas']['SortObject']
-      /** Format: int32 */
-      pageSize?: number
-      /** Format: int32 */
-      pageNumber?: number
-      unpaged?: boolean
-      paged?: boolean
-    }
-    SortObject: {
-      empty?: boolean
-      sorted?: boolean
-      unsorted?: boolean
-    }
-    FindActiveActivityIdsResponse: {
-      /** Format: int64 */
-      courseActivityId: number
-    }
-    PageFindActiveActivityIdsResponse: {
-      /** Format: int64 */
-      totalElements?: number
-      /** Format: int32 */
-      totalPages?: number
-      first?: boolean
-      last?: boolean
-      /** Format: int32 */
-      size?: number
-      content?: components['schemas']['FindActiveActivityIdsResponse'][]
-      /** Format: int32 */
-      number?: number
-      sort?: components['schemas']['SortObject']
-      /** Format: int32 */
-      numberOfElements?: number
-      pageable?: components['schemas']['PageableObject']
-      empty?: boolean
     }
   }
   responses: never
@@ -953,7 +866,7 @@ export interface operations {
   }
   /**
    * Cancels a running migration. The actual cancellation might take several minutes to complete
-   * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   * @description Requires role <b>MIGRATE_INCIDENTS</b>
    */
   cancel_2: {
     parameters: {
@@ -991,20 +904,20 @@ export interface operations {
     }
   }
   /**
-   * Starts an nonAssociations migration
-   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   * Starts an incidents migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCIDENTS</b>
    */
-  migrateNonAssociations: {
+  migrateIncidents: {
     requestBody: {
       content: {
-        'application/json': components['schemas']['NonAssociationsMigrationFilter']
+        'application/json': components['schemas']['IncidentsMigrationFilter']
       }
     }
     responses: {
       /** @description Migration process started */
       202: {
         content: {
-          'application/json': components['schemas']['MigrationContextNonAssociationsMigrationFilter']
+          'application/json': components['schemas']['MigrationContextIncidentsMigrationFilter']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -1600,7 +1513,7 @@ export interface operations {
   }
   /**
    * Gets a specific migration history record
-   * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   * @description Requires role <b>MIGRATE_INCIDENTS</b>
    */
   get_2: {
     parameters: {
@@ -1640,8 +1553,8 @@ export interface operations {
     }
   }
   /**
-   * Lists all filtered migration history records un-paged for nonAssociations
-   * @description The records are un-paged and requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   * Lists all filtered migration history records un-paged for incidents
+   * @description The records are un-paged and requires role <b>MIGRATE_INCIDENTS</b>
    */
   getAll_2: {
     parameters: {
@@ -1686,7 +1599,7 @@ export interface operations {
   }
   /**
    * Gets active/currently running migration data, using migration record and migration queues
-   * @description Requires role <b>MIGRATE_NON_ASSOCIATIONS</b>
+   * @description Requires role <b>MIGRATE_INCIDENTS</b>
    */
   getActiveMigrationDetails_2: {
     responses: {
@@ -1816,96 +1729,6 @@ export interface operations {
       }
       /** @description Incorrect permissions to access this endpoint */
       403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  /**
-   * Find suspended allocations eligible for migration
-   * @description Searches for suspended active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
-   */
-  findSuspendedAllocationsToMigrate: {
-    parameters: {
-      query: {
-        /** @description Prison id */
-        prisonId: string
-        /** @description Course Activity ID */
-        courseActivityId?: number
-      }
-    }
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          'application/json': components['schemas']['FindSuspendedAllocationsResponse'][]
-        }
-      }
-      /** @description Invalid request */
-      400: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  /**
-   * Find paged allocations eligible for migration
-   * @description Searches for active offender program profiles for active course activities (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
-   */
-  findAllocationsToMigrate: {
-    parameters: {
-      query: {
-        /** @description Page number */
-        page?: string
-        /** @description Page size */
-        size?: string
-        /** @description Prison id */
-        prisonId: string
-        /** @description Course Activity ID */
-        courseActivityId?: number
-      }
-    }
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          'application/json': components['schemas']['PageFindActiveAllocationIdsResponse']
-        }
-      }
-      /** @description Invalid request */
-      400: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Not found */
-      404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
@@ -2130,56 +1953,6 @@ export interface operations {
       }
       /** @description Incorrect permissions to access this endpoint */
       403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  /**
-   * Find paged activities eligible for migration
-   * @description Searches for active course activities with allocated prisoners (excluding DPS program services). Requires role MIGRATE_ACTIVITIES
-   */
-  findActivitiesToMigrate: {
-    parameters: {
-      query: {
-        /** @description Page number */
-        page?: string
-        /** @description Page size */
-        size?: string
-        /** @description Prison id */
-        prisonId: string
-        /** @description Course Activity ID */
-        courseActivityId?: number
-      }
-    }
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          'application/json': components['schemas']['PageFindActiveActivityIdsResponse']
-        }
-      }
-      /** @description Invalid request */
-      400: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Not found */
-      404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
