@@ -5,7 +5,7 @@ import sentencingMigrationRoutes from './sentencingMigration/sentencingMigration
 import activitiesMigrationRoutes from './activitiesMigration/activitiesMigrationRouter'
 import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
-import adjudicationsMigrationRoutes from './adjudicationsMigration/adjudicationsMigrationRouter'
+import alertsMigrationRoutes from './alertsMigration/alertsMigrationRouter'
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
 import {
   extractRoles,
@@ -14,7 +14,7 @@ import {
   MIGRATE_ACTIVITIES_ROLE,
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
-  MIGRATE_ADJUDICATIONS_ROLE,
+  MIGRATE_ALERTS_ROLE,
   MIGRATE_INCIDENTS_ROLE,
 } from '../authentication/roles'
 
@@ -70,11 +70,11 @@ export default function routes(services: Services): Router {
           enabled: true,
         },
         {
-          id: 'adjudications-migration',
-          heading: 'Adjudications migration',
+          id: 'alerts-migration',
+          heading: 'Alerts migration',
           description: 'Migration and synchronisation information',
-          href: '/adjudications-migration',
-          roles: [MIGRATE_ADJUDICATIONS_ROLE],
+          href: '/alerts-migration',
+          roles: [MIGRATE_ALERTS_ROLE],
           enabled: true,
         },
         {
@@ -105,7 +105,7 @@ export default function routes(services: Services): Router {
   activitiesMigrationRoutes(router, services)
   allocationsMigrationRoutes(router, services)
   appointmentsMigrationRoutes(router, services)
-  adjudicationsMigrationRoutes(router, services)
+  alertsMigrationRoutes(router, services)
   incidentsMigrationRoutes(router, services)
   return router
 }

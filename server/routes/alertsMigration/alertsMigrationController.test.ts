@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import AdjudicationsMigrationController from './adjudicationsMigrationController'
+import AlertsMigrationController from './alertsMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
-describe('adjudicationsMigrationController', () => {
+describe('alertsMigrationController', () => {
   const req = {
     query: {},
     session: {},
@@ -20,9 +20,9 @@ describe('adjudicationsMigrationController', () => {
     jest.resetAllMocks()
   })
 
-  describe('getAdjudicationsMigrations', () => {
+  describe('getAlertsMigrations', () => {
     it('should decorate the returned migrations', async () => {
-      const adjudicationsMigrationResponse: HistoricMigrations = {
+      const alertsMigrationResponse: HistoricMigrations = {
         migrations: [
           {
             migrationId: '2022-03-30T10:13:56',
@@ -32,7 +32,7 @@ describe('adjudicationsMigrationController', () => {
             filter: '{"fromDate":"2022-03-04", "prisonIds": ["MDI"]}',
             recordsMigrated: 0,
             recordsFailed: 0,
-            migrationType: 'ADJUDICATIONS',
+            migrationType: 'ALERTS',
             status: 'COMPLETED',
             id: '2022-03-14T10:13:56',
             isNew: false,
@@ -45,7 +45,7 @@ describe('adjudicationsMigrationController', () => {
             filter: '{"prisonIds": ["MDI"]}',
             recordsMigrated: 1,
             recordsFailed: 162794,
-            migrationType: 'ADJUDICATIONS',
+            migrationType: 'ALERTS',
             status: 'COMPLETED',
             id: '2022-03-14T11:45:12',
             isNew: false,
@@ -62,7 +62,7 @@ describe('adjudicationsMigrationController', () => {
           filter: '{"fromDate":"2022-03-04", "prisonIds": ["MDI"]}',
           recordsMigrated: 0,
           recordsFailed: 0,
-          migrationType: 'ADJUDICATIONS',
+          migrationType: 'ALERTS',
           status: 'COMPLETED',
           id: '2022-03-14T10:13:56',
           isNew: false,
@@ -76,21 +76,18 @@ describe('adjudicationsMigrationController', () => {
           filter: '{"prisonIds": ["MDI"]}',
           recordsMigrated: 1,
           recordsFailed: 162794,
-          migrationType: 'ADJUDICATIONS',
+          migrationType: 'ALERTS',
           status: 'COMPLETED',
           id: '2022-03-14T11:45:12',
           isNew: false,
           applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-14T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
-      nomisMigrationService.getAdjudicationsMigrations.mockResolvedValue(adjudicationsMigrationResponse)
+      nomisMigrationService.getAlertsMigrations.mockResolvedValue(alertsMigrationResponse)
 
-      await new AdjudicationsMigrationController(
-        nomisMigrationService,
-        nomisPrisonerService,
-      ).getAdjudicationsMigrations(req, res)
+      await new AlertsMigrationController(nomisMigrationService, nomisPrisonerService).getAlertsMigrations(req, res)
       expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/adjudications/adjudicationsMigration', {
+      expect(res.render).toBeCalledWith('pages/alerts/alertsMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
@@ -102,7 +99,7 @@ describe('adjudicationsMigrationController', () => {
 
   describe('viewFailures', () => {
     beforeEach(() => {
-      nomisMigrationService.getAdjudicationsFailures.mockResolvedValue({
+      nomisMigrationService.getAlertsFailures.mockResolvedValue({
         messagesFoundCount: 353,
         messagesReturnedCount: 5,
         messages: [
@@ -118,8 +115,8 @@ describe('adjudicationsMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new AdjudicationsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
-      expect(res.render).toBeCalledWith('pages/adjudications/adjudicationsMigrationFailures', {
+      await new AlertsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      expect(res.render).toBeCalledWith('pages/alerts/alertsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
             expect.objectContaining({
@@ -136,7 +133,7 @@ describe('adjudicationsMigrationController', () => {
     })
   })
 
-  describe('postStartAdjudicationsMigration', () => {
+  describe('postStartAlertsMigration', () => {
     describe('with validation error', () => {
       it('should return an error response', async () => {
         req.body = {
@@ -145,12 +142,12 @@ describe('adjudicationsMigrationController', () => {
           toDate: 'banana',
           prisonIds: 'MDI',
         }
-        await new AdjudicationsMigrationController(
-          nomisMigrationService,
-          nomisPrisonerService,
-        ).postStartAdjudicationsMigration(req, res)
+        await new AlertsMigrationController(nomisMigrationService, nomisPrisonerService).postStartAlertsMigration(
+          req,
+          res,
+        )
         expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
-        expect(res.redirect).toHaveBeenCalledWith('/adjudications-migration/amend')
+        expect(res.redirect).toHaveBeenCalledWith('/alerts-migration/amend')
       })
     })
   })

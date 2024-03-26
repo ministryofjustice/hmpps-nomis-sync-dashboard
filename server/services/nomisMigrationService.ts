@@ -1,14 +1,14 @@
 import querystring from 'querystring'
-import type {
+import {
   ActivitiesMigrationFilter,
-  AdjudicationsMigrationFilter,
+  AlertsMigrationFilter,
   AllocationsMigrationFilter,
   AppointmentsMigrationFilter,
   GetDlqResult,
   InProgressMigration,
   IncidentsMigrationFilter,
   MigrationContextActivitiesMigrationFilter,
-  MigrationContextAdjudicationsMigrationFilter,
+  MigrationContextAlertsMigrationFilter,
   MigrationContextAllocationsMigrationFilter,
   MigrationContextAppointmentsMigrationFilter,
   MigrationContextIncidentsMigrationFilter,
@@ -452,23 +452,23 @@ export default class NomisMigrationService {
     return NomisMigrationService.getAnyDLQName('migrationallocations-health', token)
   }
 
-  async getAdjudicationsMigrations(context: Context): Promise<HistoricMigrations> {
-    logger.info(`getting adjudications migrations`)
+  async getAlertsMigrations(context: Context): Promise<HistoricMigrations> {
+    logger.info(`getting alerts migrations`)
     return {
       migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
-        path: `/migrate/adjudications/history`,
+        path: `/migrate/alerts/history`,
       }),
     }
   }
 
-  async getAdjudicationsMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
-    logger.info(`getting details for adjudications migration ${migrationId}`)
+  async getAlertsMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
+    logger.info(`getting details for alert migration ${migrationId}`)
     const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
-      path: `/migrate/adjudications/history/${migrationId}`,
+      path: `/migrate/alerts/history/${migrationId}`,
     })
 
     const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
-      path: `/migrate/adjudications/active-migration`,
+      path: `/migrate/alerts/active-migration`,
     })
 
     return {
@@ -481,50 +481,50 @@ export default class NomisMigrationService {
     }
   }
 
-  async startAdjudicationsMigration(
-    filter: AdjudicationsMigrationFilter,
+  async startAlertsMigration(
+    filter: AlertsMigrationFilter,
     context: Context,
-  ): Promise<MigrationContextAdjudicationsMigrationFilter> {
-    logger.info(`starting a adjudications migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextAdjudicationsMigrationFilter>({
-      path: `/migrate/adjudications`,
+  ): Promise<MigrationContextAlertsMigrationFilter> {
+    logger.info(`starting a alerts migration`)
+    return NomisMigrationService.restClient(context.token).post<MigrationContextAlertsMigrationFilter>({
+      path: `/migrate/alerts`,
       data: filter,
     })
   }
 
-  async getAdjudicationsFailures(context: Context): Promise<GetDlqResult> {
-    logger.info(`getting messages on adjudications DLQ`)
+  async getAlertsFailures(context: Context): Promise<GetDlqResult> {
+    logger.info(`getting messages on alerts DLQ`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const dlqName = await NomisMigrationService.getAdjudicationsDLQName(token)
+    const dlqName = await NomisMigrationService.getActivitiesDLQName(token)
 
     return NomisMigrationService.restClient(token).get<GetDlqResult>({
       path: `/queue-admin/get-dlq-messages/${dlqName}`,
     })
   }
 
-  async deleteAdjudicationsFailures(context: Context): Promise<PurgeQueueResult> {
-    logger.info(`deleting messages on adjudications DLQ`)
+  async deleteAlertsFailures(context: Context): Promise<PurgeQueueResult> {
+    logger.info(`deleting messages on alerts DLQ`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const dlqName = await NomisMigrationService.getAdjudicationsDLQName(token)
+    const dlqName = await NomisMigrationService.getAlertsDLQName(token)
 
     return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
       path: `/queue-admin/purge-queue/${dlqName}`,
     })
   }
 
-  async getAdjudicationsDLQMessageCount(context: Context): Promise<string> {
-    return NomisMigrationService.getAnyDLQMessageCount('migrationadjudications-health', context.token)
+  async getAlertsDLQMessageCount(context: Context): Promise<string> {
+    return NomisMigrationService.getAnyDLQMessageCount('migrationalerts-health', context.token)
   }
 
-  async cancelAdjudicationsMigration(migrationId: string, context: Context): Promise<void> {
-    logger.info(`cancelling an adjudications migration`)
+  async cancelAlertsMigration(migrationId: string, context: Context): Promise<void> {
+    logger.info(`cancelling an alerts migration`)
     return NomisMigrationService.restClient(context.token).post<void>({
-      path: `/migrate/adjudications/${migrationId}/cancel`,
+      path: `/migrate/alerts/${migrationId}/cancel`,
     })
   }
 
-  private static async getAdjudicationsDLQName(token: string): Promise<string> {
-    return NomisMigrationService.getAnyDLQName('migrationadjudications-health', token)
+  private static async getAlertsDLQName(token: string): Promise<string> {
+    return NomisMigrationService.getAnyDLQName('migrationalerts-health', token)
   }
 
   private static async getAnyDLQName(queueId: string, token: string): Promise<string> {

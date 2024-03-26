@@ -2,37 +2,37 @@
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
-{% set pageTitle = applicationName + " - Adjudications migration started" %}
+{% set pageTitle = applicationName + " - Alerts migration started" %}
 
 {% block content %}
 
   {{ govukBackLink({
     text: "Back",
-    href: '/adjudications-migration'
+    href: '/alerts-migration'
   }) }}
 
   <main class="app-container govuk-body">
     <div class="govuk-width-container">
-      <h1 class="govuk-heading-l govuk-!-margin-top-7">Adjudications migration started</h1>
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Alerts migration started</h1>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         {% set html %}
         <div id="confirmationMessage">
           Migration id: <strong>{{form.migrationId}}</strong><br/>
-          Estimated number of Adjudications entities to be migrated: <strong>{{form.estimatedCount}}</strong><br/>
-        </div>  
+          Estimated number of Alerts entities to be migrated: <strong>{{form.estimatedCount}}</strong><br/>
+        </div>
         {% endset %}
 
         {{ govukPanel({
-          titleText: "Adjudications migration has successfully started",
+          titleText: "Alerts migration has successfully started",
           html: html
         }) }}
-      </div>  
+      </div>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <a data-qa="details-link" href="/adjudications-migration/details?migrationId={{form.migrationId}}">View migration status</a>
+        <a data-qa="details-link" href="/alerts-migration/details?migrationId={{form.migrationId}}">View migration status</a>
       </div>
     </div>
   </main>

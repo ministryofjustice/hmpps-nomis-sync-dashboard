@@ -5,12 +5,12 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
-{% set pageTitle = applicationName + " - Start a adjudications migration" %}
+{% set pageTitle = applicationName + " - Start a alerts migration" %}
 
 {% block content %}
   {{ govukBackLink({
     text: "Back",
-    href: '/adjudications-migration'
+    href: '/alerts-migration'
   }) }}
 
   <main class="app-container govuk-body">
@@ -25,15 +25,15 @@
     <div class="govuk-width-container">
       <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new adjudications migration</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new alerts migration</h1>
             </div>
 
             <div class="govuk-grid-column-two-thirds">
-                <form action="/adjudications-migration/start" method="post" novalidate>
+                <form action="/alerts-migration/start" method="post" novalidate>
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     {% call govukFieldset({
                         legend: {
-                            text: "Enter the filter details for the Adjudications entities you want to migrate",
+                            text: "Enter the filter details for the Alerts entities you want to migrate",
                             classes: "govuk-fieldset__legend--m",
                             isPageHeading: false
                         }
@@ -55,7 +55,7 @@
 
                         {{ govukInput({
                             label: {
-                                html: 'Only include Adjudications created after or on this date'
+                                html: 'Only include Alerts created after or on this date'
                             },
                             id: "fromDate",
                             name: "fromDate",
@@ -69,7 +69,7 @@
 
                         {{ govukInput({
                             label: {
-                                html: 'Only include Adjudications entities created before or on this date'
+                                html: 'Only include Alerts entities created before or on this date'
                             },
                             id: "toDate",
                             name: "toDate",
@@ -88,12 +88,12 @@
                                 value: "startMigration",
                                 attributes: { 'data-qa': 'continue-button' }
                             }) }}
-                            <a class="govuk-link" href="/adjudications-migration">Cancel</a>
+                            <a class="govuk-link" href="/alerts-migration">Cancel</a>
                         </div>
                     {% endcall %}
                 </form>
             </div>
-        </div>      
+        </div>
     </div>
   </main>
 
