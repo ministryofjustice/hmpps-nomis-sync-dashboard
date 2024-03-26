@@ -16,15 +16,14 @@ export type MigrationContextIncidentsMigrationFilter = components['schemas']['Mi
 export type AppointmentsMigrationFilter = components['schemas']['AppointmentsMigrationFilter']
 export type ActivitiesMigrationFilter = components['schemas']['ActivitiesMigrationFilter']
 export type AllocationsMigrationFilter = components['schemas']['AllocationsMigrationFilter']
-export type AdjudicationsMigrationFilter = components['schemas']['AdjudicationsMigrationFilter']
+export type AlertsMigrationFilter = components['schemas']['AlertsMigrationFilter']
 export type MigrationContextAppointmentsMigrationFilter =
   components['schemas']['MigrationContextAppointmentsMigrationFilter']
 export type MigrationContextActivitiesMigrationFilter =
   components['schemas']['MigrationContextActivitiesMigrationFilter']
 export type MigrationContextAllocationsMigrationFilter =
   components['schemas']['MigrationContextAllocationsMigrationFilter']
-export type MigrationContextAdjudicationsMigrationFilter =
-  components['schemas']['MigrationContextAdjudicationsMigrationFilter']
+export type MigrationContextAlertsMigrationFilter = components['schemas']['MigrationContextAlertsMigrationFilter']
 
 export type GetDlqResult = components['schemas']['GetDlqResult']
 export type PurgeQueueResult = components['schemas']['PurgeQueueResult']

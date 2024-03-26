@@ -1,9 +1,9 @@
-import type { StartAdjudicationsMigrationForm } from 'forms'
-import validate from './startAdjudicationsMigrationValidator'
+import type { StartAlertsMigrationForm } from 'forms'
+import validate from './startAlertsMigrationValidator'
 
-describe('startAdjudicationsMigrationValidator', () => {
+describe('startAlertsMigrationValidator', () => {
   it('should be no errors when everything is valid', () => {
-    const form: StartAdjudicationsMigrationForm = {
+    const form: StartAlertsMigrationForm = {
       ...validForm,
       action: 'startMigration',
     }
@@ -11,7 +11,7 @@ describe('startAdjudicationsMigrationValidator', () => {
   })
 
   it('should allow empty prisonIds', () => {
-    const form: StartAdjudicationsMigrationForm = {
+    const form: StartAlertsMigrationForm = {
       ...validForm,
       prisonIds: '',
     }
@@ -20,7 +20,7 @@ describe('startAdjudicationsMigrationValidator', () => {
   })
 
   it('should reject invalid fromDate', () => {
-    const form: StartAdjudicationsMigrationForm = {
+    const form: StartAlertsMigrationForm = {
       ...validForm,
       fromDate: 'invalid',
     }
@@ -32,7 +32,7 @@ describe('startAdjudicationsMigrationValidator', () => {
   })
 
   it('should reject invalid toDate', () => {
-    const form: StartAdjudicationsMigrationForm = {
+    const form: StartAlertsMigrationForm = {
       ...validForm,
       toDate: '124-01-01',
     }
@@ -44,7 +44,7 @@ describe('startAdjudicationsMigrationValidator', () => {
   })
 })
 
-const validForm: StartAdjudicationsMigrationForm = {
+const validForm: StartAlertsMigrationForm = {
   prisonIds: 'HEI',
   fromDate: '2020-03-23',
   toDate: '2020-03-24',

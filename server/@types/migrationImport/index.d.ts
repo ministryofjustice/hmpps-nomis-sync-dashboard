@@ -20,6 +20,13 @@ export interface paths {
      */
     put: operations['endMigratedActivities']
   }
+  '/prisoners/booking-id/{bookingId}/merge/sentencing-adjustments/repair': {
+    /**
+     * Resynchronises new adjustments for the given booking from NOMIS back to DPS
+     * @description Used when a merge has not be detected so new adjustments have not been copied to DPS, so emergency use only. Requires ROLE_MIGRATE_SENTENCING
+     */
+    post: operations['repairPostMergeAdjustments']
+  }
   '/migrate/visits/{migrationId}/cancel': {
     /**
      * Cancels a running migration. The actual cancellation might take several minutes to complete
@@ -48,12 +55,26 @@ export interface paths {
      */
     post: operations['migrateSentencing']
   }
+  '/migrate/locations/{migrationId}/cancel': {
+    /**
+     * Cancels a running migration. The actual cancellation might take several minutes to complete
+     * @description Requires role <b>MIGRATE_LOCATIONS</b>
+     */
+    post: operations['cancel_2']
+  }
+  '/migrate/locations': {
+    /**
+     * Starts an locations migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_LOCATIONS</b>
+     */
+    post: operations['migrateLocations']
+  }
   '/migrate/incidents/{migrationId}/cancel': {
     /**
      * Cancels a running migration. The actual cancellation might take several minutes to complete
      * @description Requires role <b>MIGRATE_INCIDENTS</b>
      */
-    post: operations['cancel_2']
+    post: operations['cancel_3']
   }
   '/migrate/incidents': {
     /**
@@ -67,7 +88,7 @@ export interface paths {
      * Cancels a running migration. The actual cancellation might take several minutes to complete
      * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
      */
-    post: operations['cancel_3']
+    post: operations['cancel_4']
   }
   '/migrate/appointments': {
     /**
@@ -81,7 +102,7 @@ export interface paths {
      * Cancels a running migration. The actual cancellation might take several minutes to complete
      * @description Requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    post: operations['cancel_4']
+    post: operations['cancel_5']
   }
   '/migrate/allocations': {
     /**
@@ -90,12 +111,19 @@ export interface paths {
      */
     post: operations['migrateAllocations']
   }
+  '/migrate/alerts': {
+    /**
+     * Starts an alerts migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ALERTS</b>
+     */
+    post: operations['migrateSentencing_1']
+  }
   '/migrate/adjudications/{migrationId}/cancel': {
     /**
      * Cancels a running migration. The actual cancellation might take several minutes to complete
      * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
      */
-    post: operations['cancel_5']
+    post: operations['cancel_6']
   }
   '/migrate/adjudications': {
     /**
@@ -109,7 +137,7 @@ export interface paths {
      * Cancels a running migration. The actual cancellation might take several minutes to complete
      * @description Requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    post: operations['cancel_6']
+    post: operations['cancel_7']
   }
   '/migrate/activities': {
     /**
@@ -170,117 +198,138 @@ export interface paths {
      */
     get: operations['getActiveMigrationDetails_1']
   }
+  '/migrate/locations/history/{migrationId}': {
+    /**
+     * Gets a specific migration history record
+     * @description Requires role <b>MIGRATE_LOCATIONS</b>
+     */
+    get: operations['get_2']
+  }
+  '/migrate/locations/history': {
+    /**
+     * Lists all filtered migration history records un-paged for locations
+     * @description The records are un-paged and requires role <b>MIGRATE_LOCATIONS</b>
+     */
+    get: operations['getAll_2']
+  }
+  '/migrate/locations/active-migration': {
+    /**
+     * Gets active/currently running migration data, using migration record and migration queues
+     * @description Requires role <b>MIGRATE_LOCATIONS</b>
+     */
+    get: operations['getActiveMigrationDetails_2']
+  }
   '/migrate/incidents/history/{migrationId}': {
     /**
      * Gets a specific migration history record
      * @description Requires role <b>MIGRATE_INCIDENTS</b>
      */
-    get: operations['get_2']
+    get: operations['get_3']
   }
   '/migrate/incidents/history': {
     /**
      * Lists all filtered migration history records un-paged for incidents
      * @description The records are un-paged and requires role <b>MIGRATE_INCIDENTS</b>
      */
-    get: operations['getAll_2']
+    get: operations['getAll_3']
   }
   '/migrate/incidents/active-migration': {
     /**
      * Gets active/currently running migration data, using migration record and migration queues
      * @description Requires role <b>MIGRATE_INCIDENTS</b>
      */
-    get: operations['getActiveMigrationDetails_2']
+    get: operations['getActiveMigrationDetails_3']
   }
   '/migrate/appointments/history/{migrationId}': {
     /**
      * Gets a specific migration history record
      * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
      */
-    get: operations['get_3']
+    get: operations['get_4']
   }
   '/migrate/appointments/history': {
     /**
      * Lists all filtered migration history records un-paged for appointments
      * @description The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b>
      */
-    get: operations['getAll_3']
+    get: operations['getAll_4']
   }
   '/migrate/appointments/active-migration': {
     /**
      * Gets active/currently running migration data, using migration record and migration queues
      * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
      */
-    get: operations['getActiveMigrationDetails_3']
+    get: operations['getActiveMigrationDetails_4']
   }
   '/migrate/allocations/history/{migrationId}': {
     /**
      * Gets a specific migration history record
      * @description Requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    get: operations['get_4']
+    get: operations['get_5']
   }
   '/migrate/allocations/history': {
     /**
      * Lists all filtered migration history records un-paged for allocations
      * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    get: operations['getAll_4']
+    get: operations['getAll_5']
   }
   '/migrate/allocations/active-migration': {
     /**
      * Gets active/currently running migration data, using migration record and migration queues
      * @description Requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    get: operations['getActiveMigrationDetails_4']
+    get: operations['getActiveMigrationDetails_5']
   }
   '/migrate/adjudications/history/{migrationId}': {
     /**
      * Gets a specific migration history record
      * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
      */
-    get: operations['get_5']
+    get: operations['get_6']
   }
   '/migrate/adjudications/history': {
     /**
      * Lists all filtered migration history records un-paged for adjudications
      * @description The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b>
      */
-    get: operations['getAll_5']
+    get: operations['getAll_6']
   }
   '/migrate/adjudications/active-migration': {
     /**
      * Gets active/currently running migration data, using migration record and migration queues
      * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
      */
-    get: operations['getActiveMigrationDetails_5']
+    get: operations['getActiveMigrationDetails_6']
   }
   '/migrate/activities/history/{migrationId}': {
     /**
      * Gets a specific migration history record
      * @description Requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    get: operations['get_6']
+    get: operations['get_7']
   }
   '/migrate/activities/history': {
     /**
      * Lists all filtered migration history records un-paged for activities
      * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    get: operations['getAll_6']
+    get: operations['getAll_7']
   }
   '/migrate/activities/active-migration': {
     /**
      * Gets active/currently running migration data, using migration record and migration queues
      * @description Requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    get: operations['getActiveMigrationDetails_6']
+    get: operations['getActiveMigrationDetails_7']
   }
   '/history': {
     /**
      * Lists all filtered migration history
      * @description The records are un-paged and requires role <b>MIGRATION_ADMIN</b>
      */
-    get: operations['getAll_7']
+    get: operations['getAll_8']
     /**
      * Deletes all migration history records
      * @description This is only required for test environments and requires role <b>MIGRATION_ADMIN</b>
@@ -334,7 +383,7 @@ export interface components {
        *   "OFFI"
        * ]
        */
-      visitTypes: string[]
+      visitTypes?: string[]
       /**
        * @description Only include visits created after this date. NB this is creation date not the actual visit date
        * @example 2021-07-05T10:35:17
@@ -350,7 +399,7 @@ export interface components {
        * @default false
        * @example false
        */
-      ignoreMissingRoom: boolean
+      ignoreMissingRoom?: boolean
     }
     MigrationContextVisitsMigrationFilter: {
       /** @enum {string} */
@@ -362,6 +411,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -392,10 +443,44 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['SentencingMigrationFilter']
+    }
+    /** @description Filter specifying what should be migrated from NOMIS to the Locations service */
+    LocationsMigrationFilter: {
+      /**
+       * Format: date
+       * @description Only include locations created on or after this date
+       * @example 2020-03-23
+       */
+      fromDate?: string
+      /**
+       * Format: date
+       * @description Only include locations created before or on this date
+       * @example 2020-03-24
+       */
+      toDate?: string
+    }
+    MigrationContextLocationsMigrationFilter: {
+      /** @enum {string} */
+      type:
+        | 'VISITS'
+        | 'SENTENCING_ADJUSTMENTS'
+        | 'APPOINTMENTS'
+        | 'ADJUDICATIONS'
+        | 'ACTIVITIES'
+        | 'ALLOCATIONS'
+        | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: components['schemas']['LocationsMigrationFilter']
     }
     /** @description Filter specifying what should be migrated from NOMIS to the Incident Reporting service */
     IncidentsMigrationFilter: {
@@ -422,6 +507,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -457,6 +544,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -486,10 +575,44 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['AllocationsMigrationFilter']
+    }
+    /** @description Filter specifying what should be migrated from NOMIS to DPS */
+    AlertsMigrationFilter: {
+      /**
+       * Format: date
+       * @description Only include Alerts created on or after this date
+       * @example 2020-03-23
+       */
+      fromDate?: string
+      /**
+       * Format: date
+       * @description Only include Alerts created before or on this date
+       * @example 2020-03-24
+       */
+      toDate?: string
+    }
+    MigrationContext: {
+      /** @enum {string} */
+      type:
+        | 'VISITS'
+        | 'SENTENCING_ADJUSTMENTS'
+        | 'APPOINTMENTS'
+        | 'ADJUDICATIONS'
+        | 'ACTIVITIES'
+        | 'ALLOCATIONS'
+        | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: Record<string, never>
     }
     /** @description Filter specifying what should be migrated from NOMIS to the Adjudications service */
     AdjudicationsMigrationFilter: {
@@ -521,6 +644,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -550,6 +675,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -598,6 +725,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       /** @enum {string} */
       status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
       id: string
@@ -626,6 +755,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'INCIDENTS'
+        | 'LOCATIONS'
+        | 'ALERTS'
       /** @enum {string} */
       status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
     }
@@ -721,6 +852,23 @@ export interface operations {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
+      }
+    }
+  }
+  /**
+   * Resynchronises new adjustments for the given booking from NOMIS back to DPS
+   * @description Used when a merge has not be detected so new adjustments have not been copied to DPS, so emergency use only. Requires ROLE_MIGRATE_SENTENCING
+   */
+  repairPostMergeAdjustments: {
+    parameters: {
+      path: {
+        bookingId: number
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: never
       }
     }
   }
@@ -866,9 +1014,79 @@ export interface operations {
   }
   /**
    * Cancels a running migration. The actual cancellation might take several minutes to complete
-   * @description Requires role <b>MIGRATE_INCIDENTS</b>
+   * @description Requires role <b>MIGRATE_LOCATIONS</b>
    */
   cancel_2: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** @description Cancellation request accepted */
+      202: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No running migration found with migration id */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Starts an locations migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_LOCATIONS</b>
+   */
+  migrateLocations: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['LocationsMigrationFilter']
+      }
+    }
+    responses: {
+      /** @description Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContextLocationsMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Cancels a running migration. The actual cancellation might take several minutes to complete
+   * @description Requires role <b>MIGRATE_INCIDENTS</b>
+   */
+  cancel_3: {
     parameters: {
       path: {
         /**
@@ -938,7 +1156,7 @@ export interface operations {
    * Cancels a running migration. The actual cancellation might take several minutes to complete
    * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
    */
-  cancel_3: {
+  cancel_4: {
     parameters: {
       path: {
         /**
@@ -1008,7 +1226,7 @@ export interface operations {
    * Cancels a running migration. The actual cancellation might take several minutes to complete
    * @description Requires role <b>MIGRATE_ACTIVITIES</b>
    */
-  cancel_4: {
+  cancel_5: {
     parameters: {
       path: {
         /**
@@ -1075,10 +1293,41 @@ export interface operations {
     }
   }
   /**
+   * Starts an alerts migration
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ALERTS</b>
+   */
+  migrateSentencing_1: {
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AlertsMigrationFilter']
+      }
+    }
+    responses: {
+      /** @description Migration process started */
+      202: {
+        content: {
+          'application/json': components['schemas']['MigrationContext']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * Cancels a running migration. The actual cancellation might take several minutes to complete
    * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
    */
-  cancel_5: {
+  cancel_6: {
     parameters: {
       path: {
         /**
@@ -1148,7 +1397,7 @@ export interface operations {
    * Cancels a running migration. The actual cancellation might take several minutes to complete
    * @description Requires role <b>MIGRATE_ACTIVITIES</b>
    */
-  cancel_6: {
+  cancel_7: {
     parameters: {
       path: {
         /**
@@ -1513,7 +1762,7 @@ export interface operations {
   }
   /**
    * Gets a specific migration history record
-   * @description Requires role <b>MIGRATE_INCIDENTS</b>
+   * @description Requires role <b>MIGRATE_LOCATIONS</b>
    */
   get_2: {
     parameters: {
@@ -1553,8 +1802,8 @@ export interface operations {
     }
   }
   /**
-   * Lists all filtered migration history records un-paged for incidents
-   * @description The records are un-paged and requires role <b>MIGRATE_INCIDENTS</b>
+   * Lists all filtered migration history records un-paged for locations
+   * @description The records are un-paged and requires role <b>MIGRATE_LOCATIONS</b>
    */
   getAll_2: {
     parameters: {
@@ -1599,7 +1848,7 @@ export interface operations {
   }
   /**
    * Gets active/currently running migration data, using migration record and migration queues
-   * @description Requires role <b>MIGRATE_INCIDENTS</b>
+   * @description Requires role <b>MIGRATE_LOCATIONS</b>
    */
   getActiveMigrationDetails_2: {
     responses: {
@@ -1625,7 +1874,7 @@ export interface operations {
   }
   /**
    * Gets a specific migration history record
-   * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
+   * @description Requires role <b>MIGRATE_INCIDENTS</b>
    */
   get_3: {
     parameters: {
@@ -1665,8 +1914,8 @@ export interface operations {
     }
   }
   /**
-   * Lists all filtered migration history records un-paged for appointments
-   * @description The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b>
+   * Lists all filtered migration history records un-paged for incidents
+   * @description The records are un-paged and requires role <b>MIGRATE_INCIDENTS</b>
    */
   getAll_3: {
     parameters: {
@@ -1711,7 +1960,7 @@ export interface operations {
   }
   /**
    * Gets active/currently running migration data, using migration record and migration queues
-   * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
+   * @description Requires role <b>MIGRATE_INCIDENTS</b>
    */
   getActiveMigrationDetails_3: {
     responses: {
@@ -1737,7 +1986,7 @@ export interface operations {
   }
   /**
    * Gets a specific migration history record
-   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
    */
   get_4: {
     parameters: {
@@ -1777,8 +2026,8 @@ export interface operations {
     }
   }
   /**
-   * Lists all filtered migration history records un-paged for allocations
-   * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
+   * Lists all filtered migration history records un-paged for appointments
+   * @description The records are un-paged and requires role <b>MIGRATE_APPOINTMENTS</b>
    */
   getAll_4: {
     parameters: {
@@ -1823,7 +2072,7 @@ export interface operations {
   }
   /**
    * Gets active/currently running migration data, using migration record and migration queues
-   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
    */
   getActiveMigrationDetails_4: {
     responses: {
@@ -1849,7 +2098,7 @@ export interface operations {
   }
   /**
    * Gets a specific migration history record
-   * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
    */
   get_5: {
     parameters: {
@@ -1889,8 +2138,8 @@ export interface operations {
     }
   }
   /**
-   * Lists all filtered migration history records un-paged for adjudications
-   * @description The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b>
+   * Lists all filtered migration history records un-paged for allocations
+   * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
    */
   getAll_5: {
     parameters: {
@@ -1935,7 +2184,7 @@ export interface operations {
   }
   /**
    * Gets active/currently running migration data, using migration record and migration queues
-   * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
    */
   getActiveMigrationDetails_5: {
     responses: {
@@ -1961,7 +2210,7 @@ export interface operations {
   }
   /**
    * Gets a specific migration history record
-   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
    */
   get_6: {
     parameters: {
@@ -2001,8 +2250,8 @@ export interface operations {
     }
   }
   /**
-   * Lists all filtered migration history records un-paged for activities
-   * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
+   * Lists all filtered migration history records un-paged for adjudications
+   * @description The records are un-paged and requires role <b>MIGRATE_ADJUDICATIONS</b>
    */
   getAll_6: {
     parameters: {
@@ -2047,9 +2296,121 @@ export interface operations {
   }
   /**
    * Gets active/currently running migration data, using migration record and migration queues
-   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   * @description Requires role <b>MIGRATE_ADJUDICATIONS</b>
    */
   getActiveMigrationDetails_6: {
+    responses: {
+      /** @description Only called during an active migration from the UI - assumes latest migration is active */
+      200: {
+        content: {
+          'application/json': components['schemas']['InProgressMigration']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets a specific migration history record
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
+  get_7: {
+    parameters: {
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+    }
+    responses: {
+      /** @description The migration history record */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Migration not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Lists all filtered migration history records un-paged for activities
+   * @description The records are un-paged and requires role <b>MIGRATE_ACTIVITIES</b>
+   */
+  getAll_7: {
+    parameters: {
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
+        fromDateTime?: string
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
+        toDateTime?: string
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
+        includeOnlyFailures?: boolean
+      }
+    }
+    responses: {
+      /** @description All migration history records */
+      200: {
+        content: {
+          'application/json': components['schemas']['MigrationHistory'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to access this endpoint */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets active/currently running migration data, using migration record and migration queues
+   * @description Requires role <b>MIGRATE_ACTIVITIES</b>
+   */
+  getActiveMigrationDetails_7: {
     responses: {
       /** @description Only called during an active migration from the UI - assumes latest migration is active */
       200: {
@@ -2075,7 +2436,7 @@ export interface operations {
    * Lists all filtered migration history
    * @description The records are un-paged and requires role <b>MIGRATION_ADMIN</b>
    */
-  getAll_7: {
+  getAll_8: {
     parameters: {
       query?: {
         /**

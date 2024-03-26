@@ -46,6 +46,23 @@ export interface paths {
      */
     put: operations['updateCourtAppearance']
   }
+  '/prisoners/booking-id/{bookingId}/alerts/{alertSequence}': {
+    /**
+     * get an alert by bookingId and alert sequence
+     * @description Retrieves an prisoner alert. Requires ROLE_NOMIS_ALERTS
+     */
+    get: operations['getAlert_1']
+    /**
+     * Updates an alert on a prisoner
+     * @description Updates an alert on the specified prisoner's booking which should be the latest booking. Requires ROLE_NOMIS_ALERTS
+     */
+    put: operations['updateAlert']
+    /**
+     * Deletes an alert by bookingId and alert sequence
+     * @description Deletes an prisoner alert. Requires ROLE_NOMIS_ALERTS
+     */
+    delete: operations['deleteAlert']
+  }
   '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/sequence/{typeSequence}': {
     /**
      * Updates an existing non-association
@@ -64,6 +81,41 @@ export interface paths {
      * @description Closes an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS
      */
     put: operations['closeNonAssociation']
+  }
+  '/locations/{locationId}': {
+    /**
+     * Updates an existing location
+     * @description Updates an existing location. Requires role NOMIS_LOCATIONS
+     */
+    put: operations['updateAppointment']
+  }
+  '/locations/{locationId}/reactivate': {
+    /**
+     * Reactivates a deactivated location
+     * @description Requires role NOMIS_LOCATIONS
+     */
+    put: operations['reactivateLocation']
+  }
+  '/locations/{locationId}/deactivate': {
+    /**
+     * Deactivates an existing location
+     * @description Requires role NOMIS_LOCATIONS
+     */
+    put: operations['deactivateLocation']
+  }
+  '/locations/{locationId}/certification': {
+    /**
+     * Update location certification
+     * @description Requires role NOMIS_LOCATIONS
+     */
+    put: operations['updateCertification']
+  }
+  '/locations/{locationId}/capacity': {
+    /**
+     * Update location capacity
+     * @description Requires role NOMIS_LOCATIONS
+     */
+    put: operations['updateCapacity']
   }
   '/key-date-adjustments/{adjustmentId}': {
     /**
@@ -111,7 +163,7 @@ export interface paths {
      * Updates an existing appointment
      * @description Updates an existing appointment. Requires role NOMIS_APPOINTMENTS
      */
-    put: operations['updateAppointment']
+    put: operations['updateAppointment_1']
     /**
      * Deletes an existing appointment
      * @description Deletes an existing appointment by actually deleting from the table. Intended for appointments created in error. Requires role NOMIS_APPOINTMENTS
@@ -271,6 +323,13 @@ export interface paths {
      * @description Required role NOMIS_SENTENCING Creates a new Court Appearance for the offender,latest booking and given Court Case
      */
     post: operations['createCourtAppearance']
+  }
+  '/prisoners/{offenderNo}/alerts': {
+    /**
+     * Creates an alert on a prisoner
+     * @description Creates an alert on the prisoner's latest booking. Requires ROLE_NOMIS_ALERTS
+     */
+    post: operations['createAlert']
   }
   '/prisoners/{offenderNo}/adjudications': {
     /**
@@ -646,6 +705,13 @@ export interface paths {
      */
     get: operations['findActiveAllocations']
   }
+  '/alerts/ids': {
+    /**
+     * Get alert IDs by filter
+     * @description Retrieves a paged list of alert ids by filter. Requires ROLE_NOMIS_ALERTS.
+     */
+    get: operations['getAlertIdsByFilter']
+  }
   '/adjustments/ids': {
     /**
      * get adjustment IDs (key date and Sentence adjustments) by filter
@@ -767,7 +833,12 @@ export interface components {
        * @description Flag to indicate if the adjustment is being applied
        * @default true
        */
-      active: boolean
+      active?: boolean
+      /**
+       * Format: int64
+       * @description Sentence sequence
+       */
+      sentenceSequence: number
     }
     /** @description Course activity create/update request */
     UpsertAttendanceRequest: {
@@ -809,19 +880,19 @@ export interface components {
        * @default false
        * @example true
        */
-      unexcusedAbsence: boolean
+      unexcusedAbsence?: boolean
       /**
        * @description Whether the absence is authorised
        * @default false
        * @example true
        */
-      authorisedAbsence: boolean
+      authorisedAbsence?: boolean
       /**
        * @description Whether the attendance is to be paid
        * @default false
        * @example true
        */
-      paid: boolean
+      paid?: boolean
       /**
        * @description Any bonus pay for the attendance
        * @example 1.5
@@ -914,6 +985,121 @@ export interface components {
       resultCode1?: string
       mostSeriousFlag: boolean
     }
+    /** @description Create adjustment response */
+    CreateCourtEventChargesResponse: {
+      /** Format: int64 */
+      offenderChargeId: number
+    }
+    /** @description Create adjustment response */
+    UpdateCourtAppearanceResponse: {
+      createdCourtEventChargesIds: components['schemas']['CreateCourtEventChargesResponse'][]
+      deletedOffenderChargesIds: components['schemas']['CreateCourtEventChargesResponse'][]
+      /** Format: int64 */
+      nextCourtAppearanceId?: number
+    }
+    /** @description The data held in NOMIS about an alert associated with a prisoner */
+    AlertResponse: {
+      /**
+       * Format: int64
+       * @description The prisoner's bookingId related to this alert
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The sequence primary key within this booking
+       */
+      alertSequence: number
+      alertCode: components['schemas']['CodeDescription']
+      type: components['schemas']['CodeDescription']
+      /**
+       * Format: date
+       * @description Date alert started
+       */
+      date: string
+      /**
+       * Format: date
+       * @description Date alert expired
+       */
+      expiryDate?: string
+      /** @description true if alert is active and has not expired */
+      isActive: boolean
+      /** @description true if alert has been verified by another member of staff */
+      isVerified: boolean
+      /**
+       * @description Free format text of person or department that authorised the alert
+       * @example security
+       */
+      authorisedBy?: string
+      /** @description Free format comment */
+      comment?: string
+      audit: components['schemas']['NomisAudit']
+    }
+    CodeDescription: {
+      code: string
+      description: string
+    }
+    /** @description The data held in NOMIS the person or system that created this record */
+    NomisAudit: {
+      /**
+       * @description Date time record was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDatetime: string
+      /** @description Username of person that created the record (might also be a system) */
+      createUsername: string
+      /** @description Real name of person that created the record (might by null for system users) */
+      createDisplayName?: string
+      /** @description Username of person that last modified the record (might also be a system) */
+      modifyUserId?: string
+      /** @description Real name of person that modified the record (might by null for system users) */
+      modifyDisplayName?: string
+      /**
+       * @description Date time record was last modified
+       * @example 2021-07-05T10:35:17
+       */
+      modifyDatetime?: string
+      /**
+       * @description Audit Date time
+       * @example 2021-07-05T10:35:17
+       */
+      auditTimestamp?: string
+      /** @description Audit username */
+      auditUserId?: string
+      /** @description NOMIS or DPS module that created the record */
+      auditModuleName?: string
+      /** @description Client userid */
+      auditClientUserId?: string
+      /** @description IP Address where request originated from */
+      auditClientIpAddress?: string
+      /** @description Machine name where request originated from */
+      auditClientWorkstationName?: string
+      /** @description Additional information that is audited */
+      auditAdditionalInfo?: string
+    }
+    /** @description A request to update an alert in NOMIS */
+    UpdateAlertRequest: {
+      /**
+       * Format: date
+       * @description Date alert started
+       */
+      date: string
+      /**
+       * Format: date
+       * @description Date alert expired
+       */
+      expiryDate?: string
+      /** @description true if alert is active and has not expired */
+      isActive: boolean
+      /** @description Free format comment */
+      comment?: string
+      /** @description Username of person that update the record (might also be a system) */
+      updateUsername: string
+      /**
+       * @description Free format text of person or department that authorised the alert
+       * @example security
+       */
+      authorisedBy?: string
+    }
     /** @description Offender NonAssociation update request */
     UpdateNonAssociationRequest: {
       /**
@@ -954,6 +1140,202 @@ export interface components {
        */
       expiryDate?: string
     }
+    /** @description Location profile or attribute */
+    ProfileRequest: {
+      /**
+       * @description Reference Domain for the attribute
+       * @enum {string}
+       */
+      profileType: 'HOU_SANI_FIT' | 'HOU_UNIT_ATT' | 'HOU_USED_FOR' | 'SUP_LVL_TYPE' | 'NON_ASSO_TYP'
+      /** @description Reference Code within the domain for the attribute */
+      profileCode: string
+    }
+    /** @description Location update request */
+    UpdateLocationRequest: {
+      /**
+       * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
+       * @enum {string}
+       */
+      locationType:
+        | 'ADJU'
+        | 'ADMI'
+        | 'APP'
+        | 'AREA'
+        | 'ASSO'
+        | 'BOOT'
+        | 'BOX'
+        | 'CELL'
+        | 'CLAS'
+        | 'EXER'
+        | 'EXTE'
+        | 'FAIT'
+        | 'GROU'
+        | 'HCEL'
+        | 'HOLD'
+        | 'IGRO'
+        | 'INSI'
+        | 'INTE'
+        | 'LAND'
+        | 'LOCA'
+        | 'MEDI'
+        | 'MOVE'
+        | 'OFFI'
+        | 'OUTS'
+        | 'POSI'
+        | 'RESI'
+        | 'ROOM'
+        | 'RTU'
+        | 'SHEL'
+        | 'SPOR'
+        | 'SPUR'
+        | 'STOR'
+        | 'TABL'
+        | 'TRAI'
+        | 'TRRM'
+        | 'VIDE'
+        | 'VISIT'
+        | 'WING'
+        | 'WORK'
+      /**
+       * @description Full code hierarchy
+       * @example MDI-C-3-015
+       */
+      description: string
+      /**
+       * @description Description of location
+       * @example Some description
+       */
+      userDescription?: string
+      /**
+       * @description Usually a number for a cell, a letter for a wing or landing. Used to calculate description
+       * @example 005
+       */
+      locationCode: string
+      /**
+       * Format: int64
+       * @description Parent location if any, e.g. landing for a cell
+       * @example 1234567
+       */
+      parentLocationId?: number
+      /**
+       * @description Housing Unit type, Reference code (HOU_UN_TYPE)
+       * @enum {string}
+       */
+      unitType?: 'HC' | 'HOLC' | 'NA' | 'OU' | 'REC' | 'SEG' | 'SPLC'
+      /**
+       * Format: int32
+       * @description Defines the order within parent location
+       */
+      listSequence?: number
+      /**
+       * @description Comment
+       * @example Some comment
+       */
+      comment?: string
+      /** @description Profiles */
+      profiles?: components['schemas']['ProfileRequest'][]
+      /** @description Usages */
+      usages?: components['schemas']['UsageRequest'][]
+    }
+    /** @description Location usage */
+    UsageRequest: {
+      /**
+       * @description Types of location that the usage applies to
+       * @enum {string}
+       */
+      internalLocationUsageType: 'APP' | 'MOVEMENT' | 'OCCUR' | 'OIC' | 'OTHER' | 'OTH' | 'PROG' | 'PROP' | 'VISIT'
+      /**
+       * @description Non-residential usage type
+       * @enum {string}
+       */
+      usageLocationType?:
+        | 'ADJU'
+        | 'ADMI'
+        | 'APP'
+        | 'AREA'
+        | 'ASSO'
+        | 'BOOT'
+        | 'BOX'
+        | 'CELL'
+        | 'CLAS'
+        | 'EXER'
+        | 'EXTE'
+        | 'FAIT'
+        | 'GROU'
+        | 'HCEL'
+        | 'HOLD'
+        | 'IGRO'
+        | 'INSI'
+        | 'INTE'
+        | 'LAND'
+        | 'LOCA'
+        | 'MEDI'
+        | 'MOVE'
+        | 'OFFI'
+        | 'OUTS'
+        | 'POSI'
+        | 'RESI'
+        | 'ROOM'
+        | 'RTU'
+        | 'SHEL'
+        | 'SPOR'
+        | 'SPUR'
+        | 'STOR'
+        | 'TABL'
+        | 'TRAI'
+        | 'TRRM'
+        | 'VIDE'
+        | 'VISIT'
+        | 'WING'
+        | 'WORK'
+      /** Format: int32 */
+      capacity?: number
+      /** Format: int32 */
+      sequence?: number
+    }
+    /** @description Location deactivate request */
+    DeactivateRequest: {
+      /**
+       * Format: date
+       * @description The deactivation date, defaults to today
+       * @example 2024-12-31
+       */
+      deactivateDate?: string
+      /**
+       * @description The reason code for deactivation, reference data 'LIV_UN_RSN'
+       * @enum {string}
+       */
+      reasonCode?: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L'
+      /**
+       * Format: date
+       * @description The expected reactivation date if any
+       * @example 2024-12-31
+       */
+      reactivateDate?: string
+    }
+    /** @description Location update certification request */
+    UpdateCertificationRequest: {
+      /**
+       * Format: int32
+       * @description The CNA certified capacity
+       */
+      cnaCapacity: number
+      /** @description Whether the location is certified */
+      certified: boolean
+    }
+    /** @description Location update capacity request */
+    UpdateCapacityRequest: {
+      /**
+       * Format: int32
+       * @description The maximum physical capacity
+       */
+      capacity?: number
+      /**
+       * Format: int32
+       * @description The maximum operational capacity
+       */
+      operationalCapacity?: number
+    }
     /** @description Key date adjustment update request */
     UpdateKeyDateAdjustmentRequest: {
       /**
@@ -983,7 +1365,7 @@ export interface components {
        * @description Flag to indicate if the adjustment is being applied
        * @default true
        */
-      active: boolean
+      active?: boolean
     }
     /** @description IEP creation request */
     CreateIncentiveRequest: {
@@ -1103,14 +1485,8 @@ export interface components {
       /** Format: date */
       visitAllowanceExpiryDate?: string
     }
-    /** @description Offender individual schedule creation request */
-    CreateAppointmentRequest: {
-      /**
-       * Format: int64
-       * @description Booking id of the prisoner
-       * @example 1234567
-       */
-      bookingId: number
+    /** @description Offender individual schedule update request */
+    UpdateAppointmentRequest: {
       /**
        * Format: date
        * @description Appointment date
@@ -1145,10 +1521,6 @@ export interface components {
        * @example Some comment
        */
       comment?: string
-    }
-    CodeDescription: {
-      code: string
-      description: string
     }
     /** @description The repairs required due to the damage */
     Repair: {
@@ -1681,10 +2053,46 @@ export interface components {
       id: number
       courtAppearanceIds: components['schemas']['CreateCourtAppearanceResponse'][]
     }
-    /** @description Create adjustment response */
-    CreateCourtEventChargesResponse: {
-      /** Format: int64 */
-      offenderChargeId: number
+    /** @description A response after an alert created in NOMIS */
+    CreateAlertResponse: {
+      /**
+       * Format: int64
+       * @description The prisoner's bookingId related to this alert
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The sequence primary key within this booking
+       */
+      alertSequence: number
+      alertCode: components['schemas']['CodeDescription']
+      type: components['schemas']['CodeDescription']
+    }
+    /** @description A request to create an alert in NOMIS */
+    CreateAlertRequest: {
+      /** @description The alert code */
+      alertCode: string
+      /**
+       * Format: date
+       * @description Date alert started
+       */
+      date: string
+      /**
+       * Format: date
+       * @description Date alert expired
+       */
+      expiryDate?: string
+      /** @description true if alert is active and has not expired */
+      isActive: boolean
+      /** @description Free format comment */
+      comment?: string
+      /**
+       * @description Free format text of person or department that authorised the alert
+       * @example security
+       */
+      authorisedBy?: string
+      /** @description Username of person that created the record (might also be a system) */
+      createUsername: string
     }
     AdjudicationCharge: {
       offence: components['schemas']['AdjudicationOffence']
@@ -2126,7 +2534,7 @@ export interface components {
        * @description Flag to indicate if the adjustment is being applied
        * @default true
        */
-      active: boolean
+      active?: boolean
     }
     /** @description Create adjustment response */
     CreateAdjustmentResponse: {
@@ -2172,7 +2580,7 @@ export interface components {
        * @description Flag to indicate if the adjustment is being applied
        * @default true
        */
-      active: boolean
+      active?: boolean
     }
     /** @description Offender individual schedule creation request */
     CreateNonAssociationRequest: {
@@ -2233,7 +2641,7 @@ export interface components {
        * @default false
        * @example true
        */
-      certified: boolean
+      certified?: boolean
       /**
        * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
        * @enum {string}
@@ -2269,6 +2677,7 @@ export interface components {
         | 'RTU'
         | 'SHEL'
         | 'SPOR'
+        | 'SPUR'
         | 'STOR'
         | 'TABL'
         | 'TRAI'
@@ -2287,7 +2696,7 @@ export interface components {
        * @description The containing location id
        * @example 1234567
        */
-      parentLocationId: number
+      parentLocationId?: number
       /**
        * Format: int32
        * @description Max capacity subject to resources
@@ -2311,6 +2720,11 @@ export interface components {
        */
       locationCode: string
       /**
+       * @description Full code hierarchy
+       * @example MDI-C-3-015
+       */
+      description: string
+      /**
        * @description Housing Unit type, Reference code (HOU_UN_TYPE)
        * @enum {string}
        */
@@ -2331,6 +2745,10 @@ export interface components {
        * @example Some comment
        */
       comment?: string
+      /** @description Profiles */
+      profiles?: components['schemas']['ProfileRequest'][]
+      /** @description Usages */
+      usages?: components['schemas']['UsageRequest'][]
     }
     /** @description Location creation response */
     LocationIdResponse: {
@@ -2342,6 +2760,57 @@ export interface components {
     }
     ReorderRequest: {
       codeList: string[]
+    }
+    /** @description Offender individual schedule creation request */
+    CreateAppointmentRequest: {
+      /**
+       * Format: int64
+       * @description Booking id of the prisoner
+       * @example 1234567
+       */
+      bookingId: number
+      /**
+       * Format: date
+       * @description Appointment date
+       * @example 2022-08-12
+       */
+      eventDate: string
+      /**
+       * Format: partial-time
+       * @description Appointment start time
+       * @example 09:45
+       */
+      startTime: string
+      /**
+       * Format: partial-time
+       * @description Activity end time
+       * @example 15:20
+       */
+      endTime: string
+      /**
+       * Format: int64
+       * @description Room where the appointment is to occur (in cell if null)
+       * @example 112233
+       */
+      internalLocationId?: number
+      /**
+       * @description Appointment event sub-type
+       * @example MEOT
+       */
+      eventSubType: string
+      /**
+       * @description Comment
+       * @example Some comment
+       */
+      comment?: string
+    }
+    /** @description Offender individual schedule creation response */
+    CreateAppointmentResponse: {
+      /**
+       * Format: int64
+       * @description The created offender_ind_schedules id
+       */
+      eventId: number
     }
     /** @description Provides the generated hearing ID after creation */
     CreateHearingResponse: {
@@ -2561,7 +3030,7 @@ export interface components {
       content?: components['schemas']['VisitIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -2572,7 +3041,7 @@ export interface components {
     PageableObject: {
       /** Format: int64 */
       offset?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       /** Format: int32 */
       pageSize?: number
       /** Format: int32 */
@@ -2581,9 +3050,11 @@ export interface components {
       unpaged?: boolean
     }
     SortObject: {
-      empty?: boolean
-      sorted?: boolean
-      unsorted?: boolean
+      direction?: string
+      nullHandling?: string
+      ascending?: boolean
+      property?: string
+      ignoreCase?: boolean
     }
     /** @description Visit id */
     VisitIdResponse: {
@@ -2822,7 +3293,7 @@ export interface components {
       content?: components['schemas']['QuestionnaireIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3002,7 +3473,7 @@ export interface components {
       content?: components['schemas']['PrisonerId'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3207,77 +3678,6 @@ export interface components {
       /** @description List of ADAs awarded during this booking period */
       adaSummaries: components['schemas']['ADASummary'][]
     }
-    /** @description The data held in NOMIS about an alert associated with a prisoner */
-    AlertResponse: {
-      /**
-       * Format: int64
-       * @description The prisoner's bookingId related to this alert
-       */
-      bookingId: number
-      /**
-       * Format: int64
-       * @description The sequence primary key within this booking
-       */
-      alertSequence: number
-      alertCode: components['schemas']['CodeDescription']
-      type: components['schemas']['CodeDescription']
-      /**
-       * Format: date
-       * @description Date alert started
-       */
-      date: string
-      /**
-       * Format: date
-       * @description Date alert expired
-       */
-      expiryDate?: string
-      /** @description true if alert is active and has not expired */
-      isActive: boolean
-      /** @description true if alert has been verified by another member of staff */
-      isVerified: boolean
-      /**
-       * @description Free format text of person or department that authorised the alert
-       * @example security
-       */
-      authorisedBy?: string
-      /** @description Free format comment */
-      comment?: string
-      audit: components['schemas']['NomisAudit']
-    }
-    /** @description The data held in NOMIS the person or system that created this record */
-    NomisAudit: {
-      /**
-       * @description Date time record was created
-       * @example 2021-07-05T10:35:17
-       */
-      createDatetime: string
-      /** @description Username of person that created the record (might also be a system) */
-      createUsername: string
-      /** @description Username of person that last modified the record (might also be a system) */
-      modifyUserId?: string
-      /**
-       * @description Date time record was last modified
-       * @example 2021-07-05T10:35:17
-       */
-      modifyDatetime?: string
-      /**
-       * @description Audit Date time
-       * @example 2021-07-05T10:35:17
-       */
-      auditTimestamp?: string
-      /** @description Audit username */
-      auditUserId?: string
-      /** @description NOMIS or DPS module that created the record */
-      auditModuleName?: string
-      /** @description Client userid */
-      auditClientUserId?: string
-      /** @description IP Address where request originated from */
-      auditClientIpAddress?: string
-      /** @description Machine name where request originated from */
-      auditClientWorkstationName?: string
-      /** @description Additional information that is audited */
-      auditAdditionalInfo?: string
-    }
     /** @description Appointment information */
     NonAssociationResponse: {
       /**
@@ -3356,13 +3756,35 @@ export interface components {
       content?: components['schemas']['NonAssociationIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
       empty?: boolean
+    }
+    /** @description History */
+    AmendmentResponse: {
+      /**
+       * @description Amended timestamp
+       * @example 2021-07-05T10:35:17
+       */
+      amendDateTime: string
+      /**
+       * @description Which value was changed
+       * @example Sequence
+       */
+      columnName?: string
+      /** @description Original value */
+      oldValue?: string
+      /** @description New value */
+      newValue?: string
+      /**
+       * @description Username of the person who made the change
+       * @example NQP44X
+       */
+      amendedBy: string
     }
     /** @description Location request returned data */
     LocationResponse: {
@@ -3377,7 +3799,7 @@ export interface components {
        * @default false
        * @example true
        */
-      certified: boolean
+      certified?: boolean
       /**
        * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
        * @example LAND
@@ -3393,7 +3815,12 @@ export interface components {
        * @description The containing location id
        * @example 1234567
        */
-      parentLocationId: number
+      parentLocationId?: number
+      /**
+       * @description The containing location id's key (Nomis description field)
+       * @example WWI-B-2
+       */
+      parentKey?: string
       /**
        * Format: int32
        * @description Max capacity subject to resources
@@ -3416,10 +3843,7 @@ export interface components {
        * @example WWI-B-2-004
        */
       description: string
-      /**
-       * @description Usually a number for a cell, a letter for a wing or landing. Used to calculate description
-       * @example xxxx
-       */
+      /** @description Usually a number for a cell, a letter for a wing or landing. Used to calculate description */
       locationCode: string
       /**
        * Format: int32
@@ -3437,6 +3861,49 @@ export interface components {
        * @example Some comment
        */
       comment?: string
+      /**
+       * @description Housing unit type
+       * @example NA
+       * @enum {string}
+       */
+      unitType?: 'HC' | 'HOLC' | 'NA' | 'OU' | 'REC' | 'SEG' | 'SPLC'
+      /**
+       * @description Whether the location is active or has been deactivated
+       * @example true
+       */
+      active: boolean
+      /**
+       * Format: date
+       * @description The deactivation date, defaults to today
+       * @example 2024-12-31
+       */
+      deactivateDate?: string
+      /**
+       * @description The reason code for deactivation, reference data 'LIV_UN_RSN'
+       * @enum {string}
+       */
+      reasonCode?: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L'
+      /**
+       * Format: date
+       * @description The expected reactivation date if any
+       * @example 2024-12-31
+       */
+      reactivateDate?: string
+      /** @description Profiles */
+      profiles?: components['schemas']['ProfileRequest'][]
+      /** @description Usages */
+      usages?: components['schemas']['UsageRequest'][]
+      /** @description History */
+      amendments?: components['schemas']['AmendmentResponse'][]
+      /**
+       * @description Record created date
+       * @example 2021-07-05T10:35:17
+       */
+      createDatetime: string
+      /** @description Record created by */
+      createUsername: string
+      /** @description Record modified by */
+      modifyUsername?: string
     }
     PageLocationIdResponse: {
       /** Format: int32 */
@@ -3448,7 +3915,7 @@ export interface components {
       content?: components['schemas']['LocationIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3460,21 +3927,32 @@ export interface components {
     History: {
       /**
        * Format: int64
-       * @description The historical incident questionnaire id
+       * @description The history questionnaire id for the incident
        */
       questionnaireId: number
-      /** @description The historical incident questionnaire code */
-      questionnaire: string
-      /** @description The historical incident questionnaire description */
+      /** @description The questionnaire type */
+      type: string
+      /** @description The questionnaire description */
       description?: string
-      /** @description Questions asked for the historical incident questionnaire */
+      /** @description Questions asked for the questionnaire */
       questions: components['schemas']['HistoryQuestion'][]
+      /**
+       * Format: date
+       * @description When the questionnaire was changed
+       */
+      incidentChangeDate: string
+      incidentChangeStaff: components['schemas']['Staff']
     }
-    /** @description Questions asked for the historical incident questionnaire */
+    /** @description Questions asked for the questionnaire */
     HistoryQuestion: {
       /**
+       * Format: int64
+       * @description The sequence number of the response question for this incident
+       */
+      questionId: number
+      /**
        * Format: int32
-       * @description The sequence number of the historical question for this incident
+       * @description The sequence number of the question for this incident
        */
       sequence: number
       /** @description The Question being asked */
@@ -3485,14 +3963,20 @@ export interface components {
     /** @description Historical list of Responses to this question */
     HistoryResponse: {
       /**
-       * Format: int32
-       * @description The sequence number of the answer
+       * Format: int64
+       * @description The id of the questionnaire question answer
        */
-      sequence: number
+      questionResponseId?: number
+      /**
+       * Format: int32
+       * @description The sequence number of the response for this incident
+       */
+      responseSequence: number
       /** @description The answer text */
-      answer: string
+      answer?: string
       /** @description Comment added to the response by recording staff */
       comment?: string
+      recordingStaff: components['schemas']['Staff']
     }
     /** @description Incident Details */
     IncidentResponse: {
@@ -3500,14 +3984,18 @@ export interface components {
        * Format: int64
        * @description The incident id
        */
-      id: number
+      incidentId: number
+      /**
+       * Format: int64
+       * @description The id of the questionnaire associated with this incident
+       */
+      questionnaireId: number
       /** @description A summary of the incident */
       title?: string
       /** @description The incident details */
       description?: string
       prison: components['schemas']['CodeDescription']
-      /** @description Current status code of the incident */
-      status: string
+      status: components['schemas']['IncidentStatus']
       /** @description The incident questionnaire type */
       type: string
       /** @description If the response is locked ie if the response is completed */
@@ -3517,7 +4005,7 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       incidentDateTime: string
-      reportedStaff: components['schemas']['Staff']
+      reportingStaff: components['schemas']['Staff']
       /**
        * @description The date and time the incident was reported
        * @example 2021-07-05T10:35:17
@@ -3533,6 +4021,15 @@ export interface components {
       questions: components['schemas']['Question'][]
       /** @description Historical questionnaire details for the incident */
       history: components['schemas']['History'][]
+    }
+    /** @description Status details */
+    IncidentStatus: {
+      code: string
+      description: string
+      /** Format: int32 */
+      listSequence?: number
+      standardUser: boolean
+      enhancedUser: boolean
     }
     /** @description Offender involved in the incident */
     Offender: {
@@ -3553,6 +4050,11 @@ export interface components {
     }
     /** @description Questions asked for the incident */
     Question: {
+      /**
+       * Format: int64
+       * @description The questionnaire question id
+       */
+      questionId: number
       /**
        * Format: int32
        * @description The sequence number of the question for this incident
@@ -3580,13 +4082,19 @@ export interface components {
     Response: {
       /**
        * Format: int64
-       * @description The id of the answer
+       * @description The id of the questionnaire question answer
        */
-      id: number
+      questionResponseId?: number
+      /**
+       * Format: int32
+       * @description The sequence number of the response for this incident
+       */
+      sequence: number
       /** @description The answer text */
-      answer: string
+      answer?: string
       /** @description Comment added to the response by recording staff */
       comment?: string
+      recordingStaff: components['schemas']['Staff']
     }
     /** @description Staff involved in the incident */
     StaffParty: {
@@ -3613,7 +4121,7 @@ export interface components {
       content?: components['schemas']['IncidentIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3644,7 +4152,7 @@ export interface components {
       content?: components['schemas']['IncentiveIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3733,6 +4241,53 @@ export interface components {
        */
       count: number
     }
+    /** @description Appointment information */
+    AppointmentResponse: {
+      /**
+       * Format: int64
+       * @description The booking id
+       */
+      bookingId: number
+      /** @description The offender number, aka nomsId, prisonerId */
+      offenderNo: string
+      /** @description Prison where the appointment occurs */
+      prisonId: string
+      /**
+       * Format: int64
+       * @description NOMIS room id
+       */
+      internalLocation: number
+      /**
+       * @description Start date and time
+       * @example 2021-07-05T10:35:17
+       */
+      startDateTime: string
+      /**
+       * @description End date and time
+       * @example 2021-07-05T10:35:17
+       */
+      endDateTime: string
+      /** @description Comment */
+      comment?: string
+      /** @description Event subtype */
+      subtype: string
+      /** @description Status */
+      status: string
+      /**
+       * @description Record created date
+       * @example 2021-07-05T10:35:17
+       */
+      createdDate: string
+      /** @description Record created by */
+      createdBy: string
+      /**
+       * @description Record modified date
+       * @example 2021-07-05T10:35:17
+       */
+      modifiedDate?: string
+      /** @description Record modified by */
+      modifiedBy?: string
+    }
     /** @description Event id */
     AppointmentIdResponse: {
       /**
@@ -3751,7 +4306,7 @@ export interface components {
       content?: components['schemas']['AppointmentIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3964,7 +4519,40 @@ export interface components {
       content?: components['schemas']['FindActiveAllocationIdsResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
+      first?: boolean
+      last?: boolean
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description Alert id */
+    AlertIdResponse: {
+      /**
+       * Format: int64
+       * @description The booking id
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The alert sequence
+       */
+      alertSequence: number
+      /** @description The prisoner number */
+      offenderNo: string
+    }
+    PageAlertIdResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['AlertIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3992,7 +4580,7 @@ export interface components {
       content?: components['schemas']['AdjustmentIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4025,7 +4613,7 @@ export interface components {
       content?: components['schemas']['AdjudicationChargeIdResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4213,7 +4801,7 @@ export interface components {
       content?: components['schemas']['FindActiveActivityIdsResponse'][]
       /** Format: int32 */
       number?: number
-      sort?: components['schemas']['SortObject']
+      sort?: components['schemas']['SortObject'][]
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4531,7 +5119,9 @@ export interface operations {
     responses: {
       /** @description Court Appearance updated */
       200: {
-        content: never
+        content: {
+          'application/json': components['schemas']['UpdateCourtAppearanceResponse']
+        }
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
@@ -4553,6 +5143,147 @@ export interface operations {
       }
       /** @description Court appearance does not exist */
       404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * get an alert by bookingId and alert sequence
+   * @description Retrieves an prisoner alert. Requires ROLE_NOMIS_ALERTS
+   */
+  getAlert_1: {
+    parameters: {
+      path: {
+        /**
+         * @description Booking Id
+         * @example 12345
+         */
+        bookingId: string
+        /**
+         * @description Alert sequence
+         * @example 3
+         */
+        alertSequence: string
+      }
+    }
+    responses: {
+      /** @description Alert Information Returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['AlertResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Updates an alert on a prisoner
+   * @description Updates an alert on the specified prisoner's booking which should be the latest booking. Requires ROLE_NOMIS_ALERTS
+   */
+  updateAlert: {
+    parameters: {
+      path: {
+        /**
+         * @description Booking id
+         * @example 1234567
+         */
+        bookingId: string
+        /**
+         * @description Alert sequence
+         * @example 3
+         */
+        alertSequence: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateAlertRequest']
+      }
+    }
+    responses: {
+      /** @description Alert Updated */
+      200: {
+        content: {
+          'application/json': components['schemas']['AlertResponse']
+        }
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Deletes an alert by bookingId and alert sequence
+   * @description Deletes an prisoner alert. Requires ROLE_NOMIS_ALERTS
+   */
+  deleteAlert: {
+    parameters: {
+      path: {
+        /**
+         * @description Booking Id
+         * @example 12345
+         */
+        bookingId: string
+        /**
+         * @description Alert sequence
+         * @example 3
+         */
+        alertSequence: string
+      }
+    }
+    responses: {
+      /** @description Alert Deleted */
+      204: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
@@ -4716,6 +5447,239 @@ export interface operations {
         }
       }
       /** @description Non-association does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Updates an existing location
+   * @description Updates an existing location. Requires role NOMIS_LOCATIONS
+   */
+  updateAppointment: {
+    parameters: {
+      path: {
+        /**
+         * @description NOMIS location Id
+         * @example 1234567
+         */
+        locationId: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateLocationRequest']
+      }
+    }
+    responses: {
+      /** @description Success */
+      200: {
+        content: never
+      }
+      /** @description Invalid data such as location or subtype do not exist etc. */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Reactivates a deactivated location
+   * @description Requires role NOMIS_LOCATIONS
+   */
+  reactivateLocation: {
+    parameters: {
+      path: {
+        /**
+         * @description NOMIS location Id
+         * @example 1234567
+         */
+        locationId: string
+      }
+    }
+    responses: {
+      /** @description Success */
+      200: {
+        content: never
+      }
+      /** @description Location was already active */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Deactivates an existing location
+   * @description Requires role NOMIS_LOCATIONS
+   */
+  deactivateLocation: {
+    parameters: {
+      path: {
+        /**
+         * @description NOMIS location Id
+         * @example 1234567
+         */
+        locationId: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['DeactivateRequest']
+      }
+    }
+    responses: {
+      /** @description Success */
+      200: {
+        content: never
+      }
+      /** @description Reason code does not exist, or already deactivated */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Update location certification
+   * @description Requires role NOMIS_LOCATIONS
+   */
+  updateCertification: {
+    parameters: {
+      path: {
+        /**
+         * @description NOMIS location Id
+         * @example 1234567
+         */
+        locationId: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateCertificationRequest']
+      }
+    }
+    responses: {
+      /** @description Success */
+      200: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Update location capacity
+   * @description Requires role NOMIS_LOCATIONS
+   */
+  updateCapacity: {
+    parameters: {
+      path: {
+        /**
+         * @description NOMIS location Id
+         * @example 1234567
+         */
+        locationId: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateCapacityRequest']
+      }
+    }
+    responses: {
+      /** @description Success */
+      200: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist */
       404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -5017,7 +5981,7 @@ export interface operations {
    * Updates an existing appointment
    * @description Updates an existing appointment. Requires role NOMIS_APPOINTMENTS
    */
-  updateAppointment: {
+  updateAppointment_1: {
     parameters: {
       path: {
         /**
@@ -5029,15 +5993,13 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['CreateAppointmentRequest']
+        'application/json': components['schemas']['UpdateAppointmentRequest']
       }
     }
     responses: {
       /** @description Success */
       200: {
-        content: {
-          'application/json': components['schemas']['CreateAppointmentRequest']
-        }
+        content: never
       }
       /** @description Invalid data such as location or subtype do not exist etc. */
       400: {
@@ -5121,9 +6083,7 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
-        content: {
-          'application/json': components['schemas']['CreateAppointmentRequest']
-        }
+        content: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -5162,9 +6122,7 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
-        content: {
-          'application/json': components['schemas']['CreateAppointmentRequest']
-        }
+        content: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -6214,6 +7172,64 @@ export interface operations {
     }
   }
   /**
+   * Creates an alert on a prisoner
+   * @description Creates an alert on the prisoner's latest booking. Requires ROLE_NOMIS_ALERTS
+   */
+  createAlert: {
+    parameters: {
+      path: {
+        /**
+         * @description Offender no (aka prisoner number)
+         * @example A1234AK
+         */
+        offenderNo: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateAlertRequest']
+      }
+    }
+    responses: {
+      /** @description Alert Created */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateAlertResponse']
+        }
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Active alert of this type already exists */
+      409: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * creates an adjudication on the latest booking of a prisoner
    * @description Creates an adjudication. Requires ROLE_NOMIS_ADJUDICATIONS
    */
@@ -6538,7 +7554,7 @@ export interface operations {
       }
     }
     responses: {
-      /** @description Successfully created location */
+      /** @description Successfully created location with created id */
       201: {
         content: {
           'application/json': components['schemas']['LocationIdResponse']
@@ -6678,7 +7694,7 @@ export interface operations {
       /** @description Appointment information with created id */
       201: {
         content: {
-          'application/json': components['schemas']['CreateAppointmentRequest']
+          'application/json': components['schemas']['CreateAppointmentResponse']
         }
       }
       /** @description Invalid data such as booking or location do not exist etc. */
@@ -7453,6 +8469,10 @@ export interface operations {
    */
   getActiveAdjustments: {
     parameters: {
+      query: {
+        /** @description Indicate if should return just active adjustments */
+        'active-only': string
+      }
       path: {
         /**
          * @description NOMIS booking Id
@@ -8124,7 +9144,7 @@ export interface operations {
       /** @description Appointment information with created id */
       200: {
         content: {
-          'application/json': components['schemas']['CreateAppointmentRequest']
+          'application/json': components['schemas']['AppointmentResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -8266,7 +9286,7 @@ export interface operations {
       /** @description Appointment information with created id */
       200: {
         content: {
-          'application/json': components['schemas']['CreateAppointmentRequest']
+          'application/json': components['schemas']['AppointmentResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -8498,6 +9518,47 @@ export interface operations {
       }
       /** @description Not found */
       404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Get alert IDs by filter
+   * @description Retrieves a paged list of alert ids by filter. Requires ROLE_NOMIS_ALERTS.
+   */
+  getAlertIdsByFilter: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /**
+         * @description Filter results by alerts that were created on or after the given date
+         * @example 2021-11-03
+         */
+        fromDate?: string
+        /**
+         * @description Filter results by alerts that were created on or before the given date
+         * @example 2021-11-03
+         */
+        toDate?: string
+      }
+    }
+    responses: {
+      /** @description Pageable list of ids are returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageAlertIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role ROLE_NOMIS_ALERTS not present */
+      403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
