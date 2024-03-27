@@ -6,7 +6,7 @@ const MIGRATE_SENTENCING_ROLE = 'ROLE_MIGRATE_SENTENCING'
 const MIGRATE_ACTIVITIES_ROLE = 'ROLE_MIGRATE_ACTIVITIES'
 const MIGRATE_ALLOCATIONS_ROLE = 'ROLE_MIGRATE_ACTIVITIES' // This role is deliberately shared with Activities as they are closely related
 const MIGRATE_APPOINTMENTS_ROLE = 'ROLE_MIGRATE_APPOINTMENTS'
-const MIGRATE_ALERTS_ROLE = 'ROLE_MIGRATE_ADJUDICATIONS' // Keep this until we have a generic SYSCON role
+const MIGRATE_ALERTS_ROLE = 'ROLE_MIGRATE_ALERTS'
 const MIGRATE_INCIDENTS_ROLE = 'ROLE_MIGRATE_INCIDENTS'
 
 const extractRoles = (res: Response): Array<string> => {

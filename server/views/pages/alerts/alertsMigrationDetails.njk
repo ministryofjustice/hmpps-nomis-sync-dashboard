@@ -49,11 +49,6 @@
 
     <div class="govuk-grid-row">
       {% set filterHtml %}
-        {% if migration.history.filterPrisonIds %}
-          <div>
-            <span class="govuk-label--s">Prisons:</span><span data-qa="filterPrisonIds" class="govuk-!-margin-left-2">{{ migration.history.filterPrisonIds }}</span>
-          </div>
-        {% endif %}
         {% if migration.history.filterFromDate %}
           <div>
             <span class="govuk-label--s">From date:</span><span data-qa="filterFromDate" class="govuk-!-margin-left-2">{{ migration.history.filterFromDate | formatDate('D MMMM YYYY - HH:mm') }}</span>

@@ -495,7 +495,7 @@ export default class NomisMigrationService {
   async getAlertsFailures(context: Context): Promise<GetDlqResult> {
     logger.info(`getting messages on alerts DLQ`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const dlqName = await NomisMigrationService.getActivitiesDLQName(token)
+    const dlqName = await NomisMigrationService.getAlertsDLQName(token)
 
     return NomisMigrationService.restClient(token).get<GetDlqResult>({
       path: `/queue-admin/get-dlq-messages/${dlqName}`,

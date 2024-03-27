@@ -10,15 +10,6 @@ describe('startAlertsMigrationValidator', () => {
     expect(validate(form)).toHaveLength(0)
   })
 
-  it('should allow empty prisonIds', () => {
-    const form: StartAlertsMigrationForm = {
-      ...validForm,
-      prisonIds: '',
-    }
-
-    expect(validate(form)).toHaveLength(0)
-  })
-
   it('should reject invalid fromDate', () => {
     const form: StartAlertsMigrationForm = {
       ...validForm,
@@ -45,7 +36,6 @@ describe('startAlertsMigrationValidator', () => {
 })
 
 const validForm: StartAlertsMigrationForm = {
-  prisonIds: 'HEI',
   fromDate: '2020-03-23',
   toDate: '2020-03-24',
   action: 'startMigration',
