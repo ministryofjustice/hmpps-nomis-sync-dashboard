@@ -33,39 +33,11 @@
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     {% call govukFieldset({
                         legend: {
-                            text: "Enter the filter details for the Alerts entities you want to migrate",
+                            text: "No filter allowed for  Alerts entities you want to migrate",
                             classes: "govuk-fieldset__legend--m",
                             isPageHeading: false
                         }
                     }) %}
-
-                        {{ govukInput({
-                            label: {
-                                html: 'Only include Alerts created after or on this date'
-                            },
-                            id: "fromDate",
-                            name: "fromDate",
-                            classes: "govuk-input--width-20",
-                            hint: {
-                                text: "Example 2020-03-23. This optional field indicates the created date"
-                            },
-                            value: form.fromDate,
-                            errorMessage: errors | findError('fromDate')
-                        }) }}
-
-                        {{ govukInput({
-                            label: {
-                                html: 'Only include Alerts entities created before or on this date'
-                            },
-                            id: "toDate",
-                            name: "toDate",
-                            classes: "govuk-input--width-20",
-                            hint: {
-                                text: "Example 2020-03-23. This optional field indicates the created date"
-                            },
-                            value: form.toDate,
-                            errorMessage: errors | findError('toDate')
-                        }) }}
 
                         <div class="govuk-button-group">
                             {{ govukButton({

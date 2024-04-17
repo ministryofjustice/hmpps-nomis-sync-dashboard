@@ -7,7 +7,7 @@ import {
   PageAdjustmentIdResponse,
   PageVisitIdResponse,
   VisitRoomCountResponse,
-  PageAlertIdResponse,
+  PagePrisonerId,
   GetAlertIdsByFilter,
   IncentiveLevel,
   FindAllocationsMissingPayBandsResponse,
@@ -67,9 +67,9 @@ export default class NomisPrisonerService {
   async getAlertsMigrationEstimatedCount(filter: GetAlertIdsByFilter, context: Context): Promise<number> {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     logger.info(`getting details for alerts migration estimated count`)
-    const response = await NomisPrisonerService.restClient(token).get<PageAlertIdResponse>({
-      path: `/alerts/ids`,
-      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    const response = await NomisPrisonerService.restClient(token).get<PagePrisonerId>({
+      path: `/prisoners/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1, active: false })}`,
     })
     return response.totalElements
   }

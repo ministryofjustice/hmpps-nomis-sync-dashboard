@@ -87,7 +87,7 @@ export interface paths {
      * Updates an existing location
      * @description Updates an existing location. Requires role NOMIS_LOCATIONS
      */
-    put: operations['updateAppointment']
+    put: operations['updateLocation']
   }
   '/locations/{locationId}/reactivate': {
     /**
@@ -163,7 +163,7 @@ export interface paths {
      * Updates an existing appointment
      * @description Updates an existing appointment. Requires role NOMIS_APPOINTMENTS
      */
-    put: operations['updateAppointment_1']
+    put: operations['updateAppointment']
     /**
      * Deletes an existing appointment
      * @description Deletes an existing appointment by actually deleting from the table. Intended for appointments created in error. Requires role NOMIS_APPOINTMENTS
@@ -509,9 +509,30 @@ export interface paths {
      */
     get: operations['getCourtCase']
   }
+  '/prisoners/{offenderNo}/sentencing/court-appearances/{id}': {
+    /**
+     * get a court appearance
+     * @description Requires role NOMIS_SENTENCING. Retrieves a court appearance by id
+     */
+    get: operations['getCourtAppearance']
+  }
+  '/prisoners/{offenderNo}/merges': {
+    /**
+     * Gets prisoner's list of merge details since a given date. Either the current offenderNo or the previous offenderNo can be used to search for merges.
+     * @description Requires role SYNCHRONISATION_REPORTING.
+     */
+    get: operations['getPrisonerMerges']
+  }
+  '/prisoners/{offenderNo}/alerts/to-migrate': {
+    /**
+     * Gets alert for latest booking plus unique list of alerts from previous bookings for a prisoner
+     * @description Retrieves alerts for a prisoner across all bookings. The latest booking all alerts will be returned, from the previous bookings the list will contain at most one alert per alert code type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
+     */
+    get: operations['getAlertsToMigrate']
+  }
   '/prisoners/ids': {
     /**
-     * Gets the identifiers for all prisoners. Currently only active prisoners are supported
+     * Gets the identifiers for all prisoners. By default only active prisoners will be return unless active=false
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     get: operations['getPrisonerIdentifiers']
@@ -634,6 +655,27 @@ export interface paths {
      * @description Retrieves the current incentive level (by booking) for a prisoner. Requires ROLE_NOMIS_INCENTIVES.
      */
     get: operations['getCurrentIncentive']
+  }
+  '/csip/{id}': {
+    /**
+     * Get CSIP details
+     * @description Gets csip details. Requires role NOMIS_CSIP
+     */
+    get: operations['getCSIP']
+  }
+  '/csip/ids': {
+    /**
+     * get csip IDs by filter
+     * @description Retrieves a paged list of csip ids by filter. Requires ROLE_NOMIS_CSIP.
+     */
+    get: operations['getIdsByFilter_2']
+  }
+  '/csip/count': {
+    /**
+     * Get csip count
+     * @description Gets a count of all csips. Requires role NOMIS_CSIP
+     */
+    get: operations['getCSIPCount']
   }
   '/attendances/reconciliation/{prisonId}': {
     /**
@@ -1006,6 +1048,11 @@ export interface components {
       bookingId: number
       /**
        * Format: int64
+       * @description The prisoner's bookingId sequence related to this alert. Used to show if this is on latest bookings
+       */
+      bookingSequence: number
+      /**
+       * Format: int64
        * @description The sequence primary key within this booking
        */
       alertSequence: number
@@ -1244,50 +1291,6 @@ export interface components {
        * @enum {string}
        */
       internalLocationUsageType: 'APP' | 'MOVEMENT' | 'OCCUR' | 'OIC' | 'OTHER' | 'OTH' | 'PROG' | 'PROP' | 'VISIT'
-      /**
-       * @description Non-residential usage type
-       * @enum {string}
-       */
-      usageLocationType?:
-        | 'ADJU'
-        | 'ADMI'
-        | 'APP'
-        | 'AREA'
-        | 'ASSO'
-        | 'BOOT'
-        | 'BOX'
-        | 'CELL'
-        | 'CLAS'
-        | 'EXER'
-        | 'EXTE'
-        | 'FAIT'
-        | 'GROU'
-        | 'HCEL'
-        | 'HOLD'
-        | 'IGRO'
-        | 'INSI'
-        | 'INTE'
-        | 'LAND'
-        | 'LOCA'
-        | 'MEDI'
-        | 'MOVE'
-        | 'OFFI'
-        | 'OUTS'
-        | 'POSI'
-        | 'RESI'
-        | 'ROOM'
-        | 'RTU'
-        | 'SHEL'
-        | 'SPOR'
-        | 'SPUR'
-        | 'STOR'
-        | 'TABL'
-        | 'TRAI'
-        | 'TRRM'
-        | 'VIDE'
-        | 'VISIT'
-        | 'WING'
-        | 'WORK'
       /** Format: int32 */
       capacity?: number
       /** Format: int32 */
@@ -3021,18 +3024,18 @@ export interface components {
       prisonId: string
     }
     PageVisitIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['VisitIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3284,18 +3287,18 @@ export interface components {
       modifiedBy?: string
     }
     PageQuestionnaireIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['QuestionnaireIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3384,6 +3387,8 @@ export interface components {
     CourtEventResponse: {
       /** Format: int64 */
       id: number
+      /** Format: int64 */
+      caseId?: number
       offenderNo: string
       /** @example 2021-07-05T10:35:17 */
       eventDateTime: string
@@ -3463,28 +3468,77 @@ export interface components {
       orderPartyCode: string
       purposeCode: string
     }
+    /** @description Details of a prisoner merge */
+    MergeDetail: {
+      /**
+       * @description The NOMIS reference of the record that was merged to and was then removed
+       * @example A1234AA
+       */
+      deletedOffenderNo: string
+      /**
+       * Format: int64
+       * @description The booking that was merged to and which then became active
+       * @example 12345678
+       */
+      activeBookingId: number
+      /**
+       * @description The NOMIS reference of the record that was merged from and was retained
+       * @example A1234AA
+       */
+      retainedOffenderNo: string
+      /**
+       * Format: int64
+       * @description The booking that was merged from and was retained as inactive
+       * @example 12345678
+       */
+      previousBookingId: number
+      /**
+       * @description When the merge happened
+       * @example 2021-07-05T10:35:17
+       */
+      requestDateTime: string
+    }
+    /** @description The list of unique alerts held against a prisoner */
+    PrisonerAlertsResponse: {
+      latestBookingAlerts: components['schemas']['AlertResponse'][]
+      previousBookingsAlerts: components['schemas']['AlertResponse'][]
+    }
     PagePrisonerId: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['PrisonerId'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
+    /** @description Prisoner identifier */
     PrisonerId: {
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description Latest booking id
+       * @example 12345
+       */
       bookingId: number
+      /**
+       * @description The NOMIS reference AKA prisoner number
+       * @example A1234AA
+       */
       offenderNo: string
+      /**
+       * @description The prisoner's current status
+       * @example ACTIVE IN
+       */
+      status: string
     }
     /** @description Offender Sentence */
     SentenceResponse: {
@@ -3747,18 +3801,18 @@ export interface components {
       offenderNo2: string
     }
     PageNonAssociationIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['NonAssociationIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -3906,18 +3960,18 @@ export interface components {
       modifyUsername?: string
     }
     PageLocationIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['LocationIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -4112,18 +4166,18 @@ export interface components {
       incidentId: number
     }
     PageIncidentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['IncidentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -4143,18 +4197,18 @@ export interface components {
       sequence: number
     }
     PageIncentiveIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['IncentiveIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -4203,6 +4257,218 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       whenUpdated?: string
+    }
+    /** @description Summary details */
+    Attendee: {
+      /**
+       * Format: int64
+       * @description Review Attendee/Contributor Id
+       */
+      id: number
+      /** @description Name of attendee/contributor */
+      name?: string
+      'Role of attendee/contributor'?: string
+      'If attended (otherwise contributor)': boolean
+      Contribution?: string
+    }
+    /** @description CSIP Details */
+    CSIPResponse: {
+      /**
+       * Format: int64
+       * @description The csip id
+       */
+      id: number
+      offender: components['schemas']['Offender']
+      /**
+       * Format: int64
+       * @description The booking id associated with the CSIP
+       */
+      bookingId?: number
+      /** @description Log number */
+      logNumber?: string
+      /**
+       * @description Date/Time incident occurred
+       * @example 2021-07-05T10:35:17
+       */
+      incidentDateTime?: string
+      type: components['schemas']['CodeDescription']
+      location: components['schemas']['CodeDescription']
+      areaOfWork: components['schemas']['CodeDescription']
+      /** @description The person reporting the incident - free text */
+      reportedBy?: string
+      /**
+       * Format: date
+       * @description Date reported
+       */
+      reportedDate: string
+      /** @description proActive Referral */
+      proActiveReferral: boolean
+      /** @description If a staff member was assaulted */
+      staffAssaulted: boolean
+      /** @description If assaulted, the staff member name */
+      staffAssaultedName?: string
+      reportDetails: components['schemas']['ReportDetails']
+      saferCustodyScreening: components['schemas']['SaferCustodyScreening']
+      investigation: components['schemas']['Investigation']
+      /** @description Case Manager involved */
+      caseManager?: string
+      /** @description Reason for plan */
+      planReason?: string
+      /**
+       * Format: date
+       * @description Date of first review
+       */
+      firstCaseReviewDate?: string
+      /** @description CSIP Plans */
+      plans: components['schemas']['Plan'][]
+      /** @description CSIP Reviews */
+      reviews: components['schemas']['Review'][]
+    }
+    /** @description Contributory factors */
+    FactorResponse: {
+      /**
+       * Format: int64
+       * @description Factor type id
+       */
+      id: number
+      type: components['schemas']['CodeDescription']
+      /** @description Factor comment */
+      comment?: string
+    }
+    /** @description CSIP Plans */
+    Plan: {
+      /**
+       * Format: int64
+       * @description Plan Id
+       */
+      id: number
+      /** @description Details of the need */
+      identifiedNeed: string
+      /** @description Intervention plan */
+      intervention: string
+      /** @description Information regarding progression of plan */
+      progression?: string
+      /** @description The person reporting - free text */
+      referredBy?: string
+      /**
+       * Format: date
+       * @description When created
+       */
+      createdDate: string
+      /**
+       * Format: date
+       * @description Target date of plan
+       */
+      targetDate: string
+      /**
+       * Format: date
+       * @description Plan closed date
+       */
+      closedDate?: string
+    }
+    /** @description Additional information for the CSIP Report */
+    ReportDetails: {
+      /**
+       * Format: date
+       * @description Date the offender is released
+       */
+      releaseDate?: string
+      involvement?: components['schemas']['CodeDescription']
+      /** @description Concern description */
+      concern?: string
+      /** @description Contributory factors */
+      factors: components['schemas']['FactorResponse'][]
+      /** @description known reasons for the involvement */
+      knownReasons?: string
+      /** @description Additional information */
+      otherInformation?: string
+      /** @description If the safer custody team were informed */
+      saferCustodyTeamInformed: boolean
+      /** @description If the referral has been completed */
+      referralComplete: boolean
+      /** @description Who completed the referral */
+      referralCompletedBy?: string
+      /**
+       * Format: date
+       * @description Date the referral was completed
+       */
+      referralCompletedDate?: string
+    }
+    /** @description CSIP Reviews */
+    Review: {
+      /**
+       * Format: int64
+       * @description Review Id
+       */
+      id: number
+      /**
+       * Format: int32
+       * @description Sequence number
+       */
+      reviewSequence: number
+      /** @description Summary details */
+      attendees: components['schemas']['Attendee'][]
+      /** @description Summary details */
+      remainOnCSIP: boolean
+      /** @description Summary details */
+      csipUpdated: boolean
+      /** @description Summary details */
+      caseNote: boolean
+      /** @description Summary details */
+      closeCSIP: boolean
+      /** @description Summary details */
+      peopleInformed: boolean
+      /** @description Summary details */
+      summary?: string
+      /**
+       * Format: date
+       * @description Next Review date
+       */
+      nextReviewDate?: string
+      /**
+       * Format: date
+       * @description Review closed date
+       */
+      closeDate?: string
+    }
+    /** @description Safer custody screening */
+    SaferCustodyScreening: {
+      outcome?: components['schemas']['CodeDescription']
+      /** @description Who recorded the data */
+      recordedBy?: string
+      /**
+       * Format: date
+       * @description When the the SCS occurred
+       */
+      recordedDate?: string
+      /** @description Why the decision was made */
+      reasonForDecision?: string
+    }
+    /** @description CSIP id */
+    CSIPIdResponse: {
+      /**
+       * Format: int64
+       * @description The csip id
+       */
+      id: number
+    }
+    PageCSIPIdResponse: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['CSIPIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject'][]
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
     }
     /** @description Attendance reconciliation check response */
     AttendanceReconciliationResponse: {
@@ -4297,18 +4563,18 @@ export interface components {
       eventId: number
     }
     PageAppointmentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AppointmentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -4510,18 +4776,18 @@ export interface components {
       allocationId: number
     }
     PageFindActiveAllocationIdsResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveAllocationIdsResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -4543,18 +4809,18 @@ export interface components {
       offenderNo: string
     }
     PageAlertIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AlertIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -4571,18 +4837,18 @@ export interface components {
       adjustmentCategory: string
     }
     PageAdjustmentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjustmentIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -4604,18 +4870,18 @@ export interface components {
       offenderNo: string
     }
     PageAdjudicationChargeIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjudicationChargeIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -4792,18 +5058,18 @@ export interface components {
       courseActivityId: number
     }
     PageFindActiveActivityIdsResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveActivityIdsResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
@@ -5458,7 +5724,7 @@ export interface operations {
    * Updates an existing location
    * @description Updates an existing location. Requires role NOMIS_LOCATIONS
    */
-  updateAppointment: {
+  updateLocation: {
     parameters: {
       path: {
         /**
@@ -5490,7 +5756,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      /** @description Forbidden, correct role not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -5535,7 +5801,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      /** @description Forbidden, correct role not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -5585,7 +5851,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      /** @description Forbidden, correct role not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -5629,7 +5895,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      /** @description Forbidden, correct role not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -5673,7 +5939,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
+      /** @description Forbidden, correct role not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -5981,7 +6247,7 @@ export interface operations {
    * Updates an existing appointment
    * @description Updates an existing appointment. Requires role NOMIS_APPOINTMENTS
    */
-  updateAppointment_1: {
+  updateAppointment: {
     parameters: {
       path: {
         /**
@@ -7572,7 +7838,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role ROLE_NOMIS_LOCATIONS */
+      /** @description Forbidden, correct role not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -8344,14 +8610,140 @@ export interface operations {
     }
   }
   /**
-   * Gets the identifiers for all prisoners. Currently only active prisoners are supported
+   * get a court appearance
+   * @description Requires role NOMIS_SENTENCING. Retrieves a court appearance by id
+   */
+  getCourtAppearance: {
+    parameters: {
+      path: {
+        /**
+         * @description Court appearance id
+         * @example 12345
+         */
+        id: string
+        /**
+         * @description Offender No
+         * @example 12345
+         */
+        offenderNo: string
+      }
+    }
+    responses: {
+      /** @description the court appearance details */
+      200: {
+        content: {
+          'application/json': components['schemas']['CourtEventResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Offender not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets prisoner's list of merge details since a given date. Either the current offenderNo or the previous offenderNo can be used to search for merges.
+   * @description Requires role SYNCHRONISATION_REPORTING.
+   */
+  getPrisonerMerges: {
+    parameters: {
+      query?: {
+        /** @description The earliest date to search for merges from */
+        fromDate?: string
+      }
+      path: {
+        /**
+         * @description Offender Noms Id
+         * @example A1234ZZ
+         */
+        offenderNo: string
+      }
+    }
+    responses: {
+      /** @description list of prisoner merges */
+      200: {
+        content: {
+          'application/json': components['schemas']['MergeDetail'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets alert for latest booking plus unique list of alerts from previous bookings for a prisoner
+   * @description Retrieves alerts for a prisoner across all bookings. The latest booking all alerts will be returned, from the previous bookings the list will contain at most one alert per alert code type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
+   */
+  getAlertsToMigrate: {
+    parameters: {
+      path: {
+        /**
+         * @description Offender No AKA prisoner number
+         * @example A1234AK
+         */
+        offenderNo: string
+      }
+    }
+    responses: {
+      /** @description Alerts Returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PrisonerAlertsResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist or has no bookings */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets the identifiers for all prisoners. By default only active prisoners will be return unless active=false
    * @description Requires role SYNCHRONISATION_REPORTING.
    */
   getPrisonerIdentifiers: {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
-        /** @description Only return active prisoners currently in prison */
+        /** @description When true only return active prisoners currently in prison else all prisoners that at some point has been in prison are returned */
         active?: boolean
       }
     }
@@ -8792,7 +9184,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role ROLE_NOMIS_LOCATIONS */
+      /** @description Forbidden, correct role not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -8833,7 +9225,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role ROLE_NOMIS_LOCATIONS */
+      /** @description Forbidden, correct role not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -9077,6 +9469,117 @@ export interface operations {
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Get CSIP details
+   * @description Gets csip details. Requires role NOMIS_CSIP
+   */
+  getCSIP: {
+    parameters: {
+      path: {
+        /** @description CSIP id */
+        id: string
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['CSIPResponse']
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_CSIP */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * get csip IDs by filter
+   * @description Retrieves a paged list of csip ids by filter. Requires ROLE_NOMIS_CSIP.
+   */
+  getIdsByFilter_2: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /**
+         * @description Filter results by those that were created on or after the given date
+         * @example 2021-11-03
+         */
+        fromDate?: string
+        /**
+         * @description Filter results by those that were created on or before the given date
+         * @example 2021-11-03
+         */
+        toDate?: string
+      }
+    }
+    responses: {
+      /** @description Pageable list of ids are returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PageCSIPIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_CSIP not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Get csip count
+   * @description Gets a count of all csips. Requires role NOMIS_CSIP
+   */
+  getCSIPCount: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': number
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_CSIP */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
