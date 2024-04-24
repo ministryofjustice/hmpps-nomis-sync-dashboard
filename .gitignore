@@ -126,4 +126,5 @@ integration_tests/videos/
 integration_tests/screenshots/
 */*.iml
 **/Chart.lock
+**/.DS_Store
 cypress
