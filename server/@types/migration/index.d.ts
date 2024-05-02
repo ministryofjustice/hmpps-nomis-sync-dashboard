@@ -13,6 +13,9 @@ export type MigrationContextSentencingMigrationFilter =
 export type IncidentsMigrationFilter = components['schemas']['IncidentsMigrationFilter']
 export type MigrationContextIncidentsMigrationFilter = components['schemas']['MigrationContextIncidentsMigrationFilter']
 
+export type CSIPMigrationFilter = components['schemas']['CSIPMigrationFilter']
+export type MigrationContextCSIPMigrationFilter = components['schemas']['MigrationContextCSIPMigrationFilter']
+
 export type AppointmentsMigrationFilter = components['schemas']['AppointmentsMigrationFilter']
 export type ActivitiesMigrationFilter = components['schemas']['ActivitiesMigrationFilter']
 export type AllocationsMigrationFilter = components['schemas']['AllocationsMigrationFilter']

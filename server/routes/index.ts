@@ -7,6 +7,7 @@ import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrat
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
 import alertsMigrationRoutes from './alertsMigration/alertsMigrationRouter'
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
+import csipMigrationRoutes from './csipMigration/csipMigrationRouter'
 import {
   extractRoles,
   MIGRATE_SENTENCING_ROLE,
@@ -16,6 +17,7 @@ import {
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_ALERTS_ROLE,
   MIGRATE_INCIDENTS_ROLE,
+  MIGRATE_CSIP_ROLE,
 } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
@@ -93,6 +95,14 @@ export default function routes(services: Services): Router {
           roles: [MIGRATE_INCIDENTS_ROLE],
           enabled: true,
         },
+        {
+          id: 'csip-migration',
+          heading: 'CSIP migration',
+          description: 'Migration and synchronisation information',
+          href: '/csip-migration',
+          roles: [MIGRATE_CSIP_ROLE],
+          enabled: true,
+        },
       ].filter(
         register =>
           Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled,
@@ -107,5 +117,6 @@ export default function routes(services: Services): Router {
   appointmentsMigrationRoutes(router, services)
   alertsMigrationRoutes(router, services)
   incidentsMigrationRoutes(router, services)
+  csipMigrationRoutes(router, services)
   return router
 }

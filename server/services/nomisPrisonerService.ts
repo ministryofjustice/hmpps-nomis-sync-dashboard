@@ -19,6 +19,8 @@ import {
   AppointmentCountsResponse,
   PageIncidentIdResponse,
   GetIncidentIdsByFilter,
+  GetCSIPIdsByFilter,
+  PageCSIPIdResponse,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
@@ -79,6 +81,16 @@ export default class NomisPrisonerService {
     logger.info(`getting details for incidents migration  estimated count`)
     const response = await NomisPrisonerService.restClient(token).get<PageIncidentIdResponse>({
       path: `/incidents/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
+  }
+
+  async getCSIPMigrationEstimatedCount(filter: GetCSIPIdsByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for csip migration  estimated count`)
+    const response = await NomisPrisonerService.restClient(token).get<PageCSIPIdResponse>({
+      path: `/csip/ids`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements

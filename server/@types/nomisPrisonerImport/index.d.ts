@@ -502,6 +502,13 @@ export interface paths {
      */
     get: operations['getPrisonIncentiveLevels']
   }
+  '/prisoners/{offenderNo}/sentencing/offender-charges/{offenderChargeId}': {
+    /**
+     * get an offender charge
+     * @description Requires role NOMIS_SENTENCING. Retrieves offender charge details. Offender Charges are at the booking level.
+     */
+    get: operations['getOffenderCharge']
+  }
   '/prisoners/{offenderNo}/sentencing/court-cases/{id}': {
     /**
      * get a court case
@@ -522,6 +529,13 @@ export interface paths {
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     get: operations['getPrisonerMerges']
+  }
+  '/prisoners/{offenderNo}/bookings/{bookingId}/previous': {
+    /**
+     * Gets a prisoner's previous booking relative to the supplied booking id
+     * @description Requires role NOMIS_ALERTS.
+     */
+    get: operations['getPreviousBooking']
   }
   '/prisoners/{offenderNo}/alerts/to-migrate': {
     /**
@@ -571,6 +585,13 @@ export interface paths {
      * @description Retrieves a summary of ADA awards along with associated adjudication for a given booking. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     get: operations['getAdjudicationADASummary']
+  }
+  '/prisoners/booking-id/{bookingId}/alerts': {
+    /**
+     * Gets alert for booking
+     * @description Retrieves alerts for a specific booking. Requires ROLE_NOMIS_ALERTS
+     */
+    get: operations['getAlertsByBookingId']
   }
   '/prisoner/booking-id/{bookingId}/alerts/{alertSequence}': {
     /**
@@ -655,6 +676,20 @@ export interface paths {
      * @description Retrieves the current incentive level (by booking) for a prisoner. Requires ROLE_NOMIS_INCENTIVES.
      */
     get: operations['getCurrentIncentive']
+  }
+  '/documents/{id}': {
+    /**
+     * Retrieve a document
+     * @description Retrieve a document by its id. Requires role NOMIS_DOCUMENTS
+     */
+    get: operations['getDocument']
+  }
+  '/documents/booking/{bookingId}': {
+    /**
+     * Retrieve a list of document ids
+     * @description Retrieve a list of document ids searching by booking id and template name. Requires role NOMIS_DOCUMENTS
+     */
+    get: operations['getDocumentIds']
   }
   '/csip/{id}': {
     /**
@@ -3024,10 +3059,10 @@ export interface components {
       prisonId: string
     }
     PageVisitIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3049,8 +3084,8 @@ export interface components {
       pageSize?: number
       /** Format: int32 */
       pageNumber?: number
-      paged?: boolean
       unpaged?: boolean
+      paged?: boolean
     }
     SortObject: {
       direction?: string
@@ -3287,10 +3322,10 @@ export interface components {
       modifiedBy?: string
     }
     PageQuestionnaireIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3324,6 +3359,38 @@ export interface components {
        * @example Standard
        */
       description: string
+    }
+    /** @description Offence */
+    OffenceResponse: {
+      offenceCode: string
+      statuteCode: string
+      description: string
+    }
+    /** @description Offender Charge */
+    OffenderChargeResponse: {
+      /** Format: int64 */
+      id: number
+      offence: components['schemas']['OffenceResponse']
+      /** Format: int32 */
+      offencesCount?: number
+      /** Format: date */
+      offenceDate?: string
+      /** Format: date */
+      offenceEndDate?: string
+      plea?: components['schemas']['CodeDescription']
+      propertyValue?: number
+      totalPropertyValue?: number
+      cjitCode1?: string
+      cjitCode2?: string
+      cjitCode3?: string
+      chargeStatus?: components['schemas']['CodeDescription']
+      resultCode1?: components['schemas']['CodeDescription']
+      resultCode2?: components['schemas']['CodeDescription']
+      resultCode1Indicator?: string
+      resultCode2Indicator?: string
+      mostSeriousFlag: boolean
+      /** Format: int32 */
+      lidsOffenceNumber?: number
     }
     /** @description Court Case */
     CourtCaseResponse: {
@@ -3429,38 +3496,6 @@ export interface components {
       nonReportFlag?: boolean
       sentencePurposes: components['schemas']['SentencePurposeResponse'][]
     }
-    /** @description Offence */
-    OffenceResponse: {
-      offenceCode: string
-      statuteCode: string
-      description: string
-    }
-    /** @description Offender Charge */
-    OffenderChargeResponse: {
-      /** Format: int64 */
-      id: number
-      offence: components['schemas']['OffenceResponse']
-      /** Format: int32 */
-      offencesCount?: number
-      /** Format: date */
-      offenceDate?: string
-      /** Format: date */
-      offenceEndDate?: string
-      plea?: components['schemas']['CodeDescription']
-      propertyValue?: number
-      totalPropertyValue?: number
-      cjitCode1?: string
-      cjitCode2?: string
-      cjitCode3?: string
-      chargeStatus?: components['schemas']['CodeDescription']
-      resultCode1?: components['schemas']['CodeDescription']
-      resultCode2?: components['schemas']['CodeDescription']
-      resultCode1Indicator?: string
-      resultCode2Indicator?: string
-      mostSeriousFlag: boolean
-      /** Format: int32 */
-      lidsOffenceNumber?: number
-    }
     /** @description Sentence Purpose */
     SentencePurposeResponse: {
       /** Format: int64 */
@@ -3498,16 +3533,31 @@ export interface components {
        */
       requestDateTime: string
     }
+    /** @description ID of previous booking */
+    PreviousBookingId: {
+      /**
+       * Format: int64
+       * @description The NOMIS booking ID
+       * @example 1234567
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The NOMIS booking sequence
+       * @example 3
+       */
+      bookingSequence: number
+    }
     /** @description The list of unique alerts held against a prisoner */
     PrisonerAlertsResponse: {
       latestBookingAlerts: components['schemas']['AlertResponse'][]
       previousBookingsAlerts: components['schemas']['AlertResponse'][]
     }
     PagePrisonerId: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3732,6 +3782,10 @@ export interface components {
       /** @description List of ADAs awarded during this booking period */
       adaSummaries: components['schemas']['ADASummary'][]
     }
+    /** @description The list of alerts held against a booking */
+    BookingAlertsResponse: {
+      alerts: components['schemas']['AlertResponse'][]
+    }
     /** @description Appointment information */
     NonAssociationResponse: {
       /**
@@ -3801,10 +3855,10 @@ export interface components {
       offenderNo2: string
     }
     PageNonAssociationIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -3960,10 +4014,10 @@ export interface components {
       modifyUsername?: string
     }
     PageLocationIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4166,10 +4220,10 @@ export interface components {
       incidentId: number
     }
     PageIncidentIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4197,10 +4251,10 @@ export interface components {
       sequence: number
     }
     PageIncentiveIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4258,6 +4312,24 @@ export interface components {
        */
       whenUpdated?: string
     }
+    /** @description Document id */
+    DocumentIdResponse: {
+      /**
+       * Format: int64
+       * @description The document id
+       */
+      documentId: number
+    }
+    /** @description Action list */
+    Actions: {
+      openCSIPAlert: boolean
+      nonAssociationsUpdated: boolean
+      observationBook: boolean
+      unitOrCellMove: boolean
+      csraOrRsraReview: boolean
+      serviceReferral: boolean
+      simReferral: boolean
+    }
     /** @description Summary details */
     Attendee: {
       /**
@@ -4283,7 +4355,9 @@ export interface components {
        * Format: int64
        * @description The booking id associated with the CSIP
        */
-      bookingId?: number
+      bookingId: number
+      /** @description The original location when the CSIP was created */
+      originalAgencyLocation: string
       /** @description Log number */
       logNumber?: string
       /**
@@ -4309,7 +4383,8 @@ export interface components {
       staffAssaultedName?: string
       reportDetails: components['schemas']['ReportDetails']
       saferCustodyScreening: components['schemas']['SaferCustodyScreening']
-      investigation: components['schemas']['Investigation']
+      investigation: components['schemas']['InvestigationDetails']
+      decision: components['schemas']['Decision']
       /** @description Case Manager involved */
       caseManager?: string
       /** @description Reason for plan */
@@ -4323,6 +4398,27 @@ export interface components {
       plans: components['schemas']['Plan'][]
       /** @description CSIP Reviews */
       reviews: components['schemas']['Review'][]
+      /** @description Associated CSIP document Ids */
+      documents: components['schemas']['DocumentIdResponse'][]
+    }
+    /** @description DecisionAndActions */
+    Decision: {
+      /** @description Conclusion & Reason for decision */
+      conclusion?: string
+      decisionOutcome?: components['schemas']['CodeDescription']
+      signedOffRole?: components['schemas']['CodeDescription']
+      /** @description Recorded By */
+      recordedBy?: string
+      /**
+       * Format: date
+       * @description Recorded Date
+       */
+      recordedDate?: string
+      /** @description What to do next */
+      nextSteps?: string
+      /** @description Other information to take into consideration */
+      otherDetails?: string
+      actions: components['schemas']['Actions']
     }
     /** @description Contributory factors */
     FactorResponse: {
@@ -4334,6 +4430,36 @@ export interface components {
       type: components['schemas']['CodeDescription']
       /** @description Factor comment */
       comment?: string
+    }
+    /** @description Interview */
+    InterviewDetails: {
+      /** @description Person being interviewed */
+      interviewee: string
+      /**
+       * Format: date
+       * @description date of interview
+       */
+      date: string
+      role: components['schemas']['CodeDescription']
+      /** @description Additional data regarding the interview */
+      comments?: string
+    }
+    /** @description Investigation details of the incident */
+    InvestigationDetails: {
+      /** @description Staff involved in the incident */
+      staffInvolved?: string
+      /** @description Whether any evidence was secured */
+      evidenceSecured?: string
+      /** @description Why the incident occurred */
+      reasonOccurred?: string
+      /** @description Normal behaviour of the offender */
+      usualBehaviour?: string
+      /** @description Offender's trigger */
+      trigger?: string
+      /** @description Protective factors */
+      protectiveFactors?: string
+      /** @description Interview */
+      interviews?: components['schemas']['InterviewDetails'][]
     }
     /** @description CSIP Plans */
     Plan: {
@@ -4453,10 +4579,10 @@ export interface components {
       id: number
     }
     PageCSIPIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4563,10 +4689,10 @@ export interface components {
       eventId: number
     }
     PageAppointmentIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4776,10 +4902,10 @@ export interface components {
       allocationId: number
     }
     PageFindActiveAllocationIdsResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4809,10 +4935,10 @@ export interface components {
       offenderNo: string
     }
     PageAlertIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4837,10 +4963,10 @@ export interface components {
       adjustmentCategory: string
     }
     PageAdjustmentIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -4870,10 +4996,10 @@ export interface components {
       offenderNo: string
     }
     PageAdjudicationChargeIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -5058,10 +5184,10 @@ export interface components {
       courseActivityId: number
     }
     PageFindActiveActivityIdsResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8564,6 +8690,52 @@ export interface operations {
     }
   }
   /**
+   * get an offender charge
+   * @description Requires role NOMIS_SENTENCING. Retrieves offender charge details. Offender Charges are at the booking level.
+   */
+  getOffenderCharge: {
+    parameters: {
+      path: {
+        /**
+         * @description Offender Charge id
+         * @example 12345
+         */
+        offenderChargeId: string
+        /**
+         * @description Offender No
+         * @example 12345
+         */
+        offenderNo: string
+      }
+    }
+    responses: {
+      /** @description the court appearance details */
+      200: {
+        content: {
+          'application/json': components['schemas']['OffenderChargeResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Offender not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * get a court case
    * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
    */
@@ -8688,6 +8860,52 @@ export interface operations {
       }
       /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING not present */
       403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets a prisoner's previous booking relative to the supplied booking id
+   * @description Requires role NOMIS_ALERTS.
+   */
+  getPreviousBooking: {
+    parameters: {
+      path: {
+        /**
+         * @description Offender Noms Id
+         * @example A1234ZZ
+         */
+        offenderNo: string
+        /**
+         * @description Booking Id
+         * @example 123
+         */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** @description Ids of booking */
+      200: {
+        content: {
+          'application/json': components['schemas']['PreviousBookingId']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_ALERTS not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Booking or prisoner does not exist or has no previous booking */
+      404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
@@ -8968,6 +9186,47 @@ export interface operations {
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Booking does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets alert for booking
+   * @description Retrieves alerts for a specific booking. Requires ROLE_NOMIS_ALERTS
+   */
+  getAlertsByBookingId: {
+    parameters: {
+      path: {
+        /**
+         * @description Booking id
+         * @example 12345
+         */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** @description Alerts Returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['BookingAlertsResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
@@ -9469,6 +9728,95 @@ export interface operations {
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Retrieve a document
+   * @description Retrieve a document by its id. Requires role NOMIS_DOCUMENTS
+   */
+  getDocument: {
+    parameters: {
+      path: {
+        /** @description The document id */
+        id: string
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/octet-stream': string
+        }
+      }
+      /** @description Bad request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_DOCUMENTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Document not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Retrieve a list of document ids
+   * @description Retrieve a list of document ids searching by booking id and template name. Requires role NOMIS_DOCUMENTS
+   */
+  getDocumentIds: {
+    parameters: {
+      query: {
+        /**
+         * @description The unique name of the template used for a document - this is a repeatable request parameter
+         * @example CSIP_FAC
+         */
+        templateName: string[]
+      }
+      path: {
+        /** @description The booking id */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['DocumentIdResponse'][]
+        }
+      }
+      /** @description Bad request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_DOCUMENTS */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
