@@ -69,6 +69,11 @@ declare module 'express-session' {
     toDate?: string
   }
 
+  interface StartCSIPMigrationForm extends MigrationForm {
+    fromDate?: string
+    toDate?: string
+  }
+
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
@@ -80,6 +85,7 @@ declare module 'express-session' {
     startAppointmentsMigrationForm: StartAppointmentsMigrationForm
     startAlertsMigrationForm: StartAlertsMigrationForm
     startIncidentsMigrationForm: StartIncidentsMigrationForm
+    startCSIPMigrationForm: StartCSIPMigrationForm
     endMigratedActivitiesResult: EndMigratedActivitiesResult
   }
 }

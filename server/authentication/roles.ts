@@ -8,6 +8,7 @@ const MIGRATE_ALLOCATIONS_ROLE = 'ROLE_MIGRATE_ACTIVITIES' // This role is delib
 const MIGRATE_APPOINTMENTS_ROLE = 'ROLE_MIGRATE_APPOINTMENTS'
 const MIGRATE_ALERTS_ROLE = 'ROLE_MIGRATE_ALERTS'
 const MIGRATE_INCIDENTS_ROLE = 'ROLE_MIGRATE_INCIDENTS'
+const MIGRATE_CSIP_ROLE = 'ROLE_MIGRATE_CSIP'
 
 const extractRoles = (res: Response): Array<string> => {
   const token = res?.locals?.user?.token
@@ -23,5 +24,6 @@ export {
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_ALERTS_ROLE,
   MIGRATE_INCIDENTS_ROLE,
+  MIGRATE_CSIP_ROLE,
   extractRoles,
 }
