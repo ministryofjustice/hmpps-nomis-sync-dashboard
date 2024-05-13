@@ -1,7 +1,7 @@
-import type { StartActivitiesMigrationForm } from 'forms'
+import type { StartIncidentsMigrationForm } from 'forms'
 import { validate as validateForm } from '../../validation/validation'
 
-export default function validate(form: StartActivitiesMigrationForm): Express.ValidationError[] {
+export default function validate(form: StartIncidentsMigrationForm): Express.ValidationError[] {
   return validateForm(
     form,
     {

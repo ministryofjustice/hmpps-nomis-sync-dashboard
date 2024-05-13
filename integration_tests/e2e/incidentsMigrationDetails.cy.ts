@@ -8,7 +8,7 @@ context('Incidents Migration Details', () => {
   })
   context('while migration is in progress', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENTS'])
+      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENT_REPORTS'])
       cy.task('stubMigrationInProgress', {
         domain: 'incidents',
         type: 'INCIDENTS',
@@ -32,7 +32,7 @@ context('Incidents Migration Details', () => {
   })
   context('after migration has completed', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENTS'])
+      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENT_REPORTS'])
       cy.task('stubMigrationInProgressCompleted', { domain: 'incidents', type: 'INCIDENTS', migrationId })
       cy.task('stubGetIncidentsMigrationDetailsCompleted', {
         migrationId,

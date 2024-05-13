@@ -7,7 +7,7 @@ context('Incidents Migration Failures', () => {
   })
   context('navigating directly to page', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENTS'])
+      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENT_REPORTS'])
       cy.task('stubHealth')
       cy.task('stubGetIncidentsFailures')
       cy.signIn()

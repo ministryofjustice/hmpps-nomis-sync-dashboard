@@ -16,7 +16,7 @@ import {
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_ALERTS_ROLE,
-  MIGRATE_INCIDENTS_ROLE,
+  MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_CSIP_ROLE,
 } from '../authentication/roles'
 
@@ -92,7 +92,7 @@ export default function routes(services: Services): Router {
           heading: 'Incidents migration',
           description: 'Migration and synchronisation information',
           href: '/incidents-migration',
-          roles: [MIGRATE_INCIDENTS_ROLE],
+          roles: [MIGRATE_INCIDENT_REPORTS_ROLE],
           enabled: true,
         },
         {

@@ -72,14 +72,14 @@ export interface paths {
   '/migrate/incidents/{migrationId}/cancel': {
     /**
      * Cancels a running migration. The actual cancellation might take several minutes to complete
-     * @description Requires role <b>MIGRATE_INCIDENTS</b>
+     * @description Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
      */
     post: operations['cancel_3']
   }
   '/migrate/incidents': {
     /**
      * Starts an incidents migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCIDENTS</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
      */
     post: operations['migrateIncidents']
   }
@@ -92,7 +92,7 @@ export interface paths {
   }
   '/migrate/csip': {
     /**
-     * Starts a csip migration
+     * Starts an csip migration
      * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CSIP</b>
      */
     post: operations['migrateCSIP']
@@ -243,21 +243,21 @@ export interface paths {
   '/migrate/incidents/history/{migrationId}': {
     /**
      * Gets a specific migration history record
-     * @description Requires role <b>MIGRATE_INCIDENTS</b>
+     * @description Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
      */
     get: operations['get_3']
   }
   '/migrate/incidents/history': {
     /**
      * Lists all filtered migration history records un-paged for incidents
-     * @description The records are un-paged and requires role <b>MIGRATE_INCIDENTS</b>
+     * @description The records are un-paged and requires role <b>MIGRATE_INCIDENT_REPORTS</b>
      */
     get: operations['getAll_3']
   }
   '/migrate/incidents/active-migration': {
     /**
      * Gets active/currently running migration data, using migration record and migration queues
-     * @description Requires role <b>MIGRATE_INCIDENTS</b>
+     * @description Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
      */
     get: operations['getActiveMigrationDetails_3']
   }
@@ -1190,7 +1190,7 @@ export interface operations {
   }
   /**
    * Cancels a running migration. The actual cancellation might take several minutes to complete
-   * @description Requires role <b>MIGRATE_INCIDENTS</b>
+   * @description Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
    */
   cancel_3: {
     parameters: {
@@ -1229,7 +1229,7 @@ export interface operations {
   }
   /**
    * Starts an incidents migration
-   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCIDENTS</b>
+   * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
    */
   migrateIncidents: {
     requestBody: {
@@ -1298,7 +1298,7 @@ export interface operations {
     }
   }
   /**
-   * Starts a csip migration
+   * Starts an csip migration
    * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CSIP</b>
    */
   migrateCSIP: {
@@ -2089,7 +2089,7 @@ export interface operations {
   }
   /**
    * Gets a specific migration history record
-   * @description Requires role <b>MIGRATE_INCIDENTS</b>
+   * @description Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
    */
   get_3: {
     parameters: {
@@ -2130,7 +2130,7 @@ export interface operations {
   }
   /**
    * Lists all filtered migration history records un-paged for incidents
-   * @description The records are un-paged and requires role <b>MIGRATE_INCIDENTS</b>
+   * @description The records are un-paged and requires role <b>MIGRATE_INCIDENT_REPORTS</b>
    */
   getAll_3: {
     parameters: {
@@ -2175,7 +2175,7 @@ export interface operations {
   }
   /**
    * Gets active/currently running migration data, using migration record and migration queues
-   * @description Requires role <b>MIGRATE_INCIDENTS</b>
+   * @description Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
    */
   getActiveMigrationDetails_3: {
     responses: {
