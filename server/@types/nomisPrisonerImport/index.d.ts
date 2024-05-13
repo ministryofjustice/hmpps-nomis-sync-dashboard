@@ -305,6 +305,13 @@ export interface paths {
      */
     post: operations['createVisit']
   }
+  '/prisoners/{offenderNo}/sentencing': {
+    /**
+     * Creates a new Sentence
+     * @description Required role NOMIS_SENTENCING Creates a new Sentence for the offender and latest booking
+     */
+    post: operations['createSentence']
+  }
   '/prisoners/{offenderNo}/sentencing/court-cases': {
     /**
      * get court cases for an offender
@@ -543,6 +550,13 @@ export interface paths {
      * @description Retrieves alerts for a prisoner across all bookings. The latest booking all alerts will be returned, from the previous bookings the list will contain at most one alert per alert code type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
      */
     get: operations['getAlertsToMigrate']
+  }
+  '/prisoners/{offenderNo}/alerts/reconciliation': {
+    /**
+     * Gets active alerts for latest booking plus unique list of alerts from previous bookings for a prisoner
+     * @description Retrieves active alerts for a prisoner across all bookings. The latest booking all active alerts will be returned, from the previous bookings the list will contain at most one alert per alert code that is active type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
+     */
+    get: operations['getActiveAlertsForReconciliation']
   }
   '/prisoners/ids': {
     /**
@@ -2068,6 +2082,48 @@ export interface components {
        */
       visitId: number
     }
+    /** @description Sentence request */
+    CreateSentenceRequest: {
+      /** Format: date */
+      startDate: string
+      /** Format: date */
+      endDate?: string
+      status: string
+      sentenceCategory: string
+      sentenceCalcType: string
+      sentenceLevel: string
+      fine?: number
+      sentenceTerm: components['schemas']['SentenceTermRequest']
+      /** Format: int64 */
+      caseId?: number
+      offenderChargeIds: number[]
+    }
+    /** @description Sentence term request */
+    SentenceTermRequest: {
+      /** Format: date */
+      startDate: string
+      /** Format: date */
+      endDate?: string
+      /** Format: int32 */
+      years?: number
+      /** Format: int32 */
+      months?: number
+      /** Format: int32 */
+      weeks?: number
+      /** Format: int32 */
+      days?: number
+      /** Format: int32 */
+      hours?: number
+      sentenceTermType: string
+      lifeSentenceFlag: boolean
+    }
+    /** @description Create sentence response */
+    CreateSentenceResponse: {
+      /** Format: int64 */
+      sentenceSeq: number
+      /** Format: int64 */
+      termSeq: number
+    }
     /** @description Court case create request */
     CreateCourtCaseRequest: {
       /** Format: date */
@@ -2085,7 +2141,7 @@ export interface components {
       /** Format: int64 */
       nextCourtAppearanceId?: number
     }
-    /** @description Create adjustment response */
+    /** @description Create court case response */
     CreateCourtCaseResponse: {
       /** Format: int64 */
       id: number
@@ -3084,8 +3140,8 @@ export interface components {
       pageSize?: number
       /** Format: int32 */
       pageNumber?: number
-      unpaged?: boolean
       paged?: boolean
+      unpaged?: boolean
     }
     SortObject: {
       direction?: string
@@ -3129,6 +3185,8 @@ export interface components {
       bookingId: number
       /** @description Indicates whether for this booking the prisoner has been released */
       hasBeenReleased: boolean
+      /** @description Current prison or OUT */
+      prisonId: string
       /** @description The offender number, aka nomsId, prisonerId */
       offenderNo: string
       /**
@@ -3713,6 +3771,8 @@ export interface components {
       bookingId: number
       /** @description Indicates whether for this booking the prisoner has been released */
       hasBeenReleased: boolean
+      /** @description Current prison or OUT */
+      prisonId: string
       /** @description The offender number, aka nomsId, prisonerId */
       offenderNo: string
       adjustmentType: components['schemas']['SentencingAdjustmentType']
@@ -4357,7 +4417,7 @@ export interface components {
        */
       bookingId: number
       /** @description The original location when the CSIP was created */
-      originalAgencyLocation: string
+      originalAgencyId?: string
       /** @description Log number */
       logNumber?: string
       /**
@@ -7414,6 +7474,58 @@ export interface operations {
     }
   }
   /**
+   * Creates a new Sentence
+   * @description Required role NOMIS_SENTENCING Creates a new Sentence for the offender and latest booking
+   */
+  createSentence: {
+    parameters: {
+      path: {
+        /**
+         * @description Offender number
+         * @example AB1234K
+         */
+        offenderNo: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateSentenceRequest']
+      }
+    }
+    responses: {
+      /** @description Created Sentence */
+      201: {
+        content: {
+          'application/json': components['schemas']['CreateSentenceResponse']
+        }
+      }
+      /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Offender does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
    * get court cases for an offender
    * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
    */
@@ -7462,8 +7574,8 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description Booking Id
-         * @example 12345
+         * @description Offender No
+         * @example AK1234B
          */
         offenderNo: string
       }
@@ -8928,6 +9040,47 @@ export interface operations {
     }
     responses: {
       /** @description Alerts Returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['PrisonerAlertsResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist or has no bookings */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets active alerts for latest booking plus unique list of alerts from previous bookings for a prisoner
+   * @description Retrieves active alerts for a prisoner across all bookings. The latest booking all active alerts will be returned, from the previous bookings the list will contain at most one alert per alert code that is active type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
+   */
+  getActiveAlertsForReconciliation: {
+    parameters: {
+      path: {
+        /**
+         * @description Offender No AKA prisoner number
+         * @example A1234AK
+         */
+        offenderNo: string
+      }
+    }
+    responses: {
+      /** @description Active Alerts Returned */
       200: {
         content: {
           'application/json': components['schemas']['PrisonerAlertsResponse']
