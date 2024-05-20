@@ -13,7 +13,7 @@ generic-service:
     MANAGE_USERS_API_URL: "https://manage-users-api.hmpps.service.justice.gov.uk"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     NOMIS_MIGRATION_API_URL: "https://prisoner-nomis-migration.hmpps.service.justice.gov.uk"
-    NOMIS_PRISONER_API_URL: "https://nomis-prisoner.aks-live-1.studio-hosting.service.justice.gov.uk"
+    NOMIS_PRISONER_API_URL: "https://nomis-prisoner-api.prison.service.justice.gov.uk"
     MAPPING_API_URL: "https://nomis-sync-prisoner-mapping.hmpps.service.justice.gov.uk"
     ACTIVITIES_API_URL: "https://activities-api.prison.service.justice.gov.uk"
     APPINSIGHTS_COMPONENT: "nomisapi-prod"
