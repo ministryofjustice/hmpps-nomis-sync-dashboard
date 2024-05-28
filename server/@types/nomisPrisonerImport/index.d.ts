@@ -46,6 +46,23 @@ export interface paths {
      */
     put: operations['updateCourtAppearance']
   }
+  '/prisoners/booking-id/{bookingId}/sentencing/sentence-sequence/{sequence}': {
+    /**
+     * get sentences for an offender using the given booking id and sentence sequence
+     * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
+     */
+    get: operations['getOffenderSentence']
+    /**
+     * Updates Sentence
+     * @description Required role NOMIS_SENTENCING Updates a Sentence for the offender and latest booking
+     */
+    put: operations['updateSentence']
+    /**
+     * deletes a specific sentence
+     * @description Requires role NOMIS_SENTENCING. Deletes a sentence by booking and sentence sequence
+     */
+    delete: operations['deleteSentence']
+  }
   '/prisoners/booking-id/{bookingId}/alerts/{alertSequence}': {
     /**
      * get an alert by bookingId and alert sequence
@@ -561,16 +578,24 @@ export interface paths {
   '/prisoners/ids': {
     /**
      * Gets the identifiers for all prisoners. By default only active prisoners will be return unless active=false
+     * @deprecated
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     get: operations['getPrisonerIdentifiers']
   }
-  '/prisoners/booking-id/{bookingId}/sentencing/sentence-sequence/{sequence}': {
+  '/prisoners/ids/all': {
     /**
-     * get sentences for an offender using the given booking id and sentence sequence
-     * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
+     * Gets the identifier for all prisoners.
+     * @description Requires role SYNCHRONISATION_REPORTING.
      */
-    get: operations['getOffenderSentence']
+    get: operations['getAllPrisoners']
+  }
+  '/prisoners/ids/active': {
+    /**
+     * Gets the identifiers for all active prisoners
+     * @description Requires role SYNCHRONISATION_REPORTING.
+     */
+    get: operations['getActivePrisonerIdentifiers']
   }
   '/prisoners/booking-id/{bookingId}/sentencing/court-cases': {
     /**
@@ -662,6 +687,20 @@ export interface paths {
      * @description Gets incident details. Requires role NOMIS_INCIDENTS
      */
     get: operations['getIncident']
+  }
+  '/incidents/reconciliation/agencyLocations': {
+    /**
+     * Retrieve a list of all agency locations that have raised incidents)
+     * @description Retrieve a list of all agency locations that have raised incidents, including prisons and PECS. Requires authorised access
+     */
+    get: operations['getIncidentLocations']
+  }
+  '/incidents/reconciliation/agencyLocation/{agencyLocationId}': {
+    /**
+     * Gets incident counts
+     * @description Retrieves open and closed incident counts for a prison.
+     */
+    get: operations['getIncidentCountsForReconciliation']
   }
   '/incidents/ids': {
     /**
@@ -1088,6 +1127,41 @@ export interface components {
       /** Format: int64 */
       nextCourtAppearanceId?: number
     }
+    /** @description Sentence request */
+    CreateSentenceRequest: {
+      /** Format: date */
+      startDate: string
+      /** Format: date */
+      endDate?: string
+      status: string
+      sentenceCategory: string
+      sentenceCalcType: string
+      sentenceLevel: string
+      fine?: number
+      sentenceTerm: components['schemas']['SentenceTermRequest']
+      /** Format: int64 */
+      caseId?: number
+      offenderChargeIds: number[]
+    }
+    /** @description Sentence term request */
+    SentenceTermRequest: {
+      /** Format: date */
+      startDate: string
+      /** Format: date */
+      endDate?: string
+      /** Format: int32 */
+      years?: number
+      /** Format: int32 */
+      months?: number
+      /** Format: int32 */
+      weeks?: number
+      /** Format: int32 */
+      days?: number
+      /** Format: int32 */
+      hours?: number
+      sentenceTermType: string
+      lifeSentenceFlag: boolean
+    }
     /** @description The data held in NOMIS about an alert associated with a prisoner */
     AlertResponse: {
       /**
@@ -1129,6 +1203,8 @@ export interface components {
       /** @description Free format comment */
       comment?: string
       audit: components['schemas']['NomisAudit']
+      /** @description True if this alert is on a previous booking and should have been latest booking and is potentially relevant to prisoner */
+      isAlertFromPreviousBookingRelevant: boolean
     }
     CodeDescription: {
       code: string
@@ -1711,6 +1787,7 @@ export interface components {
         | 'REMWIN'
         | 'STOP_EARN'
         | 'STOP_PCT'
+        | 'PP'
       /**
        * @description The status of the award
        * @example IMMEDIATE
@@ -2081,41 +2158,6 @@ export interface components {
        * @description The created Nomis visit id
        */
       visitId: number
-    }
-    /** @description Sentence request */
-    CreateSentenceRequest: {
-      /** Format: date */
-      startDate: string
-      /** Format: date */
-      endDate?: string
-      status: string
-      sentenceCategory: string
-      sentenceCalcType: string
-      sentenceLevel: string
-      fine?: number
-      sentenceTerm: components['schemas']['SentenceTermRequest']
-      /** Format: int64 */
-      caseId?: number
-      offenderChargeIds: number[]
-    }
-    /** @description Sentence term request */
-    SentenceTermRequest: {
-      /** Format: date */
-      startDate: string
-      /** Format: date */
-      endDate?: string
-      /** Format: int32 */
-      years?: number
-      /** Format: int32 */
-      months?: number
-      /** Format: int32 */
-      weeks?: number
-      /** Format: int32 */
-      days?: number
-      /** Format: int32 */
-      hours?: number
-      sentenceTermType: string
-      lifeSentenceFlag: boolean
     }
     /** @description Create sentence response */
     CreateSentenceResponse: {
@@ -3611,6 +3653,38 @@ export interface components {
       latestBookingAlerts: components['schemas']['AlertResponse'][]
       previousBookingsAlerts: components['schemas']['AlertResponse'][]
     }
+    PagePrisonerIds: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      first?: boolean
+      last?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['PrisonerIds'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject'][]
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description Prisoner identifiers */
+    PrisonerIds: {
+      /**
+       * Format: int64
+       * @description Latest booking id
+       * @example 12345
+       */
+      bookingId: number
+      /**
+       * @description The NOMIS reference AKA prisoner number
+       * @example A1234AA
+       */
+      offenderNo: string
+    }
     PagePrisonerId: {
       /** Format: int32 */
       totalPages?: number
@@ -3632,21 +3706,10 @@ export interface components {
     /** @description Prisoner identifier */
     PrisonerId: {
       /**
-       * Format: int64
-       * @description Latest booking id
-       * @example 12345
-       */
-      bookingId: number
-      /**
        * @description The NOMIS reference AKA prisoner number
        * @example A1234AA
        */
       offenderNo: string
-      /**
-       * @description The prisoner's current status
-       * @example ACTIVE IN
-       */
-      status: string
     }
     /** @description Offender Sentence */
     SentenceResponse: {
@@ -4110,6 +4173,13 @@ export interface components {
        */
       incidentChangeDate: string
       incidentChangeStaff: components['schemas']['Staff']
+      /**
+       * @description The date and time the historical incident questionnaire was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the historical incident questionnaire */
+      createdBy: string
     }
     /** @description Questions asked for the questionnaire */
     HistoryQuestion: {
@@ -4144,6 +4214,11 @@ export interface components {
       answer?: string
       /** @description Comment added to the response by recording staff */
       comment?: string
+      /**
+       * Format: date
+       * @description Response date added to the response by recording staff
+       */
+      responseDate?: string
       recordingStaff: components['schemas']['Staff']
     }
     /** @description Incident Details */
@@ -4162,7 +4237,7 @@ export interface components {
       title?: string
       /** @description The incident details */
       description?: string
-      prison: components['schemas']['CodeDescription']
+      location: components['schemas']['CodeDescription']
       status: components['schemas']['IncidentStatus']
       /** @description The incident questionnaire type */
       type: string
@@ -4173,6 +4248,25 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       incidentDateTime: string
+      /**
+       * @description The date and time the incident was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the incident */
+      createdBy: string
+      /**
+       * @description The date and time the incident was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the incident */
+      lastModifiedBy?: string
+      /**
+       * Format: date
+       * @description The follow up date for the incident
+       */
+      followUpDate?: string
       reportingStaff: components['schemas']['Staff']
       /**
        * @description The date and time the incident was reported
@@ -4215,6 +4309,20 @@ export interface components {
       outcome?: components['schemas']['CodeDescription']
       /** @description General information about the incident */
       comment?: string
+      /**
+       * @description The date and time the offender party was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the offender party */
+      createdBy: string
+      /**
+       * @description The date and time the offender party was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the offender party */
+      lastModifiedBy?: string
     }
     /** @description Questions asked for the incident */
     Question: {
@@ -4232,6 +4340,13 @@ export interface components {
       question: string
       /** @description List of Responses to this question */
       answers: components['schemas']['Response'][]
+      /**
+       * @description The date and time the question was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the question */
+      createdBy: string
     }
     /** @description Requirements for completing the incident report */
     Requirement: {
@@ -4244,7 +4359,21 @@ export interface components {
       date: string
       staff: components['schemas']['Staff']
       /** @description The reporting location of the staff */
-      prisonId: string
+      locationId: string
+      /**
+       * @description The date and time the requirement was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the requirement */
+      createdBy: string
+      /**
+       * @description The date and time the requirement was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the requirement */
+      lastModifiedBy?: string
     }
     /** @description List of Responses to this question */
     Response: {
@@ -4262,7 +4391,26 @@ export interface components {
       answer?: string
       /** @description Comment added to the response by recording staff */
       comment?: string
+      /**
+       * Format: date
+       * @description Response date added to the response by recording staff
+       */
+      responseDate?: string
       recordingStaff: components['schemas']['Staff']
+      /**
+       * @description The date and time the response was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the response */
+      createdBy: string
+      /**
+       * @description The date and time the response was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the response */
+      lastModifiedBy?: string
     }
     /** @description Staff involved in the incident */
     StaffParty: {
@@ -4270,6 +4418,52 @@ export interface components {
       role: components['schemas']['CodeDescription']
       /** @description General information about the incident */
       comment?: string
+      /**
+       * @description The date and time the staff party was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the staff party */
+      createdBy: string
+      /**
+       * @description The date and time the staff party was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the staff party */
+      lastModifiedBy?: string
+    }
+    /** @description Incident Agency Location Id */
+    IncidentAgencyLocationId: {
+      /**
+       * @description The agency location id
+       * @example BXI
+       */
+      locationId: string
+    }
+    /** @description A count for incidents at an agency location */
+    IncidentsCount: {
+      /**
+       * Format: int64
+       * @description A count for the number of open incidents i.e. all incidents that are not closed or duplicates
+       * @example 4
+       */
+      openIncidents: number
+      /**
+       * Format: int64
+       * @description A count for the number of closed or duplicate incidents
+       * @example 2
+       */
+      closedIncidents: number
+    }
+    /** @description Incidents reconciliation count response */
+    IncidentsReconciliationResponse: {
+      /**
+       * @description The agency location we checked the incidents for
+       * @example BXI
+       */
+      locationId: string
+      incidentCount: components['schemas']['IncidentsCount']
     }
     /** @description Incident id */
     IncidentIdResponse: {
@@ -5595,6 +5789,145 @@ export interface operations {
       }
       /** @description Court appearance does not exist */
       404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * get sentences for an offender using the given booking id and sentence sequence
+   * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
+   */
+  getOffenderSentence: {
+    parameters: {
+      path: {
+        /**
+         * @description Sentence sequence
+         * @example 1
+         */
+        sequence: string
+        /**
+         * @description Offender Booking Id
+         * @example 12345
+         */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** @description the sentence details */
+      200: {
+        content: {
+          'application/json': components['schemas']['SentenceResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Offender booking not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Updates Sentence
+   * @description Required role NOMIS_SENTENCING Updates a Sentence for the offender and latest booking
+   */
+  updateSentence: {
+    parameters: {
+      path: {
+        /**
+         * @description Booking Id
+         * @example 4565456
+         */
+        bookingId: string
+        /**
+         * @description Sentence sequence
+         * @example 1
+         */
+        sequence: string
+      }
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateSentenceRequest']
+      }
+    }
+    responses: {
+      /** @description Sentence updated */
+      200: {
+        content: never
+      }
+      /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Sentence does not exist */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * deletes a specific sentence
+   * @description Requires role NOMIS_SENTENCING. Deletes a sentence by booking and sentence sequence
+   */
+  deleteSentence: {
+    parameters: {
+      path: {
+        /**
+         * @description Sentence sequence
+         * @example 1
+         */
+        sequence: string
+        /**
+         * @description Offender Booking Id
+         * @example 12345
+         */
+        bookingId: string
+      }
+    }
+    responses: {
+      /** @description the sentence has been deleted */
+      204: {
+        content: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
@@ -9108,6 +9441,7 @@ export interface operations {
   }
   /**
    * Gets the identifiers for all prisoners. By default only active prisoners will be return unless active=false
+   * @deprecated
    * @description Requires role SYNCHRONISATION_REPORTING.
    */
   getPrisonerIdentifiers: {
@@ -9122,7 +9456,7 @@ export interface operations {
       /** @description paged list of prisoner ids */
       200: {
         content: {
-          'application/json': components['schemas']['PagePrisonerId']
+          'application/json': components['schemas']['PagePrisonerIds']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -9140,29 +9474,20 @@ export interface operations {
     }
   }
   /**
-   * get sentences for an offender using the given booking id and sentence sequence
-   * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
+   * Gets the identifier for all prisoners.
+   * @description Requires role SYNCHRONISATION_REPORTING.
    */
-  getOffenderSentence: {
+  getAllPrisoners: {
     parameters: {
-      path: {
-        /**
-         * @description Sentence sequence
-         * @example 1
-         */
-        sequence: string
-        /**
-         * @description Offender Booking Id
-         * @example 12345
-         */
-        bookingId: string
+      query: {
+        pageRequest: components['schemas']['Pageable']
       }
     }
     responses: {
-      /** @description the sentence details */
+      /** @description paged list of prisoner ids */
       200: {
         content: {
-          'application/json': components['schemas']['SentenceResponse']
+          'application/json': components['schemas']['PagePrisonerId']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -9171,14 +9496,39 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING or ROLE_NOMIS_ALERTS not present */
       403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Offender booking not found */
-      404: {
+    }
+  }
+  /**
+   * Gets the identifiers for all active prisoners
+   * @description Requires role SYNCHRONISATION_REPORTING.
+   */
+  getActivePrisonerIdentifiers: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+    }
+    responses: {
+      /** @description paged list of prisoner ids */
+      200: {
+        content: {
+          'application/json': components['schemas']['PagePrisonerIds']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING not present */
+      403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
@@ -9720,6 +10070,67 @@ export interface operations {
       }
       /** @description Not found */
       404: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Retrieve a list of all agency locations that have raised incidents)
+   * @description Retrieve a list of all agency locations that have raised incidents, including prisons and PECS. Requires authorised access
+   */
+  getIncidentLocations: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          'application/json': components['schemas']['IncidentAgencyLocationId'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  /**
+   * Gets incident counts
+   * @description Retrieves open and closed incident counts for a prison.
+   */
+  getIncidentCountsForReconciliation: {
+    parameters: {
+      path: {
+        /**
+         * @description Agency Location Id
+         * @example LEI
+         */
+        agencyLocationId: string
+      }
+    }
+    responses: {
+      /** @description Reconciliation data returned */
+      200: {
+        content: {
+          'application/json': components['schemas']['IncidentsReconciliationResponse']
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_INCIDENTS */
+      403: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
