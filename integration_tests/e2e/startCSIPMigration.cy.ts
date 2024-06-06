@@ -9,11 +9,10 @@ import CSIPMigrationPage from '../pages/csip-migration/csipMigration'
 context('Start CSIP Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_CSIP role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_CSIP'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
       cy.task('stubListOfCSIPMigrationHistory')
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)

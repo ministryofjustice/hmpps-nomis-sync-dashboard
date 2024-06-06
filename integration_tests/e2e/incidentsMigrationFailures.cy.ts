@@ -3,11 +3,10 @@ import IncidentsMigrationFailuresPage from '../pages/incidents-migration/inciden
 context('Incidents Migration Failures', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('navigating directly to page', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENT_REPORTS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
       cy.task('stubHealth')
       cy.task('stubGetIncidentsFailures')
       cy.signIn()

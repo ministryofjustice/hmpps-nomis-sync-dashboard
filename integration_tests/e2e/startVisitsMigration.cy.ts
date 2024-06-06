@@ -8,11 +8,10 @@ import VisitsMigrationPage from '../pages/visits-migration/visitsMigration'
 context('Start Visits Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISITS'] })
       cy.task('stubListOfVisitsMigrationHistory')
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)

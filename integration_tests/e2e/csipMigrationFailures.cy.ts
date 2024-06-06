@@ -3,11 +3,10 @@ import CSIPMigrationFailuresPage from '../pages/csip-migration/csipMigrationFail
 context('CSIP Migration Failures', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('navigating directly to page', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_CSIP'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
       cy.task('stubHealth')
       cy.task('stubGetCSIPFailures')
       cy.signIn()

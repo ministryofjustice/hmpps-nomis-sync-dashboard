@@ -8,12 +8,11 @@ import AllocationsMigrationPage from '../pages/allocations-migration/allocations
 context('Start Allocations Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
     cy.task('stubGetActivityCategories')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_ACTIVITIES'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
       cy.task('stubListOfAllocationsMigrationHistory')
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)

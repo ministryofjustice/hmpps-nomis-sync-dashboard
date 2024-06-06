@@ -9,11 +9,10 @@ import SentencingMigrationPage from '../pages/sentencing-migration/sentencingMig
 context('Start Sentencing Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_SENTENCING role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_SENTENCING'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_SENTENCING'] })
       cy.task('stubListOfSentencingMigrationHistory')
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)

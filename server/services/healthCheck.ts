@@ -44,7 +44,6 @@ function gatherCheckInfo(aggregateStatus: Record<string, unknown>, currentStatus
 
 const apiChecks = [
   service('hmppsAuth', `${config.apis.hmppsAuth.url}/health/ping`, config.apis.hmppsAuth.agent),
-  service('manageUsersApi', `${config.apis.manageUsersApi.url}/health/ping`, config.apis.manageUsersApi.agent),
   service('nomisMigration', `${config.apis.nomisMigration.url}/health/ping`, config.apis.nomisMigration.agent),
   service('nomisPrisoner', `${config.apis.nomisPrisoner.url}/health/ping`, config.apis.nomisPrisoner.agent),
   service('activitiesApi', `${config.apis.activities.url}/health/ping`, config.apis.activities.agent),

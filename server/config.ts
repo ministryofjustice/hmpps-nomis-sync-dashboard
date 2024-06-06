@@ -99,14 +99,6 @@ export default {
       },
       agent: new AgentConfig(Number(get('MAPPING_TIMEOUT_RESPONSE', 60000))),
     },
-    manageUsersApi: {
-      url: get('MANAGE_USERS_API_URL', 'http://localhost:9091', requiredInProduction),
-      timeout: {
-        response: Number(get('MANAGE_USERS_API_TIMEOUT_RESPONSE', 10000)),
-        deadline: Number(get('MANAGE_USERS_API_TIMEOUT_DEADLINE', 10000)),
-      },
-      agent: new AgentConfig(Number(get('MANAGE_USERS_API_TIMEOUT_RESPONSE', 10000))),
-    },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
       timeout: {
