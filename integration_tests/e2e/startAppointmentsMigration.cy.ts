@@ -8,11 +8,10 @@ import AppointmentsMigrationPage from '../pages/appointments-migration/appointme
 context('Start Appointments Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_APPOINTMENTS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_APPOINTMENTS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_APPOINTMENTS'] })
       cy.task('stubListOfAppointmentsMigrationHistory')
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)

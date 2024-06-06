@@ -4,11 +4,10 @@ context('Incidents Migration Details', () => {
   const migrationId = '2022-03-28T14:28:04'
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('while migration is in progress', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENT_REPORTS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
       cy.task('stubMigrationInProgress', {
         domain: 'incidents',
         type: 'INCIDENTS',
@@ -32,7 +31,7 @@ context('Incidents Migration Details', () => {
   })
   context('after migration has completed', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENT_REPORTS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
       cy.task('stubMigrationInProgressCompleted', { domain: 'incidents', type: 'INCIDENTS', migrationId })
       cy.task('stubGetIncidentsMigrationDetailsCompleted', {
         migrationId,

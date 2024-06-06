@@ -5,8 +5,7 @@ import ActivitiesMigrationPage from '../pages/activities-migration/activitiesMig
 context('End Activities', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
-    cy.task('stubSignIn', ['ROLE_MIGRATE_ACTIVITIES'])
+    cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
     cy.task('stubListOfActivitiesMigrationHistory')
     cy.signIn()
     const indexPage = Page.verifyOnPage(IndexPage)

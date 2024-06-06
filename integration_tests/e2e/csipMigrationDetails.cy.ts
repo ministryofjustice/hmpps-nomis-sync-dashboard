@@ -4,11 +4,10 @@ context('CSIP Migration Details', () => {
   const migrationId = '2022-03-28T14:28:04'
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('while migration is in progress', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_CSIP'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
       cy.task('stubMigrationInProgress', {
         domain: 'csip',
         type: 'CSIP',
@@ -32,7 +31,7 @@ context('CSIP Migration Details', () => {
   })
   context('after migration has completed', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_CSIP'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
       cy.task('stubMigrationInProgressCompleted', { domain: 'csip', type: 'CSIP', migrationId })
       cy.task('stubGetCSIPMigrationDetailsCompleted', {
         migrationId,

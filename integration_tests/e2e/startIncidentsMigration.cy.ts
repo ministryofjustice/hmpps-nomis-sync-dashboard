@@ -9,11 +9,10 @@ import IncidentsMigrationPage from '../pages/incidents-migration/incidentsMigrat
 context('Start Incidents Migration', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_INCIDENT_REPORTS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENT_REPORTS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
       cy.task('stubListOfIncidentsMigrationHistory')
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)

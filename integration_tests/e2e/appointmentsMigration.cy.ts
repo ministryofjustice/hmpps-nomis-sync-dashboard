@@ -6,11 +6,10 @@ import AppointmentsMigrationFailuresPage from '../pages/appointments-migration/a
 context('Appointment Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_APPOINTMENTS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_APPOINTMENTS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_APPOINTMENTS'] })
       cy.task('stubListOfAppointmentsMigrationHistory')
       cy.signIn()
     })
@@ -85,7 +84,7 @@ context('Appointment Migration Homepage', () => {
 
   context('Without MIGRATE_APPOINTMENTS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_PRISONERS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
     it('should not see migrate appointments tile', () => {

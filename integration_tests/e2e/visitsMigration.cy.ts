@@ -6,11 +6,10 @@ import VisitsMigrationFailuresPage from '../pages/visits-migration/visitsMigrati
 context('Visit Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISITS'] })
       cy.task('stubListOfVisitsMigrationHistory')
       cy.signIn()
     })
@@ -103,7 +102,7 @@ context('Visit Migration Homepage', () => {
 
   context('Without MIGRATE_VISITS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_PRISONERS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
     it('should not see migrate visits tile', () => {

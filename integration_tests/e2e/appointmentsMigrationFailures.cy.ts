@@ -3,11 +3,10 @@ import AppointmentsMigrationFailuresPage from '../pages/appointments-migration/a
 context('Appointment Migration Failures', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('navigating directly to page', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_APPOINTMENTS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_APPOINTMENTS'] })
       cy.task('stubHealth')
       cy.task('stubGetAppointmentsFailures')
       cy.signIn()

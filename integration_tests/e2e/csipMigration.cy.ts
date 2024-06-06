@@ -6,11 +6,10 @@ import CSIPMigrationFailuresPage from '../pages/csip-migration/csipMigrationFail
 context('CSIP Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_CSIP role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_CSIP'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
       cy.task('stubListOfCSIPMigrationHistory')
       cy.signIn()
     })
@@ -76,7 +75,7 @@ context('CSIP Migration Homepage', () => {
 
   context('Without MIGRATE_CSIP role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_PRISONERS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
     it('should not see migrate csip tile', () => {

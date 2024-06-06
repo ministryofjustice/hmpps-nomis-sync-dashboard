@@ -6,11 +6,10 @@ import IncidentsMigrationFailuresPage from '../pages/incidents-migration/inciden
 context('Incident Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_INCIDENT_REPORTS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_INCIDENT_REPORTS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
       cy.task('stubListOfIncidentsMigrationHistory')
       cy.signIn()
     })
@@ -76,7 +75,7 @@ context('Incident Migration Homepage', () => {
 
   context('Without MIGRATE_INCIDENT_REPORTS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_PRISONERS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
     it('should not see migrate incident tile', () => {

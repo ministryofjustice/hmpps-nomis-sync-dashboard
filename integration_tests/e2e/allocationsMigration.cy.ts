@@ -6,11 +6,10 @@ import AllocationsMigrationFailuresPage from '../pages/allocations-migration/all
 context('Allocations Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_ACTIVITIES'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
       cy.task('stubListOfAllocationsMigrationHistory')
       cy.signIn()
     })
@@ -76,7 +75,7 @@ context('Allocations Migration Homepage', () => {
 
   context('Without MIGRATE_ALLOCATINS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_PRISONERS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
     it('should not see migrate allocations tile', () => {

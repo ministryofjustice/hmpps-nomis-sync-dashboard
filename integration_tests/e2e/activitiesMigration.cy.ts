@@ -7,11 +7,10 @@ import StarAllocationsMigrationPage from '../pages/allocations-migration/startAl
 context('Activities Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_ACTIVITIES'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
       cy.task('stubListOfActivitiesMigrationHistory')
       cy.signIn()
     })
@@ -94,7 +93,7 @@ context('Activities Migration Homepage', () => {
 
   context('Without MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_PRISONERS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
     it('should not see migrate activities tile', () => {

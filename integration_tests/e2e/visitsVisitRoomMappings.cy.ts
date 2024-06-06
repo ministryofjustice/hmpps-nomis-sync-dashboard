@@ -6,12 +6,11 @@ import AddRoomMappingPage from '../pages/visits-room-mapping/addRoomMappings'
 context('Visit Room Mappings', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
 
   context('With VISIT MAPPINGS role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISITS'] })
       cy.signIn()
     })
     it('should see visit room mappings tile', () => {

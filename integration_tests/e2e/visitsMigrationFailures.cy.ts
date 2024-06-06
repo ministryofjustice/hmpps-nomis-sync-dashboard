@@ -3,11 +3,10 @@ import VisitsMigrationFailuresPage from '../pages/visits-migration/visitsMigrati
 context('Visit Migration Failures', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubManageUser')
   })
   context('navigating directly to page', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', ['ROLE_MIGRATE_VISITS'])
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISITS'] })
       cy.task('stubHealth')
       cy.task('stubGetVisitsFailures')
       cy.signIn()
