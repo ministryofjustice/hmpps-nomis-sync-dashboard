@@ -1,5 +1,6 @@
-export default function trimForm<T>(form: Record<string, unknown>): T {
+export default function trimForm<T extends Record<string, unknown>>(form: T): T {
   return Object.keys(form).reduce((acc, curr) => {
+    // @ts-expect-error ignore TS2862: Type 'T' is generic and can only be indexed for reading
     acc[curr] = trimItem(form[curr])
     return acc
   }, {} as T)
