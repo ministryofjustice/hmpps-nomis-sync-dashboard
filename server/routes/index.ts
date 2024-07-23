@@ -8,6 +8,7 @@ import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMig
 import alertsMigrationRoutes from './alertsMigration/alertsMigrationRouter'
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
 import csipMigrationRoutes from './csipMigration/csipMigrationRouter'
+import prisonPersonMigrationRoutes from './prisonPersonMigration/prisonPersonMigrationRouter'
 import {
   extractRoles,
   MIGRATE_SENTENCING_ROLE,
@@ -18,6 +19,7 @@ import {
   MIGRATE_ALERTS_ROLE,
   MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_CSIP_ROLE,
+  MIGRATE_PRISONPERSON_ROLE,
 } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
@@ -103,6 +105,14 @@ export default function routes(services: Services): Router {
           roles: [MIGRATE_CSIP_ROLE],
           enabled: true,
         },
+        {
+          id: 'prisonperson-migration',
+          heading: 'Prison Person migration',
+          description: 'WIP - DO NOT USE! Migration and synchronisation information',
+          href: '/prisonperson-migration',
+          roles: [MIGRATE_PRISONPERSON_ROLE],
+          enabled: true,
+        },
       ].filter(
         register =>
           Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled,
@@ -118,5 +128,6 @@ export default function routes(services: Services): Router {
   alertsMigrationRoutes(router, services)
   incidentsMigrationRoutes(router, services)
   csipMigrationRoutes(router, services)
+  prisonPersonMigrationRoutes(router, services)
   return router
 }

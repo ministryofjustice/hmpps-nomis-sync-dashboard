@@ -2028,6 +2028,152 @@ const stubGetCSIPMigrationDetailsCompleted = ({
       },
     },
   })
+
+const stubListOfPrisonPersonMigrationHistory = (
+  migrationHistory: MigrationHistory[] = defaultPrisonPersonMigrationHistory,
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/migrate/prisonperson/history?.*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: migrationHistory,
+    },
+  })
+
+const defaultPrisonPersonMigrationHistory: MigrationHistory[] = [
+  {
+    migrationId: '2022-03-14T10:13:56',
+    whenStarted: '2022-03-14T10:13:56.878627',
+    whenEnded: '2022-03-14T10:14:07.531409',
+    estimatedRecordCount: 0,
+    filter: '{}',
+    recordsMigrated: 0,
+    recordsFailed: 0,
+    migrationType: 'PRISONPERSON',
+    status: 'COMPLETED',
+    id: '2022-03-14T10:13:56',
+    isNew: false,
+  },
+  {
+    migrationId: '2022-03-14T11:45:12',
+    whenStarted: '2022-03-14T11:45:12.615759',
+    estimatedRecordCount: 205630,
+    filter: '{"prisonerNumber": "A1234BC"}',
+    recordsMigrated: 1,
+    recordsFailed: 162794,
+    migrationType: 'PRISONPERSON',
+    status: 'STARTED',
+    id: '2022-03-14T11:45:12',
+    isNew: false,
+  },
+  {
+    migrationId: '2022-03-15T11:00:35',
+    whenStarted: '2022-03-15T11:00:35.406626',
+    whenEnded: '2022-03-15T11:00:45.990485',
+    estimatedRecordCount: 4,
+    filter: '{}',
+    recordsMigrated: 0,
+    recordsFailed: 4,
+    migrationType: 'PRISONPERSON',
+    status: 'COMPLETED',
+    id: '2022-03-15T11:00:35',
+    isNew: false,
+  },
+]
+
+const stubGetPrisonPersonFailures = (failures: unknown = defaultPrisonPersonFailures): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-prisonpersonmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: failures,
+    },
+  })
+
+const defaultPrisonPersonFailures = {
+  messagesFoundCount: 353,
+  messagesReturnedCount: 5,
+  messages: [
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {
+            courseActivityId: 123456,
+          },
+        },
+        type: 'MIGRATE_PRISONPERSON',
+      },
+      messageId: 'afeb75fd-a2aa-41c4-9ede-b6bfe9590d36',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {
+            courseActivityId: 123457,
+          },
+        },
+        type: 'MIGRATE_PRISONPERSON',
+      },
+      messageId: '86b96f0e-2ac3-445c-b3ac-0a4d525d371e',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123458,
+          },
+        },
+        type: 'MIGRATE_PRISONPERSON',
+      },
+      messageId: '7e37a1e0-f041-42bc-9c2d-1da82d3bb83b',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123459,
+          },
+        },
+        type: 'MIGRATE_PRISONPERSON',
+      },
+      messageId: '8d87f4d7-7846-48b2-ae93-5a7878dba502',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {
+            courseActivityId: 123460,
+          },
+        },
+        type: 'MIGRATE_PRISONPERSON',
+      },
+      messageId: '230dcb1f-3391-4630-b907-3923ec9e0ee4',
+    },
+  ],
+}
+
 export default {
   stubListOfVisitsMigrationHistory,
   stubStartVisitsMigration,
@@ -2087,4 +2233,7 @@ export default {
   stubMigrationInProgress,
   stubMigrationInProgressCompleted,
   stubGetVisitMigrationRoomUsage,
+
+  stubListOfPrisonPersonMigrationHistory,
+  stubGetPrisonPersonFailures,
 }
