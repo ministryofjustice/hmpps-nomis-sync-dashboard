@@ -724,4 +724,13 @@ export default class NomisMigrationService {
   private static async getCSIPDLQName(token: string): Promise<string> {
     return NomisMigrationService.getAnyDLQName('migrationcsip-health', token)
   }
+
+  async getPrisonPersonMigrations(context: Context): Promise<HistoricMigrations> {
+    logger.info(`getting prisonperson migrations`)
+    return {
+      migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
+        path: `/migrate/prisonperson/history`,
+      }),
+    }
+  }
 }
