@@ -733,4 +733,24 @@ export default class NomisMigrationService {
       }),
     }
   }
+
+  async getPrisonPersonMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
+    logger.info(`getting details for prison person migration ${migrationId}`)
+    const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
+      path: `/migrate/prisonperson/history/${migrationId}`,
+    })
+
+    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
+      path: `/migrate/prisonperson/active-migration`,
+    })
+
+    return {
+      history,
+      currentProgress: {
+        recordsFailed: inProgressMigration.recordsFailed,
+        recordsMigrated: inProgressMigration.recordsMigrated,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
+      },
+    }
+  }
 }
