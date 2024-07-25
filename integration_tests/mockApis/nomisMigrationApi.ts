@@ -2174,6 +2174,68 @@ const defaultPrisonPersonFailures = {
   ],
 }
 
+const stubGetPrisonPersonMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/prisonperson/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded: null,
+        estimatedRecordCount: 202,
+        filter: '{"prisonerNumber":"A1234BC"}',
+        recordsMigrated: 12091,
+        recordsFailed: 123,
+        migrationType: 'PRISONPERSON',
+        status: 'STARTED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubGetPrisonPersonMigrationDetailsCompleted = ({
+  migrationId,
+  migrated,
+  failed,
+  whenEnded,
+}: {
+  migrationId: string
+  migrated: number
+  failed: string
+  whenEnded: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/prisonperson/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded,
+        estimatedRecordCount: 202,
+        filter: '{"prisonerNumber":"A1234BC"}',
+        recordsMigrated: migrated,
+        recordsFailed: failed,
+        migrationType: 'PRISONPERSON',
+        status: 'COMPLETED',
+        id: migrationId,
+      },
+    },
+  })
+
 export default {
   stubListOfVisitsMigrationHistory,
   stubStartVisitsMigration,
@@ -2236,4 +2298,6 @@ export default {
 
   stubListOfPrisonPersonMigrationHistory,
   stubGetPrisonPersonFailures,
+  stubGetPrisonPersonMigrationDetailsStarted,
+  stubGetPrisonPersonMigrationDetailsCompleted,
 }
