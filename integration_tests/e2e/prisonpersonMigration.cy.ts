@@ -71,6 +71,16 @@ context('Prison Person Migration Homepage', () => {
       // })
       // Page.verifyOnPage(PrisonPersonMigrationFailuresPage)
     })
+
+    it('should click through to prison person migration', () => {
+      cy.task('stubHealth')
+
+      const migrationPage = PrisonPersonMigrationPage.goTo()
+
+      migrationPage.migrationResultsRow(1).within(() => {
+        cy.get('[data-qa=migrate-prisonperson-link]').click()
+      })
+    })
   })
 
   context('Without MIGRATE_PRISONPERSON role', () => {

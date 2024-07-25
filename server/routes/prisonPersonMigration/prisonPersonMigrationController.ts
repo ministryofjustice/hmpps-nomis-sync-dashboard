@@ -33,6 +33,14 @@ export default class PrisonPersonMigrationController {
     })
   }
 
+  async prisonPersonMigrationDetails(req: Request, res: Response): Promise<void> {
+    const { migrationId } = req.query as { migrationId: string }
+    const migration = await this.nomisMigrationService.getPrisonPersonMigration(migrationId, context(res))
+    res.render('pages/prisonperson/prisonPersonMigrationDetails', {
+      migration: { ...migration, history: PrisonPersonMigrationController.withFilter(migration.history) },
+    })
+  }
+
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
