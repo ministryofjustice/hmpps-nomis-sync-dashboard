@@ -1,6 +1,7 @@
 import IndexPage from '../pages/index'
 import Page from '../pages/page'
 import PrisonPersonMigrationPage from '../pages/prisonperson/prisonPersonMigration'
+import PrisonPersonMigrationFailuresPage from '../pages/prisonperson/prisonpersonMigrationFailures'
 
 context('Prison Person Migration Homepage', () => {
   beforeEach(() => {
@@ -65,11 +66,10 @@ context('Prison Person Migration Homepage', () => {
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
       })
 
-      // TODO add this back in when we add migration failures
-      // migrationPage.migrationResultsRow(1).within(() => {
-      //   cy.get('[data-qa=failures-link]').click()
-      // })
-      // Page.verifyOnPage(PrisonPersonMigrationFailuresPage)
+      migrationPage.migrationResultsRow(1).within(() => {
+        cy.get('[data-qa=failures-link]').click()
+      })
+      Page.verifyOnPage(PrisonPersonMigrationFailuresPage)
     })
   })
 

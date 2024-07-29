@@ -41,6 +41,27 @@ export default class PrisonPersonMigrationController {
     })
   }
 
+  async viewFailures(req: Request, res: Response): Promise<void> {
+    const failures = await this.nomisMigrationService.getPrisonPersonFailures(context(res))
+    const failuresDecorated = {
+      ...failures,
+      messages: failures.messages.map(message => ({
+        ...message,
+        applicationInsightsLink: PrisonPersonMigrationController.applicationInsightsUrl(
+          PrisonPersonMigrationController.messageApplicationInsightsQuery(message),
+        ),
+      })),
+    }
+    res.render('pages/prisonperson/prisonPersonMigrationFailures', { failures: failuresDecorated })
+  }
+
+  private static messageApplicationInsightsQuery(message: { messageId: string }): string {
+    return `exceptions
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
+    | order by timestamp desc`
+  }
+
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
