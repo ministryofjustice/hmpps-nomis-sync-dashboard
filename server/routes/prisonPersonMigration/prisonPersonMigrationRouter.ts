@@ -14,6 +14,7 @@ export default function routes(router: Router, services: Services): Router {
 
   const prisonPersonMigrationController = new PrisonPersonMigrationController(services.nomisMigrationService)
   get('/prisonperson-migration', (req, res) => prisonPersonMigrationController.getPrisonPersonMigrations(req, res))
+  get('/prisonperson-migration/failures', (req, res) => prisonPersonMigrationController.viewFailures(req, res))
   get('/prisonperson-migration/details', (req, res) =>
     prisonPersonMigrationController.prisonPersonMigrationDetails(req, res),
   )

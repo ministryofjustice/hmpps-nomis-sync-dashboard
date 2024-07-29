@@ -516,6 +516,17 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
               messagesOnDlq: `${failures}`,
             },
           },
+          'migrationprisonperson-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-prisonpersonmigration_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-prisonpersonmigration_dlq',
+              messagesOnDlq: `${failures}`,
+            },
+          },
         },
         groups: ['liveness', 'readiness'],
       },

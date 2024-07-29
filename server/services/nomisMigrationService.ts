@@ -753,4 +753,18 @@ export default class NomisMigrationService {
       },
     }
   }
+
+  async getPrisonPersonFailures(context: Context): Promise<GetDlqResult> {
+    logger.info(`getting messages on prisonperson DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getPrisonPersonDLQName(token)
+
+    return NomisMigrationService.restClient(token).get<GetDlqResult>({
+      path: `/queue-admin/get-dlq-messages/${dlqName}`,
+    })
+  }
+
+  private static async getPrisonPersonDLQName(token: string): Promise<string> {
+    return NomisMigrationService.getAnyDLQName('migrationprisonperson-health', token)
+  }
 }
