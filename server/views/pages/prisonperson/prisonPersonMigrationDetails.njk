@@ -49,9 +49,9 @@
 
     <div class="govuk-grid-row">
       {% set filterHtml %}
-        {% if migration.history.filterPrisonId %}
+        {% if migration.history.filterPrisonerNumber %}
           <div>
-            <span class="govuk-label--s">Prisoner Number:</span><span data-qa="filterPrisonId" class="govuk-!-margin-left-2">{{ migration.history.filterPrisonerNumber }}</span>
+            <span class="govuk-label--s">Prisoner Number:</span><span data-qa="filterPrisonerNumber" class="govuk-!-margin-left-2">{{ migration.history.filterPrisonerNumber }}</span>
           </div>
         {% endif %}
       {% endset %}

@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import PrisonPersonMigrationController from './prisonPersonMigrationController'
+import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
 describe('prisonPersonMigrationController', () => {
   const req = {
@@ -57,7 +58,10 @@ describe('prisonPersonMigrationController', () => {
       ]
       nomisMigrationService.getPrisonPersonMigrations.mockResolvedValue(prisonPersonMigrationResponse)
 
-      await new PrisonPersonMigrationController(nomisMigrationService).getPrisonPersonMigrations(req, res)
+      await new PrisonPersonMigrationController(nomisMigrationService, nomisPrisonerService).getPrisonPersonMigrations(
+        req,
+        res,
+      )
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/prisonperson/prisonPersonMigration', {
         migrations: expect.arrayContaining([expect.objectContaining(decoratedMigrations[0])]),
@@ -84,7 +88,7 @@ describe('prisonPersonMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new PrisonPersonMigrationController(nomisMigrationService).viewFailures(req, res)
+      await new PrisonPersonMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/prisonperson/prisonPersonMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([

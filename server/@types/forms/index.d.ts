@@ -49,4 +49,9 @@ declare module 'forms' {
     toDate?: string
     action?: 'startMigration' | 'viewEstimatedCount'
   }
+
+  export interface StartPrisonPersonigrationForm {
+    prisonerNumber?: string
+    action?: 'startMigration' | 'viewEstimatedCount'
+  }
 }

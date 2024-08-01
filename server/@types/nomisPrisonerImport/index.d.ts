@@ -5,6 +5,12 @@
 
 export interface paths {
   '/sentence-adjustments/{adjustmentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get specific sentence adjustment
      * @description Requires role NOMIS_SENTENCING. Retrieves a sentence adjustment by id
@@ -15,38 +21,105 @@ export interface paths {
      * @description Requires role NOMIS_SENTENCING. Updates a sentence adjustment by id
      */
     put: operations['updateSentenceAdjustment']
+    post?: never
     /**
      * deletes specific sentence adjustment
      * @description Requires role NOMIS_SENTENCING. Deletes a sentence adjustment by id
      */
     delete: operations['deleteSentenceAdjustment']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/schedules/{courseScheduleId}/booking/{bookingId}/attendance': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Creates or updates an attendance record
      * @description Creates or updates an attendance for the course schedule. Requires role NOMIS_ACTIVITIES
      */
     put: operations['upsertAttendance']
+    post?: never
+    /**
+     * Deletes an attendance record
+     * @description Deletes an attendance for the course schedule. Requires role NOMIS_ACTIVITIES
+     */
+    delete: operations['deleteAttendance']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/visits/{visitId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates an existing visit
      * @description Updates details of an existing visit such as the visitors and time slot
      */
     put: operations['updateVisit']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/visits/{visitId}/cancel': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /** Cancel a visit */
     put: operations['cancelVisit']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/sentencing/court-cases/{caseId}/court-appearances/{eventId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates Court Appearance
      * @description Required role NOMIS_SENTENCING Updates a new Court Appearance for the offender,latest booking and given Court Case
      */
     put: operations['updateCourtAppearance']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/sentencing/sentence-sequence/{sequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get sentences for an offender using the given booking id and sentence sequence
      * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
@@ -57,84 +130,196 @@ export interface paths {
      * @description Required role NOMIS_SENTENCING Updates a Sentence for the offender and latest booking
      */
     put: operations['updateSentence']
+    post?: never
     /**
      * deletes a specific sentence
      * @description Requires role NOMIS_SENTENCING. Deletes a sentence by booking and sentence sequence
      */
     delete: operations['deleteSentence']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/alerts/{alertSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get an alert by bookingId and alert sequence
      * @description Retrieves an prisoner alert. Requires ROLE_NOMIS_ALERTS
      */
-    get: operations['getAlert_1']
+    get: operations['getAlert']
     /**
      * Updates an alert on a prisoner
      * @description Updates an alert on the specified prisoner's booking which should be the latest booking. Requires ROLE_NOMIS_ALERTS
      */
     put: operations['updateAlert']
+    post?: never
     /**
      * Deletes an alert by bookingId and alert sequence
      * @description Deletes an prisoner alert. Requires ROLE_NOMIS_ALERTS
      */
     delete: operations['deleteAlert']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/sequence/{typeSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates an existing non-association
      * @description Updates an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS
      */
     put: operations['updateNonAssociation']
+    post?: never
     /**
      * Deletes a non-association
      * @description Deletes the specified non-association detail record. if there was only one, the parent NA record is deleted too. Requires role NOMIS_NON_ASSOCIATIONS
      */
     delete: operations['deleteNonAssociation']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/sequence/{typeSequence}/close': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Closes an existing non-association
      * @description Closes an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS
      */
     put: operations['closeNonAssociation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations/{locationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates an existing location
      * @description Updates an existing location. Requires role NOMIS_LOCATIONS
      */
     put: operations['updateLocation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations/{locationId}/reactivate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Reactivates a deactivated location
      * @description Requires role NOMIS_LOCATIONS
      */
     put: operations['reactivateLocation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations/{locationId}/deactivate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Deactivates an existing location
      * @description Requires role NOMIS_LOCATIONS
      */
     put: operations['deactivateLocation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations/{locationId}/certification': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Update location certification
      * @description Requires role NOMIS_LOCATIONS
      */
     put: operations['updateCertification']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations/{locationId}/capacity': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Update location capacity
      * @description Requires role NOMIS_LOCATIONS
      */
     put: operations['updateCapacity']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/key-date-adjustments/{adjustmentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get specific key date adjustment
      * @description Requires role NOMIS_SENTENCING. Retrieves a key date adjustment by id
@@ -145,13 +330,24 @@ export interface paths {
      * @description Requires role NOMIS_SENTENCING. Updates a sentence adjustment by id
      */
     put: operations['updateKeyDateAdjustment']
+    post?: never
     /**
      * deletes specific key date adjustment
      * @description Requires role NOMIS_SENTENCING. Deletes a key date adjustment by id
      */
     delete: operations['deleteKeyDateAdjustment']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incentives/reference-codes/{code}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets the global incentive level by code
      * @description Gets a global incentive level by provided code and domain of IEP_LEVEL
@@ -162,8 +358,20 @@ export interface paths {
      * @description Updates an existing global incentive level, updateable fields are description and active
      */
     put: operations['updateGlobalIncentiveLevel']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incentives/prison/{prison}/code/{code}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets the prison incentive level
      * @description Gets prison incentive level data by provided code and prison
@@ -174,74 +382,337 @@ export interface paths {
      * @description Creates incentive level data associated with a Prison
      */
     put: operations['updatePrisonIncentiveLevelData']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/casenotes/{caseNoteId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get a case note by id
+     * @description Retrieves a prisoner case note. Requires ROLE_NOMIS_CASENOTES
+     */
+    get: operations['getCaseNote']
+    /**
+     * Amends a case note on a prisoner
+     * @description Updates the specified case note. Requires ROLE_NOMIS_CASENOTES
+     */
+    put: operations['amendCaseNote']
+    post?: never
+    /**
+     * Deletes a case note
+     * @description Deletes the specified case note. Requires ROLE_NOMIS_CASENOTES
+     */
+    delete: operations['deleteCaseNote']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/appointments/{nomisEventId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates an existing appointment
      * @description Updates an existing appointment. Requires role NOMIS_APPOINTMENTS
      */
     put: operations['updateAppointment']
+    post?: never
     /**
      * Deletes an existing appointment
      * @description Deletes an existing appointment by actually deleting from the table. Intended for appointments created in error. Requires role NOMIS_APPOINTMENTS
      */
     delete: operations['deleteAppointment']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/appointments/{nomisEventId}/uncancel': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Undoes an appointment cancellation
      * @description Undoes an appointment cancellation. Requires role NOMIS_APPOINTMENTS
      */
     put: operations['uncancelAppointment']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/appointments/{nomisEventId}/cancel': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Cancels an existing appointment
      * @description Cancels an existing appointment. Requires role NOMIS_APPOINTMENTS
      */
     put: operations['cancelAppointment']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/alerts/types/{code}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Update an alert type
+     * @description Updates an alert type in the NOMIS reference data, specifically the description. Requires ROLE_NOMIS_ALERTS
+     */
+    put: operations['updateAlertType']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/alerts/types/{code}/reactivate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Update an alert type to be active
+     * @description Updates an alert type in the NOMIS reference data to be active, specifically the description. Requires ROLE_NOMIS_ALERTS
+     */
+    put: operations['reactivateAlertType']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/alerts/types/{code}/deactivate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Update an alert type to be inactive
+     * @description Updates an alert type in the NOMIS reference data to be inactive, specifically the description. Requires ROLE_NOMIS_ALERTS
+     */
+    put: operations['deactivateAlertType']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/alerts/codes/{code}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Update an alert code
+     * @description Updates an alert code in the NOMIS reference data, specifically the description. Requires ROLE_NOMIS_ALERTS
+     */
+    put: operations['updateAlertCode']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/alerts/codes/{code}/reactivate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Update an alert code to be active
+     * @description Updates an alert code in the NOMIS reference data to be active, specifically the description. Requires ROLE_NOMIS_ALERTS
+     */
+    put: operations['reactivateAlertCode']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/alerts/codes/{code}/deactivate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Update an alert code to be inactive
+     * @description Updates an alert code in the NOMIS reference data to be inactive, specifically the description. Requires ROLE_NOMIS_ALERTS
+     */
+    put: operations['deactivateAlertCode']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/repairs': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates repairs (aka damages) for a given adjudication
      * @description List of repairs are refreshed so this operation may result in any combinations of inserts, updates or deletes. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     put: operations['updateRepairs']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/hearings/{hearingId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates a hearing
      * @description Updates a hearing for a given adjudication and hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     put: operations['updateHearing']
+    post?: never
     /**
      * Deletes a hearing
      * @description Deletes a hearing for a given adjudication and hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     delete: operations['deleteHearing']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/evidence': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates evidence for a given adjudication
      * @description List of evidence items are refreshed so this operation may result in any combinations of inserts, updates or deletes. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     put: operations['updateEvidence']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/charge/{chargeSequence}/unquash': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * updates adjudication charge outcome and awards to the requested state before a quash
      * @description The latest hearing result is set to back to the supplied value along with all awards associated with this charge. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     put: operations['unquashHearingResultAndAwards']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/charge/{chargeSequence}/quash': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * updates adjudication charge outcome and awards to quashed
      * @description The latest hearing result is set to quashed along with all awards associated with this charge (that may be associated with other hearings). Requires ROLE_NOMIS_ADJUDICATIONS
      */
     put: operations['quashHearingResultAndAwards']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/charge/{chargeSequence}/awards': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * updates a batch of hearing result awards for a given adjudication
      * @description Creates a hearing result awards that have been added, updates those that have changed and deletes ones that are absent for the booking associated with the adjudication. Requires ROLE_NOMIS_ADJUDICATIONS
@@ -257,8 +728,18 @@ export interface paths {
      * @description Deletes hearing result awards for a given adjudication and charge sequence. Returns list of deleted award keys. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     delete: operations['deleteHearingResultAwards']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/activities/{courseActivityId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get activity details
      * @description Gets activity details including schedule rules and pay rates. Requires role NOMIS_ACTIVITIES
@@ -269,184 +750,558 @@ export interface paths {
      * @description Updates an activity and associated pay rates. Requires role NOMIS_ACTIVITIES
      */
     put: operations['updateActivity']
+    post?: never
     /**
      * Delete a NOMIS course activity
      * @description Deletes a course activity and its children - pay rates, schedules, allocations and attendances. Intended to be used for data fixes. Requires role NOMIS_ACTIVITIES
      */
     delete: operations['deleteActivity']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/activities/{courseActivityId}/schedule': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Updates a course schedule
      * @description Updates a course schedule. Requires role NOMIS_ACTIVITIES
      */
     put: operations['updateCourseSchedule']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/activities/{courseActivityId}/end': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * End a course activity
      * @description Ends a course activity and all active attendances with end date today. Requires role NOMIS_ACTIVITIES
      */
     put: operations['endActivity']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/activities/{courseActivityId}/allocation': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * Creates or Updates a prisoner's allocation to an activity
      * @description Creates or updates a prisoner's allocation to an activity. Requires role NOMIS_ACTIVITIES
      */
     put: operations['upsertAllocation']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/activities/end': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     /**
      * End multiple course activities
      * @description Ends course activities and all active allocations with end date today. Requires role NOMIS_ACTIVITIES
      */
     put: operations['endActivities']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/service-prisons/{serviceCode}/prison/{prisonId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Check if a service is turned on for a prison
      * @description Check if a prison is turned on for a service. Requires role NOMIS_ACTIVITIES
      */
     get: operations['checkServicePrison']
+    put?: never
     /**
      * Turn on a service for a prison
      * @description Turn on a service for a prison. Requires role NOMIS_ACTIVITIES
      */
     post: operations['createServicePrison']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/visits': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new visit
      * @description Creates a new visit and decrements the visit balance.
      */
     post: operations['createVisit']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/sentencing': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new Sentence
      * @description Required role NOMIS_SENTENCING Creates a new Sentence for the offender and latest booking
      */
     post: operations['createSentence']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/sentencing/court-cases': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get court cases for an offender
      * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
      */
     get: operations['getCourtCasesByOffender']
+    put?: never
     /**
      * Creates a new Court Case
      * @description Required role NOMIS_SENTENCING Creates a new Court Case for the offender and latest booking
      */
     post: operations['createCourtCase']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/sentencing/court-cases/{caseId}/court-appearances': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new Court Appearance
      * @description Required role NOMIS_SENTENCING Creates a new Court Appearance for the offender,latest booking and given Court Case
      */
     post: operations['createCourtAppearance']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/casenotes': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets all case notes for a prisoner
+     * @description Retrieves all case notes for a specific prisoner, for migration or reconciliation. Requires ROLE_NOMIS_CASENOTES
+     */
+    get: operations['getCaseNotesForPrisoner']
+    put?: never
+    /**
+     * Creates a case note on a prisoner
+     * @description Creates a case note on the prisoner's latest booking. Requires ROLE_NOMIS_CASENOTES
+     */
+    post: operations['createCaseNote']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/alerts': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates an alert on a prisoner
      * @description Creates an alert on the prisoner's latest booking. Requires ROLE_NOMIS_ALERTS
      */
     post: operations['createAlert']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/adjudications': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * creates an adjudication on the latest booking of a prisoner
      * @description Creates an adjudication. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     post: operations['createAdjudication']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/bookings': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Gets prisoner details for a list of bookings
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     post: operations['getPrisonerBookings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/sentences/{sentenceSequence}/adjustments': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new sentence adjustment
      * @description Required role NOMIS_SENTENCING Creates a new sentence adjustment (aka Debit/Credit). Key dates will not be recalculated as a side effect of this operation
      */
     post: operations['createSentenceAdjustment']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/incentives': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new incentive
      * @description Creates a new incentive using next sequence no.
      */
     post: operations['createIncentive']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/incentives/reorder': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Reorder a existing incentives to match time order
      * @description Reorder a series of IEPs so the sequence number matches the IEP date time. Latest time gets the higher sequence so the current IEP is the latest. This is required to correct DPS incentives that are created out of order
      */
     post: operations['reorderCurrentIncentives']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/adjustments': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new key date adjustment
      * @description Required role NOMIS_SENTENCING Creates a new key date adjustment. Key dates will be recalculated as a side effect of this operation
      */
     post: operations['createKeyDateAdjustment']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/non-associations': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new non-association
      * @description Creates a new non-association. Requires role NOMIS_NON_ASSOCIATIONS
      */
     post: operations['createNonAssociation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new location
      * @description Creates a new location. Requires role ROLE_NOMIS_LOCATIONS
      */
     post: operations['createLocation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incentives/reference-codes': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new global incentive level
      * @description Creates a new global incentive level
      */
     post: operations['createGlobalIncentiveLevel']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incentives/reference-codes/reorder': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * reorders all global incentive levels
      * @description reorders all global incentive levels using provided list of Incentive codes, including inactive. 1-based index
      */
     post: operations['reorderGlobalIncentiveLevels']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incentives/prison/{prison}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Prison Incentive level data
      * @description Creates incentive level data associated with a Prison
      */
     post: operations['createPrisonIncentiveLevelData']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/appointments': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new appointment
      * @description Creates a new appointment. Requires role NOMIS_APPOINTMENTS
      */
     post: operations['createAppointment']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/alerts/types': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates an alert type
+     * @description Creates an alert type in the NOMIS reference data. Requires ROLE_NOMIS_ALERTS
+     */
+    post: operations['createAlertType']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/alerts/codes': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates an alert code
+     * @description Creates an alert code in the NOMIS reference data. Requires ROLE_NOMIS_ALERTS
+     */
+    post: operations['createAlertCode']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/hearings': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * creates a hearing for a given adjudication
      * @description Creates a hearing for a given adjudication. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     post: operations['createHearing']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/hearings/{hearingId}/charge/{chargeSequence}/result': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * creates or updates a hearing result for a given hearing and charge.
      * @description Creates a (or updates the existing) hearing result for a given hearing and charge. DPS only supports 1 result per hearing. Requires ROLE_NOMIS_ADJUDICATIONS
@@ -457,8 +1312,20 @@ export interface paths {
      * @description Deletes a hearing result for a given adjudication and hearing Id. Returns list of any deleted award Ids to allow removal of award mappings in the sync service. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     delete: operations['deleteHearingResult']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/charge/{chargeSequence}/result': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * creates or updates a result for a given charge. This requires a dummy hearing to be created
      * @description Creates or updates a result for a charge. DPS allows results to be created without hearings eg: Refer to Police. Requires ROLE_NOMIS_ADJUDICATIONS
@@ -469,460 +1336,1418 @@ export interface paths {
      * @description Deletes a result for a given adjudication and charge sequence. The result will be associated with a dummy hearing used by DPS to record referrals. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     delete: operations['deleteResult']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/activities': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
     /**
      * Creates a new activity
      * @description Creates a new activity and associated pay rates. Requires role NOMIS_ACTIVITIES
      */
     post: operations['createActivity']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/visits/{visitId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get visit
      * @description Retrieves a visit by id.
      */
     get: operations['getVisit']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/visits/rooms/usage-count': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get future visit room usage by filter
      * @description Retrieves a list of rooms with usage count for the (filtered) visits. Only future visits are included
      */
     get: operations['getVisitRoomCountsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/visits/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get visits by filter
      * @description Retrieves a paged list of visits by filter
      */
     get: operations['getVisitsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/service-prisons/{serviceCode}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Retrieve a list of prisons switched on for the service
      * @description Retrieves all prisons switched on for the service code, or an empty list if there are none. Requires role SYNCHRONISATION_REPORTING
      */
     get: operations['getServicePrisons']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/schedules/max-id': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get the highest value of CRS_SCH_ID in NOMIS
+     * @description Retrieves the last course schedule ID so we can identify mappings records in preprod that have been copied from prod but don't have any NOMIS data.
+     */
+    get: operations['getMaxCourseScheduleId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/questionnaires/{questionnaireId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get incident questionnaire details
      * @description Gets incident questionnaire details. Requires role NOMIS_INCIDENTS
      */
     get: operations['getQuestionnaire']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/questionnaires/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get questionnaire IDs by filter
      * @description Retrieves a paged list of incident questionnaire ids by filter. Requires ROLE_NOMIS_INCIDENTS.
      */
     get: operations['getIdsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisons/{prisonId}/incentive-levels': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Retrieve a list of active incentive levels for a prison
      * @description Retrieve a list of active incentive levels for a prison. Requires role NOMIS_ACTIVITIES
      */
     get: operations['getPrisonIncentiveLevels']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/sentencing/offender-charges/{offenderChargeId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get an offender charge
      * @description Requires role NOMIS_SENTENCING. Retrieves offender charge details. Offender Charges are at the booking level.
      */
     get: operations['getOffenderCharge']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/sentencing/court-cases/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get a court case
      * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
      */
     get: operations['getCourtCase']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/sentencing/court-appearances/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get a court appearance
      * @description Requires role NOMIS_SENTENCING. Retrieves a court appearance by id
      */
     get: operations['getCourtAppearance']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/physical-attributes': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get physical attributes for a prisoner
+     * @description Retrieves physical attributes for a prisoner and all of their aliases and bookings. Requires ROLE_NOMIS_PRISON_PERSON
+     */
+    get: operations['getPhysicalAttributes']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/merges': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets prisoner's list of merge details since a given date. Either the current offenderNo or the previous offenderNo can be used to search for merges.
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     get: operations['getPrisonerMerges']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/csip/to-migrate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets csips for an offender
+     * @description Retrieves csips for a prisoner from all bookings. Requires ROLE_NOMIS_CSIP
+     */
+    get: operations['getCSIPsToMigrate']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/bookings/{bookingId}/previous': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets a prisoner's previous booking relative to the supplied booking id
      * @description Requires role NOMIS_ALERTS.
      */
     get: operations['getPreviousBooking']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/alerts/to-migrate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
-     * Gets alert for latest booking plus unique list of alerts from previous bookings for a prisoner
-     * @description Retrieves alerts for a prisoner across all bookings. The latest booking all alerts will be returned, from the previous bookings the list will contain at most one alert per alert code type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
+     * Gets alert for latest booking
+     * @description Retrieves alerts for a prisoner from latest all bookings. Requires ROLE_NOMIS_ALERTS
      */
     get: operations['getAlertsToMigrate']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/{offenderNo}/alerts/reconciliation': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
-     * Gets active alerts for latest booking plus unique list of alerts from previous bookings for a prisoner
-     * @description Retrieves active alerts for a prisoner across all bookings. The latest booking all active alerts will be returned, from the previous bookings the list will contain at most one alert per alert code that is active type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
+     * Gets active alerts for latest booking
+     * @description Retrieves active alerts for latest booking. Requires ROLE_NOMIS_ALERTS
      */
     get: operations['getActiveAlertsForReconciliation']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets the identifiers for all prisoners. By default only active prisoners will be return unless active=false
      * @deprecated
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     get: operations['getPrisonerIdentifiers']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/ids/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets the identifier for all prisoners.
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     get: operations['getAllPrisoners']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/ids/active': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets the identifiers for all active prisoners
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     get: operations['getActivePrisonerIdentifiers']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/sentencing/court-cases': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get court cases for an offender booking
      * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
      */
     get: operations['getCourtCasesByOffenderBooking']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/sentencing-adjustments': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get active sentence and key date adjustments for a booking
      * @description Retrieves all the current active sentence and key date adjustments (by booking) for a prisoner. Requires NOMIS_SENTENCING.
      */
     get: operations['getActiveAdjustments']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/awards/{sanctionSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get hearing result award by Id
      * @description Retrieves a hearing result by the Id (bookingId and sanctionSequence). Requires ROLE_NOMIS_ADJUDICATIONS
      */
     get: operations['getAdjudicationHearingResultAward']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/awards/ada/summary': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get ADA award summary result award by booking
      * @description Retrieves a summary of ADA awards along with associated adjudication for a given booking. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     get: operations['getAdjudicationADASummary']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prisoners/booking-id/{bookingId}/alerts': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets alert for booking
      * @description Retrieves alerts for a specific booking. Requires ROLE_NOMIS_ALERTS
      */
     get: operations['getAlertsByBookingId']
-  }
-  '/prisoner/booking-id/{bookingId}/alerts/{alertSequence}': {
-    /**
-     * get an alert by bookingId and alert sequence
-     * @description Retrieves an prisoner alert. Requires ROLE_NOMIS_ALERTS
-     */
-    get: operations['getAlert']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get an open non-association
      * @description Get the open non-association for the two offender numbers. Requires role NOMIS_NON_ASSOCIATIONS
      */
     get: operations['getNonAssociation']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get all non-associations for the two offender numbers
      * @description Get all non-associations for the two offender numbers, including expired. Requires role NOMIS_NON_ASSOCIATIONS
      */
     get: operations['getNonAssociationDetails']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/non-associations/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get non-associations by filter
      * @description Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_NON_ASSOCIATIONS.
      */
     get: operations['getNonAssociationsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get a location
      * @description Get the location given the id. Requires role ROLE_NOMIS_LOCATIONS
      */
     get: operations['getLocation']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations/key/{key}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get a location
      * @description Get the location given the business key. Requires role ROLE_NOMIS_LOCATIONS
      */
     get: operations['getLocationByKey']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/locations/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get locations by filter
      * @description Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_LOCATIONS.
      */
     get: operations['getLocationsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incidents/{incidentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get incident details
      * @description Gets incident details. Requires role NOMIS_INCIDENTS
      */
     get: operations['getIncident']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
-  '/incidents/reconciliation/agencyLocations': {
+  '/incidents/reconciliation/agency/{agencyId}/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
-     * Retrieve a list of all agency locations that have raised incidents)
-     * @description Retrieve a list of all agency locations that have raised incidents, including prisons and PECS. Requires authorised access
+     * Gets ids of open incidents at an agency
+     * @description Retrieves paged ids for open incidents for an agency.
      */
-    get: operations['getIncidentLocations']
+    get: operations['getOpenIncidentIdsForReconciliation']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
-  '/incidents/reconciliation/agencyLocation/{agencyLocationId}': {
+  '/incidents/reconciliation/agency/{agencyId}/counts': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Gets incident counts
-     * @description Retrieves open and closed incident counts for a prison.
+     * @description Retrieves open and closed incident counts for an agency.
      */
     get: operations['getIncidentCountsForReconciliation']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/incidents/reconciliation/agencies': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieve a list of all agencies that have raised incidents)
+     * @description Retrieve a list of all agencies that have raised incidents, including prisons and PECS. Requires authorised access
+     */
+    get: operations['getIncidentAgencies']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incidents/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get incident IDs by filter
      * @description Retrieves a paged list of incident ids by filter. Requires ROLE_NOMIS_INCIDENTS.
      */
     get: operations['getIdsByFilter_1']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incentives/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get incentives (a.k.a IEP) by filter
      * @description Retrieves a paged list of incentive composite ids by filter. Requires ROLE_NOMIS_INCENTIVES.
      */
     get: operations['getIncentivesByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incentives/booking-id/{bookingId}/incentive-sequence/{incentiveSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get a prisoner's incentive level (a.k.a IEP) by id (bookingId and incentiveId)
      * @description Retrieves a created incentive level for a prisoner. Requires ROLE_NOMIS_INCENTIVES.
      */
     get: operations['getIncentive']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incentives/booking-id/{bookingId}/current': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get a prisoner's current incentive level (a.k.a IEP) for a booking
      * @description Retrieves the current incentive level (by booking) for a prisoner. Requires ROLE_NOMIS_INCENTIVES.
      */
     get: operations['getCurrentIncentive']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/documents/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Retrieve a document
      * @description Retrieve a document by its id. Requires role NOMIS_DOCUMENTS
      */
     get: operations['getDocument']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/documents/booking/{bookingId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Retrieve a list of document ids
      * @description Retrieve a list of document ids searching by booking id and template name. Requires role NOMIS_DOCUMENTS
      */
     get: operations['getDocumentIds']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/csip/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get CSIP details
      * @description Gets csip details. Requires role NOMIS_CSIP
      */
     get: operations['getCSIP']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/csip/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get csip IDs by filter
      * @description Retrieves a paged list of csip ids by filter. Requires ROLE_NOMIS_CSIP.
      */
     get: operations['getIdsByFilter_2']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/csip/factors/{csipFactorId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get CSIP factor details
+     * @description Gets csip factor details. Requires role NOMIS_CSIP
+     */
+    get: operations['getCSIPFactor']
+    put?: never
+    post?: never
+    /**
+     * Deletes a csip factor
+     * @description Deletes a csip factor. Requires ROLE_NOMIS_CSIP
+     */
+    delete: operations['deleteCSIPFactor']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/csip/count': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get csip count
      * @description Gets a count of all csips. Requires role NOMIS_CSIP
      */
     get: operations['getCSIPCount']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/court-cases/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get a court case, migration version without offenderNo validation
+     * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
+     */
+    get: operations['getCourtCaseForMigration']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/court-cases/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get court case IDs by filter
+     * @description Retrieves a paged list of court case ids by filter. Requires ROLE_NOMIS_SENTENCING.
+     */
+    get: operations['getCourtCaseIdsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/attendances/reconciliation/{prisonId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get data for an attendance sync reconciliation
      * @description Gets the number of active attendances for each booking in the prison
      */
     get: operations['getAttendanceReconciliationSummary']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/appointments/{eventId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get appointment by event id
      * @description Get an appointment given the unique event id. Requires role NOMIS_APPOINTMENTS
      */
     get: operations['getAppointmentById']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/appointments/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get appointments by filter
      * @description Retrieves a paged list of appointment ids by filter. Requires ROLE_NOMIS_APPOINTMENTS.
      */
     get: operations['getAppointmentsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/appointments/counts': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get appointment counts by prison, event sub type and future / past. Note that the 'future' is everything from tomorrow onwards.
      * @description Retrieves counts of appointments for the migration preview. Requires ROLE_NOMIS_APPOINTMENTS.
      */
     get: operations['getAppointmentCounts']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/appointments/booking/{bookingId}/location/{locationId}/start/{dateTime}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get an appointment
      * @description Get an appointment given the booking id, internal location, date and start time. Requires role NOMIS_APPOINTMENTS
      */
     get: operations['getAppointment']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/allocations/{allocationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get allocation details
      * @description Gets allocation details. Requires role NOMIS_ACTIVITIES
      */
     get: operations['getAllocation']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/allocations/suspended': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Find suspended allocations
      * @description Searches for suspended prisoners on active course allocations. Requires role NOMIS_ACTIVITIES
      */
     get: operations['findSuspendedAllocations']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/allocations/reconciliation/{prisonId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Get data for an allocation sync reconciliation
      * @description Gets the number of active allocations for each booking in the prison
      */
     get: operations['getAllocationReconciliationSummary']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/allocations/missing-pay-bands': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Find allocations with missing pay bands
      * @description Searches for prisoners allocated to a course activity without a pay band assigned. Requires role NOMIS_ACTIVITIES
      */
     get: operations['findAllocationsWithMissingPayBands']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/allocations/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Find paged active allocations
      * @description Searches for active course allocations. Requires role NOMIS_ACTIVITIES
      */
     get: operations['findActiveAllocations']
-  }
-  '/alerts/ids': {
-    /**
-     * Get alert IDs by filter
-     * @description Retrieves a paged list of alert ids by filter. Requires ROLE_NOMIS_ALERTS.
-     */
-    get: operations['getAlertIdsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjustments/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get adjustment IDs (key date and Sentence adjustments) by filter
      * @description Retrieves a paged list of adjustment ids by filter. Requires ROLE_NOMIS_SENTENCING.
      */
     get: operations['getAdjustmentsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/hearings/{hearingId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get hearing by hearing Id
      * @description Retrieves a hearing by the hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     get: operations['getAdjudicationHearing']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/hearings/{hearingId}/charge/{chargeSequence}/result': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get hearing result by hearing id
      * @description Retrieves a hearing result by the nomis hearing id. DPS migrated and synchronised hearing results always have a result sequence of 1 Requires ROLE_NOMIS_ADJUDICATIONS
      */
     get: operations['getAdjudicationHearingResult']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/charges/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get adjudication charge IDs by filter
      * @description Retrieves a paged list of adjudication charge ids by filter. Requires ROLE_NOMIS_ADJUDICATIONS.
      */
     get: operations['getAdjudicationChargeIdsByFilter']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get adjudication by adjudication number
      * @description Retrieves an adjudication by the adjudication number. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     get: operations['getAdjudication']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/adjudications/adjudication-number/{adjudicationNumber}/charge-sequence/{chargeSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * get adjudication by adjudication number and charge sequence
      * @description Retrieves an adjudication by the adjudication number and charge sequence. Will only return the specified charge. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     get: operations['getAdjudicationByCharge']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/activities/rates-with-unknown-incentives': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Find activities with pay rates with unknown incentive level
      * @description Searches for course activities that have an active pay rate with an unknown incentive level. Requires role NOMIS_ACTIVITIES
      */
     get: operations['findRatesWithUnknownIncentiveLevel']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/activities/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
      * Find paged active activities
      * @description Searches for active course activities with allocated prisoners. Requires role NOMIS_ACTIVITIES
      */
     get: operations['findActiveActivities']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/incident/adjudication-number/{adjudicationNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
     /**
      * **** Used to recover from a duplicate incident creation only ***** Deletes an incident by adjudication number.
      * @description Deletes an incident by adjudication number. Supports the removal of a duplicate incident without a DPS mapping. Requires ROLE_NOMIS_ADJUDICATIONS
      */
     delete: operations['deleteIncident']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/csip/{csipId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a csip report
+     * @description Deletes a csip report. Requires ROLE_NOMIS_CSIP
+     */
+    delete: operations['deleteCSIP']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/attendances/{eventId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
     /**
      * Delete a NOMIS attendance (from OFFENDER_COURSE_ATTENDANCES table)
      * @description Deletes an attendance from NOMIS. Requires role NOMIS_ACTIVITIES
      */
-    delete: operations['deleteAttendance']
+    delete: operations['deleteAttendance_1']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/allocations/{referenceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
     /**
      * Delete a NOMIS allocation (from OFFENDER_PROGRAM_PROFILES table)
      * @description Deletes an allocation from NOMIS and any children - pay rates, attendances. Requires role NOMIS_ACTIVITIES
      */
     delete: operations['deleteAllocation']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
 }
-
 export type webhooks = Record<string, never>
-
 export interface components {
   schemas: {
     ErrorResponse: {
@@ -963,7 +2788,7 @@ export interface components {
        * @description Flag to indicate if the adjustment is being applied
        * @default true
        */
-      active?: boolean
+      active: boolean
       /**
        * Format: int64
        * @description Sentence sequence
@@ -1010,19 +2835,19 @@ export interface components {
        * @default false
        * @example true
        */
-      unexcusedAbsence?: boolean
+      unexcusedAbsence: boolean
       /**
        * @description Whether the absence is authorised
        * @default false
        * @example true
        */
-      authorisedAbsence?: boolean
+      authorisedAbsence: boolean
       /**
        * @description Whether the attendance is to be paid
        * @default false
        * @example true
        */
-      paid?: boolean
+      paid: boolean
       /**
        * @description Any bonus pay for the attendance
        * @example 1.5
@@ -1101,7 +2926,6 @@ export interface components {
       /** Format: date */
       offenceEndDate?: string
       resultCode1?: string
-      mostSeriousFlag: boolean
     }
     /** @description Court Event */
     OffenderChargeRequest: {
@@ -1113,7 +2937,6 @@ export interface components {
       /** Format: date */
       offenceEndDate?: string
       resultCode1?: string
-      mostSeriousFlag: boolean
     }
     /** @description Create adjustment response */
     CreateCourtEventChargesResponse: {
@@ -1203,9 +3026,8 @@ export interface components {
       /** @description Free format comment */
       comment?: string
       audit: components['schemas']['NomisAudit']
-      /** @description True if this alert is on a previous booking and should have been latest booking and is potentially relevant to prisoner */
-      isAlertFromPreviousBookingRelevant: boolean
     }
+    /** @description The case note subtype */
     CodeDescription: {
       code: string
       description: string
@@ -1217,7 +3039,7 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       createDatetime: string
-      /** @description Username of person that created the record (might also be a system) */
+      /** @description Username of person that created the record (might also be a system)  */
       createUsername: string
       /** @description Real name of person that created the record (might by null for system users) */
       createDisplayName?: string
@@ -1264,7 +3086,7 @@ export interface components {
       isActive: boolean
       /** @description Free format comment */
       comment?: string
-      /** @description Username of person that update the record (might also be a system) */
+      /** @description Username of person that update the record (might also be a system)  */
       updateUsername: string
       /**
        * @description Free format text of person or department that authorised the alert
@@ -1440,6 +3262,8 @@ export interface components {
        * @example 2024-12-31
        */
       reactivateDate?: string
+      /** @description If true, update Nomis even if already inactive. Useful when a temporarily inactive location is deactivated permanently */
+      force: boolean
     }
     /** @description Location update certification request */
     UpdateCertificationRequest: {
@@ -1493,7 +3317,7 @@ export interface components {
        * @description Flag to indicate if the adjustment is being applied
        * @default true
        */
-      active?: boolean
+      active: boolean
     }
     /** @description IEP creation request */
     CreateIncentiveRequest: {
@@ -1613,6 +3437,58 @@ export interface components {
       /** Format: date */
       visitAllowanceExpiryDate?: string
     }
+    /** @description The data held in NOMIS about a case note associated with a prisoner */
+    CaseNoteResponse: {
+      /**
+       * Format: int64
+       * @description The primary key
+       */
+      caseNoteId: number
+      /**
+       * Format: int64
+       * @description The prisoner's bookingId related to this case note
+       */
+      bookingId: number
+      caseNoteType: components['schemas']['CodeDescription']
+      caseNoteSubType: components['schemas']['CodeDescription']
+      /**
+       * @description Date case note occurred
+       * @example 2021-07-05T10:35:17
+       */
+      occurrenceDateTime?: string
+      /** @description Free format text of person or department that created the case note */
+      authorUsername: string
+      /** @description Prison id */
+      prisonId?: string
+      /** @description Free format text body of case note */
+      caseNoteText?: string
+      /**
+       * @description Whether the case note was amended
+       * @example false
+       */
+      amended: boolean
+      /**
+       * @description Which screen (or DPS) created the case note
+       * @example false
+       */
+      auditModuleName?: string
+    }
+    /** @description A request to amend a case note in NOMIS */
+    AmendCaseNoteRequest: {
+      /** @description The case note type */
+      caseNoteType: string
+      /** @description The case note subtype */
+      caseNoteSubType: string
+      /**
+       * @description Date case note occurred
+       * @example 2021-07-05T10:35:17
+       */
+      occurrenceDateTime: string
+      /** @description Free format text of person or department that created the case note */
+      authorUsername: string
+      /** @description Free format text body of case note */
+      caseNoteText: string
+    }
     /** @description Offender individual schedule update request */
     UpdateAppointmentRequest: {
       /**
@@ -1649,6 +3525,16 @@ export interface components {
        * @example Some comment
        */
       comment?: string
+    }
+    /** @description A request to update an alert type reference data in NOMIS */
+    UpdateAlertType: {
+      /** @description The alert type description */
+      description: string
+    }
+    /** @description A request to update an alert code reference data in NOMIS */
+    UpdateAlertCode: {
+      /** @description The alert description */
+      description: string
     }
     /** @description The repairs required due to the damage */
     Repair: {
@@ -2107,9 +3993,9 @@ export interface components {
       /**
        * @description Course activity ids
        * @example [
-       *   1,
-       *   2
-       * ]
+       *       1,
+       *       2
+       *     ]
        */
       courseActivityIds: number[]
     }
@@ -2189,6 +4075,35 @@ export interface components {
       id: number
       courtAppearanceIds: components['schemas']['CreateCourtAppearanceResponse'][]
     }
+    /** @description A response after a case note created in NOMIS */
+    CreateCaseNoteResponse: {
+      /**
+       * Format: int64
+       * @description The id of this case note
+       */
+      id: number
+      /**
+       * Format: int64
+       * @description The booking id of this case note (which is the prisoner's latest at creation time)
+       */
+      bookingId: number
+    }
+    /** @description A request to create a case note in NOMIS */
+    CreateCaseNoteRequest: {
+      /** @description The case note type */
+      caseNoteType: string
+      /** @description The case note subtype */
+      caseNoteSubType: string
+      /**
+       * @description Date case note occurred
+       * @example 2021-07-05T10:35:17
+       */
+      occurrenceDateTime: string
+      /** @description Free format text of person or department that created the case note */
+      authorUsername: string
+      /** @description Free format text body of case note */
+      caseNoteText: string
+    }
     /** @description A response after an alert created in NOMIS */
     CreateAlertResponse: {
       /**
@@ -2227,7 +4142,7 @@ export interface components {
        * @example security
        */
       authorisedBy?: string
-      /** @description Username of person that created the record (might also be a system) */
+      /** @description Username of person that created the record (might also be a system)  */
       createUsername: string
     }
     AdjudicationCharge: {
@@ -2579,25 +4494,25 @@ export interface components {
       /**
        * @description Prisoners numbers that witnessed the incident
        * @example [
-       *   "A1234AA",
-       *   "A1234AB"
-       * ]
+       *       "A1234AA",
+       *       "A1234AB"
+       *     ]
        */
       prisonerVictimsOffenderNumbers: string[]
       /**
        * @description Staff usernames that witnessed the incident
        * @example [
-       *   "A.BARNES",
-       *   "M.ABDULLAH"
-       * ]
+       *       "A.BARNES",
+       *       "M.ABDULLAH"
+       *     ]
        */
       staffWitnessesUsernames: string[]
       /**
        * @description Staff usernames that were victims in the incident
        * @example [
-       *   "A.BARNES",
-       *   "M.ABDULLAH"
-       * ]
+       *       "A.BARNES",
+       *       "M.ABDULLAH"
+       *     ]
        */
       staffVictimsUsernames: string[]
       /** @description The repairs required due to the damage */
@@ -2670,7 +4585,7 @@ export interface components {
        * @description Flag to indicate if the adjustment is being applied
        * @default true
        */
-      active?: boolean
+      active: boolean
     }
     /** @description Create adjustment response */
     CreateAdjustmentResponse: {
@@ -2716,7 +4631,7 @@ export interface components {
        * @description Flag to indicate if the adjustment is being applied
        * @default true
        */
-      active?: boolean
+      active: boolean
     }
     /** @description Offender individual schedule creation request */
     CreateNonAssociationRequest: {
@@ -2777,7 +4692,7 @@ export interface components {
        * @default false
        * @example true
        */
-      certified?: boolean
+      certified: boolean
       /**
        * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
        * @enum {string}
@@ -2947,6 +4862,32 @@ export interface components {
        * @description The created offender_ind_schedules id
        */
       eventId: number
+    }
+    /** @description A request to create an alert type reference data in NOMIS */
+    CreateAlertType: {
+      /** @description The alert type code */
+      code: string
+      /** @description The alert type description */
+      description: string
+      /**
+       * Format: int32
+       * @description The sequence in a UI list
+       */
+      listSequence: number
+    }
+    /** @description A request to create an alert code reference data in NOMIS */
+    CreateAlertCode: {
+      /** @description The alert code */
+      code: string
+      /** @description The parent type code */
+      typeCode: string
+      /** @description The alert description */
+      description: string
+      /**
+       * Format: int32
+       * @description The sequence in a UI list
+       */
+      listSequence: number
     }
     /** @description Provides the generated hearing ID after creation */
     CreateHearingResponse: {
@@ -3180,9 +5121,9 @@ export interface components {
       sort?: components['schemas']['SortObject'][]
       /** Format: int32 */
       pageSize?: number
+      paged?: boolean
       /** Format: int32 */
       pageNumber?: number
-      paged?: boolean
       unpaged?: boolean
     }
     SortObject: {
@@ -3603,6 +5544,88 @@ export interface components {
       orderPartyCode: string
       purposeCode: string
     }
+    /** @description Physical attributes held against a booking */
+    BookingPhysicalAttributesResponse: {
+      /**
+       * Format: int64
+       * @description The booking's unique identifier
+       * @example 1234567
+       */
+      bookingId: number
+      /**
+       * @description The start date of the booking
+       * @example 2021-07-05T10:35:17
+       */
+      startDateTime: string
+      /**
+       * @description The end date of the booking, or null if the booking is still active
+       * @example 2021-07-05T10:35:17
+       */
+      endDateTime?: string
+      /** @description A list of physical attributes for this booking */
+      physicalAttributes: components['schemas']['PhysicalAttributesResponse'][]
+      /**
+       * @description Whether this is the latest booking or not. Note that latest does not imply active.
+       * @example true
+       */
+      latestBooking: boolean
+    }
+    /** @description Physical attributes recorded against a prisoner */
+    PhysicalAttributesResponse: {
+      /**
+       * Format: int64
+       * @description Multiple physical attribute records can be created for each booking
+       * @example 1
+       */
+      attributeSequence?: number
+      /**
+       * Format: int32
+       * @description The height of the prisoner in centimetres
+       * @example 180
+       */
+      heightCentimetres?: number
+      /**
+       * Format: int32
+       * @description The weight of the prisoner in kilograms
+       * @example 80
+       */
+      weightKilograms?: number
+      /**
+       * @description The time the physical attributes were created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /**
+       * @description The user who created the physical attributes
+       * @example AQ425D
+       */
+      createdBy: string
+      /**
+       * @description The time the physical attributes were last changed
+       * @example 2021-07-05T10:35:17
+       */
+      modifiedDateTime?: string
+      /**
+       * @description The user who modified the physical attributes
+       * @example AQ425D
+       */
+      modifiedBy?: string
+      /**
+       * @description The name of the module that last changed the physical attributes, indicates if this was NOMIS or the synchronisation service
+       * @example DPS_SYNCHRONISATION
+       */
+      auditModuleName?: string
+    }
+    /** @description Physical attributes held against a prisoner */
+    PrisonerPhysicalAttributesResponse: {
+      /**
+       * @description The prisoner's unique identifier
+       * @example A1234AA
+       */
+      offenderNo: string
+      /** @description A list of bookings and their physical attributes */
+      bookings: components['schemas']['BookingPhysicalAttributesResponse'][]
+    }
     /** @description Details of a prisoner merge */
     MergeDetail: {
       /**
@@ -3633,6 +5656,377 @@ export interface components {
        */
       requestDateTime: string
     }
+    /** @description Action list */
+    Actions: {
+      openCSIPAlert: boolean
+      nonAssociationsUpdated: boolean
+      observationBook: boolean
+      unitOrCellMove: boolean
+      csraOrRsraReview: boolean
+      serviceReferral: boolean
+      simReferral: boolean
+    }
+    /** @description Attendees to the review */
+    Attendee: {
+      /**
+       * Format: int64
+       * @description Review Attendee/Contributor Id
+       */
+      id: number
+      /** @description Name of attendee/contributor */
+      name?: string
+      /** @description Role of attendee/contributor */
+      role?: string
+      /** @description If attended (otherwise contributor) */
+      attended: boolean
+      /** @description Contribution */
+      contribution?: string
+      /**
+       * @description The date and time the attendee was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the attendee */
+      createdBy: string
+      /**
+       * @description The date and time the attendee was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the attendee */
+      lastModifiedBy?: string
+    }
+    /** @description Contributory factors */
+    CSIPFactorResponse: {
+      /**
+       * Format: int64
+       * @description Factor type id
+       */
+      id: number
+      type: components['schemas']['CodeDescription']
+      /** @description Factor comment */
+      comment?: string
+      /**
+       * @description The date and time the report was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the report */
+      createdBy: string
+      /**
+       * @description The date and time the report was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the report */
+      lastModifiedBy?: string
+    }
+    /** @description CSIP Details */
+    CSIPResponse: {
+      /**
+       * Format: int64
+       * @description The csip id
+       */
+      id: number
+      offender: components['schemas']['Offender']
+      /**
+       * Format: int64
+       * @description The booking id associated with the CSIP
+       */
+      bookingId: number
+      /** @description The original location when the CSIP was created */
+      originalAgencyId?: string
+      /** @description Log number */
+      logNumber?: string
+      /**
+       * Format: date
+       * @description Date/Time incident occurred
+       */
+      incidentDate: string
+      /**
+       * Format: partial-time
+       * @description Date/Time incident occurred
+       */
+      incidentTime?: string
+      type: components['schemas']['CodeDescription']
+      location: components['schemas']['CodeDescription']
+      areaOfWork: components['schemas']['CodeDescription']
+      /** @description The person reporting the incident - free text */
+      reportedBy: string
+      /**
+       * Format: date
+       * @description Date reported
+       */
+      reportedDate: string
+      /** @description proActive Referral */
+      proActiveReferral: boolean
+      /** @description If a staff member was assaulted */
+      staffAssaulted: boolean
+      /** @description If assaulted, the staff member name */
+      staffAssaultedName?: string
+      reportDetails: components['schemas']['ReportDetails']
+      saferCustodyScreening: components['schemas']['SaferCustodyScreening']
+      investigation: components['schemas']['InvestigationDetails']
+      decision: components['schemas']['Decision']
+      /** @description Case Manager involved */
+      caseManager?: string
+      /** @description Reason for plan */
+      planReason?: string
+      /**
+       * Format: date
+       * @description Date of first review
+       */
+      firstCaseReviewDate?: string
+      /** @description CSIP Plans */
+      plans: components['schemas']['Plan'][]
+      /** @description CSIP Reviews */
+      reviews: components['schemas']['Review'][]
+      /** @description Associated CSIP document Ids */
+      documents?: components['schemas']['DocumentIdResponse'][]
+      /**
+       * @description The date and time the report was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the report */
+      createdBy: string
+      /**
+       * @description The date and time the report was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the report */
+      lastModifiedBy?: string
+    }
+    /** @description DecisionAndActions */
+    Decision: {
+      /** @description Conclusion & Reason for decision */
+      conclusion?: string
+      decisionOutcome?: components['schemas']['CodeDescription']
+      signedOffRole?: components['schemas']['CodeDescription']
+      /** @description The username of the person who recorded the decision */
+      recordedBy?: string
+      /** @description Real name of who recorded the decision */
+      recordedByDisplayName?: string
+      /**
+       * Format: date
+       * @description Recorded Date
+       */
+      recordedDate?: string
+      /** @description What to do next */
+      nextSteps?: string
+      /** @description Other information to take into consideration */
+      otherDetails?: string
+      actions: components['schemas']['Actions']
+    }
+    /** @description Document id */
+    DocumentIdResponse: {
+      /**
+       * Format: int64
+       * @description The document id
+       */
+      documentId: number
+    }
+    /** @description Interview */
+    InterviewDetails: {
+      /** @description Person being interviewed */
+      interviewee: string
+      /**
+       * Format: date
+       * @description date of interview
+       */
+      date: string
+      role: components['schemas']['CodeDescription']
+      /** @description Additional data regarding the interview */
+      comments?: string
+      /**
+       * @description The date and time the interview was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the interview */
+      createdBy: string
+      /**
+       * @description The date and time the interview was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the interview */
+      lastModifiedBy?: string
+    }
+    /** @description Investigation details of the incident */
+    InvestigationDetails: {
+      /** @description Staff involved in the incident */
+      staffInvolved?: string
+      /** @description Whether any evidence was secured */
+      evidenceSecured?: string
+      /** @description Why the incident occurred */
+      reasonOccurred?: string
+      /** @description Normal behaviour of the offender */
+      usualBehaviour?: string
+      /** @description Offender's trigger */
+      trigger?: string
+      /** @description Protective factors */
+      protectiveFactors?: string
+      /** @description Interview */
+      interviews?: components['schemas']['InterviewDetails'][]
+    }
+    /** @description The offender */
+    Offender: {
+      /** @description NOMIS id */
+      offenderNo: string
+      /** @description First name of offender */
+      firstName?: string
+      /** @description Last name of offender */
+      lastName: string
+    }
+    /** @description CSIP Plans */
+    Plan: {
+      /**
+       * Format: int64
+       * @description Plan Id
+       */
+      id: number
+      /** @description Details of the need */
+      identifiedNeed: string
+      /** @description Intervention plan */
+      intervention: string
+      /** @description Information regarding progression of plan */
+      progression?: string
+      /** @description The person reporting - free text */
+      referredBy?: string
+      /**
+       * Format: date
+       * @description When created
+       */
+      createdDate: string
+      /**
+       * Format: date
+       * @description Target date of plan
+       */
+      targetDate: string
+      /**
+       * Format: date
+       * @description Plan closed date
+       */
+      closedDate?: string
+      /**
+       * @description The date and time the plan was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the plan */
+      createdBy: string
+      /**
+       * @description The date and time the plan was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the plan */
+      lastModifiedBy?: string
+    }
+    /** @description The list of CSIPs held against a prisoner */
+    PrisonerCSIPsResponse: {
+      offenderCSIPs: components['schemas']['CSIPResponse'][]
+    }
+    /** @description Additional information for the CSIP Report */
+    ReportDetails: {
+      /**
+       * Format: date
+       * @description Date the offender is released
+       */
+      releaseDate?: string
+      involvement?: components['schemas']['CodeDescription']
+      /** @description Concern description */
+      concern?: string
+      /** @description Contributory factors */
+      factors: components['schemas']['CSIPFactorResponse'][]
+      /** @description known reasons for the involvement */
+      knownReasons?: string
+      /** @description Additional information */
+      otherInformation?: string
+      /** @description If the safer custody team were informed */
+      saferCustodyTeamInformed: boolean
+      /** @description If the referral has been completed */
+      referralComplete: boolean
+      /** @description Who completed the referral */
+      referralCompletedBy?: string
+      /**
+       * Format: date
+       * @description Date the referral was completed
+       */
+      referralCompletedDate?: string
+    }
+    /** @description CSIP Reviews */
+    Review: {
+      /**
+       * Format: int64
+       * @description Review Id
+       */
+      id: number
+      /**
+       * Format: int32
+       * @description Sequence number
+       */
+      reviewSequence: number
+      /** @description Attendees to the review */
+      attendees: components['schemas']['Attendee'][]
+      /** @description Whether to remain on CSIP */
+      remainOnCSIP: boolean
+      /** @description If the csip has been updated */
+      csipUpdated: boolean
+      /** @description If a case note was added */
+      caseNote: boolean
+      /** @description If the csip is closed */
+      closeCSIP: boolean
+      /** @description Whether people were informed */
+      peopleInformed: boolean
+      /** @description Summary details */
+      summary?: string
+      /**
+       * Format: date
+       * @description Next Review date
+       */
+      nextReviewDate?: string
+      /**
+       * Format: date
+       * @description Review closed date
+       */
+      closeDate?: string
+      /**
+       * Format: date
+       * @description The date the review was created
+       */
+      recordedDate: string
+      /** @description The username of the person who recorded the review */
+      recordedBy: string
+      /** @description Real name of who recorded the review */
+      recordedByDisplayName?: string
+      /**
+       * @description The date and time the review was last updated
+       * @example 2021-07-05T10:35:17
+       */
+      lastModifiedDateTime?: string
+      /** @description The username of the person who last updated the review */
+      lastModifiedBy?: string
+    }
+    /** @description Safer custody screening */
+    SaferCustodyScreening: {
+      outcome?: components['schemas']['CodeDescription']
+      /** @description Who recorded the data */
+      recordedBy?: string
+      /**
+       * Format: date
+       * @description When the the SCS occurred
+       */
+      recordedDate?: string
+      /** @description Why the decision was made */
+      reasonForDecision?: string
+    }
+    /** @description The list of case notes held against a booking */
+    PrisonerCaseNotesResponse: {
+      caseNotes: components['schemas']['CaseNoteResponse'][]
+    }
     /** @description ID of previous booking */
     PreviousBookingId: {
       /**
@@ -3651,7 +6045,6 @@ export interface components {
     /** @description The list of unique alerts held against a prisoner */
     PrisonerAlertsResponse: {
       latestBookingAlerts: components['schemas']['AlertResponse'][]
-      previousBookingsAlerts: components['schemas']['AlertResponse'][]
     }
     PagePrisonerIds: {
       /** Format: int32 */
@@ -4030,7 +6423,7 @@ export interface components {
        * @default false
        * @example true
        */
-      certified?: boolean
+      certified: boolean
       /**
        * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
        * @example LAND
@@ -4237,7 +6630,7 @@ export interface components {
       title?: string
       /** @description The incident details */
       description?: string
-      location: components['schemas']['CodeDescription']
+      agency: components['schemas']['CodeDescription']
       status: components['schemas']['IncidentStatus']
       /** @description The incident questionnaire type */
       type: string
@@ -4292,15 +6685,6 @@ export interface components {
       listSequence?: number
       standardUser: boolean
       enhancedUser: boolean
-    }
-    /** @description Offender involved in the incident */
-    Offender: {
-      /** @description NOMIS id */
-      offenderNo: string
-      /** @description First name of staff member */
-      firstName?: string
-      /** @description Last name of staff member */
-      lastName: string
     }
     /** @description Offenders involved in the incident */
     OffenderParty: {
@@ -4358,8 +6742,8 @@ export interface components {
        */
       date: string
       staff: components['schemas']['Staff']
-      /** @description The reporting location of the staff */
-      locationId: string
+      /** @description The reporting agency of the staff */
+      agencyId: string
       /**
        * @description The date and time the requirement was created
        * @example 2021-07-05T10:35:17
@@ -4433,38 +6817,6 @@ export interface components {
       /** @description The username of the person who last updated the staff party */
       lastModifiedBy?: string
     }
-    /** @description Incident Agency Location Id */
-    IncidentAgencyLocationId: {
-      /**
-       * @description The agency location id
-       * @example BXI
-       */
-      locationId: string
-    }
-    /** @description A count for incidents at an agency location */
-    IncidentsCount: {
-      /**
-       * Format: int64
-       * @description A count for the number of open incidents i.e. all incidents that are not closed or duplicates
-       * @example 4
-       */
-      openIncidents: number
-      /**
-       * Format: int64
-       * @description A count for the number of closed or duplicate incidents
-       * @example 2
-       */
-      closedIncidents: number
-    }
-    /** @description Incidents reconciliation count response */
-    IncidentsReconciliationResponse: {
-      /**
-       * @description The agency location we checked the incidents for
-       * @example BXI
-       */
-      locationId: string
-      incidentCount: components['schemas']['IncidentsCount']
-    }
     /** @description Incident id */
     IncidentIdResponse: {
       /**
@@ -4490,6 +6842,38 @@ export interface components {
       numberOfElements?: number
       pageable?: components['schemas']['PageableObject']
       empty?: boolean
+    }
+    /** @description A count for incidents at an agency */
+    IncidentsCount: {
+      /**
+       * Format: int64
+       * @description A count for the number of open incidents i.e. all incidents that are not closed or duplicates
+       * @example 4
+       */
+      openIncidents: number
+      /**
+       * Format: int64
+       * @description A count for the number of closed or duplicate incidents
+       * @example 2
+       */
+      closedIncidents: number
+    }
+    /** @description Incidents reconciliation count response */
+    IncidentsReconciliationResponse: {
+      /**
+       * @description The agency we checked the incidents for
+       * @example BXI
+       */
+      agencyId: string
+      incidentCount: components['schemas']['IncidentsCount']
+    }
+    /** @description Incident Agency Id */
+    IncidentAgencyId: {
+      /**
+       * @description The agency id
+       * @example BXI
+       */
+      agencyId: string
     }
     /** @description Incentive id */
     IncentiveIdResponse: {
@@ -4566,271 +6950,13 @@ export interface components {
        */
       whenUpdated?: string
     }
-    /** @description Document id */
-    DocumentIdResponse: {
-      /**
-       * Format: int64
-       * @description The document id
-       */
-      documentId: number
-    }
-    /** @description Action list */
-    Actions: {
-      openCSIPAlert: boolean
-      nonAssociationsUpdated: boolean
-      observationBook: boolean
-      unitOrCellMove: boolean
-      csraOrRsraReview: boolean
-      serviceReferral: boolean
-      simReferral: boolean
-    }
-    /** @description Summary details */
-    Attendee: {
-      /**
-       * Format: int64
-       * @description Review Attendee/Contributor Id
-       */
-      id: number
-      /** @description Name of attendee/contributor */
-      name?: string
-      'Role of attendee/contributor'?: string
-      'If attended (otherwise contributor)': boolean
-      Contribution?: string
-    }
-    /** @description CSIP Details */
-    CSIPResponse: {
-      /**
-       * Format: int64
-       * @description The csip id
-       */
-      id: number
-      offender: components['schemas']['Offender']
-      /**
-       * Format: int64
-       * @description The booking id associated with the CSIP
-       */
-      bookingId: number
-      /** @description The original location when the CSIP was created */
-      originalAgencyId?: string
-      /** @description Log number */
-      logNumber?: string
-      /**
-       * @description Date/Time incident occurred
-       * @example 2021-07-05T10:35:17
-       */
-      incidentDateTime?: string
-      type: components['schemas']['CodeDescription']
-      location: components['schemas']['CodeDescription']
-      areaOfWork: components['schemas']['CodeDescription']
-      /** @description The person reporting the incident - free text */
-      reportedBy?: string
-      /**
-       * Format: date
-       * @description Date reported
-       */
-      reportedDate: string
-      /** @description proActive Referral */
-      proActiveReferral: boolean
-      /** @description If a staff member was assaulted */
-      staffAssaulted: boolean
-      /** @description If assaulted, the staff member name */
-      staffAssaultedName?: string
-      reportDetails: components['schemas']['ReportDetails']
-      saferCustodyScreening: components['schemas']['SaferCustodyScreening']
-      investigation: components['schemas']['InvestigationDetails']
-      decision: components['schemas']['Decision']
-      /** @description Case Manager involved */
-      caseManager?: string
-      /** @description Reason for plan */
-      planReason?: string
-      /**
-       * Format: date
-       * @description Date of first review
-       */
-      firstCaseReviewDate?: string
-      /** @description CSIP Plans */
-      plans: components['schemas']['Plan'][]
-      /** @description CSIP Reviews */
-      reviews: components['schemas']['Review'][]
-      /** @description Associated CSIP document Ids */
-      documents: components['schemas']['DocumentIdResponse'][]
-    }
-    /** @description DecisionAndActions */
-    Decision: {
-      /** @description Conclusion & Reason for decision */
-      conclusion?: string
-      decisionOutcome?: components['schemas']['CodeDescription']
-      signedOffRole?: components['schemas']['CodeDescription']
-      /** @description Recorded By */
-      recordedBy?: string
-      /**
-       * Format: date
-       * @description Recorded Date
-       */
-      recordedDate?: string
-      /** @description What to do next */
-      nextSteps?: string
-      /** @description Other information to take into consideration */
-      otherDetails?: string
-      actions: components['schemas']['Actions']
-    }
-    /** @description Contributory factors */
-    FactorResponse: {
-      /**
-       * Format: int64
-       * @description Factor type id
-       */
-      id: number
-      type: components['schemas']['CodeDescription']
-      /** @description Factor comment */
-      comment?: string
-    }
-    /** @description Interview */
-    InterviewDetails: {
-      /** @description Person being interviewed */
-      interviewee: string
-      /**
-       * Format: date
-       * @description date of interview
-       */
-      date: string
-      role: components['schemas']['CodeDescription']
-      /** @description Additional data regarding the interview */
-      comments?: string
-    }
-    /** @description Investigation details of the incident */
-    InvestigationDetails: {
-      /** @description Staff involved in the incident */
-      staffInvolved?: string
-      /** @description Whether any evidence was secured */
-      evidenceSecured?: string
-      /** @description Why the incident occurred */
-      reasonOccurred?: string
-      /** @description Normal behaviour of the offender */
-      usualBehaviour?: string
-      /** @description Offender's trigger */
-      trigger?: string
-      /** @description Protective factors */
-      protectiveFactors?: string
-      /** @description Interview */
-      interviews?: components['schemas']['InterviewDetails'][]
-    }
-    /** @description CSIP Plans */
-    Plan: {
-      /**
-       * Format: int64
-       * @description Plan Id
-       */
-      id: number
-      /** @description Details of the need */
-      identifiedNeed: string
-      /** @description Intervention plan */
-      intervention: string
-      /** @description Information regarding progression of plan */
-      progression?: string
-      /** @description The person reporting - free text */
-      referredBy?: string
-      /**
-       * Format: date
-       * @description When created
-       */
-      createdDate: string
-      /**
-       * Format: date
-       * @description Target date of plan
-       */
-      targetDate: string
-      /**
-       * Format: date
-       * @description Plan closed date
-       */
-      closedDate?: string
-    }
-    /** @description Additional information for the CSIP Report */
-    ReportDetails: {
-      /**
-       * Format: date
-       * @description Date the offender is released
-       */
-      releaseDate?: string
-      involvement?: components['schemas']['CodeDescription']
-      /** @description Concern description */
-      concern?: string
-      /** @description Contributory factors */
-      factors: components['schemas']['FactorResponse'][]
-      /** @description known reasons for the involvement */
-      knownReasons?: string
-      /** @description Additional information */
-      otherInformation?: string
-      /** @description If the safer custody team were informed */
-      saferCustodyTeamInformed: boolean
-      /** @description If the referral has been completed */
-      referralComplete: boolean
-      /** @description Who completed the referral */
-      referralCompletedBy?: string
-      /**
-       * Format: date
-       * @description Date the referral was completed
-       */
-      referralCompletedDate?: string
-    }
-    /** @description CSIP Reviews */
-    Review: {
-      /**
-       * Format: int64
-       * @description Review Id
-       */
-      id: number
-      /**
-       * Format: int32
-       * @description Sequence number
-       */
-      reviewSequence: number
-      /** @description Summary details */
-      attendees: components['schemas']['Attendee'][]
-      /** @description Summary details */
-      remainOnCSIP: boolean
-      /** @description Summary details */
-      csipUpdated: boolean
-      /** @description Summary details */
-      caseNote: boolean
-      /** @description Summary details */
-      closeCSIP: boolean
-      /** @description Summary details */
-      peopleInformed: boolean
-      /** @description Summary details */
-      summary?: string
-      /**
-       * Format: date
-       * @description Next Review date
-       */
-      nextReviewDate?: string
-      /**
-       * Format: date
-       * @description Review closed date
-       */
-      closeDate?: string
-    }
-    /** @description Safer custody screening */
-    SaferCustodyScreening: {
-      outcome?: components['schemas']['CodeDescription']
-      /** @description Who recorded the data */
-      recordedBy?: string
-      /**
-       * Format: date
-       * @description When the the SCS occurred
-       */
-      recordedDate?: string
-      /** @description Why the decision was made */
-      reasonForDecision?: string
-    }
     /** @description CSIP id */
     CSIPIdResponse: {
       /**
        * Format: int64
        * @description The csip id
        */
-      id: number
+      csipId: number
     }
     PageCSIPIdResponse: {
       /** Format: int32 */
@@ -4842,6 +6968,32 @@ export interface components {
       /** Format: int32 */
       size?: number
       content?: components['schemas']['CSIPIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject'][]
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description court case id */
+    CourtCaseIdResponse: {
+      /**
+       * Format: int64
+       * @description Court case Id
+       */
+      caseId: number
+    }
+    PageCourtCaseIdResponse: {
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
+      first?: boolean
+      last?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['CourtCaseIdResponse'][]
       /** Format: int32 */
       number?: number
       sort?: components['schemas']['SortObject'][]
@@ -5173,39 +7325,6 @@ export interface components {
       pageable?: components['schemas']['PageableObject']
       empty?: boolean
     }
-    /** @description Alert id */
-    AlertIdResponse: {
-      /**
-       * Format: int64
-       * @description The booking id
-       */
-      bookingId: number
-      /**
-       * Format: int64
-       * @description The alert sequence
-       */
-      alertSequence: number
-      /** @description The prisoner number */
-      offenderNo: string
-    }
-    PageAlertIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
-      /** Format: int64 */
-      totalElements?: number
-      first?: boolean
-      last?: boolean
-      /** Format: int32 */
-      size?: number
-      content?: components['schemas']['AlertIdResponse'][]
-      /** Format: int32 */
-      number?: number
-      sort?: components['schemas']['SortObject'][]
-      /** Format: int32 */
-      numberOfElements?: number
-      pageable?: components['schemas']['PageableObject']
-      empty?: boolean
-    }
     /** @description Adjustment id */
     AdjustmentIdResponse: {
       /**
@@ -5472,18 +7591,12 @@ export interface components {
   headers: never
   pathItems: never
 }
-
 export type $defs = Record<string, never>
-
-export type external = Record<string, never>
-
 export interface operations {
-  /**
-   * get specific sentence adjustment
-   * @description Requires role NOMIS_SENTENCING. Retrieves a sentence adjustment by id
-   */
   getSentenceAdjustment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Sentence adjustment id
@@ -5491,40 +7604,52 @@ export interface operations {
          */
         adjustmentId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the sentence adjustment details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['SentenceAdjustmentResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjustment not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates specific sentence adjustment. The related booking and sentence can not be changed
-   * @description Requires role NOMIS_SENTENCING. Updates a sentence adjustment by id
-   */
   updateSentenceAdjustment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Sentence adjustment id
@@ -5532,6 +7657,7 @@ export interface operations {
          */
         adjustmentId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -5541,34 +7667,44 @@ export interface operations {
     responses: {
       /** @description the sentence adjustment has been updated */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * deletes specific sentence adjustment
-   * @description Requires role NOMIS_SENTENCING. Deletes a sentence adjustment by id
-   */
   deleteSentenceAdjustment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Sentence adjustment id
@@ -5576,38 +7712,48 @@ export interface operations {
          */
         adjustmentId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the sentence adjustment has been deleted */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates or updates an attendance record
-   * @description Creates or updates an attendance for the course schedule. Requires role NOMIS_ACTIVITIES
-   */
   upsertAttendance: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description Course schedule id */
         courseScheduleId: string
         /** @description Booking id */
         bookingId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -5617,36 +7763,96 @@ export interface operations {
     responses: {
       /** @description Attendance updated */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpsertAttendanceResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates an existing visit
-   * @description Updates details of an existing visit such as the visitors and time slot
-   */
+  deleteAttendance: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description Course schedule id */
+        courseScheduleId: string
+        /** @description Booking id */
+        bookingId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Attendance deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   updateVisit: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender Noms Id
@@ -5659,6 +7865,7 @@ export interface operations {
          */
         visitId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -5668,31 +7875,44 @@ export interface operations {
     responses: {
       /** @description Visit information updated */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Person ids do not exist */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description offenderNo or visits id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Cancel a visit */
   cancelVisit: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender Noms Id
@@ -5702,6 +7922,7 @@ export interface operations {
         /** @description Nomis Visit Id */
         visitId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -5711,34 +7932,44 @@ export interface operations {
     responses: {
       /** @description Visit cancelled */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Invalid cancellation reason */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description VSIP visit id not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates Court Appearance
-   * @description Required role NOMIS_SENTENCING Updates a new Court Appearance for the offender,latest booking and given Court Case
-   */
   updateCourtAppearance: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender no
@@ -5756,6 +7987,7 @@ export interface operations {
          */
         eventId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -5765,42 +7997,55 @@ export interface operations {
     responses: {
       /** @description Court Appearance updated */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpdateCourtAppearanceResponse']
         }
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Court appearance does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get sentences for an offender using the given booking id and sentence sequence
-   * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
-   */
   getOffenderSentence: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Sentence sequence
@@ -5813,40 +8058,52 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the sentence details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['SentenceResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Offender booking not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates Sentence
-   * @description Required role NOMIS_SENTENCING Updates a Sentence for the offender and latest booking
-   */
   updateSentence: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Booking Id
@@ -5859,6 +8116,7 @@ export interface operations {
          */
         sequence: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -5868,40 +8126,53 @@ export interface operations {
     responses: {
       /** @description Sentence updated */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Sentence does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * deletes a specific sentence
-   * @description Requires role NOMIS_SENTENCING. Deletes a sentence by booking and sentence sequence
-   */
   deleteSentence: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Sentence sequence
@@ -5914,32 +8185,41 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the sentence has been deleted */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get an alert by bookingId and alert sequence
-   * @description Retrieves an prisoner alert. Requires ROLE_NOMIS_ALERTS
-   */
-  getAlert_1: {
+  getAlert: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Booking Id
@@ -5952,40 +8232,52 @@ export interface operations {
          */
         alertSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Alert Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AlertResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Alert does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates an alert on a prisoner
-   * @description Updates an alert on the specified prisoner's booking which should be the latest booking. Requires ROLE_NOMIS_ALERTS
-   */
   updateAlert: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Booking id
@@ -5998,6 +8290,7 @@ export interface operations {
          */
         alertSequence: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6007,42 +8300,55 @@ export interface operations {
     responses: {
       /** @description Alert Updated */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AlertResponse']
         }
       }
       /** @description One or more fields in the request contains invalid data */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Alert does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Deletes an alert by bookingId and alert sequence
-   * @description Deletes an prisoner alert. Requires ROLE_NOMIS_ALERTS
-   */
   deleteAlert: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Booking Id
@@ -6055,32 +8361,41 @@ export interface operations {
          */
         alertSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Alert Deleted */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates an existing non-association
-   * @description Updates an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS
-   */
   updateNonAssociation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender
@@ -6098,6 +8413,7 @@ export interface operations {
          */
         typeSequence: number
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6107,40 +8423,53 @@ export interface operations {
     responses: {
       /** @description Successfully amended non-association */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Invalid data such as reason or type do not exist etc. */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Non-association does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Deletes a non-association
-   * @description Deletes the specified non-association detail record. if there was only one, the parent NA record is deleted too. Requires role NOMIS_NON_ASSOCIATIONS
-   */
   deleteNonAssociation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender
@@ -6158,38 +8487,50 @@ export interface operations {
          */
         typeSequence: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Non-association does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Closes an existing non-association
-   * @description Closes an existing non-association. Requires role NOMIS_NON_ASSOCIATIONS
-   */
   closeNonAssociation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender
@@ -6207,44 +8548,59 @@ export interface operations {
          */
         typeSequence: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Non-association is already closed */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Non-association does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates an existing location
-   * @description Updates an existing location. Requires role NOMIS_LOCATIONS
-   */
   updateLocation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS location Id
@@ -6252,6 +8608,7 @@ export interface operations {
          */
         locationId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6261,40 +8618,53 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Invalid data such as location or subtype do not exist etc. */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, correct role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Location id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Reactivates a deactivated location
-   * @description Requires role NOMIS_LOCATIONS
-   */
   reactivateLocation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS location Id
@@ -6302,44 +8672,59 @@ export interface operations {
          */
         locationId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Location was already active */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, correct role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Location id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Deactivates an existing location
-   * @description Requires role NOMIS_LOCATIONS
-   */
   deactivateLocation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS location Id
@@ -6347,6 +8732,7 @@ export interface operations {
          */
         locationId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6356,40 +8742,53 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Reason code does not exist, or already deactivated */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, correct role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Location id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Update location certification
-   * @description Requires role NOMIS_LOCATIONS
-   */
   updateCertification: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS location Id
@@ -6397,6 +8796,7 @@ export interface operations {
          */
         locationId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6406,34 +8806,44 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, correct role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Location id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Update location capacity
-   * @description Requires role NOMIS_LOCATIONS
-   */
   updateCapacity: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS location Id
@@ -6441,6 +8851,7 @@ export interface operations {
          */
         locationId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6450,34 +8861,44 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, correct role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Location id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get specific key date adjustment
-   * @description Requires role NOMIS_SENTENCING. Retrieves a key date adjustment by id
-   */
   getKeyDateAdjustment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Key date adjustment id
@@ -6485,40 +8906,52 @@ export interface operations {
          */
         adjustmentId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the key date adjustment details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['KeyDateAdjustmentResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjustment not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates specific key date adjustment. The related booking can not be changed
-   * @description Requires role NOMIS_SENTENCING. Updates a sentence adjustment by id
-   */
   updateKeyDateAdjustment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Key date adjustment id
@@ -6526,6 +8959,7 @@ export interface operations {
          */
         adjustmentId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6535,40 +8969,53 @@ export interface operations {
     responses: {
       /** @description the key date adjustment has been updated */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjustment not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * deletes specific key date adjustment
-   * @description Requires role NOMIS_SENTENCING. Deletes a key date adjustment by id
-   */
   deleteKeyDateAdjustment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Key date adjustment id
@@ -6576,32 +9023,41 @@ export interface operations {
          */
         adjustmentId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the key date adjustment has been deleted */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets the global incentive level by code
-   * @description Gets a global incentive level by provided code and domain of IEP_LEVEL
-   */
   getGlobalIncentiveLevel: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Incentive reference code
@@ -6609,34 +9065,43 @@ export interface operations {
          */
         code: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description return the Global Incentive level */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ReferenceCode']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Global Incentive Level does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates an existing global incentive level
-   * @description Updates an existing global incentive level, updateable fields are description and active
-   */
   updateGlobalIncentiveLevel: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Incentive reference code
@@ -6644,6 +9109,7 @@ export interface operations {
          */
         code: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6653,36 +9119,46 @@ export interface operations {
     responses: {
       /** @description Updated Global Incentive level */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ReferenceCode']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Global incentive level not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets the prison incentive level
-   * @description Gets prison incentive level data by provided code and prison
-   */
   getPrisonIncentiveLevel: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Prison id
@@ -6695,34 +9171,43 @@ export interface operations {
          */
         code: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description return the Prison Incentive level */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PrisonIncentiveLevelDataResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Prison Incentive Level does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Prison Incentive level data
-   * @description Creates incentive level data associated with a Prison
-   */
   updatePrisonIncentiveLevelData: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Prison Id
@@ -6735,6 +9220,7 @@ export interface operations {
          */
         code: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6744,30 +9230,216 @@ export interface operations {
     responses: {
       /** @description Prison Incentive level data updated */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PrisonIncentiveLevelDataResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates an existing appointment
-   * @description Updates an existing appointment. Requires role NOMIS_APPOINTMENTS
-   */
+  getCaseNote: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Id
+         * @example 1234578
+         */
+        caseNoteId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CaseNote Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CaseNoteResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CASENOTES */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description CaseNote does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  amendCaseNote: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Case note id
+         * @example 1234567
+         */
+        caseNoteId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AmendCaseNoteRequest']
+      }
+    }
+    responses: {
+      /** @description CaseNote Updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CaseNoteResponse']
+        }
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CASENOTES */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description CaseNote does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCaseNote: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Case note id
+         * @example 1234567
+         */
+        caseNoteId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CaseNote Deleted */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CaseNoteResponse']
+        }
+      }
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CASENOTES */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description CaseNote does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   updateAppointment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS event Id
@@ -6775,6 +9447,7 @@ export interface operations {
          */
         nomisEventId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6784,40 +9457,53 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Invalid data such as location or subtype do not exist etc. */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Event id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Deletes an existing appointment
-   * @description Deletes an existing appointment by actually deleting from the table. Intended for appointments created in error. Requires role NOMIS_APPOINTMENTS
-   */
   deleteAppointment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS event Id
@@ -6825,38 +9511,50 @@ export interface operations {
          */
         nomisEventId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Success */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Event id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Undoes an appointment cancellation
-   * @description Undoes an appointment cancellation. Requires role NOMIS_APPOINTMENTS
-   */
   uncancelAppointment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS event Id
@@ -6864,38 +9562,50 @@ export interface operations {
          */
         nomisEventId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Event id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Cancels an existing appointment
-   * @description Cancels an existing appointment. Requires role NOMIS_APPOINTMENTS
-   */
   cancelAppointment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS event Id
@@ -6903,38 +9613,358 @@ export interface operations {
          */
         nomisEventId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Success */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Event id does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates repairs (aka damages) for a given adjudication
-   * @description List of repairs are refreshed so this operation may result in any combinations of inserts, updates or deletes. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
+  updateAlertType: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        code: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateAlertType']
+      }
+    }
+    responses: {
+      /** @description Alert type updated */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert type does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  reactivateAlertType: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        code: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Alert code reactivated */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert code does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deactivateAlertType: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        code: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Alert type deactivated */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert type does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateAlertCode: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        code: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateAlertCode']
+      }
+    }
+    responses: {
+      /** @description Alert code updated */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert code does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  reactivateAlertCode: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        code: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Alert code reactivated */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert code does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deactivateAlertCode: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        code: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Alert code deactivated */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Alert code does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   updateRepairs: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -6942,6 +9972,7 @@ export interface operations {
          */
         adjudicationNumber: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -6951,36 +9982,46 @@ export interface operations {
     responses: {
       /** @description Repairs updated */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpdateRepairsResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates a hearing
-   * @description Updates a hearing for a given adjudication and hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   updateHearing: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -6993,6 +10034,7 @@ export interface operations {
          */
         hearingId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7002,36 +10044,46 @@ export interface operations {
     responses: {
       /** @description Updated Hearing Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpdateHearingRequest']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Hearing does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Deletes a hearing
-   * @description Deletes a hearing for a given adjudication and hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   deleteHearing: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -7044,38 +10096,50 @@ export interface operations {
          */
         hearingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Hearing deleted */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates evidence for a given adjudication
-   * @description List of evidence items are refreshed so this operation may result in any combinations of inserts, updates or deletes. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   updateEvidence: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -7083,6 +10147,7 @@ export interface operations {
          */
         adjudicationNumber: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7092,36 +10157,46 @@ export interface operations {
     responses: {
       /** @description Evidence updated */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpdateEvidenceResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * updates adjudication charge outcome and awards to the requested state before a quash
-   * @description The latest hearing result is set to back to the supplied value along with all awards associated with this charge. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   unquashHearingResultAndAwards: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -7134,6 +10209,7 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7143,36 +10219,46 @@ export interface operations {
     responses: {
       /** @description Hearing result award IDs created and awards deleted. These list should be empty unless there was a previous synchronisation issue that meant the NOMIS awards are not in the correct state */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpdateHearingResultAwardResponses']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Charge does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * updates adjudication charge outcome and awards to quashed
-   * @description The latest hearing result is set to quashed along with all awards associated with this charge (that may be associated with other hearings). Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   quashHearingResultAndAwards: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -7185,38 +10271,50 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Hearing result and awards quashed */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Charge does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * updates a batch of hearing result awards for a given adjudication
-   * @description Creates a hearing result awards that have been added, updates those that have changed and deletes ones that are absent for the booking associated with the adjudication. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   updateCreateAndDeleteHearingResultAwards: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -7229,6 +10327,7 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7238,36 +10337,46 @@ export interface operations {
     responses: {
       /** @description Hearing result award IDs created and awards deleted */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpdateHearingResultAwardResponses']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Charge does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * creates a hearing result award for a given adjudication
-   * @description Creates a hearing result award. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   createHearingResultAward: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -7280,6 +10389,7 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7289,36 +10399,46 @@ export interface operations {
     responses: {
       /** @description Hearing result award IDs created */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateHearingResultAwardResponses']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Charge does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Deletes hearing result awards for a given adjudication and charge sequence
-   * @description Deletes hearing result awards for a given adjudication and charge sequence. Returns list of deleted award keys. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   deleteHearingResultAwards: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -7331,88 +10451,116 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Hearing result awards deleted */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['DeleteHearingResultAwardResponses']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Charge does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get activity details
-   * @description Gets activity details including schedule rules and pay rates. Requires role NOMIS_ACTIVITIES
-   */
   getActivity: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description Course activity id */
         courseActivityId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['GetActivityResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates an activity
-   * @description Updates an activity and associated pay rates. Requires role NOMIS_ACTIVITIES
-   */
   updateActivity: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description Course activity id */
         courseActivityId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7422,75 +10570,98 @@ export interface operations {
     responses: {
       /** @description Activity information */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateActivityResponse']
         }
       }
       /** @description Prison, location, program service or iep value do not exist */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Activity Not Found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Delete a NOMIS course activity
-   * @description Deletes a course activity and its children - pay rates, schedules, allocations and attendances. Intended to be used for data fixes. Requires role NOMIS_ACTIVITIES
-   */
   deleteActivity: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         courseActivityId: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Activity is deleted */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Updates a course schedule
-   * @description Updates a course schedule. Requires role NOMIS_ACTIVITIES
-   */
   updateCourseSchedule: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description Course activity id */
         courseActivityId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7500,92 +10671,120 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpdateCourseScheduleResponse']
         }
       }
       /** @description Bad request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description The course schedule does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * End a course activity
-   * @description Ends a course activity and all active attendances with end date today. Requires role NOMIS_ACTIVITIES
-   */
   endActivity: {
     parameters: {
       query?: {
         /** @description End comment */
         endComment?: string
       }
+      header?: never
       path: {
         /** @description Course activity id */
         courseActivityId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Activity ended */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates or Updates a prisoner's allocation to an activity
-   * @description Creates or updates a prisoner's allocation to an activity. Requires role NOMIS_ACTIVITIES
-   */
   upsertAllocation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description Course activity id */
         courseActivityId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7595,35 +10794,49 @@ export interface operations {
     responses: {
       /** @description Success */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['UpsertAllocationResponse']
         }
       }
       /** @description There was an error with the request, see the response for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * End multiple course activities
-   * @description Ends course activities and all active allocations with end date today. Requires role NOMIS_ACTIVITIES
-   */
   endActivities: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody: {
       content: {
         'application/json': components['schemas']['EndActivitiesRequest']
@@ -7632,40 +10845,53 @@ export interface operations {
     responses: {
       /** @description Activities ended */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Check if a service is turned on for a prison
-   * @description Check if a prison is turned on for a service. Requires role NOMIS_ACTIVITIES
-   */
   checkServicePrison: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description The code of the service from the EXTERNAL_SERVICES table
@@ -7678,44 +10904,59 @@ export interface operations {
          */
         prisonId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Bad request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role SYNCHRONISATION_REPORTING */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not Found, the service is not turned on for the prison */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Turn on a service for a prison
-   * @description Turn on a service for a prison. Requires role NOMIS_ACTIVITIES
-   */
   createServicePrison: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description The code of the service from the EXTERNAL_SERVICES table
@@ -7728,44 +10969,59 @@ export interface operations {
          */
         prisonId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Created */
       201: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Bad request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role SYNCHRONISATION_REPORTING */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not Found, the service or prison do not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new visit
-   * @description Creates a new visit and decrements the visit balance.
-   */
   createVisit: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender Noms Id
@@ -7773,6 +11029,7 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7782,36 +11039,46 @@ export interface operations {
     responses: {
       /** @description Visit information with created id */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateVisitResponse']
         }
       }
       /** @description Prison or person ids do not exist */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description offenderNo does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new Sentence
-   * @description Required role NOMIS_SENTENCING Creates a new Sentence for the offender and latest booking
-   */
   createSentence: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender number
@@ -7819,6 +11086,7 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7828,42 +11096,55 @@ export interface operations {
     responses: {
       /** @description Created Sentence */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateSentenceResponse']
         }
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Offender does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get court cases for an offender
-   * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
-   */
   getCourtCasesByOffender: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender No
@@ -7871,40 +11152,52 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the list of court cases */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CourtCaseResponse'][]
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Offender not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new Court Case
-   * @description Required role NOMIS_SENTENCING Creates a new Court Case for the offender and latest booking
-   */
   createCourtCase: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender No
@@ -7912,6 +11205,7 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7921,42 +11215,55 @@ export interface operations {
     responses: {
       /** @description Created Court case */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateCourtCaseResponse']
         }
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Offender does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new Court Appearance
-   * @description Required role NOMIS_SENTENCING Creates a new Court Appearance for the offender,latest booking and given Court Case
-   */
   createCourtAppearance: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender no
@@ -7969,6 +11276,7 @@ export interface operations {
          */
         caseId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -7978,42 +11286,108 @@ export interface operations {
     responses: {
       /** @description Created Court Appearance */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateCourtAppearanceResponse']
         }
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Court case does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates an alert on a prisoner
-   * @description Creates an alert on the prisoner's latest booking. Requires ROLE_NOMIS_ALERTS
-   */
-  createAlert: {
+  getCaseNotesForPrisoner: {
     parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender No AKA prisoner number
+         * @example A3745XD
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Case notes Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerCaseNotesResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CASENOTES */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createCaseNote: {
+    parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender no (aka prisoner number)
@@ -8021,6 +11395,73 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateCaseNoteRequest']
+      }
+    }
+    responses: {
+      /** @description CaseNote Created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CreateCaseNoteResponse']
+        }
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CASENOTES */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createAlert: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender no (aka prisoner number)
+         * @example A1234AK
+         */
+        offenderNo: string
+      }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8030,48 +11471,64 @@ export interface operations {
     responses: {
       /** @description Alert Created */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateAlertResponse']
         }
       }
       /** @description One or more fields in the request contains invalid data */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Prisoner does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Active alert of this type already exists */
       409: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * creates an adjudication on the latest booking of a prisoner
-   * @description Creates an adjudication. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   createAdjudication: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender Noms Id
@@ -8079,6 +11536,7 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8088,41 +11546,58 @@ export interface operations {
     responses: {
       /** @description Adjudication Created Returned */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AdjudicationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Prisoner does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication already exists */
       409: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets prisoner details for a list of bookings
-   * @description Requires role SYNCHRONISATION_REPORTING.
-   */
   getPrisonerBookings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody: {
       content: {
         'application/json': string
@@ -8131,30 +11606,37 @@ export interface operations {
     responses: {
       /** @description list of prisoner details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PrisonerDetails'][]
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new sentence adjustment
-   * @description Required role NOMIS_SENTENCING Creates a new sentence adjustment (aka Debit/Credit). Key dates will not be recalculated as a side effect of this operation
-   */
   createSentenceAdjustment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Booking Id
@@ -8167,6 +11649,7 @@ export interface operations {
          */
         sentenceSequence: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8176,42 +11659,55 @@ export interface operations {
     responses: {
       /** @description Created Sentence adjustment id */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateAdjustmentResponse']
         }
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Booking or sentence sequence do not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new incentive
-   * @description Creates a new incentive using next sequence no.
-   */
   createIncentive: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender Booking Id
@@ -8219,6 +11715,7 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8228,36 +11725,46 @@ export interface operations {
     responses: {
       /** @description Incentive information with created sequence */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateIncentiveResponse']
         }
       }
       /** @description Prison or iep value do not exist */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description booking does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Reorder a existing incentives to match time order
-   * @description Reorder a series of IEPs so the sequence number matches the IEP date time. Latest time gets the higher sequence so the current IEP is the latest. This is required to correct DPS incentives that are created out of order
-   */
   reorderCurrentIncentives: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender Booking Id
@@ -8265,38 +11772,50 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Incentives successfully reordered */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Access this endpoint forbidden, incorrect role. Must have NOMIS_INCENTIVES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description booking does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new key date adjustment
-   * @description Required role NOMIS_SENTENCING Creates a new key date adjustment. Key dates will be recalculated as a side effect of this operation
-   */
   createKeyDateAdjustment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Booking Id
@@ -8304,6 +11823,7 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8313,41 +11833,58 @@ export interface operations {
     responses: {
       /** @description Created key date adjustment */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateAdjustmentResponse']
         }
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Booking does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new non-association
-   * @description Creates a new non-association. Requires role NOMIS_NON_ASSOCIATIONS
-   */
   createNonAssociation: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody: {
       content: {
         'application/json': components['schemas']['CreateNonAssociationRequest']
@@ -8356,35 +11893,49 @@ export interface operations {
     responses: {
       /** @description Successfully created non-association */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateNonAssociationResponse']
         }
       }
       /** @description Invalid data such as booking or location do not exist etc. */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new location
-   * @description Creates a new location. Requires role ROLE_NOMIS_LOCATIONS
-   */
   createLocation: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody: {
       content: {
         'application/json': components['schemas']['CreateLocationRequest']
@@ -8393,35 +11944,49 @@ export interface operations {
     responses: {
       /** @description Successfully created location with created id */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['LocationIdResponse']
         }
       }
       /** @description Invalid data such as prison or parent do not exist etc. */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, correct role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new global incentive level
-   * @description Creates a new global incentive level
-   */
   createGlobalIncentiveLevel: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody: {
       content: {
         'application/json': components['schemas']['CreateIncentiveRequest']
@@ -8430,29 +11995,40 @@ export interface operations {
     responses: {
       /** @description Global Incentive level */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ReferenceCode']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * reorders all global incentive levels
-   * @description reorders all global incentive levels using provided list of Incentive codes, including inactive. 1-based index
-   */
   reorderGlobalIncentiveLevels: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody: {
       content: {
         'application/json': components['schemas']['ReorderRequest']
@@ -8461,28 +12037,35 @@ export interface operations {
     responses: {
       /** @description Reorder successful */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Prison Incentive level data
-   * @description Creates incentive level data associated with a Prison
-   */
   createPrisonIncentiveLevelData: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Prison Id
@@ -8490,6 +12073,7 @@ export interface operations {
          */
         prison: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8499,29 +12083,40 @@ export interface operations {
     responses: {
       /** @description Prison Incentive level data created */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PrisonIncentiveLevelDataResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new appointment
-   * @description Creates a new appointment. Requires role NOMIS_APPOINTMENTS
-   */
   createAppointment: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody: {
       content: {
         'application/json': components['schemas']['CreateAppointmentRequest']
@@ -8530,36 +12125,162 @@ export interface operations {
     responses: {
       /** @description Appointment information with created id */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateAppointmentResponse']
         }
       }
       /** @description Invalid data such as booking or location do not exist etc. */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * creates a hearing for a given adjudication
-   * @description Creates a hearing for a given adjudication. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
+  createAlertType: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateAlertType']
+      }
+    }
+    responses: {
+      /** @description Alert type Created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Type already exits */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createAlertCode: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateAlertCode']
+      }
+    }
+    responses: {
+      /** @description Alert code Created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Code already exits */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   createHearing: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -8567,6 +12288,7 @@ export interface operations {
          */
         adjudicationNumber: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8576,36 +12298,46 @@ export interface operations {
     responses: {
       /** @description Hearing Created Returned */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateHearingResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * creates or updates a hearing result for a given hearing and charge.
-   * @description Creates a (or updates the existing) hearing result for a given hearing and charge. DPS only supports 1 result per hearing. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   upsertHearingResult: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -8623,6 +12355,7 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8632,36 +12365,46 @@ export interface operations {
     responses: {
       /** @description Hearing result created */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateHearingResultResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Hearing does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Deletes a hearing result
-   * @description Deletes a hearing result for a given adjudication and hearing Id. Returns list of any deleted award Ids to allow removal of award mappings in the sync service. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   deleteHearingResult: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -8679,40 +12422,52 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Hearing result deleted */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['DeleteHearingResultResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * creates or updates a result for a given charge. This requires a dummy hearing to be created
-   * @description Creates or updates a result for a charge. DPS allows results to be created without hearings eg: Refer to Police. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   createResultWithDummyHearing: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -8725,6 +12480,7 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
     requestBody: {
       content: {
@@ -8734,34 +12490,44 @@ export interface operations {
     responses: {
       /** @description Result created */
       201: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Deletes a result
-   * @description Deletes a result for a given adjudication and charge sequence. The result will be associated with a dummy hearing used by DPS to record referrals. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   deleteResult: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -8774,37 +12540,53 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description result deleted */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Creates a new activity
-   * @description Creates a new activity and associated pay rates. Requires role NOMIS_ACTIVITIES
-   */
   createActivity: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     requestBody: {
       content: {
         'application/json': components['schemas']['CreateActivityRequest']
@@ -8813,36 +12595,46 @@ export interface operations {
     responses: {
       /** @description Activity information with created id */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CreateActivityResponse']
         }
       }
       /** @description Prison, location, program service or iep value do not exist */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get visit
-   * @description Retrieves a visit by id.
-   */
   getVisit: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Nomis Visit Id
@@ -8850,32 +12642,39 @@ export interface operations {
          */
         visitId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Visit Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['VisitResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description visit does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get future visit room usage by filter
-   * @description Retrieves a list of rooms with usage count for the (filtered) visits. Only future visits are included
-   */
   getVisitRoomCountsByFilter: {
     parameters: {
       query: {
@@ -8906,26 +12705,32 @@ export interface operations {
          */
         futureVisitsOnly?: boolean
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description list of visit room and count is returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['VisitRoomCountResponse'][]
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get visits by filter
-   * @description Retrieves a paged list of visits by filter
-   */
   getVisitsByFilter: {
     parameters: {
       query: {
@@ -8951,108 +12756,188 @@ export interface operations {
          */
         toDateTime?: string
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of visit ids is returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageVisitIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Retrieve a list of prisons switched on for the service
-   * @description Retrieves all prisons switched on for the service code, or an empty list if there are none. Requires role SYNCHRONISATION_REPORTING
-   */
   getServicePrisons: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description The code of the service from the EXTERNAL_SERVICES table */
         serviceCode: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PrisonDetails'][]
         }
       }
       /** @description Bad request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role SYNCHRONISATION_REPORTING */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get incident questionnaire details
-   * @description Gets incident questionnaire details. Requires role NOMIS_INCIDENTS
-   */
-  getQuestionnaire: {
+  getMaxCourseScheduleId: {
     parameters: {
-      path: {
-        /** @description Incident Questionnaire id */
-        questionnaireId: string
-      }
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** @description OK */
+      /** @description Max CRS_SCH_ID returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': components['schemas']['QuestionnaireResponse']
+          'application/json': number
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden, requires role NOMIS_INCIDENTS */
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
+        headers: {
+          [name: string]: unknown
         }
-      }
-      /** @description Not found */
-      404: {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get questionnaire IDs by filter
-   * @description Retrieves a paged list of incident questionnaire ids by filter. Requires ROLE_NOMIS_INCIDENTS.
-   */
+  getQuestionnaire: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description Incident Questionnaire id */
+        questionnaireId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['QuestionnaireResponse']
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_INCIDENTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getIdsByFilter: {
     parameters: {
       query: {
@@ -9068,78 +12953,104 @@ export interface operations {
          */
         toDate?: string
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageQuestionnaireIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCIDENTS not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Retrieve a list of active incentive levels for a prison
-   * @description Retrieve a list of active incentive levels for a prison. Requires role NOMIS_ACTIVITIES
-   */
   getPrisonIncentiveLevels: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description The prison ID */
         prisonId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['IncentiveLevel'][]
         }
       }
       /** @description Bad request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role SYNCHRONISATION_REPORTING */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Prison not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get an offender charge
-   * @description Requires role NOMIS_SENTENCING. Retrieves offender charge details. Offender Charges are at the booking level.
-   */
   getOffenderCharge: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender Charge id
@@ -9152,40 +13063,52 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the court appearance details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['OffenderChargeResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Offender not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get a court case
-   * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
-   */
   getCourtCase: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Court case id
@@ -9198,40 +13121,52 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the court case details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CourtCaseResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Offender not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get a court appearance
-   * @description Requires role NOMIS_SENTENCING. Retrieves a court appearance by id
-   */
   getCourtAppearance: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Court appearance id
@@ -9244,44 +13179,108 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the court appearance details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CourtEventResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Offender not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets prisoner's list of merge details since a given date. Either the current offenderNo or the previous offenderNo can be used to search for merges.
-   * @description Requires role SYNCHRONISATION_REPORTING.
-   */
+  getPhysicalAttributes: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender number
+         * @example A1234AA
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Physical Attributes Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerPhysicalAttributesResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISON_PERSON */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getPrisonerMerges: {
     parameters: {
       query?: {
         /** @description The earliest date to search for merges from */
         fromDate?: string
       }
+      header?: never
       path: {
         /**
          * @description Offender Noms Id
@@ -9289,34 +13288,96 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description list of prisoner merges */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['MergeDetail'][]
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets a prisoner's previous booking relative to the supplied booking id
-   * @description Requires role NOMIS_ALERTS.
-   */
+  getCSIPsToMigrate: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender No AKA prisoner number
+         * @example A1234AK
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CSIPs Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerCSIPsResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CSIP */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist or has no csips */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getPreviousBooking: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender Noms Id
@@ -9329,40 +13390,52 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Ids of booking */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PreviousBookingId']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_ALERTS not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Booking or prisoner does not exist or has no previous booking */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets alert for latest booking plus unique list of alerts from previous bookings for a prisoner
-   * @description Retrieves alerts for a prisoner across all bookings. The latest booking all alerts will be returned, from the previous bookings the list will contain at most one alert per alert code type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
-   */
   getAlertsToMigrate: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender No AKA prisoner number
@@ -9370,40 +13443,52 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Alerts Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PrisonerAlertsResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Prisoner does not exist or has no bookings */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets active alerts for latest booking plus unique list of alerts from previous bookings for a prisoner
-   * @description Retrieves active alerts for a prisoner across all bookings. The latest booking all active alerts will be returned, from the previous bookings the list will contain at most one alert per alert code that is active type ordered by alert date with latest alert taken. Requires ROLE_NOMIS_ALERTS
-   */
   getActiveAlertsForReconciliation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender No AKA prisoner number
@@ -9411,39 +13496,48 @@ export interface operations {
          */
         offenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Active Alerts Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PrisonerAlertsResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Prisoner does not exist or has no bookings */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets the identifiers for all prisoners. By default only active prisoners will be return unless active=false
-   * @deprecated
-   * @description Requires role SYNCHRONISATION_REPORTING.
-   */
   getPrisonerIdentifiers: {
     parameters: {
       query: {
@@ -9451,96 +13545,125 @@ export interface operations {
         /** @description When true only return active prisoners currently in prison else all prisoners that at some point has been in prison are returned */
         active?: boolean
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description paged list of prisoner ids */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PagePrisonerIds']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets the identifier for all prisoners.
-   * @description Requires role SYNCHRONISATION_REPORTING.
-   */
   getAllPrisoners: {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description paged list of prisoner ids */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PagePrisonerId']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING or ROLE_NOMIS_ALERTS not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets the identifiers for all active prisoners
-   * @description Requires role SYNCHRONISATION_REPORTING.
-   */
   getActivePrisonerIdentifiers: {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description paged list of prisoner ids */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PagePrisonerIds']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get court cases for an offender booking
-   * @description Requires role NOMIS_SENTENCING. Retrieves a court case by id
-   */
   getCourtCasesByOffenderBooking: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Booking Id
@@ -9548,44 +13671,55 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the list of court cases */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['CourtCaseResponse'][]
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Offender booking not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get active sentence and key date adjustments for a booking
-   * @description Retrieves all the current active sentence and key date adjustments (by booking) for a prisoner. Requires NOMIS_SENTENCING.
-   */
   getActiveAdjustments: {
     parameters: {
       query: {
         /** @description Indicate if should return just active adjustments */
         'active-only': string
       }
+      header?: never
       path: {
         /**
          * @description NOMIS booking Id
@@ -9593,34 +13727,43 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the list of adjustments details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['SentencingAdjustmentsResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get hearing result award by Id
-   * @description Retrieves a hearing result by the Id (bookingId and sanctionSequence). Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   getAdjudicationHearingResultAward: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS booking Id
@@ -9633,40 +13776,52 @@ export interface operations {
          */
         sanctionSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Hearing result award Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AdjudicationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Hearing result award does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get ADA award summary result award by booking
-   * @description Retrieves a summary of ADA awards along with associated adjudication for a given booking. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   getAdjudicationADASummary: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS booking Id
@@ -9674,40 +13829,52 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description ADA Summary award Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AdjudicationADAAwardSummaryResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Booking does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Gets alert for booking
-   * @description Retrieves alerts for a specific booking. Requires ROLE_NOMIS_ALERTS
-   */
   getAlertsByBookingId: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Booking id
@@ -9715,84 +13882,48 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Alerts Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['BookingAlertsResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Booking does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get an alert by bookingId and alert sequence
-   * @description Retrieves an prisoner alert. Requires ROLE_NOMIS_ALERTS
-   */
-  getAlert: {
-    parameters: {
-      path: {
-        /**
-         * @description Booking Id
-         * @example 12345
-         */
-        bookingId: string
-        /**
-         * @description Alert sequence
-         * @example 3
-         */
-        alertSequence: string
-      }
-    }
-    responses: {
-      /** @description Alert Information Returned */
-      200: {
-        content: {
-          'application/json': components['schemas']['AlertResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ALERTS */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Alert does not exist */
-      404: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  /**
-   * Get an open non-association
-   * @description Get the open non-association for the two offender numbers. Requires role NOMIS_NON_ASSOCIATIONS
-   */
   getNonAssociation: {
     parameters: {
       query?: {
@@ -9802,6 +13933,7 @@ export interface operations {
          */
         typeSequence?: number
       }
+      header?: never
       path: {
         /**
          * @description Offender
@@ -9814,40 +13946,52 @@ export interface operations {
          */
         nsOffenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Non-association information */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['NonAssociationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description No open non-association exists for these offender numbers, or one of the offenders does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get all non-associations for the two offender numbers
-   * @description Get all non-associations for the two offender numbers, including expired. Requires role NOMIS_NON_ASSOCIATIONS
-   */
   getNonAssociationDetails: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Offender
@@ -9860,71 +14004,92 @@ export interface operations {
          */
         nsOffenderNo: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description List of non-associations */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['NonAssociationResponse'][]
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Non-association does not exist, or one of the offenders does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get non-associations by filter
-   * @description Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_NON_ASSOCIATIONS.
-   */
   getNonAssociationsByFilter: {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of composite ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageNonAssociationIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_NON_ASSOCIATIONS not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get a location
-   * @description Get the location given the id. Requires role ROLE_NOMIS_LOCATIONS
-   */
   getLocation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Location id
@@ -9932,40 +14097,52 @@ export interface operations {
          */
         id: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Location information */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['LocationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, correct role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description No location exists for this id */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get a location
-   * @description Get the location given the business key. Requires role ROLE_NOMIS_LOCATIONS
-   */
   getLocationByKey: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Location id
@@ -9973,174 +14150,284 @@ export interface operations {
          */
         key: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Location information */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['LocationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, correct role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description No location exists for this id */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get locations by filter
-   * @description Retrieves a paged list of composite ids by filter. Requires ROLE_NOMIS_LOCATIONS.
-   */
   getLocationsByFilter: {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of ids is returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageLocationIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role ROLE_NOMIS_LOCATIONS not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get incident details
-   * @description Gets incident details. Requires role NOMIS_INCIDENTS
-   */
   getIncident: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description Incident id */
         incidentId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['IncidentResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_INCIDENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Retrieve a list of all agency locations that have raised incidents)
-   * @description Retrieve a list of all agency locations that have raised incidents, including prisons and PECS. Requires authorised access
-   */
-  getIncidentLocations: {
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          'application/json': components['schemas']['IncidentAgencyLocationId'][]
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  /**
-   * Gets incident counts
-   * @description Retrieves open and closed incident counts for a prison.
-   */
-  getIncidentCountsForReconciliation: {
+  getOpenIncidentIdsForReconciliation: {
     parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
       path: {
         /**
-         * @description Agency Location Id
+         * @description Agency Id
          * @example LEI
          */
-        agencyLocationId: string
+        agencyId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** @description Reconciliation data returned */
+      /** @description Pageable list of reconciliation ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': components['schemas']['IncidentsReconciliationResponse']
+          'application/json': components['schemas']['PageIncidentIdResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_INCIDENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get incident IDs by filter
-   * @description Retrieves a paged list of incident ids by filter. Requires ROLE_NOMIS_INCIDENTS.
-   */
+  getIncidentCountsForReconciliation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Agency Id
+         * @example LEI
+         */
+        agencyId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Reconciliation data returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['IncidentsReconciliationResponse']
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_INCIDENTS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getIncidentAgencies: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['IncidentAgencyId'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getIdsByFilter_1: {
     parameters: {
       query: {
@@ -10156,32 +14443,41 @@ export interface operations {
          */
         toDate?: string
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageIncidentIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCIDENTS not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get incentives (a.k.a IEP) by filter
-   * @description Retrieves a paged list of incentive composite ids by filter. Requires ROLE_NOMIS_INCENTIVES.
-   */
   getIncentivesByFilter: {
     parameters: {
       query: {
@@ -10202,34 +14498,45 @@ export interface operations {
          */
         latestOnly?: boolean
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of composite ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageIncentiveIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get a prisoner's incentive level (a.k.a IEP) by id (bookingId and incentiveId)
-   * @description Retrieves a created incentive level for a prisoner. Requires ROLE_NOMIS_INCENTIVES.
-   */
   getIncentive: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS booking Id
@@ -10242,34 +14549,43 @@ export interface operations {
          */
         incentiveSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the incentive level details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['IncentiveResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get a prisoner's current incentive level (a.k.a IEP) for a booking
-   * @description Retrieves the current incentive level (by booking) for a prisoner. Requires ROLE_NOMIS_INCENTIVES.
-   */
   getCurrentIncentive: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS booking Id
@@ -10277,76 +14593,98 @@ export interface operations {
          */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description the incentive level details */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['IncentiveResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_INCENTIVES not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Retrieve a document
-   * @description Retrieve a document by its id. Requires role NOMIS_DOCUMENTS
-   */
   getDocument: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description The document id */
         id: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/octet-stream': string
         }
       }
       /** @description Bad request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_DOCUMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Document not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Retrieve a list of document ids
-   * @description Retrieve a list of document ids searching by booking id and template name. Requires role NOMIS_DOCUMENTS
-   */
   getDocumentIds: {
     parameters: {
       query: {
@@ -10356,86 +14694,114 @@ export interface operations {
          */
         templateName: string[]
       }
+      header?: never
       path: {
         /** @description The booking id */
         bookingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['DocumentIdResponse'][]
         }
       }
       /** @description Bad request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_DOCUMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get CSIP details
-   * @description Gets csip details. Requires role NOMIS_CSIP
-   */
   getCSIP: {
     parameters: {
+      query?: {
+        includeDocumentIds?: boolean
+      }
+      header?: never
       path: {
         /** @description CSIP id */
         id: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': components['schemas']['CSIPResponse']
+          '*/*': components['schemas']['CSIPResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_CSIP */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get csip IDs by filter
-   * @description Retrieves a paged list of csip ids by filter. Requires ROLE_NOMIS_CSIP.
-   */
   getIdsByFilter_2: {
     parameters: {
       query: {
@@ -10451,102 +14817,340 @@ export interface operations {
          */
         toDate?: string
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': components['schemas']['PageCSIPIdResponse']
+          '*/*': components['schemas']['PageCSIPIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_CSIP not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get csip count
-   * @description Gets a count of all csips. Requires role NOMIS_CSIP
-   */
-  getCSIPCount: {
+  getCSIPFactor: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description CSIP Factor id */
+        csipFactorId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': number
+          'application/json': components['schemas']['CSIPFactorResponse']
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_CSIP */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get data for an attendance sync reconciliation
-   * @description Gets the number of active attendances for each booking in the prison
-   */
+  deleteCSIPFactor: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description CSIP Factor Id
+         * @example 12345
+         */
+        csipFactorId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Csip factor Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CSIP */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPCount: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': number
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_CSIP */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtCaseForMigration: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Court case id
+         * @example 12345
+         */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description the court case details */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtCaseResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Court case not found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtCaseIdsByFilter: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /**
+         * @description Filter results by court cases that were created on or after the given date
+         * @example 2021-11-03
+         */
+        fromDate?: string
+        /**
+         * @description Filter results by court cases that were created on or before the given date
+         * @example 2021-11-03
+         */
+        toDate?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Pageable list of ids are returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageCourtCaseIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role ROLE_NOMIS_SENTENCING not present */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getAttendanceReconciliationSummary: {
     parameters: {
       query: {
         /** @description Date */
         date: string
       }
+      header?: never
       path: {
         /** @description Prison id */
         prisonId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Reconciliation data returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AttendanceReconciliationResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get appointment by event id
-   * @description Get an appointment given the unique event id. Requires role NOMIS_APPOINTMENTS
-   */
   getAppointmentById: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Event Id
@@ -10554,38 +15158,48 @@ export interface operations {
          */
         eventId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Appointment information with created id */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AppointmentResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Booking, location and timestamp combination does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get appointments by filter
-   * @description Retrieves a paged list of appointment ids by filter. Requires ROLE_NOMIS_APPOINTMENTS.
-   */
   getAppointmentsByFilter: {
     parameters: {
       query: {
@@ -10606,32 +15220,41 @@ export interface operations {
          */
         toDate?: string
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of composite ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageAppointmentIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get appointment counts by prison, event sub type and future / past. Note that the 'future' is everything from tomorrow onwards.
-   * @description Retrieves counts of appointments for the migration preview. Requires ROLE_NOMIS_APPOINTMENTS.
-   */
   getAppointmentCounts: {
     parameters: {
       query: {
@@ -10651,34 +15274,45 @@ export interface operations {
          */
         toDate?: string
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Appointment counts returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AppointmentCountsResponse'][]
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get an appointment
-   * @description Get an appointment given the booking id, internal location, date and start time. Requires role NOMIS_APPOINTMENTS
-   */
   getAppointment: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS booking Id
@@ -10696,82 +15330,107 @@ export interface operations {
          */
         dateTime: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Appointment information with created id */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AppointmentResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_APPOINTMENTS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Booking, location and timestamp combination does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get allocation details
-   * @description Gets allocation details. Requires role NOMIS_ACTIVITIES
-   */
   getAllocation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description Allocation id */
         allocationId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['GetAllocationResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Find suspended allocations
-   * @description Searches for suspended prisoners on active course allocations. Requires role NOMIS_ACTIVITIES
-   */
   findSuspendedAllocations: {
     parameters: {
       query: {
@@ -10782,76 +15441,100 @@ export interface operations {
         /** @description Course Activity ID */
         courseActivityId?: number
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['FindSuspendedAllocationsResponse'][]
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get data for an allocation sync reconciliation
-   * @description Gets the number of active allocations for each booking in the prison
-   */
   getAllocationReconciliationSummary: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /** @description Prison id */
         prisonId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Reconciliation data returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AllocationReconciliationResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Find allocations with missing pay bands
-   * @description Searches for prisoners allocated to a course activity without a pay band assigned. Requires role NOMIS_ACTIVITIES
-   */
   findAllocationsWithMissingPayBands: {
     parameters: {
       query: {
@@ -10862,38 +15545,50 @@ export interface operations {
         /** @description Course Activity ID */
         courseActivityId?: number
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['FindAllocationsMissingPayBandsResponse'][]
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Find paged active allocations
-   * @description Searches for active course allocations. Requires role NOMIS_ACTIVITIES
-   */
   findActiveAllocations: {
     parameters: {
       query: {
@@ -10905,85 +15600,59 @@ export interface operations {
         /** @description Course Activity ID */
         courseActivityId?: number
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageFindActiveAllocationIdsResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Get alert IDs by filter
-   * @description Retrieves a paged list of alert ids by filter. Requires ROLE_NOMIS_ALERTS.
-   */
-  getAlertIdsByFilter: {
-    parameters: {
-      query: {
-        pageRequest: components['schemas']['Pageable']
-        /**
-         * @description Filter results by alerts that were created on or after the given date
-         * @example 2021-11-03
-         */
-        fromDate?: string
-        /**
-         * @description Filter results by alerts that were created on or before the given date
-         * @example 2021-11-03
-         */
-        toDate?: string
-      }
-    }
-    responses: {
-      /** @description Pageable list of ids are returned */
-      200: {
-        content: {
-          'application/json': components['schemas']['PageAlertIdResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden to access this endpoint when role ROLE_NOMIS_ALERTS not present */
-      403: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  /**
-   * get adjustment IDs (key date and Sentence adjustments) by filter
-   * @description Retrieves a paged list of adjustment ids by filter. Requires ROLE_NOMIS_SENTENCING.
-   */
   getAdjustmentsByFilter: {
     parameters: {
       query: {
@@ -10999,34 +15668,45 @@ export interface operations {
          */
         toDate?: string
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageAdjustmentIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get hearing by hearing Id
-   * @description Retrieves a hearing by the hearing Id. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   getAdjudicationHearing: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS Hearing Id
@@ -11034,40 +15714,52 @@ export interface operations {
          */
         hearingId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Hearing Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AdjudicationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Hearing does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get hearing result by hearing id
-   * @description Retrieves a hearing result by the nomis hearing id. DPS migrated and synchronised hearing results always have a result sequence of 1 Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   getAdjudicationHearingResult: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description NOMIS Hearing Id
@@ -11080,38 +15772,48 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Hearing Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AdjudicationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Hearing result does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get adjudication charge IDs by filter
-   * @description Retrieves a paged list of adjudication charge ids by filter. Requires ROLE_NOMIS_ADJUDICATIONS.
-   */
   getAdjudicationChargeIdsByFilter: {
     parameters: {
       query: {
@@ -11132,34 +15834,45 @@ export interface operations {
          */
         prisonIds?: string[]
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Pageable list of ids are returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageAdjudicationChargeIdResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint when role NOMIS_ADJUDICATIONS not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get adjudication by adjudication number
-   * @description Retrieves an adjudication by the adjudication number. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   getAdjudication: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -11167,40 +15880,52 @@ export interface operations {
          */
         adjudicationNumber: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Adjudication Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AdjudicationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * get adjudication by adjudication number and charge sequence
-   * @description Retrieves an adjudication by the adjudication number and charge sequence. Will only return the specified charge. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   getAdjudicationByCharge: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -11213,38 +15938,48 @@ export interface operations {
          */
         chargeSequence: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Adjudication with charge information returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['AdjudicationChargeResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Adjudication or adjudication charge does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Find activities with pay rates with unknown incentive level
-   * @description Searches for course activities that have an active pay rate with an unknown incentive level. Requires role NOMIS_ACTIVITIES
-   */
   findRatesWithUnknownIncentiveLevel: {
     parameters: {
       query: {
@@ -11255,38 +15990,50 @@ export interface operations {
         /** @description Course Activity ID */
         courseActivityId?: number
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['FindPayRateWithUnknownIncentiveResponse'][]
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Find paged active activities
-   * @description Searches for active course activities with allocated prisoners. Requires role NOMIS_ACTIVITIES
-   */
   findActiveActivities: {
     parameters: {
       query: {
@@ -11298,46 +16045,63 @@ export interface operations {
         /** @description Course Activity ID */
         courseActivityId?: number
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['PageFindActiveActivityIdsResponse']
         }
       }
       /** @description Invalid request */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Not found */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * **** Used to recover from a duplicate incident creation only ***** Deletes an incident by adjudication number.
-   * @description Deletes an incident by adjudication number. Supports the removal of a duplicate incident without a DPS mapping. Requires ROLE_NOMIS_ADJUDICATIONS
-   */
   deleteIncident: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         /**
          * @description Adjudication number
@@ -11345,78 +16109,149 @@ export interface operations {
          */
         adjudicationNumber: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Incident deleted */
       200: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_ADJUDICATIONS */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Delete a NOMIS attendance (from OFFENDER_COURSE_ATTENDANCES table)
-   * @description Deletes an attendance from NOMIS. Requires role NOMIS_ACTIVITIES
-   */
-  deleteAttendance: {
+  deleteCSIP: {
     parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description CSIP Factor Id
+         * @example 12345
+         */
+        csipId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Csip report Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CSIP */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAttendance_1: {
+    parameters: {
+      query?: never
+      header?: never
       path: {
         eventId: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Attendance is deleted */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /**
-   * Delete a NOMIS allocation (from OFFENDER_PROGRAM_PROFILES table)
-   * @description Deletes an allocation from NOMIS and any children - pay rates, attendances. Requires role NOMIS_ACTIVITIES
-   */
   deleteAllocation: {
     parameters: {
+      query?: never
+      header?: never
       path: {
         referenceId: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
       /** @description Allocation is deleted */
       204: {
-        content: never
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
       /** @description Forbidden, requires role NOMIS_ACTIVITIES */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
