@@ -21,6 +21,8 @@ import {
   RoomMappingsResponse,
   SentencingMigrationFilter,
   VisitsMigrationFilter,
+  MigrationContextPrisonPersonMigrationFilter,
+  PrisonPersonMigrationFilter,
 } from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
@@ -764,7 +766,39 @@ export default class NomisMigrationService {
     })
   }
 
+  async startPrisonPersonMigration(
+    filter: PrisonPersonMigrationFilter,
+    context: Context,
+  ): Promise<MigrationContextPrisonPersonMigrationFilter> {
+    logger.info(`starting an Prison Person migration`)
+    return NomisMigrationService.restClient(context.token).post<MigrationContextPrisonPersonMigrationFilter>({
+      path: `/migrate/prisonperson/physical-attributes`,
+      data: filter,
+    })
+  }
+
   private static async getPrisonPersonDLQName(token: string): Promise<string> {
     return NomisMigrationService.getAnyDLQName('migrationprisonperson-health', token)
+  }
+
+  async getPrisonPersonDLQMessageCount(context: Context): Promise<string> {
+    return NomisMigrationService.getAnyDLQMessageCount('migrationprisonperson-health', context.token)
+  }
+
+  async deletePrisonPersonFailures(context: Context): Promise<PurgeQueueResult> {
+    logger.info(`deleting messages on prisonperson DLQ`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const dlqName = await NomisMigrationService.getPrisonPersonDLQName(token)
+
+    return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
+      path: `/queue-admin/purge-queue/${dlqName}`,
+    })
+  }
+
+  async cancelPrisonPersonMigration(migrationId: string, context: Context): Promise<void> {
+    logger.info(`cancelling an Prison Person migration`)
+    return NomisMigrationService.restClient(context.token).post<void>({
+      path: `/migrate/prisonperson/${migrationId}/cancel`,
+    })
   }
 }

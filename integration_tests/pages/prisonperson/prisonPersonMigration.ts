@@ -5,6 +5,8 @@ export default class PrisonPersonMigrationPage extends Page {
     super('Prison Person migration')
   }
 
+  startNewMigration = (): PageElement => cy.contains('Start new migration')
+
   migrationResultsDiv = (): PageElement => cy.get('[data-qa=migration-results-div]')
 
   migrationResultsRow = (rowNumber): PageElement => cy.get('[data-qa=migration-results-div] tbody > tr').eq(rowNumber)

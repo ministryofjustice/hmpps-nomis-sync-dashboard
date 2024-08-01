@@ -2057,6 +2057,27 @@ const stubListOfPrisonPersonMigrationHistory = (
     },
   })
 
+const stubStartPrisonPersonMigration = (
+  response: unknown = {
+    migrationId: '2022-03-23T11:11:56',
+    estimatedCount: 2,
+    body: {
+      prisonerNumber: 'A1234BC',
+    },
+  },
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/nomis-migration-api/migrate/prisonperson/physical-attributes',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
 const defaultPrisonPersonMigrationHistory: MigrationHistory[] = [
   {
     migrationId: '2022-03-14T10:13:56',
@@ -2247,6 +2268,23 @@ const stubGetPrisonPersonMigrationDetailsCompleted = ({
     },
   })
 
+const stubDeletePrisonPersonFailures = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-prisonpersonmigration_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        messagesFoundCount: 5,
+      },
+    },
+  })
+
 export default {
   stubListOfVisitsMigrationHistory,
   stubStartVisitsMigration,
@@ -2308,7 +2346,9 @@ export default {
   stubGetVisitMigrationRoomUsage,
 
   stubListOfPrisonPersonMigrationHistory,
+  stubStartPrisonPersonMigration,
   stubGetPrisonPersonFailures,
   stubGetPrisonPersonMigrationDetailsStarted,
   stubGetPrisonPersonMigrationDetailsCompleted,
+  stubDeletePrisonPersonFailures,
 }
