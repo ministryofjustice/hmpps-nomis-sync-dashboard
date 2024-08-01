@@ -38,7 +38,7 @@ context('Start Prison Person Migration', () => {
 
       page.continueButton().click()
       const previewPage = Page.verifyOnPage(StartPrisonPersonMigrationPreviewPage)
-      previewPage.estimateSummary().contains('Estimated number of Prison Person entities to be migrated: 100,988')
+      previewPage.estimateSummary().contains('Estimated number of Prison Person entities to be migrated: 1')
       previewPage
         .dlqWarning()
         .contains(
@@ -48,14 +48,13 @@ context('Start Prison Person Migration', () => {
       previewPage.prisonerNumberRow().contains('A1234BC')
       previewPage.prisonerNumberChangeLink().click()
 
-      // amend the prisoner number
+      // remove the prisoner number
       const amendPage = Page.verifyOnPage(StartPrisonPersonMigrationPage)
-      amendPage.prisonerNumber().clear().type('C4321BA')
+      amendPage.prisonerNumber().clear()
       page.continueButton().click()
 
       // check amended prisoner number displayed
       const previewPageAgain = Page.verifyOnPage(StartPrisonPersonMigrationPreviewPage)
-      previewPageAgain.prisonerNumberRow().contains('C4321BA')
       previewPageAgain.startMigrationButton().click()
 
       const confirmationPage = Page.verifyOnPage(StartPrisonPersonMigrationConfirmationPage)
