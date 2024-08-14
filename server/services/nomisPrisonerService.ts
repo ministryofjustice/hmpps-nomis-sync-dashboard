@@ -132,7 +132,7 @@ export default class NomisPrisonerService {
         path: `/service-prisons/${serviceName}/prison/${prisonId}`,
       })
     } catch (error) {
-      logger.info(`Failed to turn on ${serviceName} service for ${prisonId}`)
+      logger.info(`Failed to turn on ${serviceName} service for ${prisonId} - error ${error}`)
     }
   }
 
