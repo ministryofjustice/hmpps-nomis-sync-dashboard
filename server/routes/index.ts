@@ -108,7 +108,7 @@ export default function routes(services: Services): Router {
         {
           id: 'prisonperson-migration',
           heading: 'Prison Person migration',
-          description: 'WIP - DO NOT USE! Migration and synchronisation information',
+          description: 'Migration and synchronisation information',
           href: '/prisonperson-migration',
           roles: [MIGRATE_PRISONPERSON_ROLE],
           enabled: true,
