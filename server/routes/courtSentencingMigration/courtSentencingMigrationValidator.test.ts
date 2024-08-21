@@ -1,4 +1,4 @@
-import validate from './alertsMigrationValidator'
+import validate from './courtSentencingMigrationValidator'
 import { MigrationViewFilter } from '../../@types/dashboard'
 
 describe('visitsMigrationValidator', () => {

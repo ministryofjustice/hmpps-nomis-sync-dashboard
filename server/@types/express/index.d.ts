@@ -58,7 +58,7 @@ declare module 'express-session' {
     courseActivityId?: number
   }
 
-  interface StartAlertsMigrationForm extends MigrationForm {
+  interface StartCourtSentencingMigrationForm extends MigrationForm {
     fromDate?: string
     toDate?: string
     prisonIds?: string
@@ -87,7 +87,7 @@ declare module 'express-session' {
     startActivitiesMigrationForm: StartActivitiesMigrationForm
     startAllocationsMigrationForm: StartAllocationsMigrationForm
     startAppointmentsMigrationForm: StartAppointmentsMigrationForm
-    startAlertsMigrationForm: StartAlertsMigrationForm
+    startCourtSentencingMigrationForm: StartCourtSentencingMigrationForm
     startIncidentsMigrationForm: StartIncidentsMigrationForm
     startCSIPMigrationForm: StartCSIPMigrationForm
     endMigratedActivitiesResult: EndMigratedActivitiesResult

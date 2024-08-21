@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import AlertsMigrationController from './alertsMigrationController'
+import CourtSentencingMigrationController from './courtSentencingMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
-describe('alertsMigrationController', () => {
+describe('courtSentencingMigrationController', () => {
   const req = {
     query: {},
     session: {},
@@ -20,9 +20,9 @@ describe('alertsMigrationController', () => {
     jest.resetAllMocks()
   })
 
-  describe('getAlertsMigrations', () => {
+  describe('getCourtSentencingMigrations', () => {
     it('should decorate the returned migrations', async () => {
-      const alertsMigrationResponse: HistoricMigrations = {
+      const courtSentencingMigrationResponse: HistoricMigrations = {
         migrations: [
           {
             migrationId: '2022-03-30T10:13:56',
@@ -83,11 +83,14 @@ describe('alertsMigrationController', () => {
           applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-14T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
-      nomisMigrationService.getAlertsMigrations.mockResolvedValue(alertsMigrationResponse)
+      nomisMigrationService.getCourtSentencingMigrations.mockResolvedValue(courtSentencingMigrationResponse)
 
-      await new AlertsMigrationController(nomisMigrationService, nomisPrisonerService).getAlertsMigrations(req, res)
+      await new CourtSentencingMigrationController(
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).getCourtSentencingMigrations(req, res)
       expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/alerts/alertsMigration', {
+      expect(res.render).toBeCalledWith('pages/courtSentencing/courtSentencingMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
@@ -99,7 +102,7 @@ describe('alertsMigrationController', () => {
 
   describe('viewFailures', () => {
     beforeEach(() => {
-      nomisMigrationService.getAlertsFailures.mockResolvedValue({
+      nomisMigrationService.getCourtSentencingFailures.mockResolvedValue({
         messagesFoundCount: 353,
         messagesReturnedCount: 5,
         messages: [
@@ -115,8 +118,8 @@ describe('alertsMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new AlertsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
-      expect(res.render).toBeCalledWith('pages/alerts/alertsMigrationFailures', {
+      await new CourtSentencingMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      expect(res.render).toBeCalledWith('pages/courtSentencing/courtSentencingMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
             expect.objectContaining({
@@ -133,7 +136,7 @@ describe('alertsMigrationController', () => {
     })
   })
 
-  describe('postStartAlertsMigration', () => {
+  describe('postStartCourtSentencingMigration', () => {
     describe('with validation error', () => {
       it('should return an error response', async () => {
         req.body = {
@@ -142,12 +145,12 @@ describe('alertsMigrationController', () => {
           toDate: 'banana',
           prisonIds: 'MDI',
         }
-        await new AlertsMigrationController(nomisMigrationService, nomisPrisonerService).postStartAlertsMigration(
-          req,
-          res,
-        )
+        await new CourtSentencingMigrationController(
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartCourtSentencingMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
-        expect(res.redirect).toHaveBeenCalledWith('/alerts-migration/amend')
+        expect(res.redirect).toHaveBeenCalledWith('/court-sentencing-migration/amend')
       })
     })
   })

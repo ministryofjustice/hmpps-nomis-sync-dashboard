@@ -19,14 +19,15 @@ export type MigrationContextCSIPMigrationFilter = components['schemas']['Migrati
 export type AppointmentsMigrationFilter = components['schemas']['AppointmentsMigrationFilter']
 export type ActivitiesMigrationFilter = components['schemas']['ActivitiesMigrationFilter']
 export type AllocationsMigrationFilter = components['schemas']['AllocationsMigrationFilter']
-export type AlertsMigrationFilter = components['schemas']['AlertsMigrationFilter']
+export type CourtSentencingMigrationFilter = components['schemas']['CourtSentencingMigrationFilter']
 export type MigrationContextAppointmentsMigrationFilter =
   components['schemas']['MigrationContextAppointmentsMigrationFilter']
 export type MigrationContextActivitiesMigrationFilter =
   components['schemas']['MigrationContextActivitiesMigrationFilter']
 export type MigrationContextAllocationsMigrationFilter =
   components['schemas']['MigrationContextAllocationsMigrationFilter']
-export type MigrationContextAlertsMigrationFilter = components['schemas']['MigrationContextAlertsMigrationFilter']
+export type MigrationContextCourtSentencingMigrationFilter =
+  components['schemas']['MigrationContextCourtSentencingMigrationFilter']
 
 export type PrisonPersonMigrationFilter = components['schemas']['PrisonPersonMigrationFilter']
 export type MigrationContextPrisonPersonMigrationFilter =

@@ -6,7 +6,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
-{% set pageTitle = applicationName + " - Alerts migration" %}
+{% set pageTitle = applicationName + " - Court Sentencing migration" %}
 
 {% block content %}
   {{ govukBackLink({
@@ -15,12 +15,12 @@
   }) }}
 
   <div class="govuk-grid-row govuk-body">
-    <h1 class="govuk-heading-l">Alerts migration</h1>
+    <h1 class="govuk-heading-l">Court Sentencing migration</h1>
 
     <div>
       {{ govukButton({
         text: "Start new migration",
-        href: "/alerts-migration/start",
+        href: "/court-sentencing-migration/start",
         isStartButton: true,
         classes: "float-right"
       }) }}
@@ -66,7 +66,7 @@
                         {% if u.status == 'STARTED' or u.status == 'CANCELLED_REQUESTED'  %}
                           <div class="govuk-grid-row govuk-!-margin-bottom-2">
                             <div class="govuk-grid-column-full">
-                              <a data-qa="progress-link" class="govuk-link" href="/alerts-migration/details?migrationId={{ u.migrationId }}">View progress</a>
+                              <a data-qa="progress-link" class="govuk-link" href="/court-sentencing-migration/details?migrationId={{ u.migrationId }}">View progress</a>
                             </div>
                           </div>
                         {% endif %}
@@ -90,7 +90,7 @@
                           {% endif %}
                           {% if u.recordsFailed > 0 %}
                             <div class="govuk-grid-column-one-third">
-                              <a data-qa="failures-link" class="govuk-link" href="/alerts-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
+                              <a data-qa="failures-link" class="govuk-link" href="/court-sentencing-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
                             </div>
                           {% endif %}
                           </div>

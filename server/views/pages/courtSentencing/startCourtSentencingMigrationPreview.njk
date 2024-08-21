@@ -9,12 +9,12 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 
-{% set pageTitle = applicationName + " - Start a alerts migration - preview" %}
+{% set pageTitle = applicationName + " - Start a court sentencing migration - preview" %}
 
 {% block content %}
     {{ govukBackLink({
         text: "Back",
-        href: '/alerts-migration/amend'
+        href: '/court-sentencing-migration/amend'
     }) }}
 
     <main class="app-container govuk-body">
@@ -29,13 +29,13 @@
         <div class="govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full">
-                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new alerts migration - preview</h1>
+                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new court sentencing migration - preview</h1>
                 </div>
                 <div class="govuk-grid-column-two-thirds">
                     {% if form.estimatedCount %}
                         {% set html %}
                             <p class="govuk-notification-banner__heading" id="estimateSummary">
-                                Estimated number of Prisoners where alerts entities will be migrated: {{ form.estimatedCount }}
+                                Estimated number Court cases to be migrated: {{ form.estimatedCount }}
                             </p>
                         {% endset %}
 
@@ -47,7 +47,7 @@
                     {% if form.dlqCount > 0 %}
                         {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear these before starting the migration{% endset %}
                         {% set html %}
-                        <form action="/alerts-migration/start/delete-faiures" method="post" novalidate>
+                        <form action="/court-sentencing-migration/start/delete-faiures" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                         <p>If you are sure all previous failures have been successfully understood and processed, you can permanently delete any record of these errors</p>
                         <div class="govuk-button-group">
@@ -81,7 +81,7 @@
                     }) }}
 
 
-                    <form action="/alerts-migration/start/preview" method="post" novalidate>
+                    <form action="/court-sentencing-migration/start/preview" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
                         <div class="govuk-button-group">
@@ -91,7 +91,7 @@
                                 value: "startMigration",
                                 attributes: { 'data-qa': 'start-migration-button' }
                             }) }}
-                            <a class="govuk-link" href="/alerts-migration">Cancel</a>
+                            <a class="govuk-link" href="/court-sentencing-migration">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -113,7 +113,7 @@
             actions: {
                 items: [
                     {
-                        href: "/alerts-migration/amend",
+                        href: "/court-sentencing-migration/amend",
                         text: "Change",
                         visuallyHiddenText: label,
                         attributes: { 'data-qa': dataQa }

@@ -1,9 +1,9 @@
-import type { StartAlertsMigrationForm } from 'forms'
-import validate from './startAlertsMigrationValidator'
+import type { StartCourtSentencingMigrationForm } from 'forms'
+import validate from './startCourtSentencingMigrationValidator'
 
-describe('startAlertsMigrationValidator', () => {
+describe('startCourtSentencingMigrationValidator', () => {
   it('should be no errors when everything is valid', () => {
-    const form: StartAlertsMigrationForm = {
+    const form: StartCourtSentencingMigrationForm = {
       ...validForm,
       action: 'startMigration',
     }
@@ -11,7 +11,7 @@ describe('startAlertsMigrationValidator', () => {
   })
 
   it('should reject invalid fromDate', () => {
-    const form: StartAlertsMigrationForm = {
+    const form: StartCourtSentencingMigrationForm = {
       ...validForm,
       fromDate: 'invalid',
     }
@@ -23,7 +23,7 @@ describe('startAlertsMigrationValidator', () => {
   })
 
   it('should reject invalid toDate', () => {
-    const form: StartAlertsMigrationForm = {
+    const form: StartCourtSentencingMigrationForm = {
       ...validForm,
       toDate: '124-01-01',
     }
@@ -35,7 +35,7 @@ describe('startAlertsMigrationValidator', () => {
   })
 })
 
-const validForm: StartAlertsMigrationForm = {
+const validForm: StartCourtSentencingMigrationForm = {
   fromDate: '2020-03-23',
   toDate: '2020-03-24',
   action: 'startMigration',
