@@ -5,7 +5,7 @@ import sentencingMigrationRoutes from './sentencingMigration/sentencingMigration
 import activitiesMigrationRoutes from './activitiesMigration/activitiesMigrationRouter'
 import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
-import alertsMigrationRoutes from './alertsMigration/alertsMigrationRouter'
+import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSentencingMigrationRouter'
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
 import csipMigrationRoutes from './csipMigration/csipMigrationRouter'
 import prisonPersonMigrationRoutes from './prisonPersonMigration/prisonPersonMigrationRouter'
@@ -16,7 +16,6 @@ import {
   MIGRATE_ACTIVITIES_ROLE,
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
-  MIGRATE_ALERTS_ROLE,
   MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_CSIP_ROLE,
   MIGRATE_PRISONPERSON_ROLE,
@@ -74,11 +73,11 @@ export default function routes(services: Services): Router {
           enabled: true,
         },
         {
-          id: 'alerts-migration',
-          heading: 'Alerts migration',
+          id: 'court-sentencing-migration',
+          heading: 'Court Sentencing migration',
           description: 'Migration and synchronisation information',
-          href: '/alerts-migration',
-          roles: [MIGRATE_ALERTS_ROLE],
+          href: '/court-sentencing-migration',
+          roles: [MIGRATE_SENTENCING_ROLE],
           enabled: true,
         },
         {
@@ -125,7 +124,7 @@ export default function routes(services: Services): Router {
   activitiesMigrationRoutes(router, services)
   allocationsMigrationRoutes(router, services)
   appointmentsMigrationRoutes(router, services)
-  alertsMigrationRoutes(router, services)
+  courtSentencingMigrationRoutes(router, services)
   incidentsMigrationRoutes(router, services)
   csipMigrationRoutes(router, services)
   prisonPersonMigrationRoutes(router, services)

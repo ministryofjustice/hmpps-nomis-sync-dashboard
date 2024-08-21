@@ -44,7 +44,7 @@ declare module 'forms' {
     action?: 'startMigration' | 'viewEstimatedCount'
   }
 
-  export interface StartAlertsMigrationForm {
+  export interface StartCourtSentencingMigrationForm {
     fromDate?: string
     toDate?: string
     action?: 'startMigration' | 'viewEstimatedCount'
