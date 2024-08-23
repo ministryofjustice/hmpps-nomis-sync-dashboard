@@ -18,6 +18,11 @@ generic-service:
     APPINSIGHTS_COMPONENT: "nomisapi-t3"
     ENVIRONMENT_NAME: DEV
 
+  scheduledDowntime:
+    enabled: true
+    startup: '29 6 * * 1-5' # Start at 6.29am UTC Monday-Friday
+    shutdown: '58 19 * * 1-5' # Stop at 7.58pm UTC Monday-Friday
+
 generic-prometheus-alerts:
   businessHoursOnly: true
   alertSeverity: syscon-nonprod
