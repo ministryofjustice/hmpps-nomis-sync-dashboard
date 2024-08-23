@@ -18,6 +18,11 @@ generic-service:
     APPINSIGHTS_COMPONENT: "nomisapi-preprod"
     ENVIRONMENT_NAME: PRE-PRODUCTION
 
+  scheduledDowntime:
+    enabled: true
+    startup: '29 6 * * 1-5' # Start at 6.29am UTC Monday-Friday
+    shutdown: '58 21 * * 1-5' # Stop at 9.58pm UTC Monday-Friday
+
 generic-prometheus-alerts:
   businessHoursOnly: true
   alertSeverity: syscon-nonprod
