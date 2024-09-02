@@ -7,9 +7,12 @@ import buildUrl from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import getMigrationTypeDropdown from './migrationTypeDropdown'
+import startPrisonPersonMigrationValidator from './startPrisonPersonMigrationValidator'
 
 interface Filter {
   prisonerNumber?: string
+  migrationType: PrisonPersonMigrationFilter['migrationType']
 }
 
 function context(res: Response): Context {
@@ -42,15 +45,13 @@ export default class PrisonPersonMigrationController {
 
   async startNewPrisonPersonMigration(req: Request, res: Response): Promise<void> {
     delete req.session.startPrisonPersonMigrationForm
-    if (req.query.prisonerNumber) {
-      req.session.startPrisonPersonMigrationForm = { ...req.query }
-    }
     await this.startPrisonPersonMigration(req, res)
   }
 
   async startPrisonPersonMigration(req: Request, res: Response): Promise<void> {
     res.render('pages/prisonperson/startPrisonPersonMigration', {
       form: req.session.startPrisonPersonMigrationForm,
+      migrationTypes: getMigrationTypeDropdown(req.session.startPrisonPersonMigrationForm?.migrationType),
       errors: req.flash('errors'),
     })
   }
@@ -58,13 +59,20 @@ export default class PrisonPersonMigrationController {
   async postStartPrisonPersonMigration(req: Request, res: Response): Promise<void> {
     req.session.startPrisonPersonMigrationForm = { ...trimForm(req.body) }
 
-    const count = await this.countPrisoners(res, req.body.prisonerNumber)
-    const dlqCountString = await this.nomisMigrationService.getPrisonPersonDLQMessageCount(context(res))
-    logger.info(`${dlqCountString} failures found`)
+    const errors = startPrisonPersonMigrationValidator(req.session.startPrisonPersonMigrationForm)
 
-    req.session.startPrisonPersonMigrationForm.estimatedCount = count.toLocaleString()
-    req.session.startPrisonPersonMigrationForm.dlqCount = dlqCountString.toLocaleString()
-    res.redirect('/prisonperson-migration/start/preview')
+    if (errors.length > 0) {
+      req.flash('errors', errors)
+      res.redirect('/prisonperson-migration/amend')
+    } else {
+      const count = await this.countPrisoners(res, req.body.prisonerNumber)
+      const dlqCountString = await this.nomisMigrationService.getPrisonPersonDLQMessageCount(context(res))
+      logger.info(`${dlqCountString} failures found`)
+
+      req.session.startPrisonPersonMigrationForm.estimatedCount = count.toLocaleString()
+      req.session.startPrisonPersonMigrationForm.dlqCount = dlqCountString.toLocaleString()
+      res.redirect('/prisonperson-migration/start/preview')
+    }
   }
 
   private async countPrisoners(res: Response, prisonerNumber?: string): Promise<number> {
@@ -151,18 +159,21 @@ export default class PrisonPersonMigrationController {
 
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
     filterPrisonerNumber?: string
+    filterMigrationType: PrisonPersonMigrationFilter['migrationType']
   } {
     const filter: Filter = JSON.parse(migration.filter)
     const filterPrisonerNumber = filter.prisonerNumber
+    const filterMigrationType = filter.migrationType
     return {
       ...migration,
-      ...(filterPrisonerNumber && { filterPrisonerNumber }),
+      ...(filterPrisonerNumber && { filterPrisonerNumber, filterMigrationType }),
     }
   }
 
   private static toFilter(form: StartPrisonPersonMigrationForm): PrisonPersonMigrationFilter {
     return {
       prisonerNumber: form.prisonerNumber,
+      migrationType: form.migrationType,
     }
   }
 

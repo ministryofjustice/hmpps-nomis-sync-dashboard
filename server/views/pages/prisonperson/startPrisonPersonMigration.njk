@@ -4,6 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 
 {% set pageTitle = applicationName + " - Start a Prison Person migration" %}
 
@@ -38,6 +39,16 @@
                             isPageHeading: false
                         }
                     }) %}
+
+                        {{ govukSelect({
+                          id: "migrationType",
+                          name: "migrationType",
+                          label: {
+                            text: "Migration Type"
+                          },
+                          items: migrationTypes,
+                          errorMessage: errors | findError('migrationType')
+                        }) }}
 
                         {{ govukInput({
                             label: {

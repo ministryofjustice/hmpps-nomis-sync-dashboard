@@ -76,6 +76,7 @@ declare module 'express-session' {
 
   interface StartPrisonPersonMigrationForm extends MigrationForm {
     prisonerNumber?: string
+    migrationType?: typeof PrisonPersonMigrationFilter.migrationType
   }
 
   // Declare that the session will potentially contain these additional fields

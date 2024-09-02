@@ -34,6 +34,7 @@ context('Start Prison Person Migration', () => {
       cy.task('stubGetPrisonPersonMigrationEstimatedCount', 100_988)
 
       const page = Page.verifyOnPage(StartPrisonPersonMigrationPage)
+      page.migrationType().select('PHYSICAL_ATTRIBUTES')
       page.prisonerNumber().type('A1234BC')
 
       page.continueButton().click()
@@ -46,6 +47,7 @@ context('Start Prison Person Migration', () => {
         )
 
       previewPage.prisonerNumberRow().contains('A1234BC')
+      previewPage.migrationTypeRow().contains('PHYSICAL_ATTRIBUTES')
       previewPage.prisonerNumberChangeLink().click()
 
       // remove the prisoner number
@@ -63,6 +65,30 @@ context('Start Prison Person Migration', () => {
       confirmationPage.detailsLink().contains('View migration status')
     })
 
+    it('Must enter a migration type prior to starting a migration', () => {
+      cy.task('stubStartPrisonPersonMigration', {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 100_988,
+      })
+      cy.task('stubHealth')
+      cy.task('stubGetPrisonPersonFailures')
+
+      Page.verifyOnPage(PrisonPersonMigrationPage).startNewMigration().click()
+      cy.task('stubGetPrisonPersonMigrationEstimatedCount', 100_988)
+
+      const page = Page.verifyOnPage(StartPrisonPersonMigrationPage)
+      page.continueButton().click()
+      page.errorSummary().contains('migration type')
+      page.migrationType().select('PHYSICAL_ATTRIBUTES')
+      page.continueButton().click()
+
+      const previewPage = Page.verifyOnPage(StartPrisonPersonMigrationPreviewPage)
+      previewPage.migrationTypeRow().contains('PHYSICAL_ATTRIBUTES')
+      previewPage.startMigrationButton().click()
+
+      Page.verifyOnPage(StartPrisonPersonMigrationConfirmationPage)
+    })
+
     it('Can clear DLQ when there are message still present', () => {
       cy.task('stubStartPrisonPersonMigration', {
         migrationId: '2022-03-23T11:11:56',
@@ -76,6 +102,7 @@ context('Start Prison Person Migration', () => {
       cy.task('stubGetPrisonPersonMigrationEstimatedCount', 100_988)
 
       const page = Page.verifyOnPage(StartPrisonPersonMigrationPage)
+      page.migrationType().select('PHYSICAL_ATTRIBUTES')
 
       page.continueButton().click()
       const previewPage = Page.verifyOnPage(StartPrisonPersonMigrationPreviewPage)
