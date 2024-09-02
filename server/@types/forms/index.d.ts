@@ -50,7 +50,7 @@ declare module 'forms' {
     action?: 'startMigration' | 'viewEstimatedCount'
   }
 
-  export interface StartPrisonPersonigrationForm {
+  export interface StartPrisonPersonMigrationForm {
     prisonerNumber?: string
     action?: 'startMigration' | 'viewEstimatedCount'
   }

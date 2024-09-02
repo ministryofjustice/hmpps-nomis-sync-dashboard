@@ -9,6 +9,8 @@ export default class StartPrisonPersonMigrationPage extends Page {
 
   prisonerNumber = () => cy.get('#prisonerNumber')
 
+  migrationType = () => cy.get('#migrationType')
+
   errorSummary = () => cy.get('.govuk-error-summary')
 
   estimateSummary = () => cy.get('#estimateSummary')

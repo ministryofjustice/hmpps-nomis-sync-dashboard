@@ -20,9 +20,7 @@
 
     <div>
           {% set migrationInstructionsHtml %}
-            <p><strong>WARNING! THIS IS A WORK IN PROGRESS, PLEASE DO NOT USE!</p>
-            <p>Migrating prison person details are currently configured to migrate PHYSICAL ATTRIBUTES (height and weight).</p>
-            <p>To test enter a prisoner number and start the migration, then check that the prisoner's height and weight were copied to DPS succesfully.</p>
+            <p>To test select the migration type, enter a prisoner number and start the migration. Then check that the prisoner's height and weight were copied to DPS succesfully.</p>
             <p>For a full run, leave the prisoner number field empty and start a migration. This will migrate all NOMIS prisoners.</p>
           {% endset %}
           {{ govukDetails({
@@ -115,6 +113,9 @@
                               <span class="govuk-label--s">Prisoner number:</span><span data-qa="filterPrisonerNumber" class="govuk-!-margin-left-2">{{ u.filterPrisonerNumber }}</span>
                             </div>
                           {% endif %}
+                        <div class="govuk-grid-column-full">
+                          <span class="govuk-label--s">Migration type:</span><span data-qa="filterMigrationType" class="govuk-!-margin-left-2">{{ u.filterMigrationType }}</span>
+                        </div>
                         </div>
                       </div>
                     {% endset %}

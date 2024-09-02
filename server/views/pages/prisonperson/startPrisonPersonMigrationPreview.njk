@@ -73,6 +73,7 @@
 
                     {% set summaryRows = [] %}
 
+                    {{ summaryRow(form.migrationType, "Migration type", summaryRows, "migration-type") }}
                     {{ summaryRow(form.prisonerNumber, "Single Prisoner Number to migrate", summaryRows, "prisoner-number") }}
 
                     {{ govukSummaryList({
