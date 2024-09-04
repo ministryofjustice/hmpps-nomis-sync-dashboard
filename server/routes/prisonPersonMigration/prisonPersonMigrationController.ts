@@ -166,7 +166,8 @@ export default class PrisonPersonMigrationController {
     const filterMigrationType = filter.migrationType
     return {
       ...migration,
-      ...(filterPrisonerNumber && { filterPrisonerNumber, filterMigrationType }),
+      ...(filterPrisonerNumber && { filterPrisonerNumber }),
+      ...(filterMigrationType && { filterMigrationType }),
     }
   }
 
