@@ -8,6 +8,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% set pageTitle = applicationName + " - Prison Person migration" %}
+{% set bodyAttributes = {'data-page': 'filter-toggle'} %}
 
 {% block content %}
   {{ govukBackLink({
@@ -144,9 +145,4 @@
     </div>
   </div>
 
-{% endblock %}
-
-{% block bodyEnd %}
-  {{ super() }}
-  <script src="/assets/filter-toggle-button.js"></script>
 {% endblock %}

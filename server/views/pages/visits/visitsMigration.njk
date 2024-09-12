@@ -7,6 +7,7 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
 {% set pageTitle = applicationName + " - Visits migration" %}
+{% set bodyAttributes = {'data-page': 'filter-toggle'} %}
 
 {% block content %}
   {{ govukBackLink({
@@ -160,9 +161,4 @@
     </div>
   </div>
 
-{% endblock %}
-
-{% block bodyEnd %}
-  {{ super() }}
-  <script src="/assets/filter-toggle-button.js"></script>
 {% endblock %}
