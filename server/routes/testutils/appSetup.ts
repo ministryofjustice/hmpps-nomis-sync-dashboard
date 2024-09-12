@@ -1,21 +1,13 @@
 import express, { Express } from 'express'
 import { NotFound } from 'http-errors'
+import { v4 as uuidv4 } from 'uuid'
 
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
-import * as auth from '../../authentication/auth'
 import type { Services } from '../../services'
-import type { ApplicationInfo } from '../../applicationInfo'
 import { HmppsUser } from '../../interfaces/hmppsUser'
-
-const testAppInfo: ApplicationInfo = {
-  applicationName: 'test',
-  buildNumber: '1',
-  gitRef: 'long ref',
-  gitShortHash: 'short ref',
-  branchName: 'main',
-}
+import setUpWebSession from '../../middleware/setUpWebSession'
 
 export const user: HmppsUser = {
   name: 'john smith',
@@ -34,13 +26,18 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
 
   app.set('view engine', 'njk')
 
-  nunjucksSetup(app, testAppInfo)
+  nunjucksSetup(app)
+  app.use(setUpWebSession())
   app.use((req, res, next) => {
     req.user = userSupplier() as Express.User
     req.flash = flashProvider
     res.locals = {
       user: { ...req.user } as HmppsUser,
     }
+    next()
+  })
+  app.use((req, res, next) => {
+    req.id = uuidv4()
     next()
   })
   app.use(express.json())
@@ -61,6 +58,5 @@ export function appWithAllRoutes({
   services?: Partial<Services>
   userSupplier?: () => HmppsUser
 }): Express {
-  auth.default.authenticationMiddleware = () => (req, res, next) => next()
   return appSetup(services as Services, production, userSupplier)
 }
