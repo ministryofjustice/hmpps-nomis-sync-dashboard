@@ -1,18 +1,9 @@
 import express from 'express'
 import nunjucksSetup from './nunjucksSetup'
-import type { ApplicationInfo } from '../applicationInfo'
-
-const testAppInfo: ApplicationInfo = {
-  applicationName: 'test',
-  buildNumber: '1',
-  gitRef: 'long ref',
-  gitShortHash: 'short ref',
-  branchName: 'main',
-}
 
 describe('json', () => {
   const app = express()
-  const njk = nunjucksSetup(app, testAppInfo)
+  const njk = nunjucksSetup(app)
   it('converts null to null', () => {
     const result = njk.getFilter('json')(undefined)
     expect(result).toBe(null)

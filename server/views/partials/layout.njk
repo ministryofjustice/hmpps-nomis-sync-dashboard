@@ -1,7 +1,7 @@
 {% extends "govuk/template.njk" %}
 
 {% block head %}
-  <link href="/assets/stylesheets/application.css?{{ version }}" rel="stylesheet"/>
+  <link href="{{ '/assets/css/app.css' | assetMap }}" rel="stylesheet"/>
 
   <script src="/assets/js/jquery.min.js"></script>
 {% endblock %}
@@ -16,8 +16,6 @@
 {% endblock %}
 
 {% block bodyEnd %}
-  <script type="module" src="/assets/govukFrontendInit.js"></script>
-  <script src="/assets/moj/all.js"></script>
-  <script src="/assets/mojFrontendInit.js"></script>
+  <script type="module" src="{{ '/assets/js/app.js' | assetMap }}"></script>
   <script src="/assets/js/page-enhancements.js"></script>
 {% endblock %}
