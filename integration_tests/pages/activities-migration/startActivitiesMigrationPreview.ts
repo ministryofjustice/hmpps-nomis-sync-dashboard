@@ -1,9 +1,16 @@
-import Page, { PageElement } from '../page'
+import { PageElement } from '../page'
+import CopyTextPage from '../copyTextPage'
 
-export default class StartActivitiesMigrationPage extends Page {
+export default class StartActivitiesMigrationPreviewPage extends CopyTextPage {
   constructor() {
     super('Start a new activities migration - preview')
   }
+
+  private nomisSuspendedAllocationsId = '#nomisSuspendedAllocations'
+
+  private nomisAllocationsMissingPayBandsId = '#nomisAllocationsMissingPayBands'
+
+  private nomisPayRatesUnknownIncentiveId = '#nomisPayRatesUnknownIncentive'
 
   startMigrationButton = () => cy.contains('Start migration')
 
@@ -31,11 +38,20 @@ export default class StartActivitiesMigrationPage extends Page {
 
   dpsPrisonRegime = () => cy.get('#dpsPrisonRegime')
 
-  nomisSuspendedAllocations = () => cy.get('#nomisSuspendedAllocations')
+  nomisSuspendedAllocations = () => cy.get(this.nomisSuspendedAllocationsId)
 
-  nomisAllocationsWithNoPayBands = () => cy.get('#nomisAllocationsMissingPayBands')
+  nomisAllocationsWithNoPayBands = () => cy.get(this.nomisAllocationsMissingPayBandsId)
 
-  nomisPayRatesUnknownIncentive = () => cy.get('#nomisPayRatesUnknownIncentive')
+  nomisPayRatesUnknownIncentive = () => cy.get(this.nomisPayRatesUnknownIncentiveId)
 
   errorSummary = () => cy.get('.govuk-error-summary')
+
+  testCopySuspendedAllocationsToClipboard = (contents: string) =>
+    this.testCopyToClipboard(this.nomisSuspendedAllocationsId, contents)
+
+  testCopyAllocationsMissingPayBandsToClipboard = (contents: string) =>
+    this.testCopyToClipboard(this.nomisAllocationsMissingPayBandsId, contents)
+
+  testCopyPayRatesUnknownIncentiveToClipboard = (contents: string) =>
+    this.testCopyToClipboard(this.nomisPayRatesUnknownIncentiveId, contents)
 }

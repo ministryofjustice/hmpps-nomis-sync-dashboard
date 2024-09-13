@@ -1,6 +1,6 @@
 import Page from '../page'
 
-export default class StarActivitiesMigrationPage extends Page {
+export default class StartActivitiesMigrationPage extends Page {
   constructor() {
     super('Start a new activities migration')
   }

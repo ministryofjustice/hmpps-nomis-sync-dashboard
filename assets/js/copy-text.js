@@ -30,7 +30,8 @@ export default function setupCopyText() {
     const copyTextArea = document.getElementById(`${prefix}-text`)
     if (copyLink) {
       if (navigator.clipboard && copyTextArea) {
-        copyLink.addEventListener('click', async () => {
+        copyLink.addEventListener('click', async e => {
+          e.preventDefault()
           await copyText(prefix)
         })
       } else {

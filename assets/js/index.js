@@ -1,7 +1,7 @@
 import * as govukFrontend from 'govuk-frontend'
 import * as mojFrontend from '@ministryofjustice/frontend'
 import setupFilterToggle from './filter-toggle-button'
-import setupCopyText from './page-enhancements'
+import setupCopyText from './copy-text'
 
 govukFrontend.initAll()
 mojFrontend.initAll()
