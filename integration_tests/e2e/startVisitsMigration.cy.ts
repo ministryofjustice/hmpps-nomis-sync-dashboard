@@ -81,7 +81,7 @@ context('Start Visits Migration', () => {
       const amendPage = Page.verifyOnPage(StartVisitsMigrationPage)
       amendPage.fromDateTime().clear()
       amendPage.fromDateTime().type('2020-03-20T12:00:00')
-      page.continueButton().click()
+      amendPage.continueButton().click()
 
       // check amended date displayed
       const previewPageAgain = Page.verifyOnPage(StartVisitsMigrationPreviewPage)

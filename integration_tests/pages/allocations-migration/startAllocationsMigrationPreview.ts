@@ -1,6 +1,6 @@
 import Page, { PageElement } from '../page'
 
-export default class StartAllocationsMigrationPage extends Page {
+export default class StartAllocationsMigrationPreviewPage extends Page {
   constructor() {
     super('Start a new allocations migration - preview')
   }

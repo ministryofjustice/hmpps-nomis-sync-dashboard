@@ -65,7 +65,7 @@ context('Start CSIP Migration', () => {
       const amendPage = Page.verifyOnPage(StartCSIPMigrationPage)
       amendPage.fromDate().clear()
       amendPage.fromDate().type('2020-03-20')
-      page.continueButton().click()
+      amendPage.continueButton().click()
 
       // check amended date displayed
       const previewPageAgain = Page.verifyOnPage(StartCSIPMigrationPreviewPage)

@@ -1,6 +1,6 @@
 import Page from '../page'
 
-export default class StarAllocationsMigrationPage extends Page {
+export default class StartAllocationsMigrationPage extends Page {
   constructor() {
     super('Start a new allocations migration')
   }
