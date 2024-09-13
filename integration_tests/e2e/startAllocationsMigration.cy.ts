@@ -68,7 +68,7 @@ context('Start Allocations Migration', () => {
       const amendPage = Page.verifyOnPage(StartAllocationsMigrationPage)
       amendPage.prisonId().clear().type('LEI')
       amendPage.courseActivityId().clear().type('333333')
-      page.continueButton().click()
+      amendPage.continueButton().click()
 
       // check amended date displayed
       const previewPageAgain = Page.verifyOnPage(StartAllocationsMigrationPreviewPage)

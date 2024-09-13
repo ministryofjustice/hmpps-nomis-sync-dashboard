@@ -1,6 +1,6 @@
 import Page from '../page'
 
-export default class StarCSIPMigrationPage extends Page {
+export default class StartCSIPMigrationPage extends Page {
   constructor() {
     super('Start a new csip migration')
   }

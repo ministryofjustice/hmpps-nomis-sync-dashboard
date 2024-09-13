@@ -53,7 +53,7 @@ context('Start Prison Person Migration', () => {
       // remove the prisoner number
       const amendPage = Page.verifyOnPage(StartPrisonPersonMigrationPage)
       amendPage.prisonerNumber().clear()
-      page.continueButton().click()
+      amendPage.continueButton().click()
 
       // check amended prisoner number displayed
       const previewPageAgain = Page.verifyOnPage(StartPrisonPersonMigrationPreviewPage)

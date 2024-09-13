@@ -1,6 +1,6 @@
 import Page, { PageElement } from '../page'
 
-export default class StartSentencingMigrationPage extends Page {
+export default class StartSentencingMigrationPreviewPage extends Page {
   constructor() {
     super('Start a new sentencing migration - preview')
   }

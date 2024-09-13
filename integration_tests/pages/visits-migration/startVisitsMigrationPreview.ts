@@ -1,6 +1,6 @@
 import Page, { PageElement } from '../page'
 
-export default class StartVisitsMigrationPage extends Page {
+export default class StartVisitsMigrationPreviewPage extends Page {
   constructor() {
     super('Start a new visits migration - preview')
   }

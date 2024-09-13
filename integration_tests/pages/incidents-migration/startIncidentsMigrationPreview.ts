@@ -1,6 +1,6 @@
 import Page, { PageElement } from '../page'
 
-export default class StartIncidentsMigrationPage extends Page {
+export default class StartIncidentsMigrationPreviewPage extends Page {
   constructor() {
     super('Start a new incidents migration - preview')
   }
