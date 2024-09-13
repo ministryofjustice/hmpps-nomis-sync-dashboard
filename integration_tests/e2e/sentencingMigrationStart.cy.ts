@@ -6,7 +6,7 @@ import StartSentencingMigrationPreviewPage from '../pages/sentencing-migration/s
 
 import SentencingMigrationPage from '../pages/sentencing-migration/sentencingMigration'
 
-context('Start Sentencing Migration', () => {
+context('Sentencing Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })

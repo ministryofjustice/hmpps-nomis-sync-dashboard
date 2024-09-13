@@ -5,7 +5,7 @@ import StartAllocationsMigrationConfirmationPage from '../pages/allocations-migr
 import StartAllocationsMigrationPreviewPage from '../pages/allocations-migration/startAllocationsMigrationPreview'
 import AllocationsMigrationPage from '../pages/allocations-migration/allocationsMigration'
 
-context('Start Allocations Migration', () => {
+context('Allocations Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubGetActivityCategories')

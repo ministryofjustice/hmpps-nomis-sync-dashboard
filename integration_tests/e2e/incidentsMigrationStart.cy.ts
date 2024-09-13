@@ -6,7 +6,7 @@ import StartIncidentsMigrationPreviewPage from '../pages/incidents-migration/sta
 
 import IncidentsMigrationPage from '../pages/incidents-migration/incidentsMigration'
 
-context('Start Incidents Migration', () => {
+context('Incidents Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })

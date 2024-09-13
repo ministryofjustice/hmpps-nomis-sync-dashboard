@@ -5,7 +5,7 @@ import StartActivitiesMigrationConfirmationPage from '../pages/activities-migrat
 import StartActivitiesMigrationPreviewPage from '../pages/activities-migration/startActivitiesMigrationPreview'
 import ActivitiesMigrationPage from '../pages/activities-migration/activitiesMigration'
 
-context('Start Activities Migration', () => {
+context('Activities Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubGetActivityCategories')
