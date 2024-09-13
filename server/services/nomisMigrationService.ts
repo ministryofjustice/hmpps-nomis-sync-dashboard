@@ -770,9 +770,9 @@ export default class NomisMigrationService {
     filter: PrisonPersonMigrationFilter,
     context: Context,
   ): Promise<MigrationContextPrisonPersonMigrationFilter> {
-    logger.info(`starting an Prison Person migration`)
+    logger.info(`starting a Prison Person migration`)
     return NomisMigrationService.restClient(context.token).post<MigrationContextPrisonPersonMigrationFilter>({
-      path: `/migrate/prisonperson/physical-attributes`,
+      path: `/migrate/prisonperson`,
       data: filter,
     })
   }
