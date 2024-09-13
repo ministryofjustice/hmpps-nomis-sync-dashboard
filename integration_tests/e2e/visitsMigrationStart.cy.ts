@@ -5,7 +5,7 @@ import StartVisitsMigrationConfirmationPage from '../pages/visits-migration/star
 import StartVisitsMigrationPreviewPage from '../pages/visits-migration/startVisitsMigrationPreview'
 import VisitsMigrationPage from '../pages/visits-migration/visitsMigration'
 
-context('Start Visits Migration', () => {
+context('Visits Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })

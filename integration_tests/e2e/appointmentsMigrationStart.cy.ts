@@ -5,7 +5,7 @@ import StartAppointmentsMigrationConfirmationPage from '../pages/appointments-mi
 import StartAppointmentsMigrationPreviewPage from '../pages/appointments-migration/startAppointmentsMigrationPreview'
 import AppointmentsMigrationPage from '../pages/appointments-migration/appointmentsMigration'
 
-context('Start Appointments Migration', () => {
+context('Appointments Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })

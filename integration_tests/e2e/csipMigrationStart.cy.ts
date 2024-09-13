@@ -6,7 +6,7 @@ import StartCSIPMigrationPreviewPage from '../pages/csip-migration/startCSIPMigr
 
 import CSIPMigrationPage from '../pages/csip-migration/csipMigration'
 
-context('Start CSIP Migration', () => {
+context('CSIP Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })

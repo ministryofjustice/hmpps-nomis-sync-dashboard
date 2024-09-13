@@ -5,7 +5,7 @@ import StartPrisonPersonMigrationPage from '../pages/prisonperson/startPrisonPer
 import StartPrisonPersonMigrationPreviewPage from '../pages/prisonperson/startPrisonPersonMigrationPreview'
 import StartPrisonPersonMigrationConfirmationPage from '../pages/prisonperson/startPrisonPersonMigrationConfirmation'
 
-context('Start Prison Person Migration', () => {
+context('Prison Person Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })
