@@ -36,7 +36,7 @@ context('Start Appointments Migration', () => {
       pageWithErrors.errorSummary().contains('Enter a real date, like 2020-03-23')
     })
 
-    it('Preview of migration will be shown and changes allowed prior to starting a migration', () => {
+    function setupPreviewPage(): StartAppointmentsMigrationPreviewPage {
       cy.task('stubStartAppointmentsMigration', {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
@@ -55,7 +55,11 @@ context('Start Appointments Migration', () => {
       page.toDate().type('2020-03-30')
 
       page.continueButton().click()
-      const previewPage = Page.verifyOnPage(StartAppointmentsMigrationPreviewPage)
+      return Page.verifyOnPage(StartAppointmentsMigrationPreviewPage)
+    }
+
+    it('Preview of migration will be shown and changes allowed prior to starting a migration', () => {
+      const previewPage = setupPreviewPage()
       previewPage.estimateSummary().contains('Estimated number of Appointments entities to be migrated: 100,988')
       previewPage
         .dlqWarning()
@@ -72,7 +76,7 @@ context('Start Appointments Migration', () => {
       const amendPage = Page.verifyOnPage(StartAppointmentsMigrationPage)
       amendPage.fromDate().clear()
       amendPage.fromDate().type('2020-03-20')
-      page.continueButton().click()
+      amendPage.continueButton().click()
 
       // check amended date displayed
       const previewPageAgain = Page.verifyOnPage(StartAppointmentsMigrationPreviewPage)
@@ -149,6 +153,14 @@ context('Start Appointments Migration', () => {
       amendPage.continueButton().click()
       Page.verifyOnPage(StartAppointmentsMigrationPreviewPage)
       previewPage.nomisFeatureSwitch('HEI').should('not.exist')
+    })
+
+    it('Should allow copy of allocations missing pay bands', () => {
+      const previewPage = setupPreviewPage()
+
+      previewPage.testCopyNomisAppointmentCountsToClipboard(
+        'Prison, Event Sub Type, Future appointment?, Count,\n    MSI, ACCA, false, 20,',
+      )
     })
   })
 })

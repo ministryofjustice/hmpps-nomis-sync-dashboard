@@ -1,9 +1,12 @@
-import Page, { PageElement } from '../page'
+import { PageElement } from '../page'
+import CopyTextPage from '../copyTextPage'
 
-export default class StartAppointmentsMigrationPage extends Page {
+export default class StartAppointmentsMigrationPreviewPage extends CopyTextPage {
   constructor() {
     super('Start a new appointments migration - preview')
   }
+
+  private nomisAppointmentCountsId = '#nomisAppointmentCounts'
 
   startMigrationButton = () => cy.contains('Start migration')
 
@@ -21,5 +24,8 @@ export default class StartAppointmentsMigrationPage extends Page {
 
   activateFeatureSwitch = (prisonId: string) => cy.get(`[data-qa=activate-prison-button-${prisonId}]`)
 
-  nomisAppointmentCounts = () => cy.get('#nomisAppointmentCounts')
+  nomisAppointmentCounts = () => cy.get(this.nomisAppointmentCountsId)
+
+  testCopyNomisAppointmentCountsToClipboard = (contents: string) =>
+    this.testCopyToClipboard(this.nomisAppointmentCountsId, contents)
 }

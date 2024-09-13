@@ -1,6 +1,6 @@
 import Page from '../page'
 
-export default class StarAppointmentsMigrationPage extends Page {
+export default class StartAppointmentsMigrationPage extends Page {
   constructor() {
     super('Start a new appointments migration')
   }

@@ -62,7 +62,7 @@ context('Start Activities Migration', () => {
       const amendPage = Page.verifyOnPage(StartActivitiesMigrationPage)
       amendPage.prisonId().clear().type('LEI')
       amendPage.courseActivityId().clear().type('333333')
-      page.continueButton().click()
+      amendPage.continueButton().click()
 
       // check amended date displayed
       const previewPageAgain = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
@@ -109,29 +109,7 @@ context('Start Activities Migration', () => {
     })
 
     it('Shows successful preview check details', () => {
-      cy.task('stubStartActivitiesMigration', {
-        migrationId: '2022-03-23T11:11:56',
-        estimatedCount: 100_988,
-      })
-      cy.task('stubHealth', '0')
-      cy.task('stubGetActivitiesNoFailures')
-
-      Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
-      cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
-      cy.task('stubCheckServiceAgencySwitch', 'ACTIVITY')
-      cy.task('stubGetPrisonIncentiveLevels')
-      cy.task('stubGetDpsPrisonRollout')
-      cy.task('stubGetDpsPayBands')
-      cy.task('stubGetDpsPrisonRegime')
-      cy.task('stubFindSuspendedAllocations')
-      cy.task('stubFindAllocationsWithMissingPayBands')
-      cy.task('stubFindPayRatesWithUnknownIncentive')
-
-      const page = Page.verifyOnPage(StartActivitiesMigrationPage)
-      page.prisonId().type('MDI')
-
-      page.continueButton().click()
-      const previewPage = Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
+      const previewPage = setupPreviewPage()
       previewPage.estimateSummary().contains('Estimated number of Activities entities to be migrated: 100,988')
       previewPage.incentiveLevels().contains('BAS,STD,ENH')
       previewPage.nomisFeatureSwitch().should('not.exist')
@@ -219,6 +197,55 @@ context('Start Activities Migration', () => {
       amendPage.continueButton().click()
       Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
       previewPage.nomisFeatureSwitch().should('not.exist')
+    })
+
+    function setupPreviewPage(): StartActivitiesMigrationPreviewPage {
+      cy.task('stubStartActivitiesMigration', {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 100_988,
+      })
+      cy.task('stubHealth', '0')
+      cy.task('stubGetActivitiesNoFailures')
+
+      Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
+      cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
+      cy.task('stubCheckServiceAgencySwitch', 'ACTIVITY')
+      cy.task('stubGetPrisonIncentiveLevels')
+      cy.task('stubGetDpsPrisonRollout')
+      cy.task('stubGetDpsPayBands')
+      cy.task('stubGetDpsPrisonRegime')
+      cy.task('stubFindSuspendedAllocations')
+      cy.task('stubFindAllocationsWithMissingPayBands')
+      cy.task('stubFindPayRatesWithUnknownIncentive')
+
+      const page = Page.verifyOnPage(StartActivitiesMigrationPage)
+      page.prisonId().type('MDI')
+      page.continueButton().click()
+      return Page.verifyOnPage(StartActivitiesMigrationPreviewPage)
+    }
+
+    it('Should allow copy of suspended activities', () => {
+      const previewPage = setupPreviewPage()
+
+      previewPage.testCopySuspendedAllocationsToClipboard(
+        'Activity Description, Activity ID, Prisoner Number,\n    Kitchens AM, 12345, A1234AA,',
+      )
+    })
+
+    it('Should allow copy of allocations missing pay bands', () => {
+      const previewPage = setupPreviewPage()
+
+      previewPage.testCopyAllocationsMissingPayBandsToClipboard(
+        'Activity Description, Activity ID, Prisoner Number, Incentive Level,\n    Kitchens AM, 12345, A1234AA, STD,',
+      )
+    })
+
+    it('Should allow copy of pay rates unknown incentive', () => {
+      const previewPage = setupPreviewPage()
+
+      previewPage.testCopyPayRatesUnknownIncentiveToClipboard(
+        'Activity Description, Activity ID, Pay Band Code, Incentive Level,\n    Kitchens AM, 12345, 5, undefined,',
+      )
     })
   })
 })
