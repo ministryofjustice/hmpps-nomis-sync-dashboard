@@ -2069,7 +2069,7 @@ const stubStartPrisonPersonMigration = (
   stubFor({
     request: {
       method: 'POST',
-      urlPattern: '/nomis-migration-api/migrate/prisonperson/physical-attributes',
+      urlPattern: '/nomis-migration-api/migrate/prisonperson',
     },
     response: {
       status: 200,
