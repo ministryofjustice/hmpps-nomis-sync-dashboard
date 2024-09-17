@@ -17,5 +17,10 @@ export default function getMigrationTypeDropdown(selectedMigrationType?: string)
       text: 'Physical Attributes',
       selected: selectedMigrationType === 'PHYSICAL_ATTRIBUTES',
     },
+    {
+      value: 'PROFILE_DETAILS_PHYSICAL_ATTRIBUTES',
+      text: 'Profile Details Physical Attributes',
+      selected: selectedMigrationType === 'PROFILE_DETAILS_PHYSICAL_ATTRIBUTES',
+    },
   ]
 }
