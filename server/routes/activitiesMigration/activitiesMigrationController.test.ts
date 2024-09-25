@@ -374,6 +374,27 @@ describe('activitiesMigrationController', () => {
         expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(false)
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
+
+      it('should NOT show DPS feature switch warning if no rollout dates returned', async () => {
+        activitiesService.getRolloutPrison.mockResolvedValue({
+          prisonCode: 'MDI',
+          activitiesRolledOut: true,
+          appointmentsRolledOut: true,
+        })
+
+        req.body = {
+          _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
+          action: 'startMigration',
+          prisonId: 'XXX',
+        }
+        await new ActivitiesMigrationController(
+          nomisMigrationService,
+          nomisPrisonerService,
+          activitiesService,
+        ).postStartActivitiesMigration(req, res)
+        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(true)
+        expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
+      })
     })
   })
 })

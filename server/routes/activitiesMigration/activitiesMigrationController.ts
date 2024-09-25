@@ -188,7 +188,8 @@ export default class ActivitiesMigrationController {
         req.session.startActivitiesMigrationForm.prisonSwitchedOnDps =
           dpsPrisonRollout === null ||
           (dpsPrisonRollout.activitiesRolledOut &&
-            dpsPrisonRollout.activitiesRolloutDate <= moment().format('YYYY-MM-DD'))
+            (!dpsPrisonRollout.activitiesRolloutDate ||
+              dpsPrisonRollout.activitiesRolloutDate <= moment().format('YYYY-MM-DD')))
         req.session.startActivitiesMigrationForm.dpsPayBandsExist = dpsPayBandsExist === null || dpsPayBandsExist
         req.session.startActivitiesMigrationForm.dpsPrisonRegimeExists =
           dpsPrisonRegimeExists === null || dpsPrisonRegimeExists
