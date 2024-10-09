@@ -21,3 +21,5 @@ export type FindAllocationsMissingPayBandsResponse = components['schemas']['Find
 export type FindPayRateWithUnknownIncentiveResponse = components['schemas']['FindPayRateWithUnknownIncentiveResponse']
 export type AppointmentCountsResponse = components['schemas']['AppointmentCountsResponse']
 export type PageCourtCaseIdResponse = components['schemas']['PageCourtCaseIdResponse']
+export type PagePersonIdResponse = components['schemas']['PagePersonIdResponse']
+export type GetContactPersonByFilter = Omit<operations['getPersonIds']['parameters']['query'], 'pageRequest'>

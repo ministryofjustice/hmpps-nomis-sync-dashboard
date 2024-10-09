@@ -9,6 +9,7 @@ import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSent
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
 import csipMigrationRoutes from './csipMigration/csipMigrationRouter'
 import prisonPersonMigrationRoutes from './prisonPersonMigration/prisonPersonMigrationRouter'
+import contactPersonMigrationRoutes from './contactPersonMigration/contactPersonMigrationRouter'
 import {
   extractRoles,
   MIGRATE_SENTENCING_ROLE,
@@ -19,6 +20,8 @@ import {
   MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_CSIP_ROLE,
   MIGRATE_PRISONPERSON_ROLE,
+  MIGRATE_CONTACTPERSON_ROLE,
+  MIGRATE_NOMIS_SYSCON,
 } from '../authentication/roles'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
@@ -112,6 +115,14 @@ export default function routes(services: Services): Router {
           roles: [MIGRATE_PRISONPERSON_ROLE],
           enabled: true,
         },
+        {
+          id: 'contactperson-migration',
+          heading: 'Contact Person migration',
+          description: 'Migration and synchronisation information',
+          href: '/contactperson-migration',
+          roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
+          enabled: true,
+        },
       ].filter(
         register =>
           Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled,
@@ -128,5 +139,6 @@ export default function routes(services: Services): Router {
   incidentsMigrationRoutes(router, services)
   csipMigrationRoutes(router, services)
   prisonPersonMigrationRoutes(router, services)
+  contactPersonMigrationRoutes(router, services)
   return router
 }

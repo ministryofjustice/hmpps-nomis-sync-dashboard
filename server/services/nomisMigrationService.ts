@@ -49,7 +49,7 @@ export interface Context {
   token?: string
 }
 
-function removeEmptyPropertiesAndStringify(filter: unknown): string {
+export function removeEmptyPropertiesAndStringify(filter: unknown): string {
   const filterWithoutNulls = JSON.parse(JSON.stringify(filter), (key, value) =>
     value === null || value === '' ? undefined : value,
   )
@@ -531,7 +531,7 @@ export default class NomisMigrationService {
     return NomisMigrationService.getAnyDLQName('migrationcourtsentencing-health', token)
   }
 
-  private static async getAnyDLQName(queueId: string, token: string): Promise<string> {
+  static async getAnyDLQName(queueId: string, token: string): Promise<string> {
     const health = await NomisMigrationService.restClient(token).get<{
       components: Record<
         string,
@@ -548,7 +548,7 @@ export default class NomisMigrationService {
     return health.components[queueId].details.dlqName
   }
 
-  private static async getAnyDLQMessageCount(queueId: string, token: string): Promise<string> {
+  static async getAnyDLQMessageCount(queueId: string, token: string): Promise<string> {
     logger.info(`getting DLQ message count`)
     const health = await NomisMigrationService.restClient(token).get<{
       components: Record<
