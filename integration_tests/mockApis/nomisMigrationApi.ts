@@ -424,6 +424,67 @@ const defaultSentencingFailures = {
     },
   ],
 }
+const defaultFailures = {
+  messagesFoundCount: 353,
+  messagesReturnedCount: 5,
+  messages: [
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {},
+        },
+        type: 'MIGRATE_GENERIC',
+      },
+      messageId: 'afeb75fd-a2aa-41c4-9ede-b6bfe9590d36',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-23T16:12:43',
+          estimatedCount: 93,
+          body: {},
+        },
+        type: 'MIGRATE_GENERIC',
+      },
+      messageId: '86b96f0e-2ac3-445c-b3ac-0a4d525d371e',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {},
+        },
+        type: 'MIGRATE_GENERIC',
+      },
+      messageId: '7e37a1e0-f041-42bc-9c2d-1da82d3bb83b',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {},
+        },
+        type: 'MIGRATE_GENERIC',
+      },
+      messageId: '8d87f4d7-7846-48b2-ae93-5a7878dba502',
+    },
+    {
+      body: {
+        context: {
+          migrationId: '2022-03-24T13:39:33',
+          estimatedCount: 292,
+          body: {},
+        },
+        type: 'MIGRATE_GENERIC',
+      },
+      messageId: '230dcb1f-3391-4630-b907-3923ec9e0ee4',
+    },
+  ],
+}
 
 const stubHealth = (failures: string = '153'): SuperAgentRequest =>
   stubFor({
@@ -524,6 +585,17 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
               messagesInFlight: '0',
               dlqStatus: 'UP',
               dlqName: 'dps-syscon-dev-prisonpersonmigration_dlq',
+              messagesOnDlq: `${failures}`,
+            },
+          },
+          'migrationcontactperson-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-contactpersonmigration_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-contactpersonmigration_dlq',
               messagesOnDlq: `${failures}`,
             },
           },
@@ -2285,6 +2357,52 @@ const stubDeletePrisonPersonFailures = (): SuperAgentRequest =>
     },
   })
 
+const stubListOfMigrationHistory = (
+  domain: string,
+  migrationHistory: MigrationHistory[] = defaultSentencingMigrationHistory,
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/${domain}/history?.*`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: migrationHistory,
+    },
+  })
+
+const stubStartDateFilteredMigration = (args: { domain: string; response: unknown }): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: `/nomis-migration-api/migrate/${args.domain}`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: args.response,
+    },
+  })
+
+const stubGetFailures = (args: { queue: string; failures: unknown }): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/queue-admin/get-dlq-messages/${args.queue}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: args.failures || defaultFailures,
+    },
+  })
+
 export default {
   stubListOfVisitsMigrationHistory,
   stubStartVisitsMigration,
@@ -2351,4 +2469,8 @@ export default {
   stubGetPrisonPersonMigrationDetailsStarted,
   stubGetPrisonPersonMigrationDetailsCompleted,
   stubDeletePrisonPersonFailures,
+
+  stubListOfMigrationHistory,
+  stubStartDateFilteredMigration,
+  stubGetFailures,
 }
