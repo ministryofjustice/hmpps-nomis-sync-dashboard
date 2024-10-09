@@ -115,6 +115,6 @@ export default {
     component: get('APPINSIGHTS_COMPONENT', 'component', requiredInProduction),
     resourceGroup: get('APPINSIGHTS_RESOURCE_GROUP', `${get('APPINSIGHTS_COMPONENT', 'component')}-rg`),
   },
-  domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
+  ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
 }

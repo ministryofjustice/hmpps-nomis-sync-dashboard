@@ -13,7 +13,7 @@ export default abstract class Page {
     return new constructor(param1, param2)
   }
 
-  constructor(private readonly title: string) {
+  protected constructor(private readonly title: string) {
     this.checkOnPage()
   }
 
