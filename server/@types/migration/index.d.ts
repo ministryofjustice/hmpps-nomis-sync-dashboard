@@ -36,3 +36,6 @@ export type MigrationContextPrisonPersonMigrationFilter =
 export type GetDlqResult = components['schemas']['GetDlqResult']
 export type PurgeQueueResult = components['schemas']['PurgeQueueResult']
 export type RoomMappingsResponse = components['schemas']['VisitRoomUsageResponse']
+export type ContactPersonMigrationFilter = components['schemas']['ContactPersonMigrationFilter']
+export type MigrationContextContactPersonMigrationFilter =
+  components['schemas']['MigrationContextContactPersonMigrationFilter']

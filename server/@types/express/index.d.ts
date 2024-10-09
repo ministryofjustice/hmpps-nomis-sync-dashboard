@@ -79,6 +79,11 @@ declare module 'express-session' {
     migrationType?: typeof PrisonPersonMigrationFilter.migrationType
   }
 
+  interface StartDateFilteredMigrationForm extends MigrationForm {
+    fromDate?: string
+    toDate?: string
+  }
+
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
@@ -93,6 +98,7 @@ declare module 'express-session' {
     startCSIPMigrationForm: StartCSIPMigrationForm
     endMigratedActivitiesResult: EndMigratedActivitiesResult
     startPrisonPersonMigrationForm: StartPrisonPersonMigrationForm
+    startDateFilteredMigrationForm: StartDateFilteredMigrationForm
   }
 }
 

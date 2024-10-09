@@ -113,6 +113,54 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prisoners/{offenderNo}/profile-details': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get profile details for a prisoner
+     * @description Retrieves profile details for a prisoner and all of their aliases and bookings. Requires ROLE_NOMIS_PRISON_PERSON
+     */
+    get: operations['getProfileDetails']
+    /**
+     * Upsert profile details for a prisoner
+     * @description Upserts profile details on the latest booking for a prisoner, if it exists. Requires ROLE_NOMIS_PRISON_PERSON
+     */
+    put: operations['upsertPhysicalAttributes']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/physical-attributes': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get physical attributes for a prisoner
+     * @description Retrieves physical attributes for a prisoner and all of their aliases and bookings. Requires ROLE_NOMIS_PRISON_PERSON
+     */
+    get: operations['getPhysicalAttributes']
+    /**
+     * Upsert physical attributes for a prisoner
+     * @description Upserts physical attributes on the latest booking for a prisoner, if it exists. Requires ROLE_NOMIS_PRISON_PERSON
+     */
+    put: operations['upsertPhysicalAttributes_1']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisoners/booking-id/{bookingId}/sentencing/sentence-sequence/{sequence}': {
     parameters: {
       query?: never
@@ -389,6 +437,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/csip': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Creates or updates a csip
+     * @description Creates or updates a csip report and its children. Requires ROLE_NOMIS_CSIP
+     */
+    put: operations['upsertCSIP']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/casenotes/{caseNoteId}': {
     parameters: {
       query?: never
@@ -402,10 +470,10 @@ export interface paths {
      */
     get: operations['getCaseNote']
     /**
-     * Amends a case note on a prisoner
+     * Updates a case note on a prisoner
      * @description Updates the specified case note. Requires ROLE_NOMIS_CASENOTES
      */
-    put: operations['amendCaseNote']
+    put: operations['updateCaseNote']
     post?: never
     /**
      * Deletes a case note
@@ -943,6 +1011,26 @@ export interface paths {
      * @description Required role NOMIS_SENTENCING Creates a new Court Appearance for the offender,latest booking and given Court Case
      */
     post: operations['createCourtAppearance']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/sentencing/court-cases/{caseId}/case_identifiers': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Refreshes the list of Case identifiers associated with the case
+     * @description Required role NOMIS_SENTENCING Refreshes the list of Case identifiers associated with the case (identifier type CASE/INFO#)
+     */
+    post: operations['refreshCaseIdentifiers']
     delete?: never
     options?: never
     head?: never
@@ -1521,6 +1609,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prisoners/{offenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets the prisoner's details
+     * @description Requires role NOMIS_ALERTS.
+     */
+    get: operations['getPrisonerDetails']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisoners/{offenderNo}/sentencing/offender-charges/{offenderChargeId}': {
     parameters: {
       query?: never
@@ -1581,7 +1689,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/prisoners/{offenderNo}/physical-attributes': {
+  '/prisoners/{offenderNo}/prison-person/reconciliation': {
     parameters: {
       query?: never
       header?: never
@@ -1589,10 +1697,10 @@ export interface paths {
       cookie?: never
     }
     /**
-     * Get physical attributes for a prisoner
-     * @description Retrieves physical attributes for a prisoner and all of their aliases and bookings. Requires ROLE_NOMIS_PRISON_PERSON
+     * Get prison person reconciliation details for a prisoner
+     * @description Retrieves reconciliation details used to check NOMIS and DPS are aligned. Requires ROLE_NOMIS_PRISON_PERSON
      */
-    get: operations['getPhysicalAttributes']
+    get: operations['getReconciliation']
     put?: never
     post?: never
     delete?: never
@@ -1609,7 +1717,7 @@ export interface paths {
       cookie?: never
     }
     /**
-     * Gets prisoner's list of merge details since a given date. Either the current offenderNo or the previous offenderNo can be used to search for merges.
+     * Gets prisoner's list of merge details since a given date. Either the current offenderNo or the previous offenderNo can be used to search for merges. Only COMPLETED merges are returned
      * @description Requires role SYNCHRONISATION_REPORTING.
      */
     get: operations['getPrisonerMerges']
@@ -1854,6 +1962,46 @@ export interface paths {
      * @description Retrieves alerts for a specific booking. Requires ROLE_NOMIS_ALERTS
      */
     get: operations['getAlertsByBookingId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/persons/{personId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a person by person Id
+     * @description Retrieves a person and related contacts. Requires ROLE_NOMIS_CONTACTPERSONS
+     */
+    get: operations['getPerson']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/persons/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get all Ids
+     * @description Retrieves all person Ids - typically for a migration. Requires ROLE_NOMIS_CONTACTPERSONS
+     */
+    get: operations['getPersonIds']
     put?: never
     post?: never
     delete?: never
@@ -2757,6 +2905,7 @@ export interface components {
       errorCode?: number
       userMessage?: string
       developerMessage?: string
+      /** @description For 409 errors this may contain the entity Id for the existing record that causes the duplicate */
       moreInfo?: string
     }
     /** @description Sentence adjustment update request */
@@ -2950,6 +3099,46 @@ export interface components {
       /** Format: int64 */
       nextCourtAppearanceId?: number
     }
+    /** @description Profile Details to update a prisoner */
+    UpsertProfileDetailsRequest: {
+      /** @description Profile Type */
+      profileType: string
+      /** @description Profile Code */
+      profileCode?: string
+    }
+    /** @description Profile Details upsert response */
+    UpsertProfileDetailsResponse: {
+      /** @description Whether the record was created or updated */
+      created: boolean
+      /**
+       * Format: int64
+       * @description The offender booking ID that was changed
+       */
+      bookingId: number
+    }
+    /** @description Physical attributes to update a prisoner */
+    UpsertPhysicalAttributesRequest: {
+      /**
+       * Format: int32
+       * @description Height (cm)
+       */
+      height?: number
+      /**
+       * Format: int32
+       * @description Weight (kg)
+       */
+      weight?: number
+    }
+    /** @description Physical attributes upsert response */
+    UpsertPhysicalAttributesResponse: {
+      /** @description Whether the record was created or updated */
+      created: boolean
+      /**
+       * Format: int64
+       * @description The offender booking ID that was changed
+       */
+      bookingId: number
+    }
     /** @description Sentence request */
     CreateSentenceRequest: {
       /** Format: date */
@@ -3027,7 +3216,6 @@ export interface components {
       comment?: string
       audit: components['schemas']['NomisAudit']
     }
-    /** @description The case note subtype */
     CodeDescription: {
       code: string
       description: string
@@ -3437,57 +3625,315 @@ export interface components {
       /** Format: date */
       visitAllowanceExpiryDate?: string
     }
-    /** @description The data held in NOMIS about a case note associated with a prisoner */
-    CaseNoteResponse: {
+    /** @description A response after a csip has been upserted in NOMIS */
+    UpsertCSIPResponse: {
       /**
        * Format: int64
-       * @description The primary key
+       * @description The nomis csip id
        */
-      caseNoteId: number
+      nomisCSIPReportId: number
+      /** @description The prisoner nomis Id relating to this csip */
+      offenderNo: string
+      /** @description Whether or not the csip was created */
+      created: boolean
+    }
+    /** @description Action list */
+    ActionsRequest: {
+      openCSIPAlert: boolean
+      nonAssociationsUpdated: boolean
+      observationBook: boolean
+      unitOrCellMove: boolean
+      csraOrRsraReview: boolean
+      serviceReferral: boolean
+      simReferral: boolean
+    }
+    /** @description Attendees to the review */
+    AttendeeRequest: {
       /**
        * Format: int64
-       * @description The prisoner's bookingId related to this case note
+       * @description Review Attendee/Contributor Id
        */
-      bookingId: number
-      caseNoteType: components['schemas']['CodeDescription']
-      caseNoteSubType: components['schemas']['CodeDescription']
+      id?: number
+      /** @description DPS Attendee id */
+      dpsId: string
+      /** @description Name of attendee/contributor */
+      name?: string
+      /** @description Role of attendee/contributor */
+      role?: string
+      /** @description If attended (otherwise contributor) */
+      attended: boolean
+      /** @description Contribution */
+      contribution?: string
+    }
+    /** @description Contributory factors */
+    CSIPFactorRequest: {
       /**
-       * @description Date case note occurred
+       * Format: int64
+       * @description Contributory Factor id
+       */
+      id?: number
+      /** @description DPS Factor id */
+      dpsId: string
+      /** @description Contributory Factor */
+      typeCode: string
+      /** @description Factor comment */
+      comment?: string
+    }
+    /** @description DecisionAndActions */
+    DecisionRequest: {
+      /** @description Conclusion & Reason for decision */
+      conclusion?: string
+      /** @description Outcome */
+      decisionOutcomeCode?: string
+      /** @description Signed off by */
+      signedOffRoleCode?: string
+      /** @description The username of the person who recorded the decision */
+      recordedBy?: string
+      /**
+       * Format: date
+       * @description Recorded Date
+       */
+      recordedDate?: string
+      /** @description What to do next */
+      nextSteps?: string
+      /** @description Other information to take into consideration */
+      otherDetails?: string
+      actions: components['schemas']['ActionsRequest']
+    }
+    /** @description Interview */
+    InterviewDetailRequest: {
+      /**
+       * Format: int64
+       * @description Interview Id
+       */
+      id?: number
+      /** @description DPS Interview id */
+      dpsId: string
+      /** @description Person being interviewed */
+      interviewee: string
+      /**
+       * Format: date
+       * @description date of interview
+       */
+      date: string
+      /** @description Why the incident occurred */
+      roleCode: string
+      /** @description Additional data regarding the interview */
+      comments?: string
+    }
+    /** @description Investigation details of the incident */
+    InvestigationDetailRequest: {
+      /** @description Staff involved in the incident */
+      staffInvolved?: string
+      /** @description Whether any evidence was secured */
+      evidenceSecured?: string
+      /** @description Why the incident occurred */
+      reasonOccurred?: string
+      /** @description Normal behaviour of the offender */
+      usualBehaviour?: string
+      /** @description Offender's trigger */
+      trigger?: string
+      /** @description Protective factors */
+      protectiveFactors?: string
+      /** @description Interview */
+      interviews?: components['schemas']['InterviewDetailRequest'][]
+    }
+    /** @description CSIP Plans */
+    PlanRequest: {
+      /**
+       * Format: int64
+       * @description Plan Id
+       */
+      id?: number
+      /** @description DPS Plan/IdentifiedNeed id */
+      dpsId: string
+      /** @description Details of the need */
+      identifiedNeed: string
+      /** @description Intervention plan */
+      intervention: string
+      /** @description Information regarding progression of plan */
+      progression?: string
+      /** @description The person reporting - free text */
+      referredBy: string
+      /**
+       * Format: date
+       * @description When created
+       */
+      createdDate: string
+      /**
+       * Format: date
+       * @description Target date of plan
+       */
+      targetDate: string
+      /**
+       * Format: date
+       * @description Plan closed date
+       */
+      closedDate?: string
+    }
+    /** @description CSIP Reviews */
+    ReviewRequest: {
+      /**
+       * Format: int64
+       * @description Review Id
+       */
+      id?: number
+      /** @description DPS Review id */
+      dpsId: string
+      /** @description Attendees to the review */
+      attendees?: components['schemas']['AttendeeRequest'][]
+      /** @description Whether to remain on CSIP */
+      remainOnCSIP: boolean
+      /** @description If the csip has been updated */
+      csipUpdated: boolean
+      /** @description If a case note was added */
+      caseNote: boolean
+      /** @description If the csip is closed */
+      closeCSIP: boolean
+      /** @description Whether people were informed */
+      peopleInformed: boolean
+      /** @description Summary details */
+      summary?: string
+      /**
+       * Format: date
+       * @description Next Review date
+       */
+      nextReviewDate?: string
+      /**
+       * Format: date
+       * @description Review closed date
+       */
+      closeDate?: string
+      /**
+       * Format: date
+       * @description The date the review was created
+       */
+      recordedDate: string
+      /** @description The username of the person who recorded the review */
+      recordedBy: string
+    }
+    /** @description Safer custody screening */
+    SaferCustodyScreeningRequest: {
+      /** @description Result of the Safer Custody Screening */
+      scsOutcomeCode: string
+      /** @description The username of the person who recorded the data */
+      recordedBy: string
+      /**
+       * Format: date
+       * @description When the the SCS occurred
+       */
+      recordedDate: string
+      /** @description Why the decision was made */
+      reasonForDecision?: string
+    }
+    /** @description CSIP Report create/update request */
+    UpsertCSIPRequest: {
+      /**
+       * Format: int64
+       * @description The csip id
+       * @example 1234
+       */
+      id?: number
+      /**
+       * @description The offender No
+       * @example A11235BC
+       */
+      offenderNo: string
+      /** @description Log number */
+      logNumber?: string
+      /**
+       * Format: date
+       * @description Date/Time incident occurred
+       * @example 2023-04-03
+       */
+      incidentDate: string
+      /**
+       * Format: partial-time
+       * @description Date/Time incident occurred
+       * @example 10:00
+       */
+      incidentTime?: string
+      /** @description Type of incident */
+      typeCode: string
+      /** @description Location of the incident */
+      locationCode: string
+      /** @description The Area of work, aka function */
+      areaOfWorkCode: string
+      /** @description The person reporting the incident - free text */
+      reportedBy: string
+      /**
+       * Format: date
+       * @description Date reported
+       */
+      reportedDate: string
+      /** @description proActive Referral */
+      proActiveReferral: boolean
+      /** @description If a staff member was assaulted */
+      staffAssaulted: boolean
+      /** @description If assaulted, the staff member name */
+      staffAssaultedName?: string
+      /** @description Originating Prison Id */
+      prisonCodeWhenRecorded?: string
+      reportDetailRequest?: components['schemas']['UpsertReportDetailsRequest']
+      saferCustodyScreening?: components['schemas']['SaferCustodyScreeningRequest']
+      investigation?: components['schemas']['InvestigationDetailRequest']
+      decision?: components['schemas']['DecisionRequest']
+      /** @description Case Manager involved */
+      caseManager?: string
+      /** @description Reason for plan */
+      planReason?: string
+      /**
+       * Format: date
+       * @description Date of first review
+       */
+      firstCaseReviewDate?: string
+      /** @description CSIP Plans */
+      plans?: components['schemas']['PlanRequest'][]
+      /** @description CSIP Reviews */
+      reviews?: components['schemas']['ReviewRequest'][]
+    }
+    /** @description Additional information for the CSIP Report */
+    UpsertReportDetailsRequest: {
+      /** @description How the offender was involved */
+      involvementCode?: string
+      /** @description Concern description */
+      concern?: string
+      /** @description known reasons for the involvement */
+      knownReasons?: string
+      /** @description Additional information */
+      otherInformation?: string
+      /** @description If the safer custody team were informed */
+      saferCustodyTeamInformed: boolean
+      /** @description If the referral has been completed */
+      referralComplete: boolean
+      /** @description Who completed the referral */
+      referralCompletedBy?: string
+      /**
+       * Format: date
+       * @description Date the referral was completed
+       */
+      referralCompletedDate?: string
+      /** @description Contributory factors */
+      factors: components['schemas']['CSIPFactorRequest'][]
+    }
+    /** @description Amendments to the text */
+    UpdateAmendment: {
+      /** @description Free format text body of amendment */
+      text: string
+      /** @description Author login name of person or department that added the amendment */
+      authorUsername: string
+      /**
+       * @description Amendment created timestamp
        * @example 2021-07-05T10:35:17
        */
-      occurrenceDateTime?: string
-      /** @description Free format text of person or department that created the case note */
-      authorUsername: string
-      /** @description Prison id */
-      prisonId?: string
-      /** @description Free format text body of case note */
-      caseNoteText?: string
-      /**
-       * @description Whether the case note was amended
-       * @example false
-       */
-      amended: boolean
-      /**
-       * @description Which screen (or DPS) created the case note
-       * @example false
-       */
-      auditModuleName?: string
+      createdDateTime: string
     }
     /** @description A request to amend a case note in NOMIS */
-    AmendCaseNoteRequest: {
-      /** @description The case note type */
-      caseNoteType: string
-      /** @description The case note subtype */
-      caseNoteSubType: string
-      /**
-       * @description Date case note occurred
-       * @example 2021-07-05T10:35:17
-       */
-      occurrenceDateTime: string
-      /** @description Free format text of person or department that created the case note */
-      authorUsername: string
-      /** @description Free format text body of case note */
-      caseNoteText: string
+    UpdateCaseNoteRequest: {
+      /** @description Free format text body of the amendment */
+      text: string
+      /** @description Amendments to the text */
+      amendments: components['schemas']['UpdateAmendment'][]
     }
     /** @description Offender individual schedule update request */
     UpdateAppointmentRequest: {
@@ -4059,7 +4505,8 @@ export interface components {
       legalCaseType: string
       courtId: string
       status: string
-      courtAppearance: components['schemas']['CourtAppearanceRequest']
+      courtAppearance?: components['schemas']['CourtAppearanceRequest']
+      caseReference?: string
     }
     /** @description Create adjustment response */
     CreateCourtAppearanceResponse: {
@@ -4555,6 +5002,8 @@ export interface components {
        * @example BXI, OUT
        */
       location: string
+      /** @description True if prisoner is active in prison */
+      active: boolean
     }
     /** @description Sentence adjustment create request */
     CreateSentenceAdjustmentRequest: {
@@ -5098,10 +5547,10 @@ export interface components {
       prisonId: string
     }
     PageVisitIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -5363,10 +5812,10 @@ export interface components {
       modifiedBy?: string
     }
     PageQuestionnaireIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -5433,6 +5882,34 @@ export interface components {
       /** Format: int32 */
       lidsOffenceNumber?: number
     }
+    /** @description Case related reference */
+    CaseIdentifierResponse: {
+      /**
+       * @description The type of case identifier
+       * @example CASE/INFO#
+       */
+      type: string
+      /**
+       * @description The value of the case identifier
+       * @example asd/123
+       */
+      reference: string
+      /**
+       * @description The time the case identifier was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /**
+       * @description The time the case identifier was last changed
+       * @example 2021-07-05T10:35:17
+       */
+      modifiedDateTime?: string
+      /**
+       * @description The name of the module that last changed it, indicates if this was NOMIS or the synchronisation service
+       * @example DPS_SYNCHRONISATION
+       */
+      auditModuleName?: string
+    }
     /** @description Court Case */
     CourtCaseResponse: {
       /** Format: int64 */
@@ -5440,7 +5917,7 @@ export interface components {
       offenderNo: string
       /** Format: int64 */
       bookingId: number
-      caseInfoNumber?: string
+      primaryCaseInfoNumber?: string
       /** Format: int32 */
       caseSequence: number
       caseStatus: components['schemas']['CodeDescription']
@@ -5467,6 +5944,7 @@ export interface components {
       createdByUsername: string
       courtEvents: components['schemas']['CourtEventResponse'][]
       offenderCharges: components['schemas']['OffenderChargeResponse'][]
+      caseInfoNumbers: components['schemas']['CaseIdentifierResponse'][]
     }
     /** @description Court Event Charge */
     CourtEventChargeResponse: {
@@ -5543,6 +6021,135 @@ export interface components {
       orderId: number
       orderPartyCode: string
       purposeCode: string
+    }
+    /** @description Profile details held against a booking */
+    BookingProfileDetailsResponse: {
+      /**
+       * Format: int64
+       * @description The booking's unique identifier
+       * @example 1234567
+       */
+      bookingId: number
+      /**
+       * @description The start date of the booking
+       * @example 2021-07-05T10:35:17
+       */
+      startDateTime: string
+      /**
+       * @description The end date of the booking, or null if the booking is still active
+       * @example 2021-07-05T10:35:17
+       */
+      endDateTime?: string
+      /** @description A list of profile details for this booking */
+      profileDetails: components['schemas']['ProfileDetailsResponse'][]
+      /**
+       * @description Whether this is the latest booking or not. Note that latest does not imply active.
+       * @example true
+       */
+      latestBooking: boolean
+    }
+    /** @description Profile details held against a prisoner */
+    PrisonerProfileDetailsResponse: {
+      /**
+       * @description The prisoner's unique identifier
+       * @example A1234AA
+       */
+      offenderNo: string
+      /** @description A list of bookings and their profile details */
+      bookings: components['schemas']['BookingProfileDetailsResponse'][]
+    }
+    /** @description Profile details recorded against a prisoner */
+    ProfileDetailsResponse: {
+      /**
+       * @description The type of profile info
+       * @example BUILD
+       */
+      type: string
+      /**
+       * @description The value of the profile info
+       * @example SLIM
+       */
+      code?: string
+      /**
+       * @description The time the profile info was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /**
+       * @description The user who created the profile info
+       * @example AQ425D
+       */
+      createdBy: string
+      /**
+       * @description The time the profile info was last changed
+       * @example 2021-07-05T10:35:17
+       */
+      modifiedDateTime?: string
+      /**
+       * @description The user who modified the profile info
+       * @example AQ425D
+       */
+      modifiedBy?: string
+      /**
+       * @description The name of the module that last changed the profile info, indicates if this was NOMIS or the synchronisation service
+       * @example DPS_SYNCHRONISATION
+       */
+      auditModuleName?: string
+    }
+    /** @description Reconciliation details held against a prisoner */
+    PrisonPersonReconciliationResponse: {
+      /**
+       * @description The prisoner's unique identifier
+       * @example A1234AA
+       */
+      offenderNo: string
+      /**
+       * Format: int32
+       * @description The height of the prisoner in centimetres
+       * @example 180
+       */
+      height?: number
+      /**
+       * Format: int32
+       * @description The weight of the prisoner in kilograms
+       * @example 80
+       */
+      weight?: number
+      /**
+       * @description Shape of face
+       * @example ROUND
+       */
+      face?: string
+      /**
+       * @description Build
+       * @example SLIM
+       */
+      build?: string
+      /**
+       * @description Facial hair
+       * @example CLEAN_SHAVEN
+       */
+      facialHair?: string
+      /**
+       * @description Hair colour
+       * @example BLACK
+       */
+      hair?: string
+      /**
+       * @description Left eye colour
+       * @example BLUE
+       */
+      leftEyeColour?: string
+      /**
+       * @description Right eye colour
+       * @example BROWN
+       */
+      rightEyeColour?: string
+      /**
+       * @description Shoe size
+       * @example 8.5
+       */
+      shoeSize?: string
     }
     /** @description Physical attributes held against a booking */
     BookingPhysicalAttributesResponse: {
@@ -5688,6 +6295,8 @@ export interface components {
       createDateTime: string
       /** @description The username of the person who created the attendee */
       createdBy: string
+      /** @description Real name of the person who created the attendee */
+      createdByDisplayName?: string
       /**
        * @description The date and time the attendee was last updated
        * @example 2021-07-05T10:35:17
@@ -5695,6 +6304,8 @@ export interface components {
       lastModifiedDateTime?: string
       /** @description The username of the person who last updated the attendee */
       lastModifiedBy?: string
+      /** @description Real name of the person who last updated the attendee */
+      lastModifiedByDisplayName?: string
     }
     /** @description Contributory factors */
     CSIPFactorResponse: {
@@ -5707,19 +6318,23 @@ export interface components {
       /** @description Factor comment */
       comment?: string
       /**
-       * @description The date and time the report was created
+       * @description The date and time the factor was created
        * @example 2021-07-05T10:35:17
        */
       createDateTime: string
-      /** @description The username of the person who created the report */
+      /** @description The username of the person who created the factor */
       createdBy: string
+      /** @description Real name of the person who created the factor */
+      createdByDisplayName?: string
       /**
-       * @description The date and time the report was last updated
+       * @description The date and time the factor was last updated
        * @example 2021-07-05T10:35:17
        */
       lastModifiedDateTime?: string
-      /** @description The username of the person who last updated the report */
+      /** @description The username of the person who last updated the factor */
       lastModifiedBy?: string
+      /** @description Real name of the person who last updated the factor */
+      lastModifiedByDisplayName?: string
     }
     /** @description CSIP Details */
     CSIPResponse: {
@@ -5790,6 +6405,8 @@ export interface components {
       createDateTime: string
       /** @description The username of the person who created the report */
       createdBy: string
+      /** @description Real name of the person who created the report */
+      createdByDisplayName?: string
       /**
        * @description The date and time the report was last updated
        * @example 2021-07-05T10:35:17
@@ -5797,6 +6414,8 @@ export interface components {
       lastModifiedDateTime?: string
       /** @description The username of the person who last updated the report */
       lastModifiedBy?: string
+      /** @description Real name of the person who last updated the report */
+      lastModifiedByDisplayName?: string
     }
     /** @description DecisionAndActions */
     Decision: {
@@ -5829,6 +6448,11 @@ export interface components {
     }
     /** @description Interview */
     InterviewDetails: {
+      /**
+       * Format: int64
+       * @description Interview Id
+       */
+      id: number
       /** @description Person being interviewed */
       interviewee: string
       /**
@@ -5846,6 +6470,8 @@ export interface components {
       createDateTime: string
       /** @description The username of the person who created the interview */
       createdBy: string
+      /** @description Real name of the person who created the interview */
+      createdByDisplayName?: string
       /**
        * @description The date and time the interview was last updated
        * @example 2021-07-05T10:35:17
@@ -5853,6 +6479,8 @@ export interface components {
       lastModifiedDateTime?: string
       /** @description The username of the person who last updated the interview */
       lastModifiedBy?: string
+      /** @description Real name of the person who last updated the interview */
+      lastModifiedByDisplayName?: string
     }
     /** @description Investigation details of the incident */
     InvestigationDetails: {
@@ -5917,6 +6545,8 @@ export interface components {
       createDateTime: string
       /** @description The username of the person who created the plan */
       createdBy: string
+      /** @description Real name of the person who created the plan */
+      createdByDisplayName?: string
       /**
        * @description The date and time the plan was last updated
        * @example 2021-07-05T10:35:17
@@ -5924,6 +6554,8 @@ export interface components {
       lastModifiedDateTime?: string
       /** @description The username of the person who last updated the plan */
       lastModifiedBy?: string
+      /** @description Real name of the person who last updated the plan */
+      lastModifiedByDisplayName?: string
     }
     /** @description The list of CSIPs held against a prisoner */
     PrisonerCSIPsResponse: {
@@ -5951,6 +6583,8 @@ export interface components {
       referralComplete: boolean
       /** @description Who completed the referral */
       referralCompletedBy?: string
+      /** @description Real name of the person who completed the referral */
+      referralCompletedByDisplayName?: string
       /**
        * Format: date
        * @description Date the referral was completed
@@ -6003,18 +6637,31 @@ export interface components {
       /** @description Real name of who recorded the review */
       recordedByDisplayName?: string
       /**
+       * @description The date and time the review was created
+       * @example 2021-07-05T10:35:17
+       */
+      createDateTime: string
+      /** @description The username of the person who created the review */
+      createdBy: string
+      /** @description Real name of the person who created the plan */
+      createdByDisplayName?: string
+      /**
        * @description The date and time the review was last updated
        * @example 2021-07-05T10:35:17
        */
       lastModifiedDateTime?: string
       /** @description The username of the person who last updated the review */
       lastModifiedBy?: string
+      /** @description Real name of the person who last updated the review */
+      lastModifiedByDisplayName?: string
     }
     /** @description Safer custody screening */
     SaferCustodyScreening: {
       outcome?: components['schemas']['CodeDescription']
-      /** @description Who recorded the data */
+      /** @description The username of the person who recorded the data */
       recordedBy?: string
+      /** @description Real name of who recorded the data */
+      recordedByDisplayName?: string
       /**
        * Format: date
        * @description When the the SCS occurred
@@ -6022,6 +6669,81 @@ export interface components {
       recordedDate?: string
       /** @description Why the decision was made */
       reasonForDecision?: string
+    }
+    /** @description Amendments to the text */
+    CaseNoteAmendment: {
+      /** @description Free format text body of amendment */
+      text: string
+      /** @description Author login name of person or department that added the amendment */
+      authorUsername: string
+      /**
+       * Format: int64
+       * @description Author STAFF_ID
+       */
+      authorStaffId?: number
+      /** @description Author first name */
+      authorFirstName?: string
+      /** @description Author last name */
+      authorLastName?: string
+      /**
+       * @description Amendment created timestamp
+       * @example 2021-07-05T10:35:17
+       */
+      createdDateTime: string
+    }
+    /** @description The data held in NOMIS about a case note associated with a prisoner */
+    CaseNoteResponse: {
+      /**
+       * Format: int64
+       * @description The primary key
+       */
+      caseNoteId: number
+      /**
+       * Format: int64
+       * @description The prisoner's bookingId related to this case note
+       */
+      bookingId: number
+      caseNoteType: components['schemas']['CodeDescription']
+      caseNoteSubType: components['schemas']['CodeDescription']
+      /**
+       * @description Whether system-generated
+       * @enum {string}
+       */
+      noteSourceCode?: 'AUTO' | 'EXT' | 'INST'
+      /**
+       * @description Date case note occurred
+       * @example 2021-07-05T10:35:17
+       */
+      occurrenceDateTime?: string
+      /**
+       * Format: int64
+       * @description Author STAFF_ID
+       */
+      authorStaffId: number
+      /** @description Author username or login name */
+      authorUsername: string
+      /** @description Author first name */
+      authorFirstName?: string
+      /** @description Author last name */
+      authorLastName: string
+      /** @description Prison id */
+      prisonId?: string
+      /** @description Free format text body of case note */
+      caseNoteText: string
+      /** @description Amendments to the text */
+      amendments: components['schemas']['CaseNoteAmendment'][]
+      /**
+       * @description Created timestamp
+       * @example 2021-07-05T10:35:17
+       */
+      createdDatetime: string
+      /** @description Created username */
+      createdUsername: string
+      /**
+       * @description Which screen (or DPS) created the case note
+       * @example false
+       */
+      auditModuleName?: string
     }
     /** @description The list of case notes held against a booking */
     PrisonerCaseNotesResponse: {
@@ -6047,10 +6769,10 @@ export interface components {
       latestBookingAlerts: components['schemas']['AlertResponse'][]
     }
     PagePrisonerIds: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -6079,10 +6801,10 @@ export interface components {
       offenderNo: string
     }
     PagePrisonerId: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -6302,6 +7024,283 @@ export interface components {
     BookingAlertsResponse: {
       alerts: components['schemas']['AlertResponse'][]
     }
+    /** @description The data held in NOMIS about a address number */
+    Address: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS Id of number
+       */
+      addressId: number
+      type?: components['schemas']['CodeDescription']
+      /**
+       * @description Flat name or number
+       * @example Apartment 3
+       */
+      flat?: string
+      /**
+       * @description Premise
+       * @example 22
+       */
+      premise?: string
+      /**
+       * @description Street
+       * @example West Street
+       */
+      street?: string
+      /**
+       * @description Locality
+       * @example Keighley
+       */
+      locality?: string
+      /**
+       * @description Post code
+       * @example MK15 2ST
+       */
+      postcode?: string
+      city?: components['schemas']['CodeDescription']
+      county?: components['schemas']['CodeDescription']
+      country?: components['schemas']['CodeDescription']
+      /** @description List of phone numbers for the address */
+      phoneNumbers: components['schemas']['PhoneNumber'][]
+      /** @description true if address validated by Post Office Address file?? */
+      validatedPAF: boolean
+      /** @description true if address not fixed. for example homeless */
+      noFixedAddress?: boolean
+      /** @description true if this is the person's primary address */
+      primaryAddress: boolean
+      /** @description true if this is used for mail */
+      mailAddress: boolean
+      /** @description Free format comment about the address */
+      comment?: string
+      /**
+       * Format: date
+       * @description Date address was valid from
+       */
+      startDate?: string
+      /**
+       * Format: date
+       * @description Date address was valid to
+       */
+      endDate?: string
+    }
+    /** @description The data held in NOMIS about a person's contact with a prisoner */
+    ContactForPrisoner: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS Id of booking associated with the prisoner
+       */
+      bookingId: number
+      /**
+       * @description Offender no aka prisoner number
+       * @example A1234AA
+       */
+      offenderNo: string
+      /**
+       * @description Last name of the prisoner
+       * @example Smith
+       */
+      lastName: string
+      /**
+       * @description First name of the prisoner
+       * @example John
+       */
+      firstName: string
+    }
+    /** @description The data held in NOMIS about a person who is a contact for a prisoner */
+    ContactPerson: {
+      /**
+       * Format: int64
+       * @description The person id
+       */
+      personId: number
+      /** @description First name of the person */
+      firstName: string
+      /** @description Surname name of the person */
+      lastName: string
+      /** @description Middle name of the person */
+      middleName?: string
+      /**
+       * Format: date
+       * @description Date of birth of the person
+       */
+      dateOfBirth?: string
+      gender?: components['schemas']['CodeDescription']
+      title?: components['schemas']['CodeDescription']
+      language?: components['schemas']['CodeDescription']
+      /** @description True if the person requires an interpreter */
+      interpreterRequired: boolean
+      domesticStatus?: components['schemas']['CodeDescription']
+      /**
+       * Format: date
+       * @description Date the person dies
+       */
+      deceasedDate?: string
+      /** @description True if a staff member */
+      isStaff?: boolean
+      /** @description No longer used in NOMIS since 2018 */
+      isRemitter?: boolean
+      /** @description No longer used in NOMIS since 2019 */
+      keepBiometrics: boolean
+      audit: components['schemas']['NomisAudit']
+      /** @description List of phone numbers for the person */
+      phoneNumbers: components['schemas']['PhoneNumber'][]
+      /** @description List of addresses for the person */
+      addresses: components['schemas']['Address'][]
+      /** @description List of email addresses for the person */
+      emailAddresses: components['schemas']['EmailAddress'][]
+      /** @description List of employments for the person */
+      employments: components['schemas']['Employment'][]
+      /** @description List of identifiers for the person */
+      identifiers: components['schemas']['Identifier'][]
+      /** @description List of prisoner contacts this person is related to */
+      contacts: components['schemas']['PersonContact'][]
+      /** @description List of restrictions between all prisoners and this person */
+      restrictions: components['schemas']['ContactRestriction'][]
+    }
+    /** @description The data held in NOMIS about a person's restriction with a prisoner */
+    ContactRestriction: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS Id of the restriction
+       */
+      id: number
+      type: components['schemas']['CodeDescription']
+      /** @description Free format comment text */
+      comment?: string
+      /**
+       * Format: date
+       * @description Date restriction became active
+       */
+      effectiveDate: string
+      /**
+       * Format: date
+       * @description Date restriction is no longer active
+       */
+      expiryDate?: string
+      enteredStaff: components['schemas']['Staff']
+    }
+    /** @description The data held in NOMIS about a corporate entity */
+    Corporate: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS Id of corporate address
+       */
+      id: number
+      /**
+       * @description The corporate name
+       * @example Police
+       */
+      name?: string
+    }
+    /** @description The data held in NOMIS about a email address */
+    EmailAddress: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS Id of email address
+       */
+      emailAddressId: number
+      /**
+       * @description The email address
+       * @example john.smith@internet.co.uk
+       */
+      email: string
+    }
+    /** @description The data held in NOMIS about a person's employment */
+    Employment: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS sequence for this employment for this person
+       */
+      sequence: number
+      corporate?: components['schemas']['Corporate']
+      /** @description True is employment is active */
+      active: boolean
+    }
+    /** @description The data held in NOMIS about a person's identifiers */
+    Identifier: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS sequence for this identifier for this person
+       */
+      sequence: number
+      type: components['schemas']['CodeDescription']
+      /**
+       * @description The identifier value
+       * @example NE121212T
+       */
+      identifier: string
+      /**
+       * @description The issued authority
+       * @example Police
+       */
+      issuedAuthority?: string
+    }
+    /** @description The data held in NOMIS about a person's contact with a prisoner */
+    PersonContact: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS sequence for this identifier for this contact
+       */
+      id: number
+      contactType: components['schemas']['CodeDescription']
+      relationshipType: components['schemas']['CodeDescription']
+      /** @description True if active */
+      active: boolean
+      /**
+       * Format: date
+       * @description Date contact is no longer active
+       */
+      expiryDate?: string
+      /** @description True if approved to visit the prisoner */
+      approvedVisitor: boolean
+      /** @description True if next of kin to the prisoner */
+      nextOfKin: boolean
+      /** @description True if emergency contact for the prisoner */
+      emergencyContact: boolean
+      /** @description Free format comment text */
+      comment?: string
+      prisoner: components['schemas']['ContactForPrisoner']
+      /** @description List of restrictions specifically between the prisoner and this contact */
+      restrictions: components['schemas']['ContactRestriction'][]
+    }
+    /** @description The data held in NOMIS about a phone number */
+    PhoneNumber: {
+      /**
+       * Format: int64
+       * @description Unique NOMIS Id of number
+       */
+      phoneId: number
+      /** @description The number */
+      number: string
+      /** @description Extension */
+      extension?: string
+      type: components['schemas']['CodeDescription']
+    }
+    PagePersonIdResponse: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      first?: boolean
+      last?: boolean
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['PersonIdResponse'][]
+      /** Format: int32 */
+      number?: number
+      sort?: components['schemas']['SortObject'][]
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    PersonIdResponse: {
+      /**
+       * Format: int64
+       * @description The person Id
+       */
+      personId: number
+    }
     /** @description Appointment information */
     NonAssociationResponse: {
       /**
@@ -6371,10 +7370,10 @@ export interface components {
       offenderNo2: string
     }
     PageNonAssociationIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -6530,10 +7529,10 @@ export interface components {
       modifyUsername?: string
     }
     PageLocationIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -6826,10 +7825,10 @@ export interface components {
       incidentId: number
     }
     PageIncidentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -6889,10 +7888,10 @@ export interface components {
       sequence: number
     }
     PageIncentiveIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -6959,10 +7958,10 @@ export interface components {
       csipId: number
     }
     PageCSIPIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -6985,10 +7984,10 @@ export interface components {
       caseId: number
     }
     PageCourtCaseIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -7095,10 +8094,10 @@ export interface components {
       eventId: number
     }
     PageAppointmentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -7308,10 +8307,10 @@ export interface components {
       allocationId: number
     }
     PageFindActiveAllocationIdsResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -7336,10 +8335,10 @@ export interface components {
       adjustmentCategory: string
     }
     PageAdjustmentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -7369,10 +8368,10 @@ export interface components {
       offenderNo: string
     }
     PageAdjudicationChargeIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -7557,10 +8556,10 @@ export interface components {
       courseActivityId: number
     }
     PageFindActiveActivityIdsResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8032,6 +9031,226 @@ export interface operations {
         }
       }
       /** @description Court appearance does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getProfileDetails: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender number
+         * @example A1234AA
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Profile Details Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerProfileDetailsResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISON_PERSON */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  upsertPhysicalAttributes: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender number
+         * @example A1234AA
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpsertProfileDetailsRequest']
+      }
+    }
+    responses: {
+      /** @description Physical Attributes Updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['UpsertProfileDetailsResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISON_PERSON */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist or has no bookings */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPhysicalAttributes: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender number
+         * @example A1234AA
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Physical Attributes Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerPhysicalAttributesResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISON_PERSON */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  upsertPhysicalAttributes_1: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender number
+         * @example A1234AA
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpsertPhysicalAttributesRequest']
+      }
+    }
+    responses: {
+      /** @description Physical Attributes Updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['UpsertPhysicalAttributesResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISON_PERSON */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist or has no bookings */
       404: {
         headers: {
           [name: string]: unknown
@@ -8842,7 +10061,10 @@ export interface operations {
   }
   updateCapacity: {
     parameters: {
-      query?: never
+      query?: {
+        /** @description If true leave the operational capacity unchanged */
+        ignoreOperationalCapacity?: boolean
+      }
       header?: never
       path: {
         /**
@@ -9257,6 +10479,57 @@ export interface operations {
       }
     }
   }
+  upsertCSIP: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpsertCSIPRequest']
+      }
+    }
+    responses: {
+      /** @description CSIP Updated or created */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['UpsertCSIPResponse']
+        }
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CSIP */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getCaseNote: {
     parameters: {
       query?: never
@@ -9310,7 +10583,7 @@ export interface operations {
       }
     }
   }
-  amendCaseNote: {
+  updateCaseNote: {
     parameters: {
       query?: never
       header?: never
@@ -9325,7 +10598,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['AmendCaseNoteRequest']
+        'application/json': components['schemas']['UpdateCaseNoteRequest']
       }
     }
     responses: {
@@ -9334,9 +10607,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['CaseNoteResponse']
-        }
+        content?: never
       }
       /** @description One or more fields in the request contains invalid data */
       400: {
@@ -9396,9 +10667,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['CaseNoteResponse']
-        }
+        content?: never
       }
       /** @description No Content */
       204: {
@@ -11073,6 +12342,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
+      /** @description visit already exists exist. The moreInfo contains the NOMIS visitId for the existing visit */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
     }
   }
   createSentence: {
@@ -11292,6 +12570,75 @@ export interface operations {
         content: {
           'application/json': components['schemas']['CreateCourtAppearanceResponse']
         }
+      }
+      /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_SENTENCING not present */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Court case does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  refreshCaseIdentifiers: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender no
+         * @example AB1234A
+         */
+        offenderNo: string
+        /**
+         * @description Case Id
+         * @example 34565
+         */
+        caseId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtAppearanceRequest']
+      }
+    }
+    responses: {
+      /** @description Case Identifiers Refreshed */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
       /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
       400: {
@@ -13047,6 +14394,59 @@ export interface operations {
       }
     }
   }
+  getPrisonerDetails: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender Noms Id
+         * @example A1234ZZ
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description prisoner details */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerDetails']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_ALERTS not present */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner not found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getOffenderCharge: {
     parameters: {
       query?: never
@@ -13221,7 +14621,7 @@ export interface operations {
       }
     }
   }
-  getPhysicalAttributes: {
+  getReconciliation: {
     parameters: {
       query?: never
       header?: never
@@ -13242,7 +14642,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['PrisonerPhysicalAttributesResponse']
+          'application/json': components['schemas']['PrisonPersonReconciliationResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -13915,6 +15315,109 @@ export interface operations {
       }
       /** @description Booking does not exist */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPerson: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Person Id
+         * @example 12345
+         */
+        personId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ContactPerson']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CONTACTPERSON */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Person does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonIds: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+        /**
+         * @description Filter results by persons that were created on or after the given date
+         * @example 2021-11-03
+         */
+        fromDate?: string
+        /**
+         * @description Filter results by persons that were created on or before the given date
+         * @example 2021-11-03
+         */
+        toDate?: string
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Page of person Ids */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PagePersonIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_CONTACTPERSONS */
+      403: {
         headers: {
           [name: string]: unknown
         }

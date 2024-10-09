@@ -4,6 +4,8 @@ import NomisMigrationService from './nomisMigrationService'
 import NomisPrisonerService from './nomisPrisonerService'
 import MappingService from './mappingService'
 import ActivitiesService from './activitiesService'
+import ContactPersonNomisMigrationService from './contactperson/contactPersonNomisMigrationService'
+import ContactPersonNomisPrisonerService from './contactperson/contactPersonNomisPrisonerService'
 
 export const services = () => {
   const { hmppsAuthClient, applicationInfo } = dataAccess()
@@ -19,6 +21,8 @@ export const services = () => {
     nomisPrisonerService,
     mappingService,
     activitiesService,
+    contactPersonNomisMigrationService: new ContactPersonNomisMigrationService(hmppsAuthClient),
+    contactPersonNomisPrisonerService: new ContactPersonNomisPrisonerService(hmppsAuthClient),
   }
 }
 
