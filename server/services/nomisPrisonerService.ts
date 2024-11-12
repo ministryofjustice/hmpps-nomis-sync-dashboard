@@ -16,6 +16,7 @@ import {
   PageActivitiesIdResponse,
   PageAllocationsIdResponse,
   FindPayRateWithUnknownIncentiveResponse,
+  FindActivitiesWithoutScheduleRulesResponse,
   AppointmentCountsResponse,
   PageIncidentIdResponse,
   GetIncidentIdsByFilter,
@@ -215,6 +216,24 @@ export default class NomisPrisonerService {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     return NomisPrisonerService.restClient(token).get<FindPayRateWithUnknownIncentiveResponse[]>({
       path: `/activities/rates-with-unknown-incentives`,
+      query: querystring.stringify(queryParams),
+    })
+  }
+
+  async findActivitiesWithoutScheduleRules(
+    filter: ActivitiesMigrationFilter,
+    activityCategories: string[],
+    context: Context,
+  ): Promise<FindActivitiesWithoutScheduleRulesResponse[]> {
+    logger.info(`finding activities without schedule rules for activities migration`)
+    const queryParams = {
+      ...filter,
+      excludeProgramCodes: activityCategories,
+    }
+
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return NomisPrisonerService.restClient(token).get<FindActivitiesWithoutScheduleRulesResponse[]>({
+      path: `/activities/without-schedule-rules`,
       query: querystring.stringify(queryParams),
     })
   }

@@ -51,6 +51,7 @@ declare module 'express-session' {
     suspendedAllocations: string[]
     allocationsMissingPayBands: string[]
     payRatesUnknownIncentive: string[]
+    activitiesWithoutScheduleRules: string[]
   }
 
   interface StartAllocationsMigrationForm extends MigrationForm {

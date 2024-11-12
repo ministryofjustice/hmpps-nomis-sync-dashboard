@@ -12,6 +12,8 @@ export default class StartActivitiesMigrationPreviewPage extends CopyTextPage {
 
   private nomisPayRatesUnknownIncentiveId = '#nomisPayRatesUnknownIncentive'
 
+  private nomisActivitiesWithoutScheduleRules = '#nomisActivitiesWithoutScheduleRules'
+
   startMigrationButton = () => cy.contains('Start migration')
 
   prisonIdChangeLink = (): PageElement => cy.get('[data-qa=prison-id]')
@@ -44,6 +46,8 @@ export default class StartActivitiesMigrationPreviewPage extends CopyTextPage {
 
   nomisPayRatesUnknownIncentive = () => cy.get(this.nomisPayRatesUnknownIncentiveId)
 
+  activitiesWithoutScheduleRules = () => cy.get(this.nomisActivitiesWithoutScheduleRules)
+
   errorSummary = () => cy.get('.govuk-error-summary')
 
   testCopySuspendedAllocationsToClipboard = (contents: string) =>
@@ -54,4 +58,7 @@ export default class StartActivitiesMigrationPreviewPage extends CopyTextPage {
 
   testCopyPayRatesUnknownIncentiveToClipboard = (contents: string) =>
     this.testCopyToClipboard(this.nomisPayRatesUnknownIncentiveId, contents)
+
+  testCopyActivitiesWithoutScheduleRulesToClipboard = (contents: string) =>
+    this.testCopyToClipboard(this.nomisActivitiesWithoutScheduleRules, contents)
 }
