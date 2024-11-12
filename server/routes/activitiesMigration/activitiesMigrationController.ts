@@ -11,6 +11,7 @@ import NomisPrisonerService from '../../services/nomisPrisonerService'
 import {
   FindAllocationsMissingPayBandsResponse,
   FindPayRateWithUnknownIncentiveResponse,
+  FindActivitiesWithoutScheduleRulesResponse,
   FindSuspendedAllocationsResponse,
   IncentiveLevel,
 } from '../../@types/nomisPrisoner'
@@ -166,6 +167,16 @@ export default class ActivitiesMigrationController {
           })
           return []
         }),
+
+      this.nomisPrisonerService
+        .findActivitiesWithoutScheduleRules(filter, await activityCategoriesPromise, context(res))
+        .catch(error => {
+          errors.push({
+            text: `Failed to find activities without schedule rules due to error: ${error.message}`,
+            href: '',
+          })
+          return []
+        }),
     ]).then(
       ([
         estimatedCount,
@@ -178,6 +189,7 @@ export default class ActivitiesMigrationController {
         nomisSuspendedAllocations,
         nomisAllocationsMissingPayBands,
         nomisPayRatesUnknownIncentive,
+        nomisActivitiesWithoutScheduleRules,
       ]) => {
         req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
         req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
@@ -200,6 +212,8 @@ export default class ActivitiesMigrationController {
         )
         req.session.startActivitiesMigrationForm.payRatesUnknownIncentive =
           this.payRatesUnknownIncentiveCsv(nomisPayRatesUnknownIncentive)
+        req.session.startActivitiesMigrationForm.activitiesWithoutScheduleRules =
+          this.activitiesWithoutScheduleRulesCsv(nomisActivitiesWithoutScheduleRules)
       },
     )
   }
@@ -237,6 +251,18 @@ export default class ActivitiesMigrationController {
       )
       .sort()
     body.unshift(`Activity Description, Activity ID, Pay Band Code, Incentive Level,`)
+    return body
+  }
+
+  private activitiesWithoutScheduleRulesCsv(activities: FindActivitiesWithoutScheduleRulesResponse[]): string[] {
+    if (activities.length === 0) return []
+    const body = activities
+      .map(
+        (activity: FindActivitiesWithoutScheduleRulesResponse) =>
+          `${activity.courseActivityDescription}, ${activity.courseActivityId},`,
+      )
+      .sort()
+    body.unshift(`Activity Description, Activity ID,`)
     return body
   }
 

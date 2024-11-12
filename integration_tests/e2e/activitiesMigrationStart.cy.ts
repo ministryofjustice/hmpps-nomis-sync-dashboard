@@ -140,6 +140,7 @@ context('Activities Migration Start', () => {
       cy.task('stubFindSuspendedAllocationsErrors')
       cy.task('stubFindAllocationsWithMissingPayBandsErrors')
       cy.task('stubFindPayRatesWithUnknownIncentiveErrors')
+      cy.task('stubFindActivitiesWithoutScheduleRulesErrors')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -153,6 +154,7 @@ context('Activities Migration Start', () => {
       previewPage.errorSummary().contains('Failed to check if prison MDI has slot times configured in DPS')
       previewPage.errorSummary().contains('Failed to find suspended allocations')
       previewPage.errorSummary().contains('Failed to find allocations with missing pay bands')
+      previewPage.errorSummary().contains('Failed to find activities without schedule rules')
       previewPage.nomisFeatureSwitch().should('not.exist')
       previewPage.activateFeatureSwitch().should('not.exist')
       previewPage.dpsFeatureSwitch().should('not.exist')
@@ -161,6 +163,7 @@ context('Activities Migration Start', () => {
       previewPage.nomisSuspendedAllocations().should('not.exist')
       previewPage.nomisAllocationsWithNoPayBands().should('not.exist')
       previewPage.nomisPayRatesUnknownIncentive().should('not.exist')
+      previewPage.activitiesWithoutScheduleRules().should('not.exist')
     })
 
     it('Turns on NOMIS feature switch if not already active', () => {
@@ -180,6 +183,7 @@ context('Activities Migration Start', () => {
       cy.task('stubFindSuspendedAllocations')
       cy.task('stubFindAllocationsWithMissingPayBands')
       cy.task('stubFindPayRatesWithUnknownIncentive')
+      cy.task('stubFindActivitiesWithoutScheduleRules')
       cy.task('stubCheckServiceAgencySwitchNotFound', 'ACTIVITY')
       cy.task('stubPostServiceAgencySwitch')
       cy.task('stubCheckServiceAgencySwitchAfterNotFound', 'ACTIVITY')
@@ -217,6 +221,7 @@ context('Activities Migration Start', () => {
       cy.task('stubFindSuspendedAllocations')
       cy.task('stubFindAllocationsWithMissingPayBands')
       cy.task('stubFindPayRatesWithUnknownIncentive')
+      cy.task('stubFindActivitiesWithoutScheduleRules')
 
       const page = Page.verifyOnPage(StartActivitiesMigrationPage)
       page.prisonId().type('MDI')
@@ -245,6 +250,14 @@ context('Activities Migration Start', () => {
 
       previewPage.testCopyPayRatesUnknownIncentiveToClipboard(
         'Activity Description, Activity ID, Pay Band Code, Incentive Level,\n    Kitchens AM, 12345, 5, undefined,',
+      )
+    })
+
+    it('Should allow copy of activities without schedule rules', () => {
+      const previewPage = setupPreviewPage()
+
+      previewPage.testCopyActivitiesWithoutScheduleRulesToClipboard(
+        'Activity Description, Activity ID,\n    Kitchens AM, 12345,',
       )
     })
   })

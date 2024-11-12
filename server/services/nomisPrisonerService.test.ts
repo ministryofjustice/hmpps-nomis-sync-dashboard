@@ -465,7 +465,61 @@ describe('NomisPrisonerService tests', () => {
         .persist(true)
 
       expect(async () => {
-        await nomisPrisonerService.findAllocationsWithMissingPayBands(
+        await nomisPrisonerService.findPayRatesWithUnknownIncentive(
+          { prisonId: 'BXI' },
+          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+          { token: 'some token' },
+        )
+      }).rejects.toThrow()
+    })
+  })
+
+  describe('findActivitiesWithoutScheduleRules', () => {
+    beforeEach(() => {
+      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
+      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+    })
+    it('should return activities', async () => {
+      fakeNomisPrisonerService
+        .get('/activities/without-schedule-rules')
+        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(200, [
+          {
+            courseActivityDescription: 'Kitchens AM',
+            courseActivityId: 12345,
+          },
+          {
+            courseActivityDescription: 'Kitchens PM',
+            courseActivityId: 12346,
+          },
+        ])
+
+      const response = await nomisPrisonerService.findActivitiesWithoutScheduleRules(
+        { prisonId: 'BXI' },
+        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
+        { token: 'some token' },
+      )
+
+      expect(response).toEqual([
+        {
+          courseActivityDescription: 'Kitchens AM',
+          courseActivityId: 12345,
+        },
+        {
+          courseActivityDescription: 'Kitchens PM',
+          courseActivityId: 12346,
+        },
+      ])
+    })
+    it('should throw for any error', () => {
+      fakeNomisPrisonerService
+        .get('/allocations/without-schedule-rules')
+        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .reply(504, { message: 'Gateway Timeout' })
+        .persist(true)
+
+      expect(async () => {
+        await nomisPrisonerService.findActivitiesWithoutScheduleRules(
           { prisonId: 'BXI' },
           ['SAA_EDUCATION', 'SAA_INDUSTRY'],
           { token: 'some token' },

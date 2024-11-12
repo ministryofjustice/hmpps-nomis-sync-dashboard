@@ -3,6 +3,7 @@ export default function setupCopyText() {
     'copy-suspended',
     'copy-missing-pay-band',
     'copy-pay-rates-no-incentive',
+    'copy-activities-without-schedule-rules',
     'copy-appointment-counts',
   ]
 

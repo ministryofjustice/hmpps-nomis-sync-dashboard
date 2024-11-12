@@ -463,6 +463,35 @@ const stubFindPayRatesWithUnknownIncentiveErrors = (): SuperAgentRequest =>
     },
   })
 
+const stubFindActivitiesWithoutScheduleRules = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/activities/without-schedule-rules.*',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: [
+        {
+          courseActivityId: 12345,
+          courseActivityDescription: 'Kitchens AM',
+        },
+      ],
+    },
+  })
+
+const stubFindActivitiesWithoutScheduleRulesErrors = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-prisoner-api/activities/without-schedule-rules.*',
+    },
+    response: {
+      status: 500,
+    },
+  })
+
 const stubGetAppointmentCounts = (): SuperAgentRequest =>
   stubFor({
     request: {
@@ -693,6 +722,8 @@ export default {
   stubFindAllocationsWithMissingPayBandsErrors,
   stubFindPayRatesWithUnknownIncentive,
   stubFindPayRatesWithUnknownIncentiveErrors,
+  stubFindActivitiesWithoutScheduleRules,
+  stubFindActivitiesWithoutScheduleRulesErrors,
   stubGetAppointmentCounts,
   stubGetAppointmentCountsErrors,
   stubGetPrisonPersonMigrationEstimatedCount,

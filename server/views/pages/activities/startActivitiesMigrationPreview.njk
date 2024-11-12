@@ -96,6 +96,17 @@
                                     </p>
                                 </span>
                             {% endif %}
+                            {% if form.activitiesWithoutScheduleRules|length %}
+                                <span>
+                                    <p class="govuk-notification-banner__heading" id="nomisActivitiesWithoutScheduleRules">
+                                        Found Activities without schedule rules for prison {{ form.prisonId }}. These will NOT be migrated and must be ended in NOMIS.
+                                        <a href="#" id='copy-activities-without-schedule-rules-link'">Copy</a>
+                                        <span class="govuk-visually-hidden result-success copy-link-confirmation" id="copy-activities-without-schedule-rules-confirmed">OK</span>
+                                        <span class="govuk-visually-hidden result-error copy-link-confirmation" id="copy-activities-without-schedule-rules-failed">Fail</span>
+                                        <textarea class="govuk-visually-hidden" id="copy-activities-without-schedule-rules-text" rows="{{ form.nomisActivitiesWithoutScheduleRules|length }}" cols="200" readonly>{{ form.activitiesWithoutScheduleRules|join("\n") }}</textarea>
+                                    </p>
+                                </span>
+                            {% endif %}
                         {% endset %}
 
                         {{ govukNotificationBanner({

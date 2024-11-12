@@ -201,6 +201,18 @@ describe('activitiesMigrationController', () => {
           incentiveLevelCode: 'STD',
         },
       ])
+      nomisPrisonerService.findActivitiesWithoutScheduleRules.mockResolvedValue([
+        {
+          courseActivityDescription: 'Kitchens AM',
+          courseActivityId: 12346,
+        },
+        {
+          courseActivityDescription: 'Kitchens PM',
+          courseActivityId: 12345,
+          payBandCode: '5',
+          incentiveLevelCode: 'STD',
+        },
+      ])
     })
 
     describe('with validation error', () => {
@@ -325,6 +337,11 @@ describe('activitiesMigrationController', () => {
           `Activity Description, Activity ID, Pay Band Code, Incentive Level,`,
           `Kitchens AM, 12346, 6, BAS,`,
           `Kitchens PM, 12345, 5, STD,`,
+        ])
+        expect(req.session.startActivitiesMigrationForm.activitiesWithoutScheduleRules).toEqual([
+          `Activity Description, Activity ID,`,
+          `Kitchens AM, 12346,`,
+          `Kitchens PM, 12345,`,
         ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
