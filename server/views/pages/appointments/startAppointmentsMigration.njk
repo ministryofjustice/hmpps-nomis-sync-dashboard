@@ -55,13 +55,13 @@
 
                         {{ govukInput({
                             label: {
-                                html: 'Only include Appointments created after or on this date'
+                                html: 'Only include Appointments scheduled after or on this date (Nomis event_date)'
                             },
                             id: "fromDate",
                             name: "fromDate",
                             classes: "govuk-input--width-20",
                             hint: {
-                                text: "Example 2020-03-23. This optional field indicates the created date"
+                                text: "Example 2020-03-23. This optional field indicates the scheduled date"
                             },
                             value: form.fromDate,
                             errorMessage: errors | findError('fromDate')
@@ -69,13 +69,13 @@
 
                         {{ govukInput({
                             label: {
-                                html: 'Only include Appointments entities created before or on this date'
+                                html: 'Only include Appointments entities scheduled before or on this date'
                             },
                             id: "toDate",
                             name: "toDate",
                             classes: "govuk-input--width-20",
                             hint: {
-                                text: "Example 2020-03-23. This optional field indicates the created date"
+                                text: "Example 2020-03-23. This optional field indicates the scheduled date"
                             },
                             value: form.toDate,
                             errorMessage: errors | findError('toDate')
