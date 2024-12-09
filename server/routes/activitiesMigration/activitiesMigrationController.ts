@@ -16,6 +16,7 @@ import {
   IncentiveLevel,
 } from '../../@types/nomisPrisoner'
 import ActivitiesService from '../../services/activitiesService'
+import { RolloutPrisonPlan } from '../../@types/activities'
 
 interface Filter {
   prisonId?: string
@@ -101,7 +102,7 @@ export default class ActivitiesMigrationController {
         return 0
       }),
 
-      this.nomisPrisonerService.getPrisonIncentiveLevels(prisonId, context(res)).catch(error => {
+      this.nomisPrisonerService.getPrisonIncentiveLevels(prisonId, context(res)).catch((error): IncentiveLevel[] => {
         errors.push({ text: `Failed to check incentive levels due to error: ${error.data.userMessage}`, href: '' })
         return []
       }),
@@ -114,7 +115,7 @@ export default class ActivitiesMigrationController {
         return 'Error checking ACTIVITY feature switch'
       }),
 
-      this.activitiesService.getRolloutPrison(prisonId, context(res)).catch(error => {
+      this.activitiesService.getRolloutPrison(prisonId, context(res)).catch((error): RolloutPrisonPlan => {
         errors.push({
           text: `Failed to check if prison ${prisonId} is switched on in DPS due to error: ${error.message}`,
           href: '',
@@ -122,7 +123,7 @@ export default class ActivitiesMigrationController {
         return null
       }),
 
-      this.activitiesService.checkPrisonPayBandsExist(prisonId, context(res)).catch(error => {
+      this.activitiesService.checkPrisonPayBandsExist(prisonId, context(res)).catch((error): null => {
         errors.push({
           text: `Failed to check if prison ${prisonId} has pay bands in DPS due to error: ${error.message}`,
           href: '',
@@ -130,7 +131,7 @@ export default class ActivitiesMigrationController {
         return null
       }),
 
-      this.activitiesService.checkPrisonRegimeExists(prisonId, context(res)).catch(error => {
+      this.activitiesService.checkPrisonRegimeExists(prisonId, context(res)).catch((error): boolean => {
         errors.push({
           text: `Failed to check if prison ${prisonId} has slot times configured in DPS due to error: ${error.message}`,
           href: '',
@@ -140,7 +141,7 @@ export default class ActivitiesMigrationController {
 
       this.nomisPrisonerService
         .findActivitiesSuspendedAllocations(filter, await activityCategoriesPromise, context(res))
-        .catch(error => {
+        .catch((error): FindSuspendedAllocationsResponse[] => {
           errors.push({
             text: `Failed to find suspended allocations due to error: ${error.message}`,
             href: '',
@@ -150,7 +151,7 @@ export default class ActivitiesMigrationController {
 
       this.nomisPrisonerService
         .findAllocationsWithMissingPayBands(filter, await activityCategoriesPromise, context(res))
-        .catch(error => {
+        .catch((error): FindAllocationsMissingPayBandsResponse[] => {
           errors.push({
             text: `Failed to find allocations with missing pay bands due to error: ${error.message}`,
             href: '',
@@ -160,7 +161,7 @@ export default class ActivitiesMigrationController {
 
       this.nomisPrisonerService
         .findPayRatesWithUnknownIncentive(filter, await activityCategoriesPromise, context(res))
-        .catch(error => {
+        .catch((error): FindPayRateWithUnknownIncentiveResponse[] => {
           errors.push({
             text: `Failed to find pay rates with unknown incentive due to error: ${error.message}`,
             href: '',
@@ -170,7 +171,7 @@ export default class ActivitiesMigrationController {
 
       this.nomisPrisonerService
         .findActivitiesWithoutScheduleRules(filter, await activityCategoriesPromise, context(res))
-        .catch(error => {
+        .catch((error): FindActivitiesWithoutScheduleRulesResponse[] => {
           errors.push({
             text: `Failed to find activities without schedule rules due to error: ${error.message}`,
             href: '',

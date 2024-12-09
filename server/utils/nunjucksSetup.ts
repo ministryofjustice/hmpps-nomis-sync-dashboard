@@ -46,6 +46,7 @@ export default function nunjucksSetup(app: express.Express): nunjucks.Environmen
 
   njkEnv.addFilter('formatDate', (value, format) => (value ? moment(value).format(format) : null))
   njkEnv.addFilter('json', (value, excludeProperties: string[] = []) => {
+    // @ts-expect-error - excludeProperties is an array of strings
     const propsToExclude = excludeProperties.reduce((acc, prop) => ({ ...acc, [prop]: undefined }), {})
     return value ? JSON.stringify({ ...value, ...propsToExclude }) : null
   })
