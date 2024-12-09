@@ -97,13 +97,15 @@ export default class AppointmentsMigrationController {
 
       this.getInactiveNomisPrisons(filter, res, errors),
 
-      this.nomisPrisonerService.findAppointmentCounts(filter, context(res)).catch(error => {
-        errors.push({
-          text: `Failed to find appointment summary counts due to error: ${error.data.userMessage}`,
-          href: '',
-        })
-        return []
-      }),
+      this.nomisPrisonerService
+        .findAppointmentCounts(filter, context(res))
+        .catch((error): AppointmentCountsResponse[] => {
+          errors.push({
+            text: `Failed to find appointment summary counts due to error: ${error.data.userMessage}`,
+            href: '',
+          })
+          return []
+        }),
     ]).then(([estimatedCount, dlqCount, inactiveNomisPrisons, appointmentCounts]) => {
       req.session.startAppointmentsMigrationForm.estimatedCount = estimatedCount.toLocaleString()
       req.session.startAppointmentsMigrationForm.dlqCount = dlqCount.toLocaleString()
