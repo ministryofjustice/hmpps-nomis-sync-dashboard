@@ -156,9 +156,9 @@ describe('activitiesMigrationController', () => {
       activitiesService.getRolloutPrison.mockResolvedValue({
         prisonCode: 'MDI',
         activitiesRolledOut: true,
-        activitiesRolloutDate: '2023-01-01',
         appointmentsRolledOut: true,
-        appointmentsRolloutDate: '2023-01-01',
+        maxDaysToExpiry: 10,
+        prisonLive: true,
       })
       activitiesService.checkPrisonPayBandsExist.mockResolvedValue(true)
       activitiesService.checkPrisonRegimeExists.mockResolvedValue(true)
@@ -350,9 +350,9 @@ describe('activitiesMigrationController', () => {
         activitiesService.getRolloutPrison.mockResolvedValue({
           prisonCode: 'MDI',
           activitiesRolledOut: false,
-          activitiesRolloutDate: null,
           appointmentsRolledOut: true,
-          appointmentsRolloutDate: '2023-01-01',
+          maxDaysToExpiry: 10,
+          prisonLive: true,
         })
 
         req.body = {
@@ -369,34 +369,15 @@ describe('activitiesMigrationController', () => {
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
 
-      it('should show DPS feature switch warning if not rolled out YET', async () => {
-        activitiesService.getRolloutPrison.mockResolvedValue({
-          prisonCode: 'MDI',
-          activitiesRolledOut: false,
-          activitiesRolloutDate: moment().add(1, 'days').format('YYYY-MM-DD'),
-          appointmentsRolledOut: true,
-          appointmentsRolloutDate: '2023-01-01',
-        })
-
-        req.body = {
-          _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
-          action: 'startMigration',
-          prisonId: 'XXX',
-        }
-        await new ActivitiesMigrationController(
-          nomisMigrationService,
-          nomisPrisonerService,
-          activitiesService,
-        ).postStartActivitiesMigration(req, res)
-        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(false)
-        expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
-      })
-
-      it('should NOT show DPS feature switch warning if no rollout dates returned', async () => {
+      it('should NOT show DPS feature switch warning and ignore the rollout date if returned', async () => {
         activitiesService.getRolloutPrison.mockResolvedValue({
           prisonCode: 'MDI',
           activitiesRolledOut: true,
+          activitiesRolloutDate: moment().add(1, 'days').format('YYYY-MM-DD'),
           appointmentsRolledOut: true,
+          appointmentsRolloutDate: '2023-01-01',
+          maxDaysToExpiry: 10,
+          prisonLive: true,
         })
 
         req.body = {
