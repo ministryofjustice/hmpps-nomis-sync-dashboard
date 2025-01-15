@@ -199,10 +199,7 @@ export default class ActivitiesMigrationController {
         )
         req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis = nomisFeatureSwitchOn
         req.session.startActivitiesMigrationForm.prisonSwitchedOnDps =
-          dpsPrisonRollout === null ||
-          (dpsPrisonRollout.activitiesRolledOut &&
-            (!dpsPrisonRollout.activitiesRolloutDate ||
-              dpsPrisonRollout.activitiesRolloutDate <= moment().format('YYYY-MM-DD')))
+          dpsPrisonRollout === null || dpsPrisonRollout.activitiesRolledOut
         req.session.startActivitiesMigrationForm.dpsPayBandsExist = dpsPayBandsExist === null || dpsPayBandsExist
         req.session.startActivitiesMigrationForm.dpsPrisonRegimeExists =
           dpsPrisonRegimeExists === null || dpsPrisonRegimeExists

@@ -26,9 +26,9 @@ const stubGetDpsPrisonRollout = (): SuperAgentRequest =>
       jsonBody: {
         prisonCode: 'MDI',
         activitiesRolledOut: false,
-        activitiesRolloutDate: null,
         appointmentsRolledOut: true,
-        appointmentsRolloutDate: '2024-01-01',
+        maxDaysToExpiry: 4,
+        prisonLive: true,
       },
     },
   })
