@@ -21,7 +21,6 @@ export default function routes(router: Router, services: Services): Router {
     services.activitiesService,
   )
   get('/allocations-migration', (req, res) => allocationsMigrationController.getAllocationsMigrations(req, res))
-  get('/allocations-migration/failures', (req, res) => allocationsMigrationController.viewFailures(req, res))
   get('/allocations-migration/start', (req, res) =>
     allocationsMigrationController.startNewAllocationsMigration(req, res),
   )

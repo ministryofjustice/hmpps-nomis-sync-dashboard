@@ -3,7 +3,7 @@ import { StartAllocationsMigrationForm } from 'express-session'
 import moment from 'moment'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
 import { MigrationHistory, AllocationsMigrationFilter } from '../../@types/migration'
-import { buildUrl } from '../../utils/applicationInsightsUrlBuilder'
+import { buildUrlNoTimespan } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startAllocationsMigrationValidator from './startAllocationsMigrationValidator'
@@ -34,8 +34,26 @@ export default class AllocationsMigrationController {
 
     const decoratedMigrations = migrations.map(AllocationsMigrationController.withFilter).map(history => ({
       ...history,
-      applicationInsightsLink: AllocationsMigrationController.applicationInsightsUrl(
-        AllocationsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
+      appInsightsAlreadyMigratedLink: AllocationsMigrationController.applicationInsightsUrlNoTimespan(
+        AllocationsMigrationController.alreadyMigratedAppInsightsQuery(
+          history.migrationId,
+          history.whenStarted,
+          history.whenEnded,
+        ),
+      ),
+      appInsightsFailuresLink: AllocationsMigrationController.applicationInsightsUrlNoTimespan(
+        AllocationsMigrationController.failedMigrationAppInsightsQuery(
+          history.migrationId,
+          history.whenStarted,
+          history.whenEnded,
+        ),
+      ),
+      appInsightsFullMigrationLink: AllocationsMigrationController.applicationInsightsUrlNoTimespan(
+        AllocationsMigrationController.fullMigrationAppInsightsQuery(
+          history.migrationId,
+          history.whenStarted,
+          history.whenEnded,
+        ),
       ),
     }))
     res.render('pages/allocations/allocationsMigration', {
@@ -120,20 +138,6 @@ export default class AllocationsMigrationController {
     })
   }
 
-  async viewFailures(req: Request, res: Response): Promise<void> {
-    const failures = await this.nomisMigrationService.getAllocationsFailures(context(res))
-    const failuresDecorated = {
-      ...failures,
-      messages: failures.messages.map(message => ({
-        ...message,
-        applicationInsightsLink: AllocationsMigrationController.applicationInsightsUrl(
-          AllocationsMigrationController.messageApplicationInsightsQuery(message),
-        ),
-      })),
-    }
-    res.render('pages/allocations/allocationsMigrationFailures', { failures: failuresDecorated })
-  }
-
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
     await this.nomisMigrationService.cancelAllocationsMigration(migrationId, context(res))
@@ -150,29 +154,54 @@ export default class AllocationsMigrationController {
     }
   }
 
-  private static messageApplicationInsightsQuery(message: { messageId: string }): string {
-    return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
-    | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
-    | order by timestamp desc`
+  private static alreadyMigratedAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
+    return `customEvents
+      | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
+      | where timestamp between (datetime(${this.toISODateTime(
+        startedDate,
+      )}) .. datetime(${this.toISODateTime(endedDate)}))
+      | where customDimensions.migrationId startswith '${migrationId}'
+      | where name endswith 'ignored'
+      | join kind=leftouter (
+        traces
+        | where message startswith "Will not migrate"
+      ) on $left.operation_Id==$right.operation_Id
+      | project timestamp, name, message, migrationId=customDimensions.migrationId, off_prgref_id=customDimensions.nomisAllocationId, operation_Id
+    `
   }
 
-  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
-    return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
-    | where message startswith 'Will not migrate the courseActivityId'
-    | where timestamp between (datetime(${AllocationsMigrationController.toISODateTime(
-      startedDate,
-    )}) .. datetime(${AllocationsMigrationController.toISODateTime(endedDate)}))
-    | summarize dcount(message)`
+  private static fullMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
+    return `customEvents
+      | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
+      | where timestamp between (datetime(${this.toISODateTime(
+        startedDate,
+      )}) .. datetime(${this.toISODateTime(endedDate)}))
+      | where customDimensions.migrationId startswith '${migrationId}'
+    `
+  }
+
+  private static failedMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
+    return `customEvents
+      | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
+      | where timestamp between (datetime(${this.toISODateTime(
+        startedDate,
+      )}) .. datetime(${this.toISODateTime(endedDate)}))
+      | where customDimensions.migrationId startswith '${migrationId}'
+      | where (name endswith 'failed' or name endswith 'ignored' or name endswith 'error')
+      | join kind=leftouter (
+        traces
+        | where (operation_Name == 'POST /migrate/allocation' and message startswith "Validation exception:") or (message startswith "Will not migrate")
+      ) on $left.operation_Id==$right.operation_Id
+      | project timestamp, name, message, migrationId=customDimensions.migrationId, off_prgref_id=customDimensions.nomisAllocationId, reason=customDimensions.reason, operation_Id
+    `
   }
 
   private static toISODateTime(localDateTime: string): string {
     return moment(localDateTime).toISOString()
   }
 
-  private static applicationInsightsUrl(query: string): string {
-    return buildUrl(query, 'P1D')
+  private static applicationInsightsUrlNoTimespan(query: string): string {
+    return buildUrlNoTimespan(query)
   }
 
   private static withFilter(migration: MigrationHistory): MigrationHistory & {

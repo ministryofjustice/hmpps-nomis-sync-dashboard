@@ -3,7 +3,7 @@ import { StartActivitiesMigrationForm } from 'express-session'
 import moment from 'moment'
 import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
 import { ActivitiesMigrationFilter, MigrationHistory } from '../../@types/migration'
-import { buildUrl, buildUrlNoTimespan } from '../../utils/applicationInsightsUrlBuilder'
+import { buildUrlNoTimespan } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startActivitiesMigrationValidator from './startActivitiesMigrationValidator'
@@ -42,7 +42,7 @@ export default class ActivitiesMigrationController {
 
     const decoratedMigrations = migrations.map(ActivitiesMigrationController.withFilter).map(history => ({
       ...history,
-      appInsightsAlreadyMigratedLink: ActivitiesMigrationController.applicationInsightsUrl(
+      appInsightsAlreadyMigratedLink: ActivitiesMigrationController.applicationInsightsUrlNoTimespan(
         ActivitiesMigrationController.alreadyMigratedAppInsightsQuery(
           history.migrationId,
           history.whenStarted,
@@ -392,10 +392,6 @@ export default class ActivitiesMigrationController {
 
   private static toISODateTime(localDateTime: string): string {
     return moment(localDateTime).toISOString()
-  }
-
-  private static applicationInsightsUrl(query: string): string {
-    return buildUrl(query, 'P1D')
   }
 
   private static applicationInsightsUrlNoTimespan(query: string): string {
