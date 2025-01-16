@@ -1,7 +1,6 @@
 import IndexPage from '../pages/index'
 import Page from '../pages/page'
 import ActivitiesMigrationPage from '../pages/activities-migration/activitiesMigration'
-import ActivitiesMigrationFailuresPage from '../pages/activities-migration/activitiesMigrationFailures'
 import StarAllocationsMigrationPage from '../pages/allocations-migration/startAllocationsMigration'
 
 context('Activities Migration Homepage', () => {
@@ -40,6 +39,7 @@ context('Activities Migration Homepage', () => {
         cy.get('[data-qa=estimatedCount]').should('contain.text', '0')
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('not.exist')
+        cy.get('[data-qa=all-events-link]').should('exist')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
         cy.get('[data-qa=end-activities-button]').should('exist')
       })
@@ -52,8 +52,9 @@ context('Activities Migration Homepage', () => {
         cy.get('[data-qa=failedCount]').should('contain.text', '162794')
         cy.get('[data-qa=estimatedCount]').should('contain.text', '205630')
         cy.get('[data-qa=progress-link]').should('contain.text', 'View progress')
-        cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
-        cy.get('[data-qa=already-migrated-link]').should('contain.text', 'View Insights')
+        cy.get('[data-qa=failures-link]').should('not.exist')
+        cy.get('[data-qa=all-events-link]').should('not.exist')
+        cy.get('[data-qa=already-migrated-link]').should('not.exist')
         cy.get('[data-qa=end-activities-button]').should('exist')
       })
       migrationPage.migrationResultsRow(2).within(() => {
@@ -66,14 +67,10 @@ context('Activities Migration Homepage', () => {
         cy.get('[data-qa=estimatedCount]').should('contain.text', '4')
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
+        cy.get('[data-qa=all-events-link]').should('exist')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
         cy.get('[data-qa=end-activities-button]').should('exist')
       })
-
-      migrationPage.migrationResultsRow(1).within(() => {
-        cy.get('[data-qa=failures-link]').click()
-      })
-      Page.verifyOnPage(ActivitiesMigrationFailuresPage)
     })
 
     it('should click through to allocation migration', () => {
