@@ -21,7 +21,6 @@ export default function routes(router: Router, services: Services): Router {
     services.activitiesService,
   )
   get('/activities-migration', (req, res) => activitiesMigrationController.getActivitiesMigrations(req, res))
-  get('/activities-migration/failures', (req, res) => activitiesMigrationController.viewFailures(req, res))
   get('/activities-migration/start', (req, res) => activitiesMigrationController.startNewActivitiesMigration(req, res))
   post('/activities-migration/start', (req, res) =>
     activitiesMigrationController.postStartActivitiesMigration(req, res),

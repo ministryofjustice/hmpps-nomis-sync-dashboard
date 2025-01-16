@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import moment from 'moment'
-import buildUrl from '../../utils/applicationInsightsUrlBuilder'
+import { buildUrl } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startMigrationValidator from './contactPersonMigrationValidator'
