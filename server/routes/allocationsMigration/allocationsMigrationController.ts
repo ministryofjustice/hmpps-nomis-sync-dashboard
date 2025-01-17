@@ -180,6 +180,7 @@ export default class AllocationsMigrationController {
         startedDate,
       )}) .. datetime(${this.toISODateTime(endedDate)}))
       | where customDimensions.migrationId startswith '${migrationId}'
+      | where name startswith 'activity-allocation-migration'
     `
   }
 
@@ -190,13 +191,13 @@ export default class AllocationsMigrationController {
         startedDate,
       )}) .. datetime(${this.toISODateTime(endedDate)}))
       | where customDimensions.migrationId startswith '${migrationId}'
-      | where (name endswith 'failed' or name endswith 'ignored' or name endswith 'error')
+      | where (name endswith 'failed' or name endswith 'error')
       | join kind=leftouter (
         traces
         | where timestamp between (datetime(${this.toISODateTime(
           startedDate,
         )}) .. datetime(${this.toISODateTime(endedDate)}))
-        | where (operation_Name == 'POST /migrate/allocation' and message startswith "Validation exception:") or (message startswith "Will not migrate")
+        | where operation_Name == 'POST /migrate/allocation' and message startswith "Validation exception:"
       ) on $left.operation_Id==$right.operation_Id
       | project timestamp, name, message, migrationId=customDimensions.migrationId, off_prgref_id=customDimensions.nomisAllocationId, reason=customDimensions.reason, operation_Id
     `
