@@ -6767,10 +6767,10 @@ export interface components {
       prisonId: string
     }
     PageVisitIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -7077,10 +7077,10 @@ export interface components {
       modifiedBy?: string
     }
     PageQuestionnaireIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8030,10 +8030,10 @@ export interface components {
       latestBookingAlerts: components['schemas']['AlertResponse'][]
     }
     PagePrisonerIds: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8062,10 +8062,10 @@ export interface components {
       offenderNo: string
     }
     PagePrisonerId: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8568,10 +8568,10 @@ export interface components {
       audit: components['schemas']['NomisAudit']
     }
     PagePersonIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8661,10 +8661,10 @@ export interface components {
       offenderNo2: string
     }
     PageNonAssociationIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8820,10 +8820,10 @@ export interface components {
       modifyUsername?: string
     }
     PageLocationIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9131,10 +9131,10 @@ export interface components {
       incidentId: number
     }
     PageIncidentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9194,10 +9194,10 @@ export interface components {
       sequence: number
     }
     PageIncentiveIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9340,10 +9340,10 @@ export interface components {
       csipId: number
     }
     PageCSIPIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9366,10 +9366,10 @@ export interface components {
       caseId: number
     }
     PageCourtCaseIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9528,10 +9528,10 @@ export interface components {
       corporateId: number
     }
     PageCorporateOrganisationIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10087,10 +10087,10 @@ export interface components {
       eventId: number
     }
     PageAppointmentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10313,10 +10313,10 @@ export interface components {
       allocationId: number
     }
     PageFindActiveAllocationIdsResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10341,10 +10341,10 @@ export interface components {
       adjustmentCategory: string
     }
     PageAdjustmentIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10374,10 +10374,10 @@ export interface components {
       offenderNo: string
     }
     PageAdjudicationChargeIdResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10576,10 +10576,10 @@ export interface components {
       courseActivityId: number
     }
     PageFindActiveActivityIdsResponse: {
-      /** Format: int32 */
-      totalPages?: number
       /** Format: int64 */
       totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
