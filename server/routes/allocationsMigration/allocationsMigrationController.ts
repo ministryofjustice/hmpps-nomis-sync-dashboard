@@ -164,6 +164,9 @@ export default class AllocationsMigrationController {
       | where name endswith 'ignored'
       | join kind=leftouter (
         traces
+        | where timestamp between (datetime(${this.toISODateTime(
+          startedDate,
+        )}) .. datetime(${this.toISODateTime(endedDate)}))
         | where message startswith "Will not migrate"
       ) on $left.operation_Id==$right.operation_Id
       | project timestamp, name, message, migrationId=customDimensions.migrationId, off_prgref_id=customDimensions.nomisAllocationId, operation_Id
@@ -190,6 +193,9 @@ export default class AllocationsMigrationController {
       | where (name endswith 'failed' or name endswith 'ignored' or name endswith 'error')
       | join kind=leftouter (
         traces
+        | where timestamp between (datetime(${this.toISODateTime(
+          startedDate,
+        )}) .. datetime(${this.toISODateTime(endedDate)}))
         | where (operation_Name == 'POST /migrate/allocation' and message startswith "Validation exception:") or (message startswith "Will not migrate")
       ) on $left.operation_Id==$right.operation_Id
       | project timestamp, name, message, migrationId=customDimensions.migrationId, off_prgref_id=customDimensions.nomisAllocationId, reason=customDimensions.reason, operation_Id
