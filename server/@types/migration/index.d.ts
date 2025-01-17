@@ -39,3 +39,5 @@ export type RoomMappingsResponse = components['schemas']['VisitRoomUsageResponse
 export type ContactPersonMigrationFilter = components['schemas']['ContactPersonMigrationFilter']
 export type MigrationContextContactPersonMigrationFilter =
   components['schemas']['MigrationContextContactPersonMigrationFilter']
+export type CorporateMigrationFilter = components['schemas']['CorporateMigrationFilter']
+export type MigrationContextCorporateMigrationFilter = components['schemas']['MigrationContextCorporateMigrationFilter']
