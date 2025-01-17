@@ -599,6 +599,17 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
               messagesOnDlq: `${failures}`,
             },
           },
+          'migrationcorporate-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-corporatemigration_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-corporatemigration_dlq',
+              messagesOnDlq: `${failures}`,
+            },
+          },
         },
         groups: ['liveness', 'readiness'],
       },

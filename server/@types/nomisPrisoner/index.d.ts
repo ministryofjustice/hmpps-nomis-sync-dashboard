@@ -24,3 +24,5 @@ export type AppointmentCountsResponse = components['schemas']['AppointmentCounts
 export type PageCourtCaseIdResponse = components['schemas']['PageCourtCaseIdResponse']
 export type PagePersonIdResponse = components['schemas']['PagePersonIdResponse']
 export type GetContactPersonByFilter = Omit<operations['getPersonIds']['parameters']['query'], 'pageRequest'>
+export type PageCorporateOrganisationIdResponse = components['schemas']['PageCorporateOrganisationIdResponse']
+export type GetCorporateByFilter = Omit<operations['getCorporateIds']['parameters']['query'], 'pageRequest'>
