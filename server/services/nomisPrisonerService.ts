@@ -147,7 +147,7 @@ export default class NomisPrisonerService {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     const response = await NomisPrisonerService.restClient(token).get<PageActivitiesIdResponse>({
       path: `/activities/ids`,
-      query: `${querystring.stringify({ ...filter, size: 1, excludeProgramCodes: activityCategories })}`,
+      query: `${querystring.stringify({ ...filter, size: 1, excludeProgramCode: activityCategories })}`,
     })
     return response.totalElements
   }
@@ -161,7 +161,7 @@ export default class NomisPrisonerService {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     const response = await NomisPrisonerService.restClient(token).get<PageAllocationsIdResponse>({
       path: `/allocations/ids`,
-      query: `${querystring.stringify({ ...filter, size: 1, excludeProgramCodes: activityCategories })}`,
+      query: `${querystring.stringify({ ...filter, size: 1, excludeProgramCode: activityCategories })}`,
     })
     return response.totalElements
   }
@@ -174,7 +174,7 @@ export default class NomisPrisonerService {
     logger.info(`finding suspended allocations for activities migration`)
     const queryParams = {
       ...filter,
-      excludeProgramCodes: activityCategories,
+      excludeProgramCode: activityCategories,
     }
 
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
@@ -192,7 +192,7 @@ export default class NomisPrisonerService {
     logger.info(`finding allocations with missing pay bands for activities migration`)
     const queryParams = {
       ...filter,
-      excludeProgramCodes: activityCategories,
+      excludeProgramCode: activityCategories,
     }
 
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
@@ -210,7 +210,7 @@ export default class NomisPrisonerService {
     logger.info(`finding activity pay rates with unknown incentives for activities migration`)
     const queryParams = {
       ...filter,
-      excludeProgramCodes: activityCategories,
+      excludeProgramCode: activityCategories,
     }
 
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
@@ -228,7 +228,7 @@ export default class NomisPrisonerService {
     logger.info(`finding activities without schedule rules for activities migration`)
     const queryParams = {
       ...filter,
-      excludeProgramCodes: activityCategories,
+      excludeProgramCode: activityCategories,
     }
 
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
