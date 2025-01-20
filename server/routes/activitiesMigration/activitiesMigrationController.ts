@@ -391,7 +391,7 @@ export default class ActivitiesMigrationController {
         | where timestamp between (datetime(${ActivitiesMigrationController.toISODateTime(
           startedDate,
         )}) .. datetime(${ActivitiesMigrationController.toISODateTime(endedDate)}))
-        | where operation_Name == 'POST /migrate/activity' and message startswith "Validation exception:"
+        | where operation_Name == 'POST /migrate/activity' and (message startswith "Validation exception:" or message startswith "Exception:")
       ) on $left.operation_Id==$right.operation_Id
       | project timestamp, name, message, migrationId=customDimensions.migrationId, crs_acty_id=customDimensions.nomisCourseActivityId, reason=customDimensions.reason, operation_Id
     `

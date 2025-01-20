@@ -197,7 +197,7 @@ export default class AllocationsMigrationController {
         | where timestamp between (datetime(${this.toISODateTime(
           startedDate,
         )}) .. datetime(${this.toISODateTime(endedDate)}))
-        | where operation_Name == 'POST /migrate/allocation' and message startswith "Validation exception:"
+        | where operation_Name == 'POST /migrate/allocation' and (message startswith "Validation exception:" or message startswith "Exception:")
       ) on $left.operation_Id==$right.operation_Id
       | project timestamp, name, message, migrationId=customDimensions.migrationId, off_prgref_id=customDimensions.nomisAllocationId, reason=customDimensions.reason, operation_Id
     `
