@@ -128,7 +128,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return suspended allocations', async () => {
       fakeNomisPrisonerService
         .get('/allocations/suspended')
-        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(200, [
           { offenderNo: 'A1234AA', courseActivityId: 12345, courseActivityDescription: 'Kitchens AM' },
           { offenderNo: 'A1234AB', courseActivityId: 12346, courseActivityDescription: 'Kitchens PM' },
@@ -148,7 +148,7 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/suspended')
-        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
@@ -170,7 +170,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return activity count', async () => {
       fakeNomisPrisonerService
         .get('/activities/ids')
-        .query({ prisonId: 'BXI', size: 1, excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', size: 1, excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(200, {
           content: [
             {
@@ -242,7 +242,7 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/activities/ids')
-        .query({ prisonId: 'BXI', size: 1, excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', size: 1, excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
@@ -264,7 +264,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return allocation count', async () => {
       fakeNomisPrisonerService
         .get('/allocations/ids')
-        .query({ prisonId: 'BXI', size: 1, excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', size: 1, excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(200, {
           content: [
             {
@@ -336,7 +336,7 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/ids')
-        .query({ prisonId: 'BXI', size: 1, excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', size: 1, excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
@@ -358,7 +358,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return allocations missing pay bands', async () => {
       fakeNomisPrisonerService
         .get('/allocations/missing-pay-bands')
-        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(200, [
           {
             offenderNo: 'A1234AA',
@@ -398,7 +398,7 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/missing-pay-bands')
-        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
@@ -420,7 +420,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return pay rates', async () => {
       fakeNomisPrisonerService
         .get('/activities/rates-with-unknown-incentives')
-        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(200, [
           {
             courseActivityDescription: 'Kitchens AM',
@@ -460,7 +460,7 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/rates-with-unknown-incentives')
-        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
@@ -482,7 +482,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return activities', async () => {
       fakeNomisPrisonerService
         .get('/activities/without-schedule-rules')
-        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(200, [
           {
             courseActivityDescription: 'Kitchens AM',
@@ -514,7 +514,7 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/without-schedule-rules')
-        .query({ prisonId: 'BXI', excludeProgramCodes: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
