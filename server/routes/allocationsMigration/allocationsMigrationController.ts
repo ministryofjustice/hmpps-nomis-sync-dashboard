@@ -8,7 +8,6 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startAllocationsMigrationValidator from './startAllocationsMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
-import ActivitiesService from '../../services/activitiesService'
 
 interface Filter {
   prisonId?: string
@@ -26,7 +25,6 @@ export default class AllocationsMigrationController {
   constructor(
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
-    private readonly activitiesService: ActivitiesService,
   ) {}
 
   async getAllocationsMigrations(req: Request, res: Response): Promise<void> {
@@ -87,12 +85,7 @@ export default class AllocationsMigrationController {
       res.redirect('/allocations-migration/amend')
     } else {
       const filter = AllocationsMigrationController.toFilter(req.session.startAllocationsMigrationForm)
-      const activityCategories = await this.activitiesService.getActivityCategories(context(res))
-      const count = await this.nomisPrisonerService.getAllocationsMigrationEstimatedCount(
-        filter,
-        activityCategories,
-        context(res),
-      )
+      const count = await this.nomisPrisonerService.getAllocationsMigrationEstimatedCount(filter, context(res))
       const dlqCountString = await this.nomisMigrationService.getAllocationsDLQMessageCount(context(res))
       logger.info(`${dlqCountString} failures found`)
 

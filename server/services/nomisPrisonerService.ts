@@ -138,43 +138,33 @@ export default class NomisPrisonerService {
     }
   }
 
-  async getActivitiesMigrationEstimatedCount(
-    filter: GetActivitiesByFilter,
-    activityCategories: string[],
-    context: Context,
-  ): Promise<number> {
+  async getActivitiesMigrationEstimatedCount(filter: GetActivitiesByFilter, context: Context): Promise<number> {
     logger.info(`getting details for activities migration estimated count`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     const response = await NomisPrisonerService.restClient(token).get<PageActivitiesIdResponse>({
       path: `/activities/ids`,
-      query: `${querystring.stringify({ ...filter, size: 1, excludeProgramCode: activityCategories })}`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements
   }
 
-  async getAllocationsMigrationEstimatedCount(
-    filter: GetAllocationsByFilter,
-    activityCategories: string[],
-    context: Context,
-  ): Promise<number> {
+  async getAllocationsMigrationEstimatedCount(filter: GetAllocationsByFilter, context: Context): Promise<number> {
     logger.info(`getting details for allocations migration estimated count`)
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     const response = await NomisPrisonerService.restClient(token).get<PageAllocationsIdResponse>({
       path: `/allocations/ids`,
-      query: `${querystring.stringify({ ...filter, size: 1, excludeProgramCode: activityCategories })}`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements
   }
 
   async findActivitiesSuspendedAllocations(
     filter: ActivitiesMigrationFilter,
-    activityCategories: string[],
     context: Context,
   ): Promise<FindSuspendedAllocationsResponse[]> {
     logger.info(`finding suspended allocations for activities migration`)
     const queryParams = {
       ...filter,
-      excludeProgramCode: activityCategories,
     }
 
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
@@ -186,13 +176,11 @@ export default class NomisPrisonerService {
 
   async findAllocationsWithMissingPayBands(
     filter: ActivitiesMigrationFilter,
-    activityCategories: string[],
     context: Context,
   ): Promise<FindAllocationsMissingPayBandsResponse[]> {
     logger.info(`finding allocations with missing pay bands for activities migration`)
     const queryParams = {
       ...filter,
-      excludeProgramCode: activityCategories,
     }
 
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
@@ -204,13 +192,11 @@ export default class NomisPrisonerService {
 
   async findPayRatesWithUnknownIncentive(
     filter: ActivitiesMigrationFilter,
-    activityCategories: string[],
     context: Context,
   ): Promise<FindPayRateWithUnknownIncentiveResponse[]> {
     logger.info(`finding activity pay rates with unknown incentives for activities migration`)
     const queryParams = {
       ...filter,
-      excludeProgramCode: activityCategories,
     }
 
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
@@ -222,13 +208,11 @@ export default class NomisPrisonerService {
 
   async findActivitiesWithoutScheduleRules(
     filter: ActivitiesMigrationFilter,
-    activityCategories: string[],
     context: Context,
   ): Promise<FindActivitiesWithoutScheduleRulesResponse[]> {
     logger.info(`finding activities without schedule rules for activities migration`)
     const queryParams = {
       ...filter,
-      excludeProgramCode: activityCategories,
     }
 
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)

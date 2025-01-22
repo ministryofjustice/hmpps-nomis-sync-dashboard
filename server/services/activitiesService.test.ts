@@ -115,22 +115,4 @@ describe('activitiesService tests', () => {
       }).rejects.toThrow()
     })
   })
-
-  describe('Get Activity Categories', () => {
-    it('should return categories', async () => {
-      fakeActivitiesService.get('/activity-categories').reply(200, ['SAA_EDUCATION', 'SAA_INDUSTRY', 'SAA_KITCHENS'])
-
-      const response = await activitiesService.getActivityCategories({ token: 'some token' })
-
-      expect(response).toEqual(['SAA_EDUCATION', 'SAA_INDUSTRY', 'SAA_KITCHENS'])
-    })
-
-    it('should propagate errors', () => {
-      fakeActivitiesService.get('/activity-categories').reply(500, 'some error').persist(true)
-
-      expect(async () => {
-        await activitiesService.getActivityCategories({ token: 'some token' })
-      }).rejects.toThrow()
-    })
-  })
 })

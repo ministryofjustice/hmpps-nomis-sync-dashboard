@@ -8,7 +8,6 @@ import ActivitiesMigrationPage from '../pages/activities-migration/activitiesMig
 context('Activities Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubGetActivityCategories')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {

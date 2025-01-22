@@ -90,18 +90,6 @@ const stubGetDpsPrisonRegimeErrors = (): SuperAgentRequest =>
     },
   })
 
-const stubGetActivityCategories = (): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/activities-api/activity-categories',
-    },
-    response: {
-      status: 200,
-      jsonBody: ['SAA_EDUCATION', 'SAA_INDUSTRY'],
-    },
-  })
-
 export default {
   stubActivitiesApiPing,
   stubGetDpsPrisonRollout,
@@ -110,5 +98,4 @@ export default {
   stubGetDpsPayBandsErrors,
   stubGetDpsPrisonRegime,
   stubGetDpsPrisonRegimeErrors,
-  stubGetActivityCategories,
 }

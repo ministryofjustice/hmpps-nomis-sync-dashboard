@@ -103,14 +103,11 @@ export default class ActivitiesMigrationController {
   async previewChecks(req: Request, res: Response, errors: Express.ValidationError[]): Promise<void> {
     const { prisonId } = req.session.startActivitiesMigrationForm
     const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
-    const activityCategoriesPromise = this.activitiesService.getActivityCategories(context(res))
     await Promise.all([
-      this.nomisPrisonerService
-        .getActivitiesMigrationEstimatedCount(filter, await activityCategoriesPromise, context(res))
-        .catch(error => {
-          errors.push({ text: `Failed to get count due to error: ${error.data.userMessage}`, href: '' })
-          return 0
-        }),
+      this.nomisPrisonerService.getActivitiesMigrationEstimatedCount(filter, context(res)).catch(error => {
+        errors.push({ text: `Failed to get count due to error: ${error.data.userMessage}`, href: '' })
+        return 0
+      }),
 
       this.nomisMigrationService.getActivitiesDLQMessageCount(context(res)).catch(error => {
         errors.push({
@@ -158,7 +155,7 @@ export default class ActivitiesMigrationController {
       }),
 
       this.nomisPrisonerService
-        .findActivitiesSuspendedAllocations(filter, await activityCategoriesPromise, context(res))
+        .findActivitiesSuspendedAllocations(filter, context(res))
         .catch((error): FindSuspendedAllocationsResponse[] => {
           errors.push({
             text: `Failed to find suspended allocations due to error: ${error.message}`,
@@ -168,7 +165,7 @@ export default class ActivitiesMigrationController {
         }),
 
       this.nomisPrisonerService
-        .findAllocationsWithMissingPayBands(filter, await activityCategoriesPromise, context(res))
+        .findAllocationsWithMissingPayBands(filter, context(res))
         .catch((error): FindAllocationsMissingPayBandsResponse[] => {
           errors.push({
             text: `Failed to find allocations with missing pay bands due to error: ${error.message}`,
@@ -178,7 +175,7 @@ export default class ActivitiesMigrationController {
         }),
 
       this.nomisPrisonerService
-        .findPayRatesWithUnknownIncentive(filter, await activityCategoriesPromise, context(res))
+        .findPayRatesWithUnknownIncentive(filter, context(res))
         .catch((error): FindPayRateWithUnknownIncentiveResponse[] => {
           errors.push({
             text: `Failed to find pay rates with unknown incentive due to error: ${error.message}`,
@@ -188,7 +185,7 @@ export default class ActivitiesMigrationController {
         }),
 
       this.nomisPrisonerService
-        .findActivitiesWithoutScheduleRules(filter, await activityCategoriesPromise, context(res))
+        .findActivitiesWithoutScheduleRules(filter, context(res))
         .catch((error): FindActivitiesWithoutScheduleRulesResponse[] => {
           errors.push({
             text: `Failed to find activities without schedule rules due to error: ${error.message}`,
