@@ -78,12 +78,12 @@ export default class NomisPrisonerService {
     return response.totalElements
   }
 
-  async getIncidentsMigrationEstimatedCount(filter: GetIncidentIdsByFilter, context: Context): Promise<number> {
+  async getCorePersonMigrationEstimatedCount(context: Context): Promise<number> {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    logger.info(`getting details for incidents migration  estimated count`)
-    const response = await NomisPrisonerService.restClient(token).get<PageIncidentIdResponse>({
-      path: `/incidents/ids`,
-      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    logger.info(`getting details for core person migration estimated count`)
+    const response = await NomisPrisonerService.restClient(token).get<PagePrisonerId>({
+      path: `/prisoners/ids/all`,
+      query: `${querystring.stringify({ size: 1 })}`,
     })
     return response.totalElements
   }
@@ -93,6 +93,16 @@ export default class NomisPrisonerService {
     logger.info(`getting details for csip migration  estimated count`)
     const response = await NomisPrisonerService.restClient(token).get<PageCSIPIdResponse>({
       path: `/csip/ids`,
+      query: `${querystring.stringify({ ...filter, size: 1 })}`,
+    })
+    return response.totalElements
+  }
+
+  async getIncidentsMigrationEstimatedCount(filter: GetIncidentIdsByFilter, context: Context): Promise<number> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    logger.info(`getting details for incidents migration  estimated count`)
+    const response = await NomisPrisonerService.restClient(token).get<PageIncidentIdResponse>({
+      path: `/incidents/ids`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements

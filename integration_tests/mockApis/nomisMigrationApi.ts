@@ -588,6 +588,17 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
               messagesOnDlq: `${failures}`,
             },
           },
+          'migrationcoreperson-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-corepersonmigration_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-corepersonmigration_dlq',
+              messagesOnDlq: `${failures}`,
+            },
+          },
           'migrationcontactperson-health': {
             status: 'UP',
             details: {
@@ -2386,7 +2397,7 @@ const stubListOfMigrationHistory = (
     },
   })
 
-const stubStartDateFilteredMigration = (args: { domain: string; response: unknown }): SuperAgentRequest =>
+const stubStartMigration = (args: { domain: string; response: unknown }): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'POST',
@@ -2482,6 +2493,6 @@ export default {
   stubDeletePrisonPersonFailures,
 
   stubListOfMigrationHistory,
-  stubStartDateFilteredMigration,
+  stubStartMigration,
   stubGetFailures,
 }

@@ -6,6 +6,7 @@ import MappingService from './mappingService'
 import ActivitiesService from './activitiesService'
 import ContactPersonNomisMigrationService from './contactperson/contactPersonNomisMigrationService'
 import ContactPersonNomisPrisonerService from './contactperson/contactPersonNomisPrisonerService'
+import CorePersonNomisMigrationService from './coreperson/corePersonNomisMigrationService'
 import CorporateNomisMigrationService from './corporate/corporateNomisMigrationService'
 import CorporateNomisPrisonerService from './corporate/corporateNomisPrisonerService'
 
@@ -25,6 +26,7 @@ export const services = () => {
     activitiesService,
     contactPersonNomisMigrationService: new ContactPersonNomisMigrationService(hmppsAuthClient),
     contactPersonNomisPrisonerService: new ContactPersonNomisPrisonerService(hmppsAuthClient),
+    corePersonNomisMigrationService: new CorePersonNomisMigrationService(hmppsAuthClient),
     corporateNomisMigrationService: new CorporateNomisMigrationService(hmppsAuthClient),
     corporateNomisPrisonerService: new CorporateNomisPrisonerService(hmppsAuthClient),
   }

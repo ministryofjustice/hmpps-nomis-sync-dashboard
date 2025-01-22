@@ -7,6 +7,7 @@ import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrat
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
 import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSentencingMigrationRouter'
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
+import corePersonMigrationRoutes from './corePersonMigration/corePersonMigrationRouter'
 import csipMigrationRoutes from './csipMigration/csipMigrationRouter'
 import prisonPersonMigrationRoutes from './prisonPersonMigration/prisonPersonMigrationRouter'
 import contactPersonMigrationRoutes from './contactPersonMigration/contactPersonMigrationRouter'
@@ -18,8 +19,9 @@ import {
   MIGRATE_ACTIVITIES_ROLE,
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
-  MIGRATE_INCIDENT_REPORTS_ROLE,
+  MIGRATE_CORE_PERSON_ROLE,
   MIGRATE_CSIP_ROLE,
+  MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_PRISONPERSON_ROLE,
   MIGRATE_CONTACTPERSON_ROLE,
   MIGRATE_NOMIS_SYSCON,
@@ -93,11 +95,11 @@ export default function routes(services: Services): Router {
           enabled: true,
         },
         {
-          id: 'incidents-migration',
-          heading: 'Incidents migration',
+          id: 'coreperson-migration',
+          heading: 'Core Person migration',
           description: 'Migration and synchronisation information',
-          href: '/incidents-migration',
-          roles: [MIGRATE_INCIDENT_REPORTS_ROLE],
+          href: '/coreperson-migration',
+          roles: [MIGRATE_CORE_PERSON_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -106,6 +108,14 @@ export default function routes(services: Services): Router {
           description: 'Migration and synchronisation information',
           href: '/csip-migration',
           roles: [MIGRATE_CSIP_ROLE],
+          enabled: true,
+        },
+        {
+          id: 'incidents-migration',
+          heading: 'Incidents migration',
+          description: 'Migration and synchronisation information',
+          href: '/incidents-migration',
+          roles: [MIGRATE_INCIDENT_REPORTS_ROLE],
           enabled: true,
         },
         {
@@ -146,6 +156,7 @@ export default function routes(services: Services): Router {
   appointmentsMigrationRoutes(router, services)
   courtSentencingMigrationRoutes(router, services)
   incidentsMigrationRoutes(router, services)
+  corePersonMigrationRoutes(router, services)
   csipMigrationRoutes(router, services)
   prisonPersonMigrationRoutes(router, services)
   contactPersonMigrationRoutes(router, services)

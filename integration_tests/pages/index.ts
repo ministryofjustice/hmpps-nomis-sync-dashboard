@@ -30,4 +30,6 @@ export default class IndexPage extends Page {
   contactPersonMigrationLink = (): PageElement => cy.get('[href="/contactperson-migration"]')
 
   corporateMigrationLink = (): PageElement => cy.get('[href="/corporate-migration"]')
+
+  migrationLink = (migration: string): PageElement => cy.get(`[href="/${migration}"]`)
 }

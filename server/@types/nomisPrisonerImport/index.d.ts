@@ -2601,6 +2601,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/non-associations/booking/{bookingId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get non-associations by booking ID
+     * @description Get non-associations for the given booking ID. Requires role NOMIS_NON_ASSOCIATIONS
+     */
+    get: operations['getByBookingId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/locations/{id}': {
     parameters: {
       query?: never
@@ -3667,11 +3687,8 @@ export interface components {
       adjustmentDays: number
       /** @description Comment */
       comment?: string
-      /**
-       * @description Flag to indicate if the adjustment is being applied
-       * @default true
-       */
-      active: boolean
+      /** @description Flag to indicate if the adjustment is being applied */
+      active?: boolean
       /**
        * Format: int64
        * @description Sentence sequence
@@ -4429,11 +4446,8 @@ export interface components {
       adjustmentDays: number
       /** @description Comment */
       comment?: string
-      /**
-       * @description Flag to indicate if the adjustment is being applied
-       * @default true
-       */
-      active: boolean
+      /** @description Flag to indicate if the adjustment is being applied */
+      active?: boolean
     }
     /** @description IEP creation request */
     CreateIncentiveRequest: {
@@ -6767,10 +6781,10 @@ export interface components {
       prisonId: string
     }
     PageVisitIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -7077,10 +7091,10 @@ export interface components {
       modifiedBy?: string
     }
     PageQuestionnaireIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -7981,6 +7995,8 @@ export interface components {
       authorFirstName?: string
       /** @description Author last name */
       authorLastName: string
+      /** @description List of all usernames for authorStaffId */
+      authorUsernames?: string[]
       /** @description Prison id */
       prisonId?: string
       /** @description Free format text body of case note */
@@ -8030,10 +8046,10 @@ export interface components {
       latestBookingAlerts: components['schemas']['AlertResponse'][]
     }
     PagePrisonerIds: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8062,10 +8078,10 @@ export interface components {
       offenderNo: string
     }
     PagePrisonerId: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8568,10 +8584,10 @@ export interface components {
       audit: components['schemas']['NomisAudit']
     }
     PagePersonIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8661,10 +8677,10 @@ export interface components {
       offenderNo2: string
     }
     PageNonAssociationIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -8820,10 +8836,10 @@ export interface components {
       modifyUsername?: string
     }
     PageLocationIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9131,10 +9147,10 @@ export interface components {
       incidentId: number
     }
     PageIncidentIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9194,10 +9210,10 @@ export interface components {
       sequence: number
     }
     PageIncentiveIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9340,10 +9356,10 @@ export interface components {
       csipId: number
     }
     PageCSIPIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9366,10 +9382,10 @@ export interface components {
       caseId: number
     }
     PageCourtCaseIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9528,10 +9544,10 @@ export interface components {
       corporateId: number
     }
     PageCorporateOrganisationIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -9553,26 +9569,29 @@ export interface components {
        */
       offenderId: number
       title?: components['schemas']['CodeDescription']
-      /** @description First name of the person */
+      /** @description First name of this offender record */
       firstName: string
-      /** @description Middle name of the person */
+      /** @description Middle name of this offender record */
       middleName1?: string
-      /** @description Second middle name of the person */
+      /** @description Second middle name of this offender record */
       middleName2?: string
-      /** @description Surname name of the person */
+      /** @description Surname name of this offender record */
       lastName: string
       /**
        * Format: date
-       * @description Date of birth of the person
+       * @description Date of birth of this offender record
        */
       dateOfBirth?: string
-      /** @description Birth place of the person */
+      /** @description Birth place of this offender record */
       birthPlace?: string
       birthCountry?: components['schemas']['CodeDescription']
       ethnicity?: components['schemas']['CodeDescription']
       sex?: components['schemas']['CodeDescription']
+      nameType?: components['schemas']['CodeDescription']
       /** @description The offender record associated with the current booking */
       workingName: boolean
+      /** @description List of identifiers for the offender */
+      identifiers: components['schemas']['Identifier'][]
     }
     /** @description The data held in NOMIS for an offender */
     CorePerson: {
@@ -9587,8 +9606,6 @@ export interface components {
       activeFlag: boolean
       /** @description List of offender records for the person */
       offenders: components['schemas']['CoreOffender'][]
-      /** @description List of identifiers for the person */
-      identifiers: components['schemas']['Identifier'][]
       /** @description List of distinct sentence start dates */
       sentenceStartDates: string[]
       /** @description List of addresses for the person */
@@ -9617,11 +9634,6 @@ export interface components {
        * @description Unique NOMIS sequence for this identifier for this person
        */
       sequence: number
-      /**
-       * Format: int64
-       * @description The offender id
-       */
-      offenderId: number
       type: components['schemas']['CodeDescription']
       /**
        * @description The identifier value
@@ -9751,7 +9763,7 @@ export interface components {
        */
       bookingId: number
       /** @description The value of the profile info */
-      disability?: boolean
+      disability: boolean
       /**
        * @description The start date of the booking
        * @example 2021-07-05T10:35:17
@@ -9790,7 +9802,7 @@ export interface components {
        */
       bookingId: number
       /** @description The value of the profile info */
-      interestToImmigration?: boolean
+      interestToImmigration: boolean
       /**
        * @description The start date of the booking
        * @example 2021-07-05T10:35:17
@@ -9815,7 +9827,7 @@ export interface components {
        * @example 1234567
        */
       bookingId: number
-      nationality?: components['schemas']['CodeDescription']
+      nationality: components['schemas']['CodeDescription']
       /**
        * @description The start date of the booking
        * @example 2021-07-05T10:35:17
@@ -9841,7 +9853,7 @@ export interface components {
        */
       bookingId: number
       /** @description Details on the nationality */
-      details?: string
+      details: string
       /**
        * @description The start date of the booking
        * @example 2021-07-05T10:35:17
@@ -9879,7 +9891,7 @@ export interface components {
        * @example 1234567
        */
       bookingId: number
-      sexualOrientation?: components['schemas']['CodeDescription']
+      sexualOrientation: components['schemas']['CodeDescription']
       /**
        * @description The start date of the booking
        * @example 2021-07-05T10:35:17
@@ -10087,10 +10099,10 @@ export interface components {
       eventId: number
     }
     PageAppointmentIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10245,7 +10257,7 @@ export interface components {
        */
       slotCategoryCode: string
     }
-    /** @description Exclude program codes */
+    /** @description TODO: remove this parameter after removing from clients */
     excludeProgramCode: string[]
     /** @description Find suspended prisoners from active allocations */
     FindSuspendedAllocationsResponse: {
@@ -10313,10 +10325,10 @@ export interface components {
       allocationId: number
     }
     PageFindActiveAllocationIdsResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10341,10 +10353,10 @@ export interface components {
       adjustmentCategory: string
     }
     PageAdjustmentIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10374,10 +10386,10 @@ export interface components {
       offenderNo: string
     }
     PageAdjudicationChargeIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -10576,10 +10588,10 @@ export interface components {
       courseActivityId: number
     }
     PageFindActiveActivityIdsResponse: {
-      /** Format: int64 */
-      totalElements?: number
       /** Format: int32 */
       totalPages?: number
+      /** Format: int64 */
+      totalElements?: number
       first?: boolean
       last?: boolean
       /** Format: int32 */
@@ -19868,6 +19880,59 @@ export interface operations {
       }
     }
   }
+  getByBookingId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Booking ID
+         * @example 12345
+         */
+        bookingId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description List of non-associations */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NonAssociationIdResponse'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No non-associations found for the given booking ID */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getLocation: {
     parameters: {
       query?: never
@@ -21702,7 +21767,7 @@ export interface operations {
       query: {
         /** @description Prison id */
         prisonId: string
-        /** @description Exclude program codes */
+        /** @description TODO: remove this parameter after removing from clients */
         excludeProgramCode?: components['schemas']['excludeProgramCode']
         /** @description Course Activity ID */
         courseActivityId?: number
@@ -21806,7 +21871,7 @@ export interface operations {
       query: {
         /** @description Prison id */
         prisonId: string
-        /** @description Exclude program codes */
+        /** @description TODO: remove this parameter after removing from clients */
         excludeProgramCode?: components['schemas']['excludeProgramCode']
         /** @description Course Activity ID */
         courseActivityId?: number
@@ -21861,7 +21926,7 @@ export interface operations {
         pageRequest: components['schemas']['Pageable']
         /** @description Prison id */
         prisonId: string
-        /** @description Exclude program codes */
+        /** @description TODO: remove this parameter after removing from clients */
         excludeProgramCode?: components['schemas']['excludeProgramCode']
         /** @description Course Activity ID */
         courseActivityId?: number
@@ -22251,7 +22316,7 @@ export interface operations {
       query: {
         /** @description Prison id */
         prisonId: string
-        /** @description Exclude program codes */
+        /** @description TODO: remove this parameter after removing from clients */
         excludeProgramCode?: components['schemas']['excludeProgramCode']
         /** @description Course Activity ID */
         courseActivityId?: number
@@ -22305,7 +22370,7 @@ export interface operations {
       query: {
         /** @description Prison id */
         prisonId: string
-        /** @description Exclude program codes */
+        /** @description TODO: remove this parameter after removing from clients */
         excludeProgramCode?: components['schemas']['excludeProgramCode']
         /** @description Course Activity ID */
         courseActivityId?: number
@@ -22360,7 +22425,7 @@ export interface operations {
         pageRequest: components['schemas']['Pageable']
         /** @description Prison id */
         prisonId: string
-        /** @description Exclude program codes */
+        /** @description TODO: remove this parameter after removing from clients */
         excludeProgramCode?: components['schemas']['excludeProgramCode']
         /** @description Course Activity ID */
         courseActivityId?: number
