@@ -2937,10 +2937,10 @@ export interface components {
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       pageSize?: number
-      unpaged?: boolean
+      paged?: boolean
       /** Format: int32 */
       pageNumber?: number
-      paged?: boolean
+      unpaged?: boolean
     }
     PagedWaitingListApplication: {
       /** Format: int32 */
@@ -3594,7 +3594,7 @@ export interface components {
        */
       caseNoteText?: string
       /** @description The attendance history records for this attendance */
-      attendanceHistory: components['schemas']['AttendanceHistory'][]
+      attendanceHistory?: components['schemas']['AttendanceHistory'][]
       /**
        * @description Flag to show whether this attendance is editable
        * @example true

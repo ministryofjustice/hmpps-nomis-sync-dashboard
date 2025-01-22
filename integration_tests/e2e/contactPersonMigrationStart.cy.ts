@@ -34,7 +34,7 @@ context('Contact Person Migration Start', () => {
       pageWithErrors.errorSummary().contains('Enter a real date, like 2020-03-23')
     })
     it('Preview of migration will be shown and changes allowed prior to starting a migration', () => {
-      cy.task('stubStartDateFilteredMigration', {
+      cy.task('stubStartMigration', {
         domain: 'contactperson',
         response: {
           migrationId: '2022-03-23T11:11:56',

@@ -611,7 +611,7 @@ const stubGetCSIPMigrationEstimatedCount = (count: number): SuperAgentRequest =>
     },
   })
 
-const stubGetPrisonPersonMigrationEstimatedCount = (count: number): SuperAgentRequest =>
+const stubGetPrisonersMigrationEstimatedCount = (count: number): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -770,7 +770,7 @@ export default {
   stubFindActivitiesWithoutScheduleRulesErrors,
   stubGetAppointmentCounts,
   stubGetAppointmentCountsErrors,
-  stubGetPrisonPersonMigrationEstimatedCount,
+  stubGetPrisonersMigrationEstimatedCount,
   stubGetContactPersonMigrationEstimatedCount,
   stubGetCorporateMigrationEstimatedCount,
 }
