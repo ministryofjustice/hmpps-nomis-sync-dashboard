@@ -8,7 +8,6 @@ import AllocationsMigrationPage from '../pages/allocations-migration/allocations
 context('Allocations Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubGetActivityCategories')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
