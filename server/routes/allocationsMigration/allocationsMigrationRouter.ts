@@ -18,7 +18,6 @@ export default function routes(router: Router, services: Services): Router {
   const allocationsMigrationController = new AllocationsMigrationController(
     services.nomisMigrationService,
     services.nomisPrisonerService,
-    services.activitiesService,
   )
   get('/allocations-migration', (req, res) => allocationsMigrationController.getAllocationsMigrations(req, res))
   get('/allocations-migration/start', (req, res) =>

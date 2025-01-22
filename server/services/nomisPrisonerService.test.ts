@@ -128,7 +128,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return suspended allocations', async () => {
       fakeNomisPrisonerService
         .get('/allocations/suspended')
-        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI' })
         .reply(200, [
           { offenderNo: 'A1234AA', courseActivityId: 12345, courseActivityDescription: 'Kitchens AM' },
           { offenderNo: 'A1234AB', courseActivityId: 12346, courseActivityDescription: 'Kitchens PM' },
@@ -136,7 +136,6 @@ describe('NomisPrisonerService tests', () => {
 
       const response = await nomisPrisonerService.findActivitiesSuspendedAllocations(
         { prisonId: 'BXI' },
-        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
         { token: 'some token' },
       )
 
@@ -148,16 +147,12 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/suspended')
-        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI' })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
       expect(async () => {
-        await nomisPrisonerService.findActivitiesSuspendedAllocations(
-          { prisonId: 'BXI' },
-          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
-          { token: 'some token' },
-        )
+        await nomisPrisonerService.findActivitiesSuspendedAllocations({ prisonId: 'BXI' }, { token: 'some token' })
       }).rejects.toThrow()
     })
   })
@@ -170,7 +165,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return activity count', async () => {
       fakeNomisPrisonerService
         .get('/activities/ids')
-        .query({ prisonId: 'BXI', size: 1, excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', size: 1 })
         .reply(200, {
           content: [
             {
@@ -233,7 +228,6 @@ describe('NomisPrisonerService tests', () => {
 
       const response = await nomisPrisonerService.getActivitiesMigrationEstimatedCount(
         { prisonId: 'BXI' },
-        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
         { token: 'some token' },
       )
 
@@ -242,16 +236,12 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/activities/ids')
-        .query({ prisonId: 'BXI', size: 1, excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', size: 1 })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
       expect(async () => {
-        await nomisPrisonerService.getActivitiesMigrationEstimatedCount(
-          { prisonId: 'BXI' },
-          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
-          { token: 'some token' },
-        )
+        await nomisPrisonerService.getActivitiesMigrationEstimatedCount({ prisonId: 'BXI' }, { token: 'some token' })
       }).rejects.toThrow()
     })
   })
@@ -264,7 +254,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return allocation count', async () => {
       fakeNomisPrisonerService
         .get('/allocations/ids')
-        .query({ prisonId: 'BXI', size: 1, excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', size: 1 })
         .reply(200, {
           content: [
             {
@@ -327,7 +317,6 @@ describe('NomisPrisonerService tests', () => {
 
       const response = await nomisPrisonerService.getAllocationsMigrationEstimatedCount(
         { prisonId: 'BXI' },
-        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
         { token: 'some token' },
       )
 
@@ -336,16 +325,12 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/ids')
-        .query({ prisonId: 'BXI', size: 1, excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI', size: 1 })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
       expect(async () => {
-        await nomisPrisonerService.getAllocationsMigrationEstimatedCount(
-          { prisonId: 'BXI' },
-          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
-          { token: 'some token' },
-        )
+        await nomisPrisonerService.getAllocationsMigrationEstimatedCount({ prisonId: 'BXI' }, { token: 'some token' })
       }).rejects.toThrow()
     })
   })
@@ -358,7 +343,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return allocations missing pay bands', async () => {
       fakeNomisPrisonerService
         .get('/allocations/missing-pay-bands')
-        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI' })
         .reply(200, [
           {
             offenderNo: 'A1234AA',
@@ -376,7 +361,6 @@ describe('NomisPrisonerService tests', () => {
 
       const response = await nomisPrisonerService.findAllocationsWithMissingPayBands(
         { prisonId: 'BXI' },
-        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
         { token: 'some token' },
       )
 
@@ -398,16 +382,12 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/missing-pay-bands')
-        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI' })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
       expect(async () => {
-        await nomisPrisonerService.findAllocationsWithMissingPayBands(
-          { prisonId: 'BXI' },
-          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
-          { token: 'some token' },
-        )
+        await nomisPrisonerService.findAllocationsWithMissingPayBands({ prisonId: 'BXI' }, { token: 'some token' })
       }).rejects.toThrow()
     })
   })
@@ -420,7 +400,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return pay rates', async () => {
       fakeNomisPrisonerService
         .get('/activities/rates-with-unknown-incentives')
-        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI' })
         .reply(200, [
           {
             courseActivityDescription: 'Kitchens AM',
@@ -438,7 +418,6 @@ describe('NomisPrisonerService tests', () => {
 
       const response = await nomisPrisonerService.findPayRatesWithUnknownIncentive(
         { prisonId: 'BXI' },
-        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
         { token: 'some token' },
       )
 
@@ -460,16 +439,12 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/rates-with-unknown-incentives')
-        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI' })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
       expect(async () => {
-        await nomisPrisonerService.findPayRatesWithUnknownIncentive(
-          { prisonId: 'BXI' },
-          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
-          { token: 'some token' },
-        )
+        await nomisPrisonerService.findPayRatesWithUnknownIncentive({ prisonId: 'BXI' }, { token: 'some token' })
       }).rejects.toThrow()
     })
   })
@@ -482,7 +457,7 @@ describe('NomisPrisonerService tests', () => {
     it('should return activities', async () => {
       fakeNomisPrisonerService
         .get('/activities/without-schedule-rules')
-        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI' })
         .reply(200, [
           {
             courseActivityDescription: 'Kitchens AM',
@@ -496,7 +471,6 @@ describe('NomisPrisonerService tests', () => {
 
       const response = await nomisPrisonerService.findActivitiesWithoutScheduleRules(
         { prisonId: 'BXI' },
-        ['SAA_EDUCATION', 'SAA_INDUSTRY'],
         { token: 'some token' },
       )
 
@@ -514,16 +488,12 @@ describe('NomisPrisonerService tests', () => {
     it('should throw for any error', () => {
       fakeNomisPrisonerService
         .get('/allocations/without-schedule-rules')
-        .query({ prisonId: 'BXI', excludeProgramCode: ['SAA_EDUCATION', 'SAA_INDUSTRY'] })
+        .query({ prisonId: 'BXI' })
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
       expect(async () => {
-        await nomisPrisonerService.findActivitiesWithoutScheduleRules(
-          { prisonId: 'BXI' },
-          ['SAA_EDUCATION', 'SAA_INDUSTRY'],
-          { token: 'some token' },
-        )
+        await nomisPrisonerService.findActivitiesWithoutScheduleRules({ prisonId: 'BXI' }, { token: 'some token' })
       }).rejects.toThrow()
     })
   })

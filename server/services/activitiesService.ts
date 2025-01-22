@@ -40,11 +40,4 @@ export default class ActivitiesService {
     }
     return true
   }
-
-  async getActivityCategories(context: Context): Promise<string[]> {
-    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    return ActivitiesService.restClient(token).get<string[]>({
-      path: `/activity-categories`,
-    })
-  }
 }

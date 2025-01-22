@@ -3,7 +3,6 @@ import AllocationsMigrationController from './allocationsMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
-import activitiesService from '../testutils/mockActivitiesService'
 
 describe('allocationsMigrationController', () => {
   const req = {
@@ -115,11 +114,10 @@ describe('allocationsMigrationController', () => {
       ]
       nomisMigrationService.getAllocationsMigrations.mockResolvedValue(allocationsMigrationResponse)
 
-      await new AllocationsMigrationController(
-        nomisMigrationService,
-        nomisPrisonerService,
-        activitiesService,
-      ).getAllocationsMigrations(req, res)
+      await new AllocationsMigrationController(nomisMigrationService, nomisPrisonerService).getAllocationsMigrations(
+        req,
+        res,
+      )
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/allocations/allocationsMigration', {
         migrations: expect.arrayContaining([
@@ -141,7 +139,6 @@ describe('allocationsMigrationController', () => {
         await new AllocationsMigrationController(
           nomisMigrationService,
           nomisPrisonerService,
-          activitiesService,
         ).postStartAllocationsMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID.' }])
         expect(res.redirect).toHaveBeenCalledWith('/allocations-migration/amend')
