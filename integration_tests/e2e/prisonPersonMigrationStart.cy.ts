@@ -74,7 +74,7 @@ context('Prison Person Migration Start', () => {
       cy.task('stubGetPrisonPersonFailures')
 
       Page.verifyOnPage(PrisonPersonMigrationPage).startNewMigration().click()
-      cy.task('stubGetPrisonerMigrationEstimatedCount', 100_988)
+      cy.task('stubGetPrisonersMigrationEstimatedCount', 100_988)
 
       const page = Page.verifyOnPage(StartPrisonPersonMigrationPage)
       page.continueButton().click()
@@ -99,7 +99,7 @@ context('Prison Person Migration Start', () => {
       cy.task('stubDeletePrisonPersonFailures')
 
       Page.verifyOnPage(PrisonPersonMigrationPage).startNewMigration().click()
-      cy.task('stubGetPrisonerMigrationEstimatedCount', 100_988)
+      cy.task('stubGetPrisonersMigrationEstimatedCount', 100_988)
 
       const page = Page.verifyOnPage(StartPrisonPersonMigrationPage)
       page.migrationType().select('PHYSICAL_ATTRIBUTES')
