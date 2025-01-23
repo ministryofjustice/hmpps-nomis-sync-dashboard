@@ -1,6 +1,8 @@
 import { FilterToggleButton } from '@ministryofjustice/frontend'
+import $ from 'jquery'
 
 export default function setupFilterToggle() {
+  // eslint-disable-next-line no-new
   new FilterToggleButton({
     bigModeMediaQuery: '(min-width: 48.063em)',
     startHidden: false,

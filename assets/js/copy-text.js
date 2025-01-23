@@ -21,7 +21,7 @@ export default function setupCopyText() {
   }
 
   function clearConfirmations() {
-    for (let confirmation of document.getElementsByClassName('copy-link-confirmation')) {
+    for (const confirmation of document.getElementsByClassName('copy-link-confirmation')) {
       confirmation.classList.add('govuk-visually-hidden')
     }
   }
