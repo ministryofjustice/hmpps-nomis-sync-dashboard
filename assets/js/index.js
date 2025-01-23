@@ -16,5 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     case 'copy-text':
       setupCopyText()
       break
+    default:
+      // do nothing
+      break
   }
 })
