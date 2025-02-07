@@ -56,6 +56,7 @@ export default {
   apis: {
     hmppsAuth: {
       url: get('HMPPS_AUTH_URL', 'http://localhost:9090/auth', requiredInProduction),
+      healthPath: '/health/ping',
       externalUrl: get('HMPPS_AUTH_EXTERNAL_URL', get('HMPPS_AUTH_URL', 'http://localhost:9090/auth')),
       timeout: {
         response: Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000)),
@@ -69,6 +70,7 @@ export default {
     },
     nomisMigration: {
       url: get('NOMIS_MIGRATION_API_URL', 'http://localhost:8101', requiredInProduction) as string,
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('NOMIS_MIGRATION_TIMEOUT_RESPONSE', 60000)),
         deadline: Number(get('NOMIS_MIGRATION_TIMEOUT_DEADLINE', 60000)),
@@ -77,6 +79,7 @@ export default {
     },
     nomisPrisoner: {
       url: get('NOMIS_PRISONER_API_URL', 'http://localhost:8102', requiredInProduction) as string,
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('NOMIS_PRISONER_TIMEOUT_RESPONSE', 60000)),
         deadline: Number(get('NOMIS_PRISONER_TIMEOUT_DEADLINE', 60000)),
@@ -85,6 +88,7 @@ export default {
     },
     activities: {
       url: get('ACTIVITIES_API_URL', 'http://localhost:8104', requiredInProduction) as string,
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('ACTIVITIES_TIMEOUT_RESPONSE', 60000)),
         deadline: Number(get('ACTIVITIES_TIMEOUT_DEADLINE', 60000)),
@@ -93,6 +97,7 @@ export default {
     },
     mapping: {
       url: get('MAPPING_API_URL', 'http://localhost:8103', requiredInProduction) as string,
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('MAPPING_TIMEOUT_RESPONSE', 60000)),
         deadline: Number(get('MAPPING_TIMEOUT_DEADLINE', 60000)),
@@ -101,6 +106,7 @@ export default {
     },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000)),
         deadline: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000)),
