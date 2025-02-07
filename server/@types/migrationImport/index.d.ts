@@ -1648,6 +1648,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/casenotes/{nomisCaseNoteId}/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Repairs a casenote that has been deleted in Nomis by removing any associated mappings in the mapping table and alerting DPS.
+     *           *** IMPORTANT*** This endpoint will delete any other associated Nomis Mappings (if matching the associated DPS Case Note) as there is a
+     *           one to many mapping between DPS and Nomis case notes.
+     *           Any related (deleted) Nomis case notes will be indicated with the casenotes-synchronisation-deleted-related-success telemetry event
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_NOMIS_CASENOTES
+     */
+    delete: operations['repairDeletedCaseNote']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -1669,7 +1692,6 @@ export interface components {
       developerMessage?: string
       moreInfo?: string
     }
-    Unit: Record<string, never>
     /** @description Filter specifying what should be migrated from NOMIS to Visits service */
     VisitsMigrationFilter: {
       /**
@@ -1679,9 +1701,7 @@ export interface components {
       prisonIds: string[]
       /**
        * @description List of visit types to migrate
-       * @default [
-       *       "SCON"
-       *     ]
+       * @default ["SCON"]
        * @example [
        *       "SCON",
        *       "OFFI"
@@ -1689,13 +1709,15 @@ export interface components {
        */
       visitTypes: string[]
       /**
+       * Format: date-time
        * @description Only include visits created after this date. NB this is creation date not the actual visit date
-       * @example 2021-07-05T10:35:17
+       * @example 2020-03-23T12:00:00
        */
       fromDateTime?: string
       /**
+       * Format: date-time
        * @description Only include visits created before this date. NB this is creation date not the actual visit date
-       * @example 2021-07-05T10:35:17
+       * @example 2020-03-24T12:00:00
        */
       toDateTime?: string
       /**
@@ -2180,6 +2202,12 @@ export interface components {
        * @example 12345
        */
       courseActivityId?: number
+      /**
+       * Format: date
+       * @description The date the new activity will start
+       * @example 2025-01-31
+       */
+      activityStartDate?: string
     }
     MigrationContextActivitiesMigrationFilter: {
       /** @enum {string} */
@@ -2232,9 +2260,9 @@ export interface components {
     }
     MigrationHistory: {
       migrationId: string
-      /** @example 2021-07-05T10:35:17 */
+      /** Format: date-time */
       whenStarted: string
-      /** @example 2021-07-05T10:35:17 */
+      /** Format: date-time */
       whenEnded?: string
       /** Format: int64 */
       estimatedRecordCount: number
@@ -2274,7 +2302,7 @@ export interface components {
       /** Format: int32 */
       recordsFailed?: number
       migrationId?: string
-      /** @example 2021-07-05T10:35:17 */
+      /** Format: date-time */
       whenStarted?: string
       /** Format: int64 */
       estimatedRecordCount?: number
@@ -2387,9 +2415,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Invalid request */
       400: {
@@ -2443,9 +2469,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
     }
   }
@@ -2465,9 +2489,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          '*/*': components['schemas']['Unit']
-        }
+        content?: never
       }
     }
   }
@@ -2487,9 +2509,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          '*/*': components['schemas']['Unit']
-        }
+        content?: never
       }
     }
   }
@@ -2513,9 +2533,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -2608,9 +2626,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -2703,9 +2719,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -2840,9 +2854,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -2935,9 +2947,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3030,9 +3040,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3125,9 +3133,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3220,9 +3226,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3315,9 +3319,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3410,9 +3412,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3505,9 +3505,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3600,9 +3598,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3695,9 +3691,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3790,9 +3784,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -3885,9 +3877,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
     }
   }
@@ -3907,9 +3897,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          '*/*': components['schemas']['Unit']
-        }
+        content?: never
       }
     }
   }
@@ -6065,9 +6053,7 @@ export interface operations {
         headers: {
           [name: string]: unknown
         }
-        content: {
-          'application/json': components['schemas']['Unit']
-        }
+        content?: never
       }
       /** @description Unauthorized to access this endpoint */
       401: {
@@ -6086,6 +6072,26 @@ export interface operations {
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
+      }
+    }
+  }
+  repairDeletedCaseNote: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nomisCaseNoteId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
     }
   }

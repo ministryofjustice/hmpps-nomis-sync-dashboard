@@ -55,6 +55,20 @@
 
                         {{ govukInput({
                             label: {
+                                html: 'When should the migrated activities start'
+                            },
+                            id: "activityStartDate",
+                            name: "activityStartDate",
+                            classes: "govuk-input--width-20",
+                            hint: {
+                                text: "Example 2025-02-05, must be earliest date of tomorrow."
+                            },
+                            value: form.activityStartDate,
+                            errorMessage: errors | findError('activityStartDate')
+                        }) }}
+
+                        {{ govukInput({
+                            label: {
                                 html: 'Migrate a single activity from the prison (optional)'
                             },
                             id: "courseActivityId",
@@ -79,7 +93,7 @@
                     {% endcall %}
                 </form>
             </div>
-        </div>      
+        </div>
     </div>
   </main>
 

@@ -1,4 +1,5 @@
 import type { StartActivitiesMigrationForm } from 'forms'
+import moment from 'moment'
 import validate from './startActivitiesMigrationValidator'
 
 describe('startActivitiesMigrationValidator', () => {
@@ -12,6 +13,7 @@ describe('startActivitiesMigrationValidator', () => {
 
   it('should allow missing course activity ID', () => {
     const form: StartActivitiesMigrationForm = {
+      ...validForm,
       prisonId: 'HEI',
     }
 
@@ -44,9 +46,41 @@ describe('startActivitiesMigrationValidator', () => {
 
     expect(validate(form)).toContainEqual({ href: '#prisonId', text: 'The prison ID must contain 3 letters.' })
   })
+
+  it('should reject missing activity start date', () => {
+    const form: StartActivitiesMigrationForm = {
+      ...validForm,
+      activityStartDate: null,
+    }
+
+    expect(validate(form)).toContainEqual({ href: '#activityStartDate', text: 'Enter a date.' })
+  })
+
+  it('should reject malformed start date', () => {
+    const form: StartActivitiesMigrationForm = {
+      ...validForm,
+      activityStartDate: 'invalid',
+    }
+
+    expect(validate(form)).toContainEqual({ href: '#activityStartDate', text: 'Enter a valid date.' })
+  })
+
+  it('should reject start date before tomorrow', () => {
+    const today: string = moment().format('YYYY-MM-DD')
+    const form: StartActivitiesMigrationForm = {
+      ...validForm,
+      activityStartDate: today,
+    }
+
+    expect(validate(form)).toContainEqual({
+      href: '#activityStartDate',
+      text: `The activity start date must be after today.`,
+    })
+  })
 })
 
 const validForm: StartActivitiesMigrationForm = {
   prisonId: 'HEI',
+  activityStartDate: moment().add(1, 'days').format('YYYY-MM-DD'),
   courseActivityId: 12345,
 }
