@@ -11,7 +11,7 @@ export default function setUpStaticResources(): Router {
   router.use(compression())
 
   //  Static Resources Configuration
-  const cacheControl = { maxAge: config.staticResourceCacheDuration }
+  const staticResourcesConfig = { maxAge: config.staticResourceCacheDuration, redirect: false }
 
   Array.of(
     '/dist/assets',
@@ -21,11 +21,11 @@ export default function setUpStaticResources(): Router {
     '/node_modules/@ministryofjustice/frontend',
     '/node_modules/jquery/dist',
   ).forEach(dir => {
-    router.use('/assets', express.static(path.join(process.cwd(), dir), cacheControl))
+    router.use('/assets', express.static(path.join(process.cwd(), dir), staticResourcesConfig))
   })
 
   Array.of('/node_modules/jquery/dist/jquery.min.js').forEach(dir => {
-    router.use('/assets/js/jquery.min.js', express.static(path.join(process.cwd(), dir), cacheControl))
+    router.use('/assets/js/jquery.min.js', express.static(path.join(process.cwd(), dir), staticResourcesConfig))
   })
 
   // Don't cache dynamic resources
