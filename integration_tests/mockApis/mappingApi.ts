@@ -39,7 +39,21 @@ const stubAddVisitsRoomMapping = (prisonId: string): SuperAgentRequest =>
     },
   })
 
+const stubMappingApiPing = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/mapping-api/health/ping',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: { status: 'UP' },
+    },
+  })
+
 export default {
   stubGetVisitRoomMappings,
   stubAddVisitsRoomMapping,
+  stubMappingApiPing,
 }
