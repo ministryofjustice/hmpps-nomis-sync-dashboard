@@ -122,6 +122,11 @@
                               <span class="govuk-label--s">Prison:</span><span data-qa="filterPrisonId" class="govuk-!-margin-left-2">{{ u.filterPrisonId }}</span>
                             </div>
                           {% endif %}
+                          {% if u.filterActivityStartDate %}
+                            <div class="govuk-grid-column-full">
+                              <span class="govuk-label--s">Activity Start Date:</span><span data-qa="filterActivityStartDate" class="govuk-!-margin-left-2">{{ u.filterActivityStartDate }}</span>
+                            </div>
+                          {% endif %}
                           {% if u.filterCourseActivityId %}
                             <div class="govuk-grid-column-full">
                               <span class="govuk-label--s">Course Activity ID:</span><span data-qa="filterCourseActivityId" class="govuk-!-margin-left-2">{{ u.filterCourseActivityId }}</span>
@@ -131,7 +136,7 @@
 
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-one-third">
-                            <a data-qa="migrate-allocations-link" class="govuk-link" href="/allocations-migration/start?prisonId={{ u.filterPrisonId }}&courseActivityId={{ u.filterCourseActivityId }}">Migrate Allocations</a>
+                            <a data-qa="migrate-allocations-link" class="govuk-link" href="/allocations-migration/start?prisonId={{ u.filterPrisonId }}&activityStartDate={{ u.filterActivityStartDate }}&courseActivityId={{ u.filterCourseActivityId }}">Migrate Allocations</a>
                           </div>
                         </div>
 

@@ -20,6 +20,7 @@ import { RolloutPrisonPlan } from '../../@types/activities'
 
 interface Filter {
   prisonId?: string
+  activityStartDate?: string
   courseActivityId?: number
 }
 
@@ -72,7 +73,7 @@ export default class ActivitiesMigrationController {
   }
 
   async startNewActivitiesMigration(req: Request, res: Response): Promise<void> {
-    delete req.session.startActivitiesMigrationForm
+    req.session.startActivitiesMigrationForm = { activityStartDate: moment().add(1, 'days').format('YYYY-MM-DD') }
     await this.startActivitiesMigration(req, res)
   }
 
@@ -341,6 +342,7 @@ export default class ActivitiesMigrationController {
   private static toFilter(form: StartActivitiesMigrationForm): ActivitiesMigrationFilter {
     return {
       prisonId: form.prisonId,
+      activityStartDate: form.activityStartDate,
       courseActivityId: form.courseActivityId,
     }
   }
@@ -404,14 +406,17 @@ export default class ActivitiesMigrationController {
 
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
     filterPrisonId?: string
+    filterActivityStartDate?: string
     filterCourseActivityId?: number
   } {
     const filter: Filter = JSON.parse(migration.filter)
     const filterPrisonId = filter.prisonId
+    const filterActivityStartDate = filter.activityStartDate
     const filterCourseActivityId = filter.courseActivityId
     return {
       ...migration,
       ...(filterPrisonId && { filterPrisonId }),
+      ...(filterActivityStartDate && { filterActivityStartDate }),
       ...(filterCourseActivityId && { filterCourseActivityId }),
     }
   }

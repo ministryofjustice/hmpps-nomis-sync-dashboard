@@ -18,6 +18,8 @@ describe('activitiesMigrationController', () => {
     redirect: jest.fn(),
   } as unknown as Response
 
+  const tomorrow = moment().add(1, 'days').format('YYYY-MM-DD')
+
   beforeEach(() => {
     jest.resetAllMocks()
   })
@@ -44,7 +46,7 @@ describe('activitiesMigrationController', () => {
             whenStarted: '2022-03-14T11:45:12.615759',
             whenEnded: '2022-03-14T13:26:10.047061',
             estimatedRecordCount: 205630,
-            filter: '{"prisonIds": "MDI", "courseActivityId": 12345}',
+            filter: '{"prisonIds": "MDI", "activityStartDate": "2022-03-15", "courseActivityId": 12345}',
             recordsMigrated: 1,
             recordsFailed: 162794,
             migrationType: 'ACTIVITIES',
@@ -57,7 +59,7 @@ describe('activitiesMigrationController', () => {
             whenStarted: '2022-03-11T11:45:12.615759',
             whenEnded: '2022-03-11T13:26:10.047061',
             estimatedRecordCount: 1,
-            filter: '{"prisonIds": "MDI", "courseActivityId": 12345}',
+            filter: '{"prisonIds": "MDI", "activityStartDate": "2022-03-15", "courseActivityId": 12345}',
             recordsMigrated: 0,
             recordsFailed: 0,
             migrationType: 'ACTIVITIES',
@@ -88,7 +90,7 @@ describe('activitiesMigrationController', () => {
           whenStarted: '2022-03-14T11:45:12.615759',
           whenEnded: '2022-03-14T13:26:10.047061',
           estimatedRecordCount: 205630,
-          filter: '{"prisonIds": "MDI", "courseActivityId": 12345}',
+          filter: '{"prisonIds": "MDI", "activityStartDate": "2022-03-15", "courseActivityId": 12345}',
           recordsMigrated: 1,
           recordsFailed: 162794,
           migrationType: 'ACTIVITIES',
@@ -103,7 +105,7 @@ describe('activitiesMigrationController', () => {
           whenStarted: '2022-03-11T11:45:12.615759',
           whenEnded: '2022-03-11T13:26:10.047061',
           estimatedRecordCount: 1,
-          filter: '{"prisonIds": "MDI", "courseActivityId": 12345}',
+          filter: '{"prisonIds": "MDI", "activityStartDate": "2022-03-15", "courseActivityId": 12345}',
           recordsMigrated: 0,
           recordsFailed: 0,
           migrationType: 'ACTIVITIES',
@@ -209,6 +211,7 @@ describe('activitiesMigrationController', () => {
         req.body = {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
+          activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
           nomisMigrationService,
@@ -232,6 +235,7 @@ describe('activitiesMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
           prisonId: 'XXX',
+          activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
           nomisMigrationService,
@@ -255,6 +259,7 @@ describe('activitiesMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
           prisonId: 'MDI',
+          activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
           nomisMigrationService,
@@ -278,6 +283,7 @@ describe('activitiesMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
           prisonId: 'XXX',
+          activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
           nomisMigrationService,
@@ -297,6 +303,7 @@ describe('activitiesMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
           prisonId: 'XXX',
+          activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
           nomisMigrationService,
@@ -348,6 +355,7 @@ describe('activitiesMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
           prisonId: 'XXX',
+          activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
           nomisMigrationService,
@@ -362,9 +370,7 @@ describe('activitiesMigrationController', () => {
         activitiesService.getRolloutPrison.mockResolvedValue({
           prisonCode: 'MDI',
           activitiesRolledOut: true,
-          activitiesRolloutDate: moment().add(1, 'days').format('YYYY-MM-DD'),
           appointmentsRolledOut: true,
-          appointmentsRolloutDate: '2023-01-01',
           maxDaysToExpiry: 10,
           prisonLive: true,
         })
@@ -373,6 +379,7 @@ describe('activitiesMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
           prisonId: 'XXX',
+          activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
           nomisMigrationService,

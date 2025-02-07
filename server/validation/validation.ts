@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-named-as-default
 import Validator, { ErrorMessages, Rules } from 'validatorjs'
 import isISO8601 from 'validator/lib/isISO8601'
+import moment from 'moment'
 
 export interface Error {
   href: string
@@ -27,6 +28,22 @@ Validator.register(
     return false
   },
   'Enter a real date, like 2020-03-23',
+)
+
+Validator.register(
+  'after',
+  (date: string, params: string): boolean => {
+    const val1 = date
+    const val2 = params.split(',')[0]
+
+    if (!isISO8601(val1, { strict: true }) || !isISO8601(val2, { strict: true })) return false
+
+    const inputDate = moment(val1, 'YYYY-MM-DD')
+    const afterDate = moment(val2, 'YYYY-MM-DD')
+
+    return inputDate.isAfter(afterDate)
+  },
+  'The :attribute must be after :after.',
 )
 
 export function validate<T>(form: T, rules: Rules, customMessages: ErrorMessages) {

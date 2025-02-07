@@ -42,16 +42,17 @@ declare module 'express-session' {
 
   interface StartActivitiesMigrationForm extends MigrationForm {
     prisonId?: string
+    activityStartDate?: string
     courseActivityId?: number
     incentiveLevelIds?: string[]
-    prisonSwitchedOnNomis: boolean | string
-    prisonSwitchedOnDps: boolean | null
-    dpsPayBandsExist: boolean | null
-    dpsPrisonRegimeExists: boolean | null
-    suspendedAllocations: string[]
-    allocationsMissingPayBands: string[]
-    payRatesUnknownIncentive: string[]
-    activitiesWithoutScheduleRules: string[]
+    prisonSwitchedOnNomis?: boolean | string
+    prisonSwitchedOnDps?: boolean | null
+    dpsPayBandsExist?: boolean | null
+    dpsPrisonRegimeExists?: boolean | null
+    suspendedAllocations?: string[]
+    allocationsMissingPayBands?: string[]
+    payRatesUnknownIncentive?: string[]
+    activitiesWithoutScheduleRules?: string[]
   }
 
   interface StartAllocationsMigrationForm extends MigrationForm {
