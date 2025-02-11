@@ -83,7 +83,7 @@ export default class CorporateNomisMigrationService {
   }
 
   async getDLQMessageCount(context: Context): Promise<string> {
-    return NomisMigrationService.getAnyDLQMessageCount('migrationcorporate-health', context.token)
+    return NomisMigrationService.getAnyDLQMessageCount('migrationorganisations-health', context.token)
   }
 
   async cancelMigration(migrationId: string, context: Context): Promise<void> {
@@ -94,6 +94,6 @@ export default class CorporateNomisMigrationService {
   }
 
   private static async getDLQName(token: string): Promise<string> {
-    return NomisMigrationService.getAnyDLQName('migrationcorporate-health', token)
+    return NomisMigrationService.getAnyDLQName('migrationorganisations-health', token)
   }
 }

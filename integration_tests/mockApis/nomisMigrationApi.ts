@@ -599,25 +599,25 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
               messagesOnDlq: `${failures}`,
             },
           },
-          'migrationcontactperson-health': {
+          'migrationpersonalrelationships-health': {
             status: 'UP',
             details: {
-              queueName: 'dps-syscon-dev-contactpersonmigration_queue',
+              queueName: 'dps-syscon-dev-migration_personalrelationships_queue',
               messagesOnQueue: '0',
               messagesInFlight: '0',
               dlqStatus: 'UP',
-              dlqName: 'dps-syscon-dev-contactpersonmigration_dlq',
+              dlqName: 'dps-syscon-dev-migration_personalrelationships_dlq',
               messagesOnDlq: `${failures}`,
             },
           },
-          'migrationcorporate-health': {
+          'migrationorganisations-health': {
             status: 'UP',
             details: {
-              queueName: 'dps-syscon-dev-corporatemigration_queue',
+              queueName: 'dps-syscon-dev-migration_organisations_queue',
               messagesOnQueue: '0',
               messagesInFlight: '0',
               dlqStatus: 'UP',
-              dlqName: 'dps-syscon-dev-corporatemigration_dlq',
+              dlqName: 'dps-syscon-dev-migration_organisations_dlq',
               messagesOnDlq: `${failures}`,
             },
           },
