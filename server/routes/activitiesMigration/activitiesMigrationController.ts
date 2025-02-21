@@ -413,11 +413,15 @@ export default class ActivitiesMigrationController {
     const filterPrisonId = filter.prisonId
     const filterActivityStartDate = filter.activityStartDate
     const filterCourseActivityId = filter.courseActivityId
+    const filterEndDate = (
+      filterActivityStartDate ? moment(filterActivityStartDate).subtract(1, 'days') : moment()
+    ).format('YYYY-MM-DD')
     return {
       ...migration,
       ...(filterPrisonId && { filterPrisonId }),
       ...(filterActivityStartDate && { filterActivityStartDate }),
       ...(filterCourseActivityId && { filterCourseActivityId }),
+      ...(filterEndDate && { filterEndDate }),
     }
   }
 }
