@@ -144,7 +144,7 @@
                           <div class="govuk-grid-column-full">
                             {% set endNomisLink = "/activities-migration/end-activities?migrationId=" + u.migrationId %}
                             {{ govukButton({
-                              text: "End NOMIS activities",
+                              text: "End NOMIS activities on " + u.filterEndDate,
                               href: endNomisLink,
                               isStartButton: false,
                               attributes: { 'data-qa': 'end-activities-button' }
