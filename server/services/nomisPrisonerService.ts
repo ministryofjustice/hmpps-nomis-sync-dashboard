@@ -243,14 +243,4 @@ export default class NomisPrisonerService {
       query: querystring.stringify({ ...filter }),
     })
   }
-
-  async getPrisonPersonMigrationEstimatedCount(context: Context): Promise<number> {
-    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    logger.info(`getting details for prison person migration estimated count`)
-    const response = await NomisPrisonerService.restClient(token).get<PagePrisonerId>({
-      path: `/prisoners/ids/all`,
-      query: `${querystring.stringify({ size: 1 })}`,
-    })
-    return response.totalElements
-  }
 }

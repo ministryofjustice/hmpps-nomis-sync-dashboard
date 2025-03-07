@@ -50,9 +50,4 @@ declare module 'forms' {
     toDate?: string
     action?: 'startMigration' | 'viewEstimatedCount'
   }
-
-  export interface StartPrisonPersonMigrationForm {
-    prisonerNumber?: string
-    action?: 'startMigration' | 'viewEstimatedCount'
-  }
 }

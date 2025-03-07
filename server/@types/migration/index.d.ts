@@ -30,10 +30,6 @@ export type MigrationContextAllocationsMigrationFilter =
 export type MigrationContextCourtSentencingMigrationFilter =
   components['schemas']['MigrationContextCourtSentencingMigrationFilter']
 
-export type PrisonPersonMigrationFilter = components['schemas']['PrisonPersonMigrationFilter']
-export type MigrationContextPrisonPersonMigrationFilter =
-  components['schemas']['MigrationContextPrisonPersonMigrationFilter']
-
 export type GetDlqResult = components['schemas']['GetDlqResult']
 export type PurgeQueueResult = components['schemas']['PurgeQueueResult']
 export type RoomMappingsResponse = components['schemas']['VisitRoomUsageResponse']
