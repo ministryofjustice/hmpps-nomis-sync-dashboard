@@ -89,7 +89,7 @@
     "csrf-sync": "^4.0.3",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "govuk-frontend": "^5.8.0",
+    "govuk-frontend": "^5.9.0",
     "helmet": "^8.0.0",
     "http-errors": "^2.0.0",
     "jquery": "^3.7.1",
@@ -124,12 +124,10 @@
     "@types/supertest": "^6.0.2",
     "@types/validator": "^13.12.2",
     "@types/validatorjs": "^3.15.5",
-    "@typescript-eslint/eslint-plugin": "^8.25.0",
-    "@typescript-eslint/parser": "^8.25.0",
     "audit-ci": "^7.1.0",
     "chokidar": "^3.6.0",
     "concurrently": "^9.1.2",
-    "cypress": "^14.0.3",
+    "cypress": "^14.1.0",
     "cypress-multi-reporters": "^2.0.5",
     "esbuild": "^0.25.0",
     "esbuild-plugin-clean": "^1.0.1",
@@ -149,7 +147,7 @@
     "prettier-plugin-jinja-template": "^2.0.0",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.6",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.2"
   },
   "overrides": {
     "@jgoz/esbuild-plugin-typecheck": {
