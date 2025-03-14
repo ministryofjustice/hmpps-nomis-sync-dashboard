@@ -81,6 +81,10 @@ declare module 'express-session' {
     toDate?: string
   }
 
+  interface PrisonFilteredMigrationForm extends MigrationForm {
+    prisonId?: string
+  }
+
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
@@ -96,6 +100,7 @@ declare module 'express-session' {
     startIncidentsMigrationForm: StartIncidentsMigrationForm
     endMigratedActivitiesResult: EndMigratedActivitiesResult
     startDateFilteredMigrationForm: StartDateFilteredMigrationForm
+    prisonFilteredMigrationForm: PrisonFilteredMigrationForm
   }
 }
 

@@ -26,3 +26,5 @@ export type PagePersonIdResponse = components['schemas']['PagePersonIdResponse']
 export type GetContactPersonByFilter = Omit<operations['getPersonIds']['parameters']['query'], 'pageRequest'>
 export type PageCorporateOrganisationIdResponse = components['schemas']['PageCorporateOrganisationIdResponse']
 export type GetCorporateByFilter = Omit<operations['getCorporateIds']['parameters']['query'], 'pageRequest'>
+export type PageVisitBalanceIdResponse = components['schemas']['PageVisitBalanceIdResponse']
+export type GetVisitBalanceIdsByFilter = Omit<operations['findVisitBalanceIds']['parameters']['query'], 'pageRequest'>

@@ -9,6 +9,8 @@ import ContactPersonNomisPrisonerService from './contactperson/contactPersonNomi
 import CorePersonNomisMigrationService from './coreperson/corePersonNomisMigrationService'
 import CorporateNomisMigrationService from './corporate/corporateNomisMigrationService'
 import CorporateNomisPrisonerService from './corporate/corporateNomisPrisonerService'
+import VisitBalanceNomisMigrationService from './visitbalance/visitBalanceNomisMigrationService'
+import VisitBalanceNomisPrisonerService from './visitbalance/visitBalanceNomisPrisonerService'
 
 export const services = () => {
   const { hmppsAuthClient, applicationInfo } = dataAccess()
@@ -29,6 +31,8 @@ export const services = () => {
     corePersonNomisMigrationService: new CorePersonNomisMigrationService(hmppsAuthClient),
     corporateNomisMigrationService: new CorporateNomisMigrationService(hmppsAuthClient),
     corporateNomisPrisonerService: new CorporateNomisPrisonerService(hmppsAuthClient),
+    visitBalanceNomisMigrationService: new VisitBalanceNomisMigrationService(hmppsAuthClient),
+    visitBalanceNomisPrisonerService: new VisitBalanceNomisPrisonerService(hmppsAuthClient),
   }
 }
 
