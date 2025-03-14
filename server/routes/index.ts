@@ -11,6 +11,7 @@ import corePersonMigrationRoutes from './corePersonMigration/corePersonMigration
 import csipMigrationRoutes from './csipMigration/csipMigrationRouter'
 import contactPersonMigrationRoutes from './contactPersonMigration/contactPersonMigrationRouter'
 import corporateMigrationRoutes from './corporateMigration/corporateMigrationRouter'
+import visitBalanceMigrationRoutes from './visitBalanceMigration/visitBalanceMigrationRouter'
 import {
   extractRoles,
   MIGRATE_SENTENCING_ROLE,
@@ -22,6 +23,7 @@ import {
   MIGRATE_CSIP_ROLE,
   MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_CONTACTPERSON_ROLE,
+  MIGRATE_VISIT_BALANCE_ROLE,
   MIGRATE_NOMIS_SYSCON,
 } from '../authentication/roles'
 
@@ -132,6 +134,14 @@ export default function routes(services: Services): Router {
           roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
+        {
+          id: 'visit-balance-migration',
+          heading: 'Visit balance migration',
+          description: 'Migration and synchronisation information',
+          href: '/visit-balance-migration',
+          roles: [MIGRATE_VISIT_BALANCE_ROLE, MIGRATE_NOMIS_SYSCON],
+          enabled: false,
+        },
       ].filter(
         register =>
           Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled,
@@ -150,5 +160,6 @@ export default function routes(services: Services): Router {
   csipMigrationRoutes(router, services)
   contactPersonMigrationRoutes(router, services)
   corporateMigrationRoutes(router, services)
+  visitBalanceMigrationRoutes(router, services)
   return router
 }
