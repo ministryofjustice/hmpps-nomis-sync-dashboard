@@ -1,4 +1,4 @@
-import AppointmentsMigrationFailuresPage from '../pages/appointments-migration/appointmentsMigrationFailures'
+import AppointmentsMigrationFailuresPage from '../../pages/appointments-migration/appointmentsMigrationFailures'
 
 context('Appointment Migration Failures', () => {
   beforeEach(() => {

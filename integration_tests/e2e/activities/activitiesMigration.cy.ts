@@ -1,32 +1,33 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import AllocationsMigrationPage from '../pages/allocations-migration/allocationsMigration'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import ActivitiesMigrationPage from '../../pages/activities-migration/activitiesMigration'
+import StarAllocationsMigrationPage from '../../pages/allocations-migration/startAllocationsMigration'
 
-context('Allocations Migration Homepage', () => {
+context('Activities Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
   })
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
-      cy.task('stubListOfAllocationsMigrationHistory')
+      cy.task('stubListOfActivitiesMigrationHistory')
       cy.signIn()
     })
-    it('should see migrate allocations tile', () => {
+    it('should see migrate activities tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.allocationsMigrationLink().should('be.visible')
+      indexPage.activitiesMigrationLink().should('be.visible')
     })
-    it('should be able to navigate to the allocations migration home page', () => {
+    it('should be able to navigate to the activities migration home page', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.allocationsMigrationLink().click()
-      Page.verifyOnPage(AllocationsMigrationPage)
+      indexPage.activitiesMigrationLink().click()
+      Page.verifyOnPage(ActivitiesMigrationPage)
     })
 
     it('should display list of migrations', () => {
       cy.task('stubHealth')
-      cy.task('stubGetAllocationsFailures')
+      cy.task('stubGetActivitiesNoFailures')
 
-      const migrationPage = AllocationsMigrationPage.goTo()
+      const migrationPage = ActivitiesMigrationPage.goTo()
 
       migrationPage.migrationResultsRow(0).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T10:13:56')
@@ -40,6 +41,7 @@ context('Allocations Migration Homepage', () => {
         cy.get('[data-qa=failures-link]').should('not.exist')
         cy.get('[data-qa=all-events-link]').should('exist')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
+        cy.get('[data-qa=end-activities-button]').should('exist')
       })
       migrationPage.migrationResultsRow(1).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T11:45:12')
@@ -53,6 +55,7 @@ context('Allocations Migration Homepage', () => {
         cy.get('[data-qa=failures-link]').should('exist')
         cy.get('[data-qa=all-events-link]').should('exist')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
+        cy.get('[data-qa=end-activities-button]').should('exist')
       })
       migrationPage.migrationResultsRow(2).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-15T11:00:35')
@@ -66,18 +69,33 @@ context('Allocations Migration Homepage', () => {
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
         cy.get('[data-qa=all-events-link]').should('exist')
         cy.get('[data-qa=already-migrated-link]').should('exist')
+        cy.get('[data-qa=end-activities-button]').should('exist')
       })
+    })
+
+    it('should click through to allocation migration', () => {
+      cy.task('stubHealth')
+
+      const migrationPage = ActivitiesMigrationPage.goTo()
+
+      migrationPage.migrationResultsRow(1).within(() => {
+        cy.get('[data-qa=migrate-allocations-link]').click()
+      })
+
+      const allocationPage = Page.verifyOnPage(StarAllocationsMigrationPage)
+      allocationPage.prisonId().should('have.value', 'WWI')
+      allocationPage.courseActivityId().should('have.value', '123456')
     })
   })
 
-  context('Without MIGRATE_ALLOCATINS role', () => {
+  context('Without MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
-    it('should not see migrate allocations tile', () => {
+    it('should not see migrate activities tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.allocationsMigrationLink().should('not.exist')
+      indexPage.activitiesMigrationLink().should('not.exist')
     })
   })
 })

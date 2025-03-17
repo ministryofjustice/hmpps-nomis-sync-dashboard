@@ -1,4 +1,4 @@
-import CSIPMigrationFailuresPage from '../pages/csip-migration/csipMigrationFailures'
+import CSIPMigrationFailuresPage from '../../pages/csip-migration/csipMigrationFailures'
 
 context('CSIP Migration Failures', () => {
   beforeEach(() => {
