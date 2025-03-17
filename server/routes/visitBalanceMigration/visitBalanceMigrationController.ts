@@ -7,6 +7,11 @@ import startMigrationValidator from './visitBalanceMigrationValidator'
 import VisitBalanceNomisMigrationService from '../../services/visitbalance/visitBalanceNomisMigrationService'
 import VisitBalanceNomisPrisonerService from '../../services/visitbalance/visitBalanceNomisPrisonerService'
 import { Context } from '../../services/nomisMigrationService'
+import { MigrationHistory } from '../../@types/migration'
+
+interface Filter {
+  prisonId?: string
+}
 
 function context(res: Response): Context {
   return {
@@ -24,7 +29,7 @@ export default class VisitBalanceMigrationController {
   async getMigrations(req: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getMigrations(context(res))
 
-    const decoratedMigrations = migrations.map(history => ({
+    const decoratedMigrations = migrations.map(VisitBalanceMigrationController.withFilter).map(history => ({
       ...history,
       applicationInsightsLink: VisitBalanceMigrationController.applicationInsightsUrl(
         VisitBalanceMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
@@ -148,5 +153,16 @@ export default class VisitBalanceMigrationController {
 
   private static applicationInsightsUrl(query: string): string {
     return buildUrl(query, 'P1D')
+  }
+
+  private static withFilter(migration: MigrationHistory): MigrationHistory & {
+    filterPrisonId?: string
+  } {
+    const filter: Filter = JSON.parse(migration.filter)
+    const filterPrisonId = filter.prisonId
+    return {
+      ...migration,
+      ...(filterPrisonId && { filterPrisonId }),
+    }
   }
 }
