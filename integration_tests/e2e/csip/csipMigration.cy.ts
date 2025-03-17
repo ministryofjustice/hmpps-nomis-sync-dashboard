@@ -25,7 +25,7 @@ context('CSIP Migration Homepage', () => {
 
     it('should display list of migrations', () => {
       cy.task('stubHealth')
-      cy.task('stubGetCSIPNoFailures')
+      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-csipmigration_dlq' })
 
       const migrationPage = CSIPMigrationPage.goTo()
 

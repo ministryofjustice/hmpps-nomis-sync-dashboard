@@ -1210,21 +1210,6 @@ const stubGetActivitiesWithFailures = (failures: unknown = activitiesFailures): 
     },
   })
 
-const stubGetActivitiesNoFailures = (failures: unknown = noMessageFailures): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-activitiesmigration_dlq',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: failures,
-    },
-  })
-
 const stubDeleteActivitiesFailures = (): SuperAgentRequest =>
   stubFor({
     request: {
@@ -1759,20 +1744,6 @@ const stubGetIncidentsFailures = (failures: unknown = defaultIncidentsFailures):
     },
   })
 
-const stubGetIncidentsNoFailures = (failures: unknown = noMessageFailures): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-incidentsmigration_dlq',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: failures,
-    },
-  })
 const stubDeleteIncidentsFailures = (): SuperAgentRequest =>
   stubFor({
     request: {
@@ -2025,20 +1996,6 @@ const stubGetCSIPFailures = (failures: unknown = defaultCSIPFailures): SuperAgen
     },
   })
 
-const stubGetCSIPNoFailures = (failures: unknown = noMessageFailures): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-csipmigration_dlq',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: failures,
-    },
-  })
 const stubDeleteCSIPFailures = (): SuperAgentRequest =>
   stubFor({
     request: {
@@ -2200,7 +2157,6 @@ export default {
 
   stubListOfActivitiesMigrationHistory,
   stubStartActivitiesMigration,
-  stubGetActivitiesNoFailures,
   stubGetActivitiesWithFailures,
   stubDeleteActivitiesFailures,
   stubGetActivitiesMigrationDetailsStarted,
@@ -2217,7 +2173,6 @@ export default {
   stubListOfIncidentsMigrationHistory,
   stubStartIncidentsMigration,
   stubGetIncidentsFailures,
-  stubGetIncidentsNoFailures,
   stubDeleteIncidentsFailures,
   stubGetIncidentsMigrationDetailsStarted,
   stubGetIncidentsMigrationDetailsCompleted,
@@ -2225,7 +2180,6 @@ export default {
   stubListOfCSIPMigrationHistory,
   stubStartCSIPMigration,
   stubGetCSIPFailures,
-  stubGetCSIPNoFailures,
   stubDeleteCSIPFailures,
   stubGetCSIPMigrationDetailsStarted,
   stubGetCSIPMigrationDetailsCompleted,
