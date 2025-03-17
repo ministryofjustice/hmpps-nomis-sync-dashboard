@@ -610,6 +610,17 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
               messagesOnDlq: `${failures}`,
             },
           },
+          'migrationvisitbalance-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-migration_visitbalance_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-migration_visitbalance_dlq',
+              messagesOnDlq: `${failures}`,
+            },
+          },
         },
         groups: ['liveness', 'readiness'],
       },

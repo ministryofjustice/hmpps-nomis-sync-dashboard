@@ -68,7 +68,7 @@ export default class VisitBalanceMigrationController {
 
     if (errors.length > 0) {
       req.flash('errors', errors)
-      res.redirect('/visitBalance-migration/amend')
+      res.redirect('/visit-balance-migration/amend')
     } else {
       const filter = req.session.prisonFilteredMigrationForm
       const count = await this.nomisPrisonerService.getMigrationEstimatedCount(filter, context(res))
@@ -77,7 +77,7 @@ export default class VisitBalanceMigrationController {
 
       req.session.prisonFilteredMigrationForm.estimatedCount = count.toLocaleString()
       req.session.prisonFilteredMigrationForm.dlqCount = dlqCountString.toLocaleString()
-      res.redirect('/visitBalance-migration/start/preview')
+      res.redirect('/visit-balance-migration/start/preview')
     }
   }
 
@@ -99,7 +99,7 @@ export default class VisitBalanceMigrationController {
     const result = await this.nomisMigrationService.startMigration(filter, context(res))
     req.session.prisonFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.prisonFilteredMigrationForm.migrationId = result.migrationId
-    res.redirect('/visitBalance-migration/start/confirmation')
+    res.redirect('/visit-balance-migration/start/confirmation')
   }
 
   async startMigrationConfirmation(req: Request, res: Response): Promise<void> {

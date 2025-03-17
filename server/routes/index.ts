@@ -140,7 +140,7 @@ export default function routes(services: Services): Router {
           description: 'Migration and synchronisation information',
           href: '/visit-balance-migration',
           roles: [MIGRATE_VISIT_BALANCE_ROLE, MIGRATE_NOMIS_SYSCON],
-          enabled: false,
+          enabled: true,
         },
       ].filter(
         register =>
