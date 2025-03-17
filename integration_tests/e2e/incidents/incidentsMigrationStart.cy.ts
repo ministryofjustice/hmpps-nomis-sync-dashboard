@@ -1,10 +1,10 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import StartIncidentsMigrationPage from '../pages/incidents-migration/startIncidentsMigration'
-import StartIncidentsMigrationConfirmationPage from '../pages/incidents-migration/startIncidentsMigrationConfirmation'
-import StartIncidentsMigrationPreviewPage from '../pages/incidents-migration/startIncidentsMigrationPreview'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import StartIncidentsMigrationPage from '../../pages/incidents-migration/startIncidentsMigration'
+import StartIncidentsMigrationConfirmationPage from '../../pages/incidents-migration/startIncidentsMigrationConfirmation'
+import StartIncidentsMigrationPreviewPage from '../../pages/incidents-migration/startIncidentsMigrationPreview'
 
-import IncidentsMigrationPage from '../pages/incidents-migration/incidentsMigration'
+import IncidentsMigrationPage from '../../pages/incidents-migration/incidentsMigration'
 
 context('Incidents Migration Start', () => {
   beforeEach(() => {

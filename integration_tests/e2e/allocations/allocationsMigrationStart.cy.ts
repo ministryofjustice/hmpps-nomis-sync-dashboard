@@ -1,9 +1,9 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import StartAllocationsMigrationPage from '../pages/allocations-migration/startAllocationsMigration'
-import StartAllocationsMigrationConfirmationPage from '../pages/allocations-migration/startAllocationsMigrationConfirmation'
-import StartAllocationsMigrationPreviewPage from '../pages/allocations-migration/startAllocationsMigrationPreview'
-import AllocationsMigrationPage from '../pages/allocations-migration/allocationsMigration'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import StartAllocationsMigrationPage from '../../pages/allocations-migration/startAllocationsMigration'
+import StartAllocationsMigrationConfirmationPage from '../../pages/allocations-migration/startAllocationsMigrationConfirmation'
+import StartAllocationsMigrationPreviewPage from '../../pages/allocations-migration/startAllocationsMigrationPreview'
+import AllocationsMigrationPage from '../../pages/allocations-migration/allocationsMigration'
 
 context('Allocations Migration Start', () => {
   beforeEach(() => {

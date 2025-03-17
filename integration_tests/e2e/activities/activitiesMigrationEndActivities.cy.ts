@@ -1,6 +1,6 @@
-import Page from '../pages/page'
-import IndexPage from '../pages'
-import ActivitiesMigrationPage from '../pages/activities-migration/activitiesMigration'
+import Page from '../../pages/page'
+import IndexPage from '../../pages'
+import ActivitiesMigrationPage from '../../pages/activities-migration/activitiesMigration'
 
 context('End Activities', () => {
   beforeEach(() => {

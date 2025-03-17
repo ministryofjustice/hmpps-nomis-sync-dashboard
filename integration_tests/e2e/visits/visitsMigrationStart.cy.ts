@@ -1,9 +1,9 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import StartVisitsMigrationPage from '../pages/visits-migration/startVisitsMigration'
-import StartVisitsMigrationConfirmationPage from '../pages/visits-migration/startVisitsMigrationConfirmation'
-import StartVisitsMigrationPreviewPage from '../pages/visits-migration/startVisitsMigrationPreview'
-import VisitsMigrationPage from '../pages/visits-migration/visitsMigration'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import StartVisitsMigrationPage from '../../pages/visits-migration/startVisitsMigration'
+import StartVisitsMigrationConfirmationPage from '../../pages/visits-migration/startVisitsMigrationConfirmation'
+import StartVisitsMigrationPreviewPage from '../../pages/visits-migration/startVisitsMigrationPreview'
+import VisitsMigrationPage from '../../pages/visits-migration/visitsMigration'
 
 context('Visits Migration Start', () => {
   beforeEach(() => {

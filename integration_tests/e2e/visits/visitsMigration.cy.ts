@@ -1,7 +1,7 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import VisitsMigrationPage from '../pages/visits-migration/visitsMigration'
-import VisitsMigrationFailuresPage from '../pages/visits-migration/visitsMigrationFailures'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import VisitsMigrationPage from '../../pages/visits-migration/visitsMigration'
+import VisitsMigrationFailuresPage from '../../pages/visits-migration/visitsMigrationFailures'
 
 context('Visit Migration Homepage', () => {
   beforeEach(() => {

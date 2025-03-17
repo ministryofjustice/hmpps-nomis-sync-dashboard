@@ -1,33 +1,33 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import AppointmentsMigrationPage from '../pages/appointments-migration/appointmentsMigration'
-import AppointmentsMigrationFailuresPage from '../pages/appointments-migration/appointmentsMigrationFailures'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import CSIPMigrationPage from '../../pages/csip-migration/csipMigration'
+import CSIPMigrationFailuresPage from '../../pages/csip-migration/csipMigrationFailures'
 
-context('Appointment Migration Homepage', () => {
+context('CSIP Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
   })
-  context('With MIGRATE_APPOINTMENTS role', () => {
+  context('With MIGRATE_CSIP role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_APPOINTMENTS'] })
-      cy.task('stubListOfAppointmentsMigrationHistory')
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
+      cy.task('stubListOfCSIPMigrationHistory')
       cy.signIn()
     })
-    it('should see migrate appointments tile', () => {
+    it('should see migrate csip tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.appointmentsMigrationLink().should('be.visible')
+      indexPage.csipMigrationLink().should('be.visible')
     })
-    it('should be able to navigate to the appointments migration home page', () => {
+    it('should be able to navigate to the csip migration home page', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.appointmentsMigrationLink().click()
-      Page.verifyOnPage(AppointmentsMigrationPage)
+      indexPage.csipMigrationLink().click()
+      Page.verifyOnPage(CSIPMigrationPage)
     })
 
     it('should display list of migrations', () => {
       cy.task('stubHealth')
-      cy.task('stubGetAppointmentsFailures')
+      cy.task('stubGetCSIPNoFailures')
 
-      const migrationPage = AppointmentsMigrationPage.goTo()
+      const migrationPage = CSIPMigrationPage.goTo()
 
       migrationPage.migrationResultsRow(0).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T10:13:56')
@@ -37,9 +37,6 @@ context('Appointment Migration Homepage', () => {
         cy.get('[data-qa=migratedCount]').should('contain.text', '0')
         cy.get('[data-qa=failedCount]').should('contain.text', '0')
         cy.get('[data-qa=estimatedCount]').should('contain.text', '0')
-        cy.get('[data-qa=filterPrisonIds]').should('not.exist')
-        cy.get('[data-qa=filterToDate]').should('not.exist')
-        cy.get('[data-qa=filterFromDate]').should('contain.text', '4 March 2022')
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('not.exist')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
@@ -52,9 +49,6 @@ context('Appointment Migration Homepage', () => {
         cy.get('[data-qa=migratedCount]').should('contain.text', '1')
         cy.get('[data-qa=failedCount]').should('contain.text', '162794')
         cy.get('[data-qa=estimatedCount]').should('contain.text', '205630')
-        cy.get('[data-qa=filterPrisonIds]').should('not.exist')
-        cy.get('[data-qa=filterToDate]').should('not.exist')
-        cy.get('[data-qa=filterFromDate]').should('not.exist')
         cy.get('[data-qa=progress-link]').should('contain.text', 'View progress')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
         cy.get('[data-qa=already-migrated-link]').should('contain.text', 'View Insights')
@@ -67,9 +61,6 @@ context('Appointment Migration Homepage', () => {
         cy.get('[data-qa=migratedCount]').should('contain.text', '0')
         cy.get('[data-qa=failedCount]').should('contain.text', '4')
         cy.get('[data-qa=estimatedCount]').should('contain.text', '4')
-        cy.get('[data-qa=filterPrisonIds]').should('contain.text', 'MDI,SWI')
-        cy.get('[data-qa=filterToDate]').should('contain.text', '17 April 2022')
-        cy.get('[data-qa=filterFromDate]').should('not.exist')
         cy.get('[data-qa=progress-link]').should('not.exist')
         cy.get('[data-qa=failures-link]').should('contain.text', 'View failures')
         cy.get('[data-qa=already-migrated-link]').should('not.exist')
@@ -78,18 +69,18 @@ context('Appointment Migration Homepage', () => {
       migrationPage.migrationResultsRow(1).within(() => {
         cy.get('[data-qa=failures-link]').click()
       })
-      Page.verifyOnPage(AppointmentsMigrationFailuresPage)
+      Page.verifyOnPage(CSIPMigrationFailuresPage)
     })
   })
 
-  context('Without MIGRATE_APPOINTMENTS role', () => {
+  context('Without MIGRATE_CSIP role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
-    it('should not see migrate appointments tile', () => {
+    it('should not see migrate csip tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.appointmentsMigrationLink().should('not.exist')
+      indexPage.csipMigrationLink().should('not.exist')
     })
   })
 })
