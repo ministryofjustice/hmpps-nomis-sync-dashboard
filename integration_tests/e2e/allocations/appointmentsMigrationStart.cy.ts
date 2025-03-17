@@ -1,9 +1,9 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import StartAppointmentsMigrationPage from '../pages/appointments-migration/startAppointmentsMigration'
-import StartAppointmentsMigrationConfirmationPage from '../pages/appointments-migration/startAppointmentsMigrationConfirmation'
-import StartAppointmentsMigrationPreviewPage from '../pages/appointments-migration/startAppointmentsMigrationPreview'
-import AppointmentsMigrationPage from '../pages/appointments-migration/appointmentsMigration'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import StartAppointmentsMigrationPage from '../../pages/appointments-migration/startAppointmentsMigration'
+import StartAppointmentsMigrationConfirmationPage from '../../pages/appointments-migration/startAppointmentsMigrationConfirmation'
+import StartAppointmentsMigrationPreviewPage from '../../pages/appointments-migration/startAppointmentsMigrationPreview'
+import AppointmentsMigrationPage from '../../pages/appointments-migration/appointmentsMigration'
 
 context('Appointments Migration Start', () => {
   beforeEach(() => {

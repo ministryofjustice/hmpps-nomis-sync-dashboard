@@ -1,9 +1,9 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import StartActivitiesMigrationPage from '../pages/activities-migration/startActivitiesMigration'
-import StartActivitiesMigrationConfirmationPage from '../pages/activities-migration/startActivitiesMigrationConfirmation'
-import StartActivitiesMigrationPreviewPage from '../pages/activities-migration/startActivitiesMigrationPreview'
-import ActivitiesMigrationPage from '../pages/activities-migration/activitiesMigration'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import StartActivitiesMigrationPage from '../../pages/activities-migration/startActivitiesMigration'
+import StartActivitiesMigrationConfirmationPage from '../../pages/activities-migration/startActivitiesMigrationConfirmation'
+import StartActivitiesMigrationPreviewPage from '../../pages/activities-migration/startActivitiesMigrationPreview'
+import ActivitiesMigrationPage from '../../pages/activities-migration/activitiesMigration'
 
 context('Activities Migration Start', () => {
   beforeEach(() => {

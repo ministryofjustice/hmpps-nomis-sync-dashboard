@@ -1,10 +1,10 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import StartCSIPMigrationPage from '../pages/csip-migration/startCSIPMigration'
-import StartCSIPMigrationConfirmationPage from '../pages/csip-migration/startCSIPMigrationConfirmation'
-import StartCSIPMigrationPreviewPage from '../pages/csip-migration/startCSIPMigrationPreview'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import StartCSIPMigrationPage from '../../pages/csip-migration/startCSIPMigration'
+import StartCSIPMigrationConfirmationPage from '../../pages/csip-migration/startCSIPMigrationConfirmation'
+import StartCSIPMigrationPreviewPage from '../../pages/csip-migration/startCSIPMigrationPreview'
 
-import CSIPMigrationPage from '../pages/csip-migration/csipMigration'
+import CSIPMigrationPage from '../../pages/csip-migration/csipMigration'
 
 context('CSIP Migration Start', () => {
   beforeEach(() => {

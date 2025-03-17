@@ -1,7 +1,7 @@
-import VisitsMappingsPage from '../pages/visits-room-mapping/viewRoomMappings'
-import Page from '../pages/page'
-import IndexPage from '../pages'
-import AddRoomMappingPage from '../pages/visits-room-mapping/addRoomMappings'
+import VisitsMappingsPage from '../../pages/visits-room-mapping/viewRoomMappings'
+import Page from '../../pages/page'
+import IndexPage from '../../pages'
+import AddRoomMappingPage from '../../pages/visits-room-mapping/addRoomMappings'
 
 context('Visit Room Mappings', () => {
   beforeEach(() => {

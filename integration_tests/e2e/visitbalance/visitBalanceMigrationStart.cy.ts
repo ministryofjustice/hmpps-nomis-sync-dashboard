@@ -1,9 +1,9 @@
-import IndexPage from '../pages/index'
-import Page from '../pages/page'
-import VisitBalanceMigrationPage from '../pages/visit-balance-migration/visitBalanceMigration'
-import StartVisitBalanceMigrationPage from '../pages/visit-balance-migration/startVisitBalanceMigration'
-import StartVisitBalanceMigrationPreviewPage from '../pages/visit-balance-migration/startVisitBalanceMigrationPreview'
-import StartVisitBalanceMigrationConfirmationPage from '../pages/visit-balance-migration/startVisitBalanceMigrationConfirmation'
+import IndexPage from '../../pages'
+import Page from '../../pages/page'
+import VisitBalanceMigrationPage from '../../pages/visit-balance-migration/visitBalanceMigration'
+import StartVisitBalanceMigrationPage from '../../pages/visit-balance-migration/startVisitBalanceMigration'
+import StartVisitBalanceMigrationPreviewPage from '../../pages/visit-balance-migration/startVisitBalanceMigrationPreview'
+import StartVisitBalanceMigrationConfirmationPage from '../../pages/visit-balance-migration/startVisitBalanceMigrationConfirmation'
 
 context('Visit Balance Migration Start', () => {
   beforeEach(() => {

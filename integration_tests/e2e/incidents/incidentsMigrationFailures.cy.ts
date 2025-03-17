@@ -1,4 +1,4 @@
-import IncidentsMigrationFailuresPage from '../pages/incidents-migration/incidentsMigrationFailures'
+import IncidentsMigrationFailuresPage from '../../pages/incidents-migration/incidentsMigrationFailures'
 
 context('Incidents Migration Failures', () => {
   beforeEach(() => {
