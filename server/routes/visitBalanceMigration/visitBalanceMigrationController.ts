@@ -117,7 +117,7 @@ export default class VisitBalanceMigrationController {
     const { migrationId } = req.query as { migrationId: string }
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/visitbalance/visitBalanceMigrationDetails', {
-      migration: { ...migration, history: migration.history },
+      migration: { ...migration, history: VisitBalanceMigrationController.withFilter(migration.history) },
     })
   }
 
@@ -126,7 +126,7 @@ export default class VisitBalanceMigrationController {
     await this.nomisMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/visitbalance/visitBalanceMigrationDetails', {
-      migration: { ...migration, history: migration.history },
+      migration: { ...migration, history: VisitBalanceMigrationController.withFilter(migration.history) },
     })
   }
 
