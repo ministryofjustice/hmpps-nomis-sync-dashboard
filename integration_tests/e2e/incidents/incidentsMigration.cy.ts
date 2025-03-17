@@ -25,7 +25,7 @@ context('Incident Migration Homepage', () => {
 
     it('should display list of migrations', () => {
       cy.task('stubHealth')
-      cy.task('stubGetIncidentsNoFailures')
+      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-incidentsmigration_dlq' })
 
       const migrationPage = IncidentsMigrationPage.goTo()
 

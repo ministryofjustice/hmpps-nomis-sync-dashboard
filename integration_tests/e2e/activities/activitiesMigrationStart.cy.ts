@@ -127,7 +127,7 @@ context('Activities Migration Start', () => {
         estimatedCount: 100_988,
       })
       cy.task('stubHealth', '0')
-      cy.task('stubGetActivitiesNoFailures')
+      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-activitiesmigration_dlq' })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
@@ -171,7 +171,7 @@ context('Activities Migration Start', () => {
         estimatedCount: 100_988,
       })
       cy.task('stubHealth', '0')
-      cy.task('stubGetActivitiesNoFailures')
+      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-activitiesmigration_dlq' })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
@@ -208,7 +208,7 @@ context('Activities Migration Start', () => {
         estimatedCount: 100_988,
       })
       cy.task('stubHealth', '0')
-      cy.task('stubGetActivitiesNoFailures')
+      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-activitiesmigration_dlq' })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
