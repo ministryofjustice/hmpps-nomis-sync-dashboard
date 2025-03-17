@@ -12,7 +12,7 @@ context('Corporate Migration Start', () => {
   context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
-      cy.task('stubListOfMigrationHistory', 'corporate')
+      cy.task('stubListOfMigrationHistory', { domain: 'corporate' })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.corporateMigrationLink().click()

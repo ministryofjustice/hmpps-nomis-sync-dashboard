@@ -12,7 +12,7 @@ context('Contact Person Migration Start', () => {
   context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
-      cy.task('stubListOfMigrationHistory', 'contactperson')
+      cy.task('stubListOfMigrationHistory', { domain: 'contactperson' })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.contactPersonMigrationLink().click()

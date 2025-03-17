@@ -613,11 +613,11 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
           'migrationvisitbalance-health': {
             status: 'UP',
             details: {
-              queueName: 'dps-syscon-dev-migration_visitbalance_queue',
+              queueName: 'syscon-devs-dev-migration_visitbalance_queue',
               messagesOnQueue: '0',
               messagesInFlight: '0',
               dlqStatus: 'UP',
-              dlqName: 'dps-syscon-dev-migration_visitbalance_dlq',
+              dlqName: 'syscon-devs-dev-migration_visitbalance_dlq',
               messagesOnDlq: `${failures}`,
             },
           },
@@ -1195,12 +1195,6 @@ const activitiesFailures = {
   ],
 }
 
-const noActivitiesFailures = {
-  messagesFoundCount: 0,
-  messagesReturnedCount: 0,
-  messages: [],
-}
-
 const stubGetActivitiesWithFailures = (failures: unknown = activitiesFailures): SuperAgentRequest =>
   stubFor({
     request: {
@@ -1216,7 +1210,7 @@ const stubGetActivitiesWithFailures = (failures: unknown = activitiesFailures): 
     },
   })
 
-const stubGetActivitiesNoFailures = (failures: unknown = noActivitiesFailures): SuperAgentRequest =>
+const stubGetActivitiesNoFailures = (failures: unknown = noMessageFailures): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -1765,12 +1759,7 @@ const stubGetIncidentsFailures = (failures: unknown = defaultIncidentsFailures):
     },
   })
 
-const noIncidentsFailures = {
-  messagesFoundCount: 0,
-  messagesReturnedCount: 0,
-  messages: [],
-}
-const stubGetIncidentsNoFailures = (failures: unknown = noIncidentsFailures): SuperAgentRequest =>
+const stubGetIncidentsNoFailures = (failures: unknown = noMessageFailures): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -2036,12 +2025,7 @@ const stubGetCSIPFailures = (failures: unknown = defaultCSIPFailures): SuperAgen
     },
   })
 
-const noCSIPFailures = {
-  messagesFoundCount: 0,
-  messagesReturnedCount: 0,
-  messages: [],
-}
-const stubGetCSIPNoFailures = (failures: unknown = noCSIPFailures): SuperAgentRequest =>
+const stubGetCSIPNoFailures = (failures: unknown = noMessageFailures): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -2134,10 +2118,13 @@ const stubGetCSIPMigrationDetailsCompleted = ({
     },
   })
 
-const stubListOfMigrationHistory = (
-  domain: string,
-  migrationHistory: MigrationHistory[] = defaultSentencingMigrationHistory,
-): SuperAgentRequest =>
+const stubListOfMigrationHistory = ({
+  domain,
+  history = defaultSentencingMigrationHistory,
+}: {
+  domain: string
+  history: MigrationHistory[]
+}): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -2148,7 +2135,7 @@ const stubListOfMigrationHistory = (
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: migrationHistory,
+      jsonBody: history,
     },
   })
 
@@ -2179,6 +2166,15 @@ const stubGetFailures = (args: { queue: string; failures: unknown }): SuperAgent
       jsonBody: args.failures || defaultFailures,
     },
   })
+
+const stubGetNoFailures = (args: { queue: string }): SuperAgentRequest =>
+  stubGetFailures({ queue: args.queue, failures: noMessageFailures })
+
+const noMessageFailures = {
+  messagesFoundCount: 0,
+  messagesReturnedCount: 0,
+  messages: [],
+}
 
 export default {
   stubListOfVisitsMigrationHistory,
@@ -2242,4 +2238,5 @@ export default {
   stubListOfMigrationHistory,
   stubStartMigration,
   stubGetFailures,
+  stubGetNoFailures,
 }
