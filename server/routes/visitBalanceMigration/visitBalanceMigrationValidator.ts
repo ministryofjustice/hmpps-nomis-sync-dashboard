@@ -5,12 +5,11 @@ export default function validate(form: PrisonFilteredMigrationForm): Express.Val
   return validateForm(
     form,
     {
-      prisonId: ['required', 'alpha', 'size:3'],
+      prisonId: ['alpha', 'size:3'],
     },
     {
-      'required.prisonId': 'Enter a prison ID.',
-      'alpha.prisonId': 'The prison ID must contain 3 letters.',
-      'size.prisonId': 'The prison ID must contain 3 letters.',
+      'alpha.prisonId': 'The prison ID must contain 3 letters',
+      'size.prisonId': 'The prison ID must contain 3 letters',
     },
   )
 }
