@@ -3,6 +3,7 @@ import { resetStubs } from './integration_tests/mockApis/wiremock'
 import auth from './integration_tests/mockApis/auth'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import nomisMigrationApi from './integration_tests/mockApis/nomisMigrationApi'
+import nomisVisitBalanceMigrationApi from './integration_tests/mockApis/nomisVisitBalanceMigrationApi'
 import nomisPrisonerApi from './integration_tests/mockApis/nomisPrisonerApi'
 import mappingApi from './integration_tests/mockApis/mappingApi'
 import activitiesApi from './integration_tests/mockApis/activitiesApi'
@@ -25,6 +26,7 @@ export default defineConfig({
         ...tokenVerification,
         ...nomisMigrationApi,
         ...nomisPrisonerApi,
+        ...nomisVisitBalanceMigrationApi,
         ...mappingApi,
         ...activitiesApi,
       })
