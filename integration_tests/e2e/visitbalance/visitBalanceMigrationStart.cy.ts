@@ -31,8 +31,30 @@ context('Visit Balance Migration Start', () => {
       page.continueButton().click()
 
       const pageWithErrors = Page.verifyOnPage(StartVisitBalanceMigrationPage)
-      pageWithErrors.errorSummary().contains('The prison ID must contain 3 letters.')
+      pageWithErrors.errorSummary().contains('The prison ID must contain 3 letters')
     })
+
+    it('will ensure prison id is optional when selecting start migration', () => {
+      cy.task('stubStartMigration', {
+        domain: 'visit-balance',
+        response: {
+          migrationId: '2022-03-23T11:11:56',
+          estimatedCount: 100_988,
+        },
+      })
+      cy.task('stubHealth')
+      cy.task('stubGetNoFailures', { queue: 'syscon-devs-dev-migration_visitbalance_dlq' })
+      cy.task('stubGetVisitBalanceMigrationEstimatedCount', 100_988)
+
+      Page.verifyOnPage(VisitBalanceMigrationPage).startNewMigration().click()
+      const page = Page.verifyOnPage(StartVisitBalanceMigrationPage)
+
+      page.continueButton().click()
+
+      const previewPage = Page.verifyOnPage(StartVisitBalanceMigrationPreviewPage)
+      previewPage.estimateSummary().contains('Estimated number of visit balance entities to be migrated: 100,988')
+    })
+
     it('Preview of migration will be shown and changes allowed prior to starting a migration', () => {
       cy.task('stubStartMigration', {
         domain: 'visit-balance',
