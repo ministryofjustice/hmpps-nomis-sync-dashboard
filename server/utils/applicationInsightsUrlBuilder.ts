@@ -6,7 +6,7 @@ export const buildUrl = (query: string, timespan = 'PT30M') => {
   )
   return `${
     config.applicationInsights.url
-  }/resourceId/${resource}/source/LogsBlade.AnalyticsShareLinkToQuery/query/${encodeURIComponent(
+  }/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/${resource}/source/LogsBlade.AnalyticsShareLinkToQuery/query/${encodeURIComponent(
     query,
   )}/timespan/${timespan}`
 }
@@ -17,5 +17,5 @@ export const buildUrlNoTimespan = (query: string) => {
   )
   return `${
     config.applicationInsights.url
-  }/resourceId/${resource}/source/LogsBlade.AnalyticsShareLinkToQuery/query/${encodeURIComponent(query)}`
+  }/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/${resource}/source/LogsBlade.AnalyticsShareLinkToQuery/query/${encodeURIComponent(query)}`
 }
