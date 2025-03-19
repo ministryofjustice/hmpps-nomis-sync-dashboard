@@ -18,7 +18,6 @@ export default function routes(router: Router, services: Services): Router {
     services.contactPersonProfileDetailsNomisPrisonerService,
   )
   get('/contactperson-profiledetails-migration', (req, res) => migrationController.getMigrations(req, res))
-  get('/contactperson-profiledetails-migration/failures', (req, res) => migrationController.viewFailures(req, res))
   get('/contactperson-profiledetails-migration/start', (req, res) => migrationController.startNewMigration(req, res))
   post('/contactperson-profiledetails-migration/start', (req, res) => migrationController.postStartMigration(req, res))
   get('/contactperson-profiledetails-migration/amend', (req, res) => migrationController.startMigration(req, res))

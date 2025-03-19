@@ -92,18 +92,16 @@
                           </div>
                         </div>
 
-                          <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                          {% if u.recordsFailed + u.recordsMigrated < u.estimatedRecordCount %}
-                            <div class="govuk-grid-column-two-thirds">
-                              <a data-qa="already-migrated-link" class="govuk-link"  target="_blank" href="{{ u.applicationInsightsLink }}">View Insights</a> for already migrated records
-                            </div>
-                          {% endif %}
-                          {% if u.recordsFailed > 0 %}
-                            <div class="govuk-grid-column-one-third">
-                              <a data-qa="failures-link" class="govuk-link" href="/contactperson-profiledetails-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
-                            </div>
-                          {% endif %}
+                        <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                          <div class="govuk-grid-column-full">
+                            <a data-qa="all-events-link" class="govuk-link"  target="_blank" href="{{ u.applicationInsightsAllLink }}">View all migration events in App Insights</a>
                           </div>
+                          {% if u.recordsFailed > 0 %}
+                            <div class="govuk-grid-column-full">
+                              <a data-qa="failures-link" class="govuk-link"  target="_blank" href="{{ u.applicationInsightsFailuresLink }}">View failures in App Insights</a>
+                            </div>
+                          {% endif %}
+                        </div>
 
                         <div class="govuk-grid-row govuk-!-margin-bottom-2">
                           <div class="govuk-grid-column-full govuk-!-margin-bottom-3 govuk-!-margin-top-2">
