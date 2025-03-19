@@ -347,13 +347,19 @@ export default class ActivitiesMigrationController {
     }
   }
 
-  private static alreadyMigratedAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
+  private static fullMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate?: string): string {
+    const startDateQuery = `datetime(${this.toISODateTime(startedDate)})`
+    const endDateQuery = endedDate ? `datetime(${this.toISODateTime(endedDate)})` : `now()`
     return `customEvents
       | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-      | where timestamp between (datetime(${ActivitiesMigrationController.toISODateTime(
-        startedDate,
-      )}) .. datetime(${ActivitiesMigrationController.toISODateTime(endedDate)}))
+      | where timestamp between (${startDateQuery} .. ${endDateQuery})
       | where customDimensions.migrationId startswith '${migrationId}'
+      | where name startswith 'activity-migration'
+    `.trim()
+  }
+
+  private static alreadyMigratedAppInsightsQuery(migrationId: string, startedDate: string, endedDate?: string): string {
+    return `${this.fullMigrationAppInsightsQuery(migrationId, startedDate, endedDate)}
       | where name endswith 'ignored'
       | join kind=leftouter (
         traces
@@ -366,24 +372,8 @@ export default class ActivitiesMigrationController {
     `
   }
 
-  private static fullMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
-    return `customEvents
-      | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-      | where timestamp between (datetime(${ActivitiesMigrationController.toISODateTime(
-        startedDate,
-      )}) .. datetime(${ActivitiesMigrationController.toISODateTime(endedDate)}))
-      | where customDimensions.migrationId startswith '${migrationId}'
-      | where name startswith 'activity-migration'
-    `
-  }
-
-  private static failedMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
-    return `customEvents
-      | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-      | where timestamp between (datetime(${ActivitiesMigrationController.toISODateTime(
-        startedDate,
-      )}) .. datetime(${ActivitiesMigrationController.toISODateTime(endedDate)}))
-      | where customDimensions.migrationId startswith '${migrationId}'
+  private static failedMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate?: string): string {
+    return `${this.fullMigrationAppInsightsQuery(migrationId, startedDate, endedDate)}
       | where (name endswith 'failed' or name endswith 'error')
       | join kind=leftouter (
         traces

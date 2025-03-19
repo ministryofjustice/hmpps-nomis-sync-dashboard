@@ -4,7 +4,7 @@ import { PrisonerFilteredMigrationForm } from 'express-session'
 import NomisMigrationService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisMigrationService'
 import { Context } from '../../../services/nomisMigrationService'
 import { MigrationHistory } from '../../../@types/migration'
-import { buildUrl } from '../../../utils/applicationInsightsUrlBuilder'
+import { buildUrlNoTimespan } from '../../../utils/logAnalyticsUrlBuilder'
 import trimForm from '../../../utils/trim'
 import logger from '../../../../logger'
 import NomisPrisonerService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisPrisonerService'
@@ -33,10 +33,20 @@ export default class ContactPersonProfileDetailsMigrationController {
       .map(ContactPersonProfileDetailsMigrationController.withFilter)
       .map(history => ({
         ...history,
-        applicationInsightsLink: ContactPersonProfileDetailsMigrationController.applicationInsightsUrl(
-          ContactPersonProfileDetailsMigrationController.alreadyMigratedApplicationInsightsQuery(
+        applicationInsightsAllLink: ContactPersonProfileDetailsMigrationController.applicationInsightsUrl(
+          ContactPersonProfileDetailsMigrationController.migrationsApplicationInsightsQuery(
+            history.migrationId,
             history.whenStarted,
             history.whenEnded,
+            false,
+          ),
+        ),
+        applicationInsightsFailuresLink: ContactPersonProfileDetailsMigrationController.applicationInsightsUrl(
+          ContactPersonProfileDetailsMigrationController.migrationsApplicationInsightsQuery(
+            history.migrationId,
+            history.whenStarted,
+            history.whenEnded,
+            true,
           ),
         ),
       }))
@@ -116,37 +126,22 @@ export default class ContactPersonProfileDetailsMigrationController {
     })
   }
 
-  async viewFailures(req: Request, res: Response): Promise<void> {
-    const failures = await this.nomisMigrationService.getFailures(context(res))
-    const failuresDecorated = {
-      ...failures,
-      messages: failures.messages.map(message => ({
-        ...message,
-        applicationInsightsLink: ContactPersonProfileDetailsMigrationController.applicationInsightsUrl(
-          ContactPersonProfileDetailsMigrationController.messageApplicationInsightsQuery(message),
-        ),
-      })),
-    }
-    res.render('pages/contactperson/profiledetails/contactPersonProfileDetailsMigrationFailures', {
-      failures: failuresDecorated,
-    })
-  }
-
-  private static messageApplicationInsightsQuery(message: { messageId: string }): string {
-    return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
-    | order by timestamp desc`
-  }
-
-  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
-    return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where message startswith 'Will not migrate the courseActivityId'
-    | where timestamp between (datetime(${ContactPersonProfileDetailsMigrationController.toISODateTime(
-      startedDate,
-    )}) .. datetime(${ContactPersonProfileDetailsMigrationController.toISODateTime(endedDate)}))
-    | summarize dcount(message)`
+  private static migrationsApplicationInsightsQuery(
+    migrationId: string,
+    startedDate: string,
+    endedDate?: string,
+    failed: boolean = false,
+  ): string {
+    const startDateQuery = `datetime(${this.toISODateTime(startedDate)})`
+    const endDateQuery = endedDate ? `datetime(${this.toISODateTime(endedDate)})` : `now()`
+    const failedQuery = failed ? '| where (Name endswith "failed" or Name endswith "error")' : ''
+    return `AppEvents
+      | where AppRoleName == 'hmpps-prisoner-from-nomis-migration'
+      | where TimeGenerated between (${startDateQuery} .. ${endDateQuery})
+      | where Properties.migrationId startswith '${migrationId}'
+      | where Name startswith 'contactperson-profiledetails-migration'
+      ${failedQuery}
+    `
   }
 
   private static toISODateTime(localDateTime: string): string {
@@ -154,7 +149,7 @@ export default class ContactPersonProfileDetailsMigrationController {
   }
 
   private static applicationInsightsUrl(query: string): string {
-    return buildUrl(query, 'P1D')
+    return buildUrlNoTimespan(query)
   }
 
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
