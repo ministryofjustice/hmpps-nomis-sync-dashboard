@@ -10,6 +10,7 @@ import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRou
 import corePersonMigrationRoutes from './corePersonMigration/corePersonMigrationRouter'
 import csipMigrationRoutes from './csipMigration/csipMigrationRouter'
 import contactPersonMigrationRoutes from './contactPersonMigration/contactPersonMigrationRouter'
+import contactPersonProfileDetailsMigrationRoutes from './contactPersonMigration/contactPersonProfileDetailsMigration/contactPersonProfileDetailsMigrationRouter'
 import corporateMigrationRoutes from './corporateMigration/corporateMigrationRouter'
 import visitBalanceMigrationRoutes from './visitBalanceMigration/visitBalanceMigrationRouter'
 import {
@@ -127,6 +128,14 @@ export default function routes(services: Services): Router {
           enabled: true,
         },
         {
+          id: 'contactperson-profiledetails-migration',
+          heading: 'Contact Person Profile Details migration',
+          description: 'Migration and synchronisation information',
+          href: '/contactperson-profiledetails-migration',
+          roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
+          enabled: true,
+        },
+        {
           id: 'corporate-migration',
           heading: 'Corporate migration',
           description: 'Migration and synchronisation information',
@@ -159,6 +168,7 @@ export default function routes(services: Services): Router {
   corePersonMigrationRoutes(router, services)
   csipMigrationRoutes(router, services)
   contactPersonMigrationRoutes(router, services)
+  contactPersonProfileDetailsMigrationRoutes(router, services)
   corporateMigrationRoutes(router, services)
   visitBalanceMigrationRoutes(router, services)
   return router
