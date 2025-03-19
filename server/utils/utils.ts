@@ -1,4 +1,5 @@
 import moment from 'moment'
+import zlib from 'zlib'
 
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
@@ -29,4 +30,11 @@ export const withDefaultTime = (value?: string): string | undefined => {
     return moment(value).format('YYYY-MM-DDTHH:mm:ss')
   }
   return value
+}
+
+export const gzipBase64AndEncode = (input: string): string => {
+  const buffer = Buffer.from(input, 'utf-8')
+  const gzipped = zlib.gzipSync(buffer)
+  const base64 = gzipped.toString('base64')
+  return encodeURIComponent(base64)
 }

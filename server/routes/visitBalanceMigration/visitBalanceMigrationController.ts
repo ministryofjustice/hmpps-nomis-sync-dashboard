@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import moment from 'moment'
-import { buildUrl } from '../../utils/applicationInsightsUrlBuilder'
+import { buildUrl } from '../../utils/logAnalyticsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startMigrationValidator from './visitBalanceMigrationValidator'
@@ -131,20 +131,20 @@ export default class VisitBalanceMigrationController {
   }
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {
-    return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
-    | order by timestamp desc`
+    return `AppExceptions
+| where AppRoleName == 'hmpps-prisoner-from-nomis-migration'
+| where Properties.["Logger Message"] == "MessageID:${message.messageId}"
+| order by TimeGenerated desc`
   }
 
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
-    return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where message contains 'Will not migrate the nomis visitBalance'
-    | where timestamp between (datetime(${VisitBalanceMigrationController.toISODateTime(
+    return `AppTraces
+| where AppRoleName == 'hmpps-prisoner-from-nomis-migration'
+| where Message contains 'Will not migrate the nomis visit balance'
+| where TimeGenerated between (datetime(${VisitBalanceMigrationController.toISODateTime(
       startedDate,
     )}) .. datetime(${VisitBalanceMigrationController.toISODateTime(endedDate)}))
-    | summarize dcount(message)`
+| summarize dcount(Message)`
   }
 
   private static toISODateTime(localDateTime: string): string {
