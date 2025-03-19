@@ -2,7 +2,7 @@
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
-{% set pageTitle = applicationName + " - Contact Person migration started" %}
+{% set pageTitle = applicationName + " - Contact Person Profile Details migration started" %}
 
 {% block content %}
 
@@ -13,19 +13,19 @@
 
   <main class="app-container govuk-body">
     <div class="govuk-width-container">
-      <h1 class="govuk-heading-l govuk-!-margin-top-7">Contact Person migration started</h1>
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Contact Person Profile Details migration started</h1>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         {% set html %}
         <div id="confirmationMessage">
           Migration id: <strong>{{form.migrationId}}</strong><br/>
-          Estimated number of Contact Person entities to be migrated: <strong>{{form.estimatedCount}}</strong><br/>
+          Estimated number of Contact Person Profile Details entities to be migrated: <strong>{{form.estimatedCount}}</strong><br/>
         </div>
         {% endset %}
 
         {{ govukPanel({
-          titleText: "Contact Person migration has successfully started",
+          titleText: "Contact Person Profile Details migration has successfully started",
           html: html
         }) }}
       </div>

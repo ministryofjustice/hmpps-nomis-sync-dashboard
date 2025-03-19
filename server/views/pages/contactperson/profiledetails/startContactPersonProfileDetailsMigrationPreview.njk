@@ -9,7 +9,7 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 
-{% set pageTitle = applicationName + " - Start an Contact Person migration - preview" %}
+{% set pageTitle = applicationName + " - Start a Contact Person Profile Details migration - preview" %}
 
 {% block content %}
     {{ govukBackLink({
@@ -29,13 +29,13 @@
         <div class="govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full">
-                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Contact Person migration - preview</h1>
+                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Contact Person Profile Details migration - preview</h1>
                 </div>
                 <div class="govuk-grid-column-two-thirds">
                     {% if form.estimatedCount %}
                         {% set html %}
                             <p class="govuk-notification-banner__heading" id="estimateSummary">
-                                Estimated number of Contact Person entities to be migrated: {{ form.estimatedCount }}
+                                Estimated number of Contact Person Profile Details entities to be migrated: {{ form.estimatedCount }}
                             </p>
                         {% endset %}
 

@@ -599,6 +599,17 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
               messagesOnDlq: `${failures}`,
             },
           },
+          'migrationpersonalrelationshipsprofiledetails-health': {
+            status: 'UP',
+            details: {
+              queueName: 'dps-syscon-dev-migration_personalrelationships_profiledetails_queue',
+              messagesOnQueue: '0',
+              messagesInFlight: '0',
+              dlqStatus: 'UP',
+              dlqName: 'dps-syscon-dev-migration_personalrelationships_profiledetails_dlq',
+              messagesOnDlq: `${failures}`,
+            },
+          },
           'migrationorganisations-health': {
             status: 'UP',
             details: {
@@ -2075,6 +2086,111 @@ const stubGetCSIPMigrationDetailsCompleted = ({
     },
   })
 
+// Contact Person Profile Details //
+
+const stubGetContactPersonProfileDetailsMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/contact-person-profile-details/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded: null,
+        estimatedRecordCount: 202,
+        filter: '{"prisonerNumber":"A1234BC"}',
+        recordsMigrated: 12091,
+        recordsFailed: 123,
+        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
+        status: 'STARTED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubGetContactPersonProfileDetailsMigrationDetailsCompleted = ({
+  migrationId,
+  migrated,
+  failed,
+  whenEnded,
+}: {
+  migrationId: string
+  migrated: number
+  failed: string
+  whenEnded: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/contact-person-profile-details/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded,
+        estimatedRecordCount: 202,
+        filter: '{"prisonerNumber":"A1234BC"}',
+        recordsMigrated: migrated,
+        recordsFailed: failed,
+        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
+        status: 'COMPLETED',
+        id: migrationId,
+      },
+    },
+  })
+
+const stubStartContactPersonProfileDetailsMigration = (
+  response: unknown = {
+    migrationId: '2022-03-23T11:11:56',
+    estimatedCount: 2,
+    body: {
+      prisonerNumber: 'A1234BC',
+    },
+  },
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/nomis-migration-api/migrate/contact-person-profile-details',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
+const stubDeleteContactPersonProfileDetailsFailures = (): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern:
+        '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-migration_personalrelationships_profiledetails_dlq',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        messagesFoundCount: 5,
+      },
+    },
+  })
+
+// GENERIC //
+
 const stubListOfMigrationHistory = ({
   domain,
   history = defaultSentencingMigrationHistory,
@@ -2183,6 +2299,11 @@ export default {
   stubDeleteCSIPFailures,
   stubGetCSIPMigrationDetailsStarted,
   stubGetCSIPMigrationDetailsCompleted,
+
+  stubGetContactPersonProfileDetailsMigrationDetailsStarted,
+  stubGetContactPersonProfileDetailsMigrationDetailsCompleted,
+  stubStartContactPersonProfileDetailsMigration,
+  stubDeleteContactPersonProfileDetailsFailures,
 
   stubNomisMigrationPing,
   stubHealth,
