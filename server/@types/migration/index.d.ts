@@ -42,3 +42,8 @@ export type MigrationContextCorporateMigrationFilter = components['schemas']['Mi
 export type VisitBalanceMigrationFilter = components['schemas']['VisitBalanceMigrationFilter']
 export type MigrationContextVisitBalanceMigrationFilter =
   components['schemas']['MigrationContextVisitBalanceMigrationFilter']
+
+export type ContactPersonProfileDetailsMigrationFilter =
+  components['schemas']['ContactPersonProfileDetailsMigrationFilter']
+export type MigrationContextContactPersonProfileDetailsMigrationFilter =
+  components['schemas']['MigrationContextContactPersonProfileDetailsMigrationFilter']

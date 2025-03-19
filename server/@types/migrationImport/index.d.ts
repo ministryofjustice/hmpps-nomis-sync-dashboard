@@ -508,7 +508,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/casenotes/{migrationId}/cancel': {
+  '/migrate/contact-person-profile-details/{migrationId}/cancel': {
     parameters: {
       query?: never
       header?: never
@@ -519,7 +519,7 @@ export interface paths {
     put?: never
     /**
      * Cancels a running migration. The actual cancellation might take several minutes to complete
-     * @description Requires role <b>MIGRATE_CASENOTES</b>
+     * @description Requires role <b>MIGRATE_CONTACTPERSON</b>
      */
     post: operations['cancel_9']
     delete?: never
@@ -528,7 +528,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/casenotes': {
+  '/migrate/contact-person-profile-details': {
     parameters: {
       query?: never
       header?: never
@@ -538,10 +538,10 @@ export interface paths {
     get?: never
     put?: never
     /**
-     * Starts an casenotes migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CASENOTES</b>
+     * Starts a contact person profile details migration
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CONTACTPERSON</b>
      */
-    post: operations['migrateCaseNotes']
+    post: operations['migrateContactPerson_1']
     delete?: never
     options?: never
     head?: never
@@ -1284,7 +1284,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/casenotes/history/{migrationId}': {
+  '/migrate/contact-person-profile-details/history/{migrationId}': {
     parameters: {
       query?: never
       header?: never
@@ -1293,7 +1293,7 @@ export interface paths {
     }
     /**
      * Gets a specific migration history record
-     * @description Requires role <b>MIGRATE_CASENOTES</b>
+     * @description Requires role <b>MIGRATE_CONTACTPERSON</b>
      */
     get: operations['get_9']
     put?: never
@@ -1304,7 +1304,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/casenotes/history': {
+  '/migrate/contact-person-profile-details/history': {
     parameters: {
       query?: never
       header?: never
@@ -1312,8 +1312,8 @@ export interface paths {
       cookie?: never
     }
     /**
-     * Lists all migration history records un-paged for casenotes
-     * @description The records are un-paged and requires role <b>MIGRATE_CASENOTES</b>
+     * Lists all migration history records un-paged for contact person profile details
+     * @description The records are un-paged and requires role <b>MIGRATE_CONTACTPERSON</b>
      */
     get: operations['getAll_9']
     put?: never
@@ -1324,7 +1324,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/casenotes/active-migration': {
+  '/migrate/contact-person-profile-details/active-migration': {
     parameters: {
       query?: never
       header?: never
@@ -1333,9 +1333,9 @@ export interface paths {
     }
     /**
      * Gets active/currently running migration data, using migration record and migration queues
-     * @description Requires role <b>MIGRATE_CASENOTES</b>
+     * @description Requires role <b>MIGRATE_CONTACTPERSON</b>
      */
-    get: operations['getActiveMigrationDetails_5']
+    get: operations['activeMigration_4']
     put?: never
     post?: never
     delete?: never
@@ -1395,7 +1395,7 @@ export interface paths {
      * Gets active/currently running migration data, using migration record and migration queues
      * @description Requires role <b>MIGRATE_APPOINTMENTS</b>
      */
-    get: operations['getActiveMigrationDetails_6']
+    get: operations['getActiveMigrationDetails_5']
     put?: never
     post?: never
     delete?: never
@@ -1455,7 +1455,7 @@ export interface paths {
      * Gets active/currently running migration data, using migration record and migration queues
      * @description Requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    get: operations['getActiveMigrationDetails_7']
+    get: operations['getActiveMigrationDetails_6']
     put?: never
     post?: never
     delete?: never
@@ -1515,7 +1515,7 @@ export interface paths {
      * Gets active/currently running migration data, using migration record and migration queues
      * @description Requires role <b>MIGRATE_ACTIVITIES</b>
      */
-    get: operations['getActiveMigrationDetails_8']
+    get: operations['getActiveMigrationDetails_7']
     put?: never
     post?: never
     delete?: never
@@ -1638,9 +1638,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1667,9 +1667,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1703,9 +1703,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1739,9 +1739,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1775,9 +1775,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1811,9 +1811,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1847,9 +1847,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1883,9 +1883,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1919,9 +1919,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -1930,15 +1930,15 @@ export interface components {
       estimatedCount: number
       body: components['schemas']['ContactPersonMigrationFilter']
     }
-    /** @description Filter specifying what should be migrated from NOMIS to the Case notes service */
-    CaseNotesMigrationFilter: {
+    /** @description Filter specifying what should be migrated from NOMIS to DPS */
+    ContactPersonProfileDetailsMigrationFilter: {
       /**
-       * @description Only include casenotes of these specific prisoners
-       * @example A1234AA,B1234BB
+       * @description Only migrate a single prisoner - used for testing
+       * @example A1234BC
        */
-      offenderNos?: string[]
+      prisonerNumber?: string
     }
-    MigrationContext: {
+    MigrationContextContactPersonProfileDetailsMigrationFilter: {
       /** @enum {string} */
       type:
         | 'VISITS'
@@ -1948,16 +1948,16 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
-      body: Record<string, never>
+      body: components['schemas']['ContactPersonProfileDetailsMigrationFilter']
     }
     /** @description Filter specifying what should be migrated from NOMIS to Appointments service */
     AppointmentsMigrationFilter: {
@@ -1989,9 +1989,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -2024,9 +2024,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -2065,9 +2065,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -2125,9 +2125,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -2159,9 +2159,9 @@ export interface components {
         | 'CORE_PERSON'
         | 'CSIP'
         | 'INCIDENTS'
-        | 'CASENOTES'
         | 'COURT_SENTENCING'
         | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'ORGANISATIONS'
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
@@ -3283,7 +3283,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description No running migration found with migration id */
+      /** @description Migration not found */
       404: {
         headers: {
           [name: string]: unknown
@@ -3294,7 +3294,7 @@ export interface operations {
       }
     }
   }
-  migrateCaseNotes: {
+  migrateContactPerson_1: {
     parameters: {
       query?: never
       header?: never
@@ -3303,7 +3303,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['CaseNotesMigrationFilter']
+        'application/json': components['schemas']['ContactPersonProfileDetailsMigrationFilter']
       }
     }
     responses: {
@@ -3313,7 +3313,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['MigrationContext']
+          'application/json': components['schemas']['MigrationContextContactPersonProfileDetailsMigrationFilter']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -5039,7 +5039,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description The casenotes migration history record */
+      /** @description The contact person migration history record */
       200: {
         headers: {
           [name: string]: unknown
@@ -5086,7 +5086,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description All casenotes migration history records */
+      /** @description All contact person migration history records */
       200: {
         headers: {
           [name: string]: unknown
@@ -5115,7 +5115,7 @@ export interface operations {
       }
     }
   }
-  getActiveMigrationDetails_5: {
+  activeMigration_4: {
     parameters: {
       query?: never
       header?: never
@@ -5144,6 +5144,15 @@ export interface operations {
       }
       /** @description Incorrect permissions to access this endpoint */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Migration not found */
+      404: {
         headers: {
           [name: string]: unknown
         }
@@ -5260,7 +5269,7 @@ export interface operations {
       }
     }
   }
-  getActiveMigrationDetails_6: {
+  getActiveMigrationDetails_5: {
     parameters: {
       query?: never
       header?: never
@@ -5405,7 +5414,7 @@ export interface operations {
       }
     }
   }
-  getActiveMigrationDetails_7: {
+  getActiveMigrationDetails_6: {
     parameters: {
       query?: never
       header?: never
@@ -5550,7 +5559,7 @@ export interface operations {
       }
     }
   }
-  getActiveMigrationDetails_8: {
+  getActiveMigrationDetails_7: {
     parameters: {
       query?: never
       header?: never

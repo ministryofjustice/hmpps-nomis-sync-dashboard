@@ -1,4 +1,4 @@
-{% extends "../../partials/layout.njk" %}
+{% extends "../../../partials/layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "moj/components/filter/macro.njk" import mojFilter %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
@@ -30,7 +30,7 @@
           }) }}
       {{ govukButton({
         text: "Start new migration",
-        href: "/contactperson-profiledeails-migration/start",
+        href: "/contactperson-profiledetails-migration/start",
         isStartButton: true,
         classes: "float-right"
       }) }}
