@@ -22,7 +22,6 @@ import {
   GetIncidentIdsByFilter,
   GetCSIPIdsByFilter,
   PageCSIPIdResponse,
-  PageCourtCaseIdResponse,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import { Context } from './nomisMigrationService'
