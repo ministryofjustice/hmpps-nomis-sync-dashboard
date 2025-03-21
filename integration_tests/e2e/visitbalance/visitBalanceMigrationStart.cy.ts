@@ -4,7 +4,7 @@ import VisitBalanceMigrationPage from '../../pages/visit-balance-migration/visit
 import StartVisitBalanceMigrationPage from '../../pages/visit-balance-migration/startVisitBalanceMigration'
 import StartVisitBalanceMigrationPreviewPage from '../../pages/visit-balance-migration/startVisitBalanceMigrationPreview'
 import StartVisitBalanceMigrationConfirmationPage from '../../pages/visit-balance-migration/startVisitBalanceMigrationConfirmation'
-import { visitBalanceMigrationHistory } from '../../mockApis/nomisVisitBalanceMigrationApi'
+import visitBalanceMigrationHistory from '../../mockApis/nomisVisitBalanceMigrationApi'
 
 context('Visit Balance Migration Start', () => {
   beforeEach(() => {
@@ -13,7 +13,7 @@ context('Visit Balance Migration Start', () => {
   context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
-      cy.task('stubListOfMigrationHistory', { domain: 'visit-balance', history: visitBalanceMigrationHistory })
+      cy.task('stubGetMigrationHistory', { migrationType: 'VISIT_BALANCE', history: visitBalanceMigrationHistory })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.visitBalanceMigrationLink().click()

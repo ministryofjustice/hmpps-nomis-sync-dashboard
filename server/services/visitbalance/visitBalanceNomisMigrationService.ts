@@ -1,8 +1,6 @@
 import {
   GetDlqResult,
-  InProgressMigration,
   MigrationContextVisitBalanceMigrationFilter,
-  MigrationHistory,
   PurgeQueueResult,
   VisitBalanceMigrationFilter,
 } from '../../@types/migration'
@@ -11,44 +9,13 @@ import type HmppsAuthClient from '../../data/hmppsAuthClient'
 import RestClient from '../../data/restClient'
 import config from '../../config'
 import logger from '../../../logger'
-import NomisMigrationService, { Context, HistoricMigrationDetails, HistoricMigrations } from '../nomisMigrationService'
+import NomisMigrationService, { Context } from '../nomisMigrationService'
 
 export default class VisitBalanceNomisMigrationService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
 
   private static restClient(token: string): RestClient {
     return new RestClient('Visit Balance Nomis Migration History API Client', config.apis.nomisMigration, token)
-  }
-
-  async getMigrations(context: Context): Promise<HistoricMigrations> {
-    logger.info(`getting migrations`)
-    return {
-      migrations: await VisitBalanceNomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
-        path: `/migrate/visit-balance/history`,
-      }),
-    }
-  }
-
-  async getMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
-    logger.info(`getting details for migration ${migrationId}`)
-    const history = await VisitBalanceNomisMigrationService.restClient(context.token).get<MigrationHistory>({
-      path: `/migrate/visit-balance/history/${migrationId}`,
-    })
-
-    const inProgressMigration = await VisitBalanceNomisMigrationService.restClient(
-      context.token,
-    ).get<InProgressMigration>({
-      path: `/migrate/visit-balance/active-migration`,
-    })
-
-    return {
-      history,
-      currentProgress: {
-        recordsFailed: inProgressMigration.recordsFailed,
-        recordsMigrated: inProgressMigration.migrationId === migrationId ? inProgressMigration.recordsMigrated : 0,
-        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
-      },
-    }
   }
 
   async startMigration(

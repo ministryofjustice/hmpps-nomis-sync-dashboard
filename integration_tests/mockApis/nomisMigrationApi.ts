@@ -2212,6 +2212,108 @@ const stubListOfMigrationHistory = ({
     },
   })
 
+const stubGetMigrationHistory = ({
+  migrationType,
+  history = defaultSentencingMigrationHistory,
+}: {
+  migrationType: string
+  history: MigrationHistory[]
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/history/all/${migrationType}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: history,
+    },
+  })
+
+const stubGetMigration = ({
+  migrationId,
+  migrationType,
+  filter = null,
+  migrated = 12091,
+  failed = 123,
+  whenEnded = null,
+  status = 'STARTED',
+}: {
+  migrationType: string
+  migrationId: string
+  filter: string
+  migrated: number
+  failed: number
+  whenEnded: string
+  status: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/history/${migrationId}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        migrationId,
+        whenStarted: '2022-03-28T13:59:24.657071',
+        whenEnded,
+        estimatedRecordCount: 202,
+        filter,
+        recordsMigrated: migrated,
+        recordsFailed: failed,
+        migrationType,
+        status,
+        id: migrationId,
+      },
+    },
+  })
+
+const stubGetActiveMigration = ({
+  migrationType,
+  migrationId,
+  migrated,
+  failed,
+  stillToBeProcessed,
+  status = 'STARTED',
+}: {
+  migrationType: string
+  migrationId: string
+  migrated: number
+  failed: string
+  stillToBeProcessed: string
+  status: string
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/history/active/${migrationType}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        recordsMigrated: migrated,
+        toBeProcessedCount: stillToBeProcessed,
+        beingProcessedCount: 0,
+        recordsFailed: failed,
+        migrationId,
+        whenStarted: '2023-05-02T11:07:09.719517',
+        estimatedRecordCount: 6,
+        migrationType,
+        status,
+      },
+    },
+  })
+
 const stubStartMigration = (args: { domain: string; response: unknown }): SuperAgentRequest =>
   stubFor({
     request: {
@@ -2311,6 +2413,9 @@ export default {
   stubMigrationInProgressCompleted,
   stubGetVisitMigrationRoomUsage,
   stubListOfMigrationHistory,
+  stubGetMigrationHistory,
+  stubGetMigration,
+  stubGetActiveMigration,
   stubStartMigration,
   stubGetFailures,
   stubGetNoFailures,

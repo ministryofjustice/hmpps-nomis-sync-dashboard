@@ -4,10 +4,12 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import VisitBalanceNomisMigrationService from '../../services/visitbalance/visitBalanceNomisMigrationService'
 import VisitBalanceNomisPrisonerService from '../../services/visitbalance/visitBalanceNomisPrisonerService'
 import VisitBalanceMigrationController from './visitBalanceMigrationController'
+import NomisMigrationService from '../../services/nomisMigrationService'
 
 export interface Services {
   visitBalanceNomisMigrationService: VisitBalanceNomisMigrationService
   visitBalanceNomisPrisonerService: VisitBalanceNomisPrisonerService
+  nomisMigrationService: NomisMigrationService
 }
 export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -16,6 +18,7 @@ export default function routes(router: Router, services: Services): Router {
   const migrationController = new VisitBalanceMigrationController(
     services.visitBalanceNomisMigrationService,
     services.visitBalanceNomisPrisonerService,
+    services.nomisMigrationService,
   )
   get('/visit-balance-migration', (req, res) => migrationController.getMigrations(req, res))
   get('/visit-balance-migration/failures', (req, res) => migrationController.viewFailures(req, res))
