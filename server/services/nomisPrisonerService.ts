@@ -71,8 +71,8 @@ export default class NomisPrisonerService {
   async getCourtSentencingMigrationEstimatedCount(filter: GetCourtCaseIdsByFilter, context: Context): Promise<number> {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     logger.info(`getting details for court sentencing migration estimated count`)
-    const response = await NomisPrisonerService.restClient(token).get<PageCourtCaseIdResponse>({
-      path: `/court-cases/ids`,
+    const response = await NomisPrisonerService.restClient(token).get<PagePrisonerId>({
+      path: `/prisoners/ids/all`,
       query: `${querystring.stringify({ ...filter, size: 1 })}`,
     })
     return response.totalElements
