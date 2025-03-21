@@ -1,8 +1,6 @@
-import { SuperAgentRequest } from 'superagent'
 import { MigrationHistory } from '../../server/@types/migration'
-import { stubFor } from './wiremock'
 
-export const visitBalanceMigrationHistory: MigrationHistory[] = [
+const visitBalanceMigrationHistory: MigrationHistory[] = [
   {
     migrationId: '2022-03-14T10:13:56',
     whenStarted: '2022-03-14T10:13:56.878627',
@@ -43,69 +41,4 @@ export const visitBalanceMigrationHistory: MigrationHistory[] = [
   },
 ]
 
-const stubGetVisitBalanceMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/visit-balance/history/${migrationId}`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        migrationId,
-        whenStarted: '2022-03-28T13:59:24.657071',
-        whenEnded: null,
-        estimatedRecordCount: 202,
-        filter: '{"prisonId":"MDI"}',
-        recordsMigrated: 12091,
-        recordsFailed: 123,
-        migrationType: 'VISIT_BALANCE',
-        status: 'STARTED',
-        id: migrationId,
-      },
-    },
-  })
-
-const stubGetVisitBalanceMigrationDetailsCompleted = ({
-  migrationId,
-  migrated,
-  failed,
-  whenEnded,
-}: {
-  migrationId: string
-  migrated: number
-  failed: string
-  whenEnded: string
-}): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/visit-balance/history/${migrationId}`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        migrationId,
-        whenStarted: '2022-03-28T13:59:24.657071',
-        whenEnded,
-        estimatedRecordCount: 202,
-        filter: '{"prisonId":"MDI"}',
-        recordsMigrated: migrated,
-        recordsFailed: failed,
-        migrationType: 'VISIT_BALANCE',
-        status: 'COMPLETED',
-        id: migrationId,
-      },
-    },
-  })
-
-export default {
-  stubGetVisitBalanceMigrationDetailsStarted,
-  stubGetVisitBalanceMigrationDetailsCompleted,
-}
+export default visitBalanceMigrationHistory

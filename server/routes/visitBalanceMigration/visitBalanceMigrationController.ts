@@ -6,7 +6,7 @@ import logger from '../../../logger'
 import startMigrationValidator from './visitBalanceMigrationValidator'
 import VisitBalanceNomisMigrationService from '../../services/visitbalance/visitBalanceNomisMigrationService'
 import VisitBalanceNomisPrisonerService from '../../services/visitbalance/visitBalanceNomisPrisonerService'
-import { Context } from '../../services/nomisMigrationService'
+import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
 import { MigrationHistory } from '../../@types/migration'
 
 interface Filter {
@@ -22,12 +22,15 @@ function context(res: Response): Context {
 
 export default class VisitBalanceMigrationController {
   constructor(
-    private readonly nomisMigrationService: VisitBalanceNomisMigrationService,
+    private readonly visitBalanceMigrationService: VisitBalanceNomisMigrationService,
     private readonly nomisPrisonerService: VisitBalanceNomisPrisonerService,
+    private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  async getMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getMigrations(context(res))
+  private migrationType: string = 'VISIT_BALANCE'
+
+  async getMigrations(_: Request, res: Response): Promise<void> {
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations.map(VisitBalanceMigrationController.withFilter).map(history => ({
       ...history,
@@ -40,8 +43,8 @@ export default class VisitBalanceMigrationController {
     })
   }
 
-  async viewFailures(req: Request, res: Response): Promise<void> {
-    const failures = await this.nomisMigrationService.getFailures(context(res))
+  async viewFailures(_: Request, res: Response): Promise<void> {
+    const failures = await this.visitBalanceMigrationService.getFailures(context(res))
     const failuresDecorated = {
       ...failures,
       messages: failures.messages.map(message => ({
@@ -77,7 +80,7 @@ export default class VisitBalanceMigrationController {
     } else {
       const filter = req.session.prisonFilteredMigrationForm
       const count = await this.nomisPrisonerService.getMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getDLQMessageCount(context(res))
+      const dlqCountString = await this.visitBalanceMigrationService.getDLQMessageCount(context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.prisonFilteredMigrationForm.estimatedCount = count.toLocaleString()
@@ -93,7 +96,7 @@ export default class VisitBalanceMigrationController {
   }
 
   async postClearDLQMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.nomisMigrationService.deleteFailures(context(res))
+    const result = await this.visitBalanceMigrationService.deleteFailures(context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.prisonFilteredMigrationForm }
     await this.postStartMigration(req, res)
@@ -101,7 +104,7 @@ export default class VisitBalanceMigrationController {
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = req.session.prisonFilteredMigrationForm
-    const result = await this.nomisMigrationService.startMigration(filter, context(res))
+    const result = await this.visitBalanceMigrationService.startMigration(filter, context(res))
     req.session.prisonFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.prisonFilteredMigrationForm.migrationId = result.migrationId
     res.redirect('/visit-balance-migration/start/confirmation')
@@ -123,7 +126,7 @@ export default class VisitBalanceMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
+    await this.visitBalanceMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/visitbalance/visitBalanceMigrationDetails', {
       migration: { ...migration, history: VisitBalanceMigrationController.withFilter(migration.history) },

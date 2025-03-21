@@ -2,7 +2,7 @@ import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import VisitBalanceMigrationPage from '../../pages/visit-balance-migration/visitBalanceMigration'
 import VisitBalanceMigrationFailuresPage from '../../pages/visit-balance-migration/visitBalanceMigrationFailures'
-import { visitBalanceMigrationHistory } from '../../mockApis/nomisVisitBalanceMigrationApi'
+import visitBalanceMigrationHistory from '../../mockApis/nomisVisitBalanceMigrationApi'
 
 context('Visit Balance Migration Homepage', () => {
   beforeEach(() => {
@@ -11,10 +11,7 @@ context('Visit Balance Migration Homepage', () => {
   context('With MIGRATE_VISIT_BALANCE role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISIT_BALANCE'] })
-      cy.task('stubListOfMigrationHistory', {
-        domain: 'visit-balance',
-        history: visitBalanceMigrationHistory,
-      })
+      cy.task('stubGetMigrationHistory', { migrationType: 'VISIT_BALANCE', history: visitBalanceMigrationHistory })
       cy.signIn()
     })
     it('should see migrate visit balance tile', () => {

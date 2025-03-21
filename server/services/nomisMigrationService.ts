@@ -61,6 +61,35 @@ export default class NomisMigrationService {
     return new RestClient('Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
   }
 
+  async getMigrationHistory(migrationType: string, context: Context): Promise<HistoricMigrations> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return {
+      migrations: await NomisMigrationService.restClient(token).get<MigrationHistory[]>({
+        path: `/migrate/history/all/${migrationType}`,
+      }),
+    }
+  }
+
+  async getMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
+    logger.info(`getting details for migration ${migrationId}`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    const history = await NomisMigrationService.restClient(token).get<MigrationHistory>({
+      path: `/migrate/history/${migrationId}`,
+    })
+    const inProgressMigration = await NomisMigrationService.restClient(token).get<InProgressMigration>({
+      path: `/migrate/history/active/${history.migrationType}`,
+    })
+
+    return {
+      history,
+      currentProgress: {
+        recordsFailed: inProgressMigration.recordsFailed,
+        recordsMigrated: inProgressMigration.migrationId === migrationId ? inProgressMigration.recordsMigrated : 0,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
+      },
+    }
+  }
+
   async getVisitsMigrations(context: Context, filter: MigrationViewFilter): Promise<HistoricMigrations> {
     logger.info(`getting migrations with filter ${JSON.stringify(filter)}`)
     return {
