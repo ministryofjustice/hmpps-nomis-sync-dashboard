@@ -1836,7 +1836,7 @@ const stubGetIncidentsMigrationDetailsCompleted = ({
 
 /// CSIP ////////////////////////////////////////////////////
 
-const defaultCSIPMigrationHistory: MigrationHistory[] = [
+export const csipMigrationHistory: MigrationHistory[] = [
   {
     migrationId: '2022-03-14T10:13:56',
     whenStarted: '2022-03-14T10:13:56.878627',
@@ -1876,22 +1876,6 @@ const defaultCSIPMigrationHistory: MigrationHistory[] = [
     isNew: false,
   },
 ]
-const stubListOfCSIPMigrationHistory = (
-  migrationHistory: MigrationHistory[] = defaultCSIPMigrationHistory,
-): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/csip/history?.*`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: migrationHistory,
-    },
-  })
 
 const stubStartCSIPMigration = (
   response: unknown = {
@@ -2020,68 +2004,6 @@ const stubDeleteCSIPFailures = (): SuperAgentRequest =>
       },
       jsonBody: {
         messagesFoundCount: 5,
-      },
-    },
-  })
-
-const stubGetCSIPMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/csip/history/${migrationId}`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        migrationId,
-        whenStarted: '2022-03-28T13:59:24.657071',
-        whenEnded: null,
-        estimatedRecordCount: 202,
-        filter: '{"fromDate":"2016-03-23"}',
-        recordsMigrated: 12091,
-        recordsFailed: 123,
-        migrationType: 'CSIP',
-        status: 'STARTED',
-        id: migrationId,
-      },
-    },
-  })
-
-const stubGetCSIPMigrationDetailsCompleted = ({
-  migrationId,
-  migrated,
-  failed,
-  whenEnded,
-}: {
-  migrationId: string
-  migrated: number
-  failed: string
-  whenEnded: string
-}): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/csip/history/${migrationId}`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        migrationId,
-        whenStarted: '2022-03-28T13:59:24.657071',
-        whenEnded,
-        estimatedRecordCount: 202,
-        filter: '{"fromDate":"2016-03-23"}',
-        recordsMigrated: migrated,
-        recordsFailed: failed,
-        migrationType: 'CSIP',
-        status: 'COMPLETED',
-        id: migrationId,
       },
     },
   })
@@ -2395,12 +2317,9 @@ export default {
   stubGetIncidentsMigrationDetailsStarted,
   stubGetIncidentsMigrationDetailsCompleted,
 
-  stubListOfCSIPMigrationHistory,
   stubStartCSIPMigration,
   stubGetCSIPFailures,
   stubDeleteCSIPFailures,
-  stubGetCSIPMigrationDetailsStarted,
-  stubGetCSIPMigrationDetailsCompleted,
 
   stubGetContactPersonProfileDetailsMigrationDetailsStarted,
   stubGetContactPersonProfileDetailsMigrationDetailsCompleted,

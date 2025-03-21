@@ -3,8 +3,8 @@ import Page from '../../pages/page'
 import StartCSIPMigrationPage from '../../pages/csip-migration/startCSIPMigration'
 import StartCSIPMigrationConfirmationPage from '../../pages/csip-migration/startCSIPMigrationConfirmation'
 import StartCSIPMigrationPreviewPage from '../../pages/csip-migration/startCSIPMigrationPreview'
-
 import CSIPMigrationPage from '../../pages/csip-migration/csipMigration'
+import { csipMigrationHistory } from '../../mockApis/nomisMigrationApi'
 
 context('CSIP Migration Start', () => {
   beforeEach(() => {
@@ -13,7 +13,7 @@ context('CSIP Migration Start', () => {
   context('With MIGRATE_CSIP role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
-      cy.task('stubListOfCSIPMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'CSIP', history: csipMigrationHistory })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.csipMigrationLink().click()

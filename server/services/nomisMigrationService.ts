@@ -678,36 +678,6 @@ export default class NomisMigrationService {
     return NomisMigrationService.getAnyDLQName('migrationincidents-health', token)
   }
 
-  // CSIP
-  async getCSIPMigrations(context: Context): Promise<HistoricMigrations> {
-    logger.info(`getting csip migrations`)
-    return {
-      migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
-        path: `/migrate/csip/history`,
-      }),
-    }
-  }
-
-  async getCSIPMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
-    logger.info(`getting details for csip migration ${migrationId}`)
-    const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
-      path: `/migrate/csip/history/${migrationId}`,
-    })
-
-    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
-      path: `/migrate/csip/active-migration`,
-    })
-
-    return {
-      history,
-      currentProgress: {
-        recordsFailed: inProgressMigration.recordsFailed,
-        recordsMigrated: inProgressMigration.recordsMigrated,
-        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
-      },
-    }
-  }
-
   async startCSIPMigration(
     filter: CSIPMigrationFilter,
     context: Context,

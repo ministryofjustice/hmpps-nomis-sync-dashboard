@@ -28,7 +28,7 @@ export default class CSIPMigrationController {
   ) {}
 
   async getCSIPMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getCSIPMigrations(context(res))
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory('CSIP', context(res))
 
     const decoratedMigrations = migrations.map(history => ({
       ...history,
@@ -115,7 +115,7 @@ export default class CSIPMigrationController {
 
   async csipMigrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
-    const migration = await this.nomisMigrationService.getCSIPMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/csip/csipMigrationDetails', {
       migration: { ...migration, history: CSIPMigrationController.withFilter(migration.history) },
     })
@@ -124,7 +124,7 @@ export default class CSIPMigrationController {
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
     await this.nomisMigrationService.cancelCSIPMigration(migrationId, context(res))
-    const migration = await this.nomisMigrationService.getCSIPMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/csip/csipMigrationDetails', {
       migration: { ...migration, history: CSIPMigrationController.withFilter(migration.history) },
     })
@@ -132,14 +132,14 @@ export default class CSIPMigrationController {
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {
     return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
     | order by timestamp desc`
   }
 
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where message contains 'Will not migrate the adjustment since it is migrated already,'
     | where timestamp between (datetime(${CSIPMigrationController.toISODateTime(
       startedDate,
