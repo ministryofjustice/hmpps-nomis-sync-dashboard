@@ -8,15 +8,14 @@ context('CSIP Migration Details', () => {
   context('while migration is in progress', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
-      cy.task('stubMigrationInProgress', {
-        domain: 'csip',
-        type: 'CSIP',
+      cy.task('stubGetActiveMigration', {
+        migrationType: 'CSIP',
         migrationId,
         migrated: 1000,
         failed: 100,
         stillToBeProcessed: 23100,
       })
-      cy.task('stubGetCSIPMigrationDetailsStarted', migrationId)
+      cy.task('stubGetMigration', { migrationId, migrationType: 'CSIP', filter: '{"fromDate":"2016-03-23"}' })
       cy.signIn()
     })
     it('should details for a migration in progress', () => {
@@ -32,12 +31,15 @@ context('CSIP Migration Details', () => {
   context('after migration has completed', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
-      cy.task('stubMigrationInProgressCompleted', { domain: 'csip', type: 'CSIP', migrationId })
-      cy.task('stubGetCSIPMigrationDetailsCompleted', {
+      cy.task('stubGetActiveMigration', { migrationType: 'CSIP', migrationId, status: 'COMPLETED' })
+      cy.task('stubGetMigration', {
         migrationId,
+        migrationType: 'CSIP',
         whenEnded: '2022-03-28T14:59:24.657071',
         migrated: 2000,
         failed: 101,
+        status: 'COMPLETED',
+        filter: '{"fromDate":"2016-03-23"}',
       })
       cy.signIn()
     })

@@ -12,7 +12,7 @@ context('Core Person Migration Start', () => {
   context('With MIGRATE_CORE_PERSON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CORE_PERSON'] })
-      cy.task('stubListOfMigrationHistory', { domain: 'core-person' })
+      cy.task('stubGetMigrationHistory', { migrationType: 'CORE_PERSON' })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.migrationLink('coreperson-migration').click()
@@ -59,7 +59,7 @@ context('Core Person Migration Start', () => {
   context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
-      cy.task('stubListOfMigrationHistory', { domain: 'core-person' })
+      cy.task('stubGetMigrationHistory', { migrationType: 'CORE_PERSON' })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.migrationLink('coreperson-migration').click()
