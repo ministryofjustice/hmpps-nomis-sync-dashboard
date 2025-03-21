@@ -2,6 +2,7 @@ import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import CSIPMigrationPage from '../../pages/csip-migration/csipMigration'
 import CSIPMigrationFailuresPage from '../../pages/csip-migration/csipMigrationFailures'
+import { csipMigrationHistory } from '../../mockApis/nomisMigrationApi'
 
 context('CSIP Migration Homepage', () => {
   beforeEach(() => {
@@ -10,7 +11,7 @@ context('CSIP Migration Homepage', () => {
   context('With MIGRATE_CSIP role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CSIP'] })
-      cy.task('stubListOfCSIPMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'CSIP', history: csipMigrationHistory })
       cy.signIn()
     })
     it('should see migrate csip tile', () => {
