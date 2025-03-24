@@ -1,53 +1,16 @@
-import {
-  GetDlqResult,
-  InProgressMigration,
-  MigrationHistory,
-  PurgeQueueResult,
-  MigrationContextCorePersonMigrationFilter,
-} from '../../@types/migration'
+import { GetDlqResult, PurgeQueueResult, MigrationContextCorePersonMigrationFilter } from '../../@types/migration'
 
 import type HmppsAuthClient from '../../data/hmppsAuthClient'
 import RestClient from '../../data/restClient'
 import config from '../../config'
 import logger from '../../../logger'
-import NomisMigrationService, { Context, HistoricMigrationDetails, HistoricMigrations } from '../nomisMigrationService'
+import NomisMigrationService, { Context } from '../nomisMigrationService'
 
 export default class CorePersonNomisMigrationService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
 
   private static restClient(token: string): RestClient {
     return new RestClient('Core Person Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
-  }
-
-  async getMigrations(context: Context): Promise<HistoricMigrations> {
-    logger.info(`getting migrations`)
-    return {
-      migrations: await CorePersonNomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
-        path: `/migrate/core-person/history`,
-      }),
-    }
-  }
-
-  async getMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
-    logger.info(`getting details for migration ${migrationId}`)
-    const history = await CorePersonNomisMigrationService.restClient(context.token).get<MigrationHistory>({
-      path: `/migrate/core-person/history/${migrationId}`,
-    })
-
-    const inProgressMigration = await CorePersonNomisMigrationService.restClient(
-      context.token,
-    ).get<InProgressMigration>({
-      path: `/migrate/core-person/active-migration`,
-    })
-
-    return {
-      history,
-      currentProgress: {
-        recordsFailed: inProgressMigration.recordsFailed,
-        recordsMigrated: inProgressMigration.migrationId === migrationId ? inProgressMigration.recordsMigrated : 0,
-        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
-      },
-    }
   }
 
   async startMigration(context: Context): Promise<MigrationContextCorePersonMigrationFilter> {
