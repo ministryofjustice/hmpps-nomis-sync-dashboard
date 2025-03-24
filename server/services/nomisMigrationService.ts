@@ -7,13 +7,11 @@ import {
   GetDlqResult,
   InProgressMigration,
   IncidentsMigrationFilter,
-  CSIPMigrationFilter,
   MigrationContextActivitiesMigrationFilter,
   MigrationContextCourtSentencingMigrationFilter,
   MigrationContextAllocationsMigrationFilter,
   MigrationContextAppointmentsMigrationFilter,
   MigrationContextIncidentsMigrationFilter,
-  MigrationContextCSIPMigrationFilter,
   MigrationContextSentencingMigrationFilter,
   MigrationContextVisitsMigrationFilter,
   MigrationHistory,
@@ -676,81 +674,5 @@ export default class NomisMigrationService {
 
   private static async getIncidentsDLQName(token: string): Promise<string> {
     return NomisMigrationService.getAnyDLQName('migrationincidents-health', token)
-  }
-
-  // CSIP
-  async getCSIPMigrations(context: Context): Promise<HistoricMigrations> {
-    logger.info(`getting csip migrations`)
-    return {
-      migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
-        path: `/migrate/csip/history`,
-      }),
-    }
-  }
-
-  async getCSIPMigration(migrationId: string, context: Context): Promise<HistoricMigrationDetails> {
-    logger.info(`getting details for csip migration ${migrationId}`)
-    const history = await NomisMigrationService.restClient(context.token).get<MigrationHistory>({
-      path: `/migrate/csip/history/${migrationId}`,
-    })
-
-    const inProgressMigration = await NomisMigrationService.restClient(context.token).get<InProgressMigration>({
-      path: `/migrate/csip/active-migration`,
-    })
-
-    return {
-      history,
-      currentProgress: {
-        recordsFailed: inProgressMigration.recordsFailed,
-        recordsMigrated: inProgressMigration.recordsMigrated,
-        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
-      },
-    }
-  }
-
-  async startCSIPMigration(
-    filter: CSIPMigrationFilter,
-    context: Context,
-  ): Promise<MigrationContextCSIPMigrationFilter> {
-    logger.info(`starting a csip migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextCSIPMigrationFilter>({
-      path: `/migrate/csip`,
-      data: filter,
-    })
-  }
-
-  async getCSIPFailures(context: Context): Promise<GetDlqResult> {
-    logger.info(`getting messages on csip DLQ`)
-    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const dlqName = await NomisMigrationService.getCSIPDLQName(token)
-
-    return NomisMigrationService.restClient(token).get<GetDlqResult>({
-      path: `/queue-admin/get-dlq-messages/${dlqName}`,
-    })
-  }
-
-  async deleteCSIPFailures(context: Context): Promise<PurgeQueueResult> {
-    logger.info(`deleting messages on csip DLQ`)
-    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    const dlqName = await NomisMigrationService.getCSIPDLQName(token)
-
-    return NomisMigrationService.restClient(token).put<PurgeQueueResult>({
-      path: `/queue-admin/purge-queue/${dlqName}`,
-    })
-  }
-
-  async getCSIPDLQMessageCount(context: Context): Promise<string> {
-    return NomisMigrationService.getAnyDLQMessageCount('migrationcsip-health', context.token)
-  }
-
-  async cancelCSIPMigration(migrationId: string, context: Context): Promise<void> {
-    logger.info(`cancelling a csip migration`)
-    return NomisMigrationService.restClient(context.token).post<void>({
-      path: `/migrate/csip/${migrationId}/cancel`,
-    })
-  }
-
-  private static async getCSIPDLQName(token: string): Promise<string> {
-    return NomisMigrationService.getAnyDLQName('migrationcsip-health', token)
   }
 }

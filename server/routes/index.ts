@@ -8,7 +8,6 @@ import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMig
 import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSentencingMigrationRouter'
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
 import corePersonMigrationRoutes from './corePersonMigration/corePersonMigrationRouter'
-import csipMigrationRoutes from './csipMigration/csipMigrationRouter'
 import contactPersonMigrationRoutes from './contactPersonMigration/contactPersonMigrationRouter'
 import contactPersonProfileDetailsMigrationRoutes from './contactPersonMigration/contactPersonProfileDetailsMigration/contactPersonProfileDetailsMigrationRouter'
 import corporateMigrationRoutes from './corporateMigration/corporateMigrationRouter'
@@ -21,7 +20,6 @@ import {
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_CORE_PERSON_ROLE,
-  MIGRATE_CSIP_ROLE,
   MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_CONTACTPERSON_ROLE,
   MIGRATE_VISIT_BALANCE_ROLE,
@@ -104,14 +102,6 @@ export default function routes(services: Services): Router {
           enabled: true,
         },
         {
-          id: 'csip-migration',
-          heading: 'CSIP migration',
-          description: 'Migration and synchronisation information',
-          href: '/csip-migration',
-          roles: [MIGRATE_CSIP_ROLE],
-          enabled: true,
-        },
-        {
           id: 'incidents-migration',
           heading: 'Incidents migration',
           description: 'Migration and synchronisation information',
@@ -166,7 +156,6 @@ export default function routes(services: Services): Router {
   courtSentencingMigrationRoutes(router, services)
   incidentsMigrationRoutes(router, services)
   corePersonMigrationRoutes(router, services)
-  csipMigrationRoutes(router, services)
   contactPersonMigrationRoutes(router, services)
   contactPersonProfileDetailsMigrationRoutes(router, services)
   corporateMigrationRoutes(router, services)
