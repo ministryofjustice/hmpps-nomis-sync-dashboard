@@ -567,50 +567,6 @@ const stubGetIncidentsMigrationEstimatedCount = (count: number): SuperAgentReque
     },
   })
 
-const stubGetCSIPMigrationEstimatedCount = (count: number): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPath: '/nomis-prisoner-api/csip/ids',
-    },
-    response: {
-      status: 200,
-      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: {
-        content: [
-          {
-            id: 180935,
-          },
-        ],
-        pageable: {
-          sort: {
-            empty: false,
-            sorted: true,
-            unsorted: false,
-          },
-          offset: 0,
-          pageSize: 1,
-          pageNumber: 0,
-          paged: true,
-          unpaged: false,
-        },
-        last: false,
-        totalPages: count,
-        totalElements: count,
-        size: 1,
-        number: 0,
-        sort: {
-          empty: false,
-          sorted: true,
-          unsorted: false,
-        },
-        first: true,
-        numberOfElements: 1,
-        empty: false,
-      },
-    },
-  })
-
 const stubGetPrisonersMigrationEstimatedCount = (count: number): SuperAgentRequest =>
   stubFor({
     request: {
@@ -792,7 +748,6 @@ export default {
   stubGetVisitMigrationEstimatedCount,
   stubGetSentencingMigrationEstimatedCount,
   stubGetIncidentsMigrationEstimatedCount,
-  stubGetCSIPMigrationEstimatedCount,
   stubGetAppointmentsMigrationEstimatedCount,
   stubGetVisitRoomUsage,
   stubCheckServiceAgencySwitch,
