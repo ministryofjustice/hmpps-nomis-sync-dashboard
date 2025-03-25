@@ -21,8 +21,10 @@ export default class CorePersonMigrationController {
     private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
+  private migrationType: string = 'CORE_PERSON'
+
   async getMigrations(_: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getMigrationHistory('CORE_PERSON', context(res))
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations.map(history => ({
       ...history,
@@ -36,7 +38,7 @@ export default class CorePersonMigrationController {
   }
 
   async viewFailures(_: Request, res: Response): Promise<void> {
-    const failures = await this.corePersonMigrationService.getFailures(context(res))
+    const failures = await this.nomisMigrationService.getFailures(this.migrationType, context(res))
     const failuresDecorated = {
       ...failures,
       messages: failures.messages.map(message => ({
@@ -65,7 +67,7 @@ export default class CorePersonMigrationController {
     req.session.startCorePersonMigrationForm = { ...trimForm(req.body) }
 
     const count = await this.nomisPrisonerService.getCorePersonMigrationEstimatedCount(context(res))
-    const dlqCountString = await this.corePersonMigrationService.getDLQMessageCount(context(res))
+    const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
     logger.info(`${dlqCountString} failures found`)
 
     req.session.startCorePersonMigrationForm.estimatedCount = count.toLocaleString()
@@ -80,7 +82,7 @@ export default class CorePersonMigrationController {
   }
 
   async postClearDLQMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.corePersonMigrationService.deleteFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startCorePersonMigrationForm }
     await this.postStartMigration(req, res)
@@ -109,7 +111,7 @@ export default class CorePersonMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.corePersonMigrationService.cancelMigration(migrationId, context(res))
+    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/coreperson/corePersonMigrationDetails', {
       migration: { ...migration, history: migration.history },

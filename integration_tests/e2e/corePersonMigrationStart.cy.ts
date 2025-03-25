@@ -5,6 +5,8 @@ import StartCorePersonMigrationPage from '../pages/coreperson-migration/startCor
 import StartCorePersonMigrationPreviewPage from '../pages/coreperson-migration/startCorePersonMigrationPreview'
 import StartCorePersonMigrationConfirmationPage from '../pages/coreperson-migration/startCorePersonMigrationConfirmation'
 
+const migrationType: string = 'CORE_PERSON'
+
 context('Core Person Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -12,7 +14,7 @@ context('Core Person Migration Start', () => {
   context('With MIGRATE_CORE_PERSON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CORE_PERSON'] })
-      cy.task('stubGetMigrationHistory', { migrationType: 'CORE_PERSON' })
+      cy.task('stubGetMigrationHistory', { migrationType })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.migrationLink('coreperson-migration').click()
@@ -30,8 +32,8 @@ context('Core Person Migration Start', () => {
           estimatedCount: 100_988,
         },
       })
-      cy.task('stubHealth')
-      cy.task('stubGetFailures', { queue: 'dps-syscon-dev-corepersonmigration_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType })
 
       Page.verifyOnPage(CorePersonMigrationPage).startNewMigration().click()
       cy.task('stubGetPrisonersMigrationEstimatedCount', 100_988)
@@ -59,7 +61,7 @@ context('Core Person Migration Start', () => {
   context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
-      cy.task('stubGetMigrationHistory', { migrationType: 'CORE_PERSON' })
+      cy.task('stubGetMigrationHistory', { migrationType })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.migrationLink('coreperson-migration').click()
@@ -73,7 +75,7 @@ context('Core Person Migration Start', () => {
           estimatedCount: 100_988,
         },
       })
-      cy.task('stubHealth')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType })
 
       Page.verifyOnPage(CorePersonMigrationPage).startNewMigration().click()
       cy.task('stubGetPrisonersMigrationEstimatedCount', 100_988)
