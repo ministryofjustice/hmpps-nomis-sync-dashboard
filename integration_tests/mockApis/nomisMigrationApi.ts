@@ -1,6 +1,7 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 import { MigrationHistory } from '../../server/@types/migration'
+import { sentencingMigrationHistory } from './nomisSentencingMigrationApi'
 
 const stubListOfVisitsMigrationHistory = (
   migrationHistory: MigrationHistory[] = defaultVisitsMigrationHistory,
@@ -268,23 +269,6 @@ const stubGetVisitsMigrationDetailsCompleted = ({
     },
   })
 
-const stubListOfSentencingMigrationHistory = (
-  migrationHistory: MigrationHistory[] = defaultSentencingMigrationHistory,
-): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/nomis-migration-api/migrate/sentencing/history?.*',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: migrationHistory,
-    },
-  })
-
 const stubStartSentencingMigration = (
   response: unknown = {
     migrationId: '2022-03-23T11:11:56',
@@ -307,123 +291,6 @@ const stubStartSentencingMigration = (
     },
   })
 
-const defaultSentencingMigrationHistory: MigrationHistory[] = [
-  {
-    migrationId: '2022-03-14T10:13:56',
-    whenStarted: '2022-03-14T10:13:56.878627',
-    whenEnded: '2022-03-14T10:14:07.531409',
-    estimatedRecordCount: 0,
-    filter: '{"fromDate":"2022-03-04"}',
-    recordsMigrated: 0,
-    recordsFailed: 0,
-    migrationType: 'SENTENCING_ADJUSTMENTS',
-    status: 'COMPLETED',
-    id: '2022-03-14T10:13:56',
-    isNew: false,
-  },
-  {
-    migrationId: '2022-03-14T11:45:12',
-    whenStarted: '2022-03-14T11:45:12.615759',
-    estimatedRecordCount: 205630,
-    filter: '{}',
-    recordsMigrated: 1,
-    recordsFailed: 162794,
-    migrationType: 'SENTENCING_ADJUSTMENTS',
-    status: 'STARTED',
-    id: '2022-03-14T11:45:12',
-    isNew: false,
-  },
-  {
-    migrationId: '2022-03-15T11:00:35',
-    whenStarted: '2022-03-15T11:00:35.406626',
-    whenEnded: '2022-03-15T11:00:45.990485',
-    estimatedRecordCount: 4,
-    filter: '{"fromDate":"2022-03-15"}',
-    recordsMigrated: 0,
-    recordsFailed: 4,
-    migrationType: 'SENTENCING_ADJUSTMENTS',
-    status: 'COMPLETED',
-    id: '2022-03-15T11:00:35',
-    isNew: false,
-  },
-]
-
-const defaultSentencingFailures = {
-  messagesFoundCount: 353,
-  messagesReturnedCount: 5,
-  messages: [
-    {
-      body: {
-        context: {
-          migrationId: '2022-03-23T16:12:43',
-          estimatedCount: 93,
-          body: {
-            bookingId: 10310112,
-            sequence: 1,
-          },
-        },
-        type: 'MIGRATE_SENTENCING',
-      },
-      messageId: 'afeb75fd-a2aa-41c4-9ede-b6bfe9590d36',
-    },
-    {
-      body: {
-        context: {
-          migrationId: '2022-03-23T16:12:43',
-          estimatedCount: 93,
-          body: {
-            bookingId: 10309678,
-            sequence: 1,
-          },
-        },
-        type: 'MIGRATE_SENTENCING',
-      },
-      messageId: '86b96f0e-2ac3-445c-b3ac-0a4d525d371e',
-    },
-    {
-      body: {
-        context: {
-          migrationId: '2022-03-24T13:39:33',
-          estimatedCount: 292,
-          body: {
-            bookingId: 10243234,
-            sequence: 1,
-          },
-        },
-        type: 'MIGRATE_SENTENCING',
-      },
-      messageId: '7e37a1e0-f041-42bc-9c2d-1da82d3bb83b',
-    },
-    {
-      body: {
-        context: {
-          migrationId: '2022-03-24T13:39:33',
-          estimatedCount: 292,
-          body: {
-            bookingId: 10243119,
-            sequence: 1,
-          },
-        },
-        type: 'MIGRATE_SENTENCING',
-      },
-      messageId: '8d87f4d7-7846-48b2-ae93-5a7878dba502',
-    },
-    {
-      body: {
-        context: {
-          migrationId: '2022-03-24T13:39:33',
-          estimatedCount: 292,
-          body: {
-            bookingId: 10245176,
-            sequence: 1,
-          },
-        },
-        type: 'MIGRATE_SENTENCING',
-      },
-      messageId: '230dcb1f-3391-4630-b907-3923ec9e0ee4',
-    },
-  ],
-}
 const defaultFailures = {
   messagesFoundCount: 353,
   messagesReturnedCount: 5,
@@ -627,64 +494,6 @@ const stubHealth = (failures: string = '153'): SuperAgentRequest =>
     },
   })
 
-const stubGetSentencingFailures = (failures: unknown = defaultSentencingFailures): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/nomis-migration-api/queue-admin/get-dlq-messages/dps-syscon-dev-sentencingmigration_dlq',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: failures,
-    },
-  })
-
-const stubDeleteSentencingFailures = (): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'PUT',
-      urlPattern: '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-sentencingmigration_dlq',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        messagesFoundCount: 5,
-      },
-    },
-  })
-
-const stubGetSentencingMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/sentencing/history/${migrationId}`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        migrationId,
-        whenStarted: '2022-03-28T13:59:24.657071',
-        whenEnded: null,
-        estimatedRecordCount: 26602,
-        filter: '{"fromDate":"2016-03-23"}',
-        recordsMigrated: 12091,
-        recordsFailed: 123,
-        migrationType: 'SENTENCING',
-        status: 'STARTED',
-        id: migrationId,
-      },
-    },
-  })
-
 const stubMigrationInProgress = ({
   domain,
   type,
@@ -753,42 +562,6 @@ const stubMigrationInProgressCompleted = ({
         estimatedRecordCount: 6,
         migrationType: `${type}`,
         status: 'COMPLETED',
-      },
-    },
-  })
-
-const stubGetSentencingMigrationDetailsCompleted = ({
-  migrationId,
-  migrated,
-  failed,
-  whenEnded,
-}: {
-  migrationId: string
-  migrated: number
-  failed: string
-  whenEnded: string
-}): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/sentencing/history/${migrationId}`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        migrationId,
-        whenStarted: '2022-03-28T13:59:24.657071',
-        whenEnded,
-        estimatedRecordCount: 26602,
-        filter: '{"fromDate":"2016-03-23"}',
-        recordsMigrated: migrated,
-        recordsFailed: failed,
-        migrationType: 'SENTENCING',
-        status: 'COMPLETED',
-        id: migrationId,
       },
     },
   })
@@ -1850,7 +1623,7 @@ const stubStartContactPersonProfileDetailsMigration = (
 
 const stubListOfMigrationHistory = ({
   domain,
-  history = defaultSentencingMigrationHistory,
+  history = sentencingMigrationHistory,
 }: {
   domain: string
   history: MigrationHistory[]
@@ -1871,7 +1644,7 @@ const stubListOfMigrationHistory = ({
 
 const stubGetMigrationHistory = ({
   migrationType,
-  history = defaultSentencingMigrationHistory,
+  history = sentencingMigrationHistory,
 }: {
   migrationType: string
   history: MigrationHistory[]
@@ -2119,12 +1892,7 @@ export default {
   stubGetVisitsMigrationDetailsStarted,
   stubGetVisitsMigrationDetailsCompleted,
 
-  stubListOfSentencingMigrationHistory,
   stubStartSentencingMigration,
-  stubGetSentencingFailures,
-  stubDeleteSentencingFailures,
-  stubGetSentencingMigrationDetailsStarted,
-  stubGetSentencingMigrationDetailsCompleted,
 
   stubListOfAppointmentsMigrationHistory,
   stubStartAppointmentsMigration,

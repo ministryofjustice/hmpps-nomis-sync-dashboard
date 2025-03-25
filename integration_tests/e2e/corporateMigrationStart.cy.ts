@@ -12,7 +12,7 @@ context('Corporate Migration Start', () => {
   context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
-      cy.task('stubListOfMigrationHistory', { domain: 'corporate' })
+      cy.task('stubGetMigrationHistory', { migrationType: 'ORGANISATIONS' })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.corporateMigrationLink().click()
@@ -41,8 +41,8 @@ context('Corporate Migration Start', () => {
           estimatedCount: 100_988,
         },
       })
-      cy.task('stubHealth')
-      cy.task('stubGetFailures', { queue: 'dps-syscon-dev-corporatemigration_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ORGANISATIONS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'ORGANISATIONS' })
 
       Page.verifyOnPage(CorporateMigrationPage).startNewMigration().click()
       cy.task('stubGetCorporateMigrationEstimatedCount', 100_988)

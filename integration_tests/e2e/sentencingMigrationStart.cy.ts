@@ -5,6 +5,7 @@ import StartSentencingMigrationConfirmationPage from '../pages/sentencing-migrat
 import StartSentencingMigrationPreviewPage from '../pages/sentencing-migration/startSentencingMigrationPreview'
 
 import SentencingMigrationPage from '../pages/sentencing-migration/sentencingMigration'
+import { sentencingFailures, sentencingMigrationHistory } from '../mockApis/nomisSentencingMigrationApi'
 
 context('Sentencing Migration Start', () => {
   beforeEach(() => {
@@ -13,7 +14,10 @@ context('Sentencing Migration Start', () => {
   context('With MIGRATE_SENTENCING role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_SENTENCING'] })
-      cy.task('stubListOfSentencingMigrationHistory')
+      cy.task('stubGetMigrationHistory', {
+        migrationType: 'SENTENCING_ADJUSTMENTS',
+        history: sentencingMigrationHistory,
+      })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.sentencingMigrationLink().click()
@@ -39,8 +43,11 @@ context('Sentencing Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetSentencingFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'SENTENCING_ADJUSTMENTS' })
+      cy.task('stubGetFailuresWithMigrationType', {
+        migrationType: 'SENTENCING_ADJUSTMENTS',
+        failures: sentencingFailures,
+      })
 
       Page.verifyOnPage(SentencingMigrationPage).startNewMigration().click()
       cy.task('stubGetSentencingMigrationEstimatedCount', 100_988)
@@ -83,9 +90,12 @@ context('Sentencing Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetSentencingFailures')
-      cy.task('stubDeleteSentencingFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'SENTENCING_ADJUSTMENTS' })
+      cy.task('stubGetFailuresWithMigrationType', {
+        migrationType: 'SENTENCING_ADJUSTMENTS',
+        failures: sentencingFailures,
+      })
+      cy.task('stubDeleteFailuresWithMigrationType', { migrationType: 'SENTENCING_ADJUSTMENTS' })
 
       Page.verifyOnPage(SentencingMigrationPage).startNewMigration().click()
       cy.task('stubGetSentencingMigrationEstimatedCount', 100_988)
