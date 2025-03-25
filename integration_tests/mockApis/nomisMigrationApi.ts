@@ -1825,68 +1825,6 @@ const stubGetIncidentsMigrationDetailsCompleted = ({
 
 // Contact Person Profile Details //
 
-const stubGetContactPersonProfileDetailsMigrationDetailsStarted = (migrationId: string): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/contact-person-profile-details/history/${migrationId}`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        migrationId,
-        whenStarted: '2022-03-28T13:59:24.657071',
-        whenEnded: null,
-        estimatedRecordCount: 202,
-        filter: '{"prisonerNumber":"A1234BC"}',
-        recordsMigrated: 12091,
-        recordsFailed: 123,
-        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
-        status: 'STARTED',
-        id: migrationId,
-      },
-    },
-  })
-
-const stubGetContactPersonProfileDetailsMigrationDetailsCompleted = ({
-  migrationId,
-  migrated,
-  failed,
-  whenEnded,
-}: {
-  migrationId: string
-  migrated: number
-  failed: string
-  whenEnded: string
-}): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/nomis-migration-api/migrate/contact-person-profile-details/history/${migrationId}`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        migrationId,
-        whenStarted: '2022-03-28T13:59:24.657071',
-        whenEnded,
-        estimatedRecordCount: 202,
-        filter: '{"prisonerNumber":"A1234BC"}',
-        recordsMigrated: migrated,
-        recordsFailed: failed,
-        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
-        status: 'COMPLETED',
-        id: migrationId,
-      },
-    },
-  })
-
 const stubStartContactPersonProfileDetailsMigration = (
   response: unknown = {
     migrationId: '2022-03-23T11:11:56',
@@ -1905,24 +1843,6 @@ const stubStartContactPersonProfileDetailsMigration = (
       status: 200,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       jsonBody: response,
-    },
-  })
-
-const stubDeleteContactPersonProfileDetailsFailures = (): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'PUT',
-      urlPattern:
-        '/nomis-migration-api/queue-admin/purge-queue/dps-syscon-dev-migration_personalrelationships_profiledetails_dlq',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        messagesFoundCount: 5,
-      },
     },
   })
 
@@ -2012,19 +1932,44 @@ const stubGetMigration = ({
     },
   })
 
+const stubGetMigrationCompleted = ({
+  migrationType,
+  migrationId,
+  migrated = 2000,
+  failed = 101,
+  whenEnded = '2022-03-28T14:59:24.657071',
+  filter,
+}: {
+  migrationType: string
+  migrationId: string
+  migrated: number
+  failed: number
+  whenEnded: string
+  filter: string
+}): SuperAgentRequest =>
+  stubGetMigration({
+    migrationType,
+    migrationId,
+    filter,
+    migrated,
+    failed,
+    whenEnded,
+    status: 'COMPLETED',
+  })
+
 const stubGetActiveMigration = ({
   migrationType,
   migrationId,
-  migrated,
-  failed,
-  stillToBeProcessed,
+  migrated = 1000,
+  failed = 100,
+  stillToBeProcessed = 23100,
   status = 'STARTED',
 }: {
   migrationType: string
   migrationId: string
   migrated: number
-  failed: string
-  stillToBeProcessed: string
+  failed: number
+  stillToBeProcessed: number
   status: string
 }): SuperAgentRequest =>
   stubFor({
@@ -2049,6 +1994,22 @@ const stubGetActiveMigration = ({
         status,
       },
     },
+  })
+
+const stubGetActiveMigrationCompleted = ({
+  migrationType,
+  migrationId,
+}: {
+  migrationType: string
+  migrationId: string
+}): SuperAgentRequest =>
+  stubGetActiveMigration({
+    migrationType,
+    migrationId,
+    migrated: 0,
+    failed: 999,
+    status: 'COMPLETED',
+    stillToBeProcessed: 0,
   })
 
 const stubStartMigration = (args: { domain: string; response: unknown }): SuperAgentRequest =>
@@ -2194,10 +2155,7 @@ export default {
   stubGetIncidentsMigrationDetailsStarted,
   stubGetIncidentsMigrationDetailsCompleted,
 
-  stubGetContactPersonProfileDetailsMigrationDetailsStarted,
-  stubGetContactPersonProfileDetailsMigrationDetailsCompleted,
   stubStartContactPersonProfileDetailsMigration,
-  stubDeleteContactPersonProfileDetailsFailures,
 
   stubNomisMigrationPing,
   stubHealth,
@@ -2207,7 +2165,9 @@ export default {
   stubListOfMigrationHistory,
   stubGetMigrationHistory,
   stubGetMigration,
+  stubGetMigrationCompleted,
   stubGetActiveMigration,
+  stubGetActiveMigrationCompleted,
   stubStartMigration,
   stubGetFailures,
   stubGetNoFailures,

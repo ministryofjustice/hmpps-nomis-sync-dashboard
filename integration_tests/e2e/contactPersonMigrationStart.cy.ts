@@ -12,7 +12,7 @@ context('Contact Person Migration Start', () => {
   context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
-      cy.task('stubListOfMigrationHistory', { domain: 'contactperson' })
+      cy.task('stubGetMigrationHistory', { migrationType: 'PERSONALRELATIONSHIPS' })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.contactPersonMigrationLink().click()
@@ -41,8 +41,8 @@ context('Contact Person Migration Start', () => {
           estimatedCount: 100_988,
         },
       })
-      cy.task('stubHealth')
-      cy.task('stubGetFailures', { queue: 'dps-syscon-dev-contactpersonmigration_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'PERSONALRELATIONSHIPS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'PERSONALRELATIONSHIPS' })
 
       Page.verifyOnPage(ContactPersonMigrationPage).startNewMigration().click()
       cy.task('stubGetContactPersonMigrationEstimatedCount', 100_988)

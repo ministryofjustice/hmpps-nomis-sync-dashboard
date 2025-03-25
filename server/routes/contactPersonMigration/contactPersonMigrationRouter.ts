@@ -4,10 +4,12 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import ContactPersonNomisMigrationService from '../../services/contactperson/contactPersonNomisMigrationService'
 import ContactPersonNomisPrisonerService from '../../services/contactperson/contactPersonNomisPrisonerService'
 import ContactPersonMigrationController from './contactPersonMigrationController'
+import NomisMigrationService from '../../services/nomisMigrationService'
 
 export interface Services {
   contactPersonNomisMigrationService: ContactPersonNomisMigrationService
   contactPersonNomisPrisonerService: ContactPersonNomisPrisonerService
+  nomisMigrationService: NomisMigrationService
 }
 export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -16,6 +18,7 @@ export default function routes(router: Router, services: Services): Router {
   const migrationController = new ContactPersonMigrationController(
     services.contactPersonNomisMigrationService,
     services.contactPersonNomisPrisonerService,
+    services.nomisMigrationService,
   )
   get('/contactperson-migration', (req, res) => migrationController.getMigrations(req, res))
   get('/contactperson-migration/failures', (req, res) => migrationController.viewFailures(req, res))

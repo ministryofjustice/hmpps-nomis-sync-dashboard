@@ -13,8 +13,8 @@ context('Contact Person Profile Details Migration Start', () => {
   context('With MIGRATE_CONTACTPERSON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CONTACTPERSON'] })
-      cy.task('stubListOfMigrationHistory', {
-        domain: 'contact-person-profile-details',
+      cy.task('stubGetMigrationHistory', {
+        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
         history: contactPersonProfileDetailsMigrationHistory,
       })
       cy.signIn()
@@ -31,8 +31,8 @@ context('Contact Person Profile Details Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetFailures', 'dps-syscon-dev-migration_personalrelationships_profiledetails_dlq')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL' })
 
       Page.verifyOnPage(MigrationPage).startNewMigration().click()
       cy.task('stubGetPrisonersMigrationEstimatedCount', 100_988)
@@ -74,9 +74,9 @@ context('Contact Person Profile Details Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetFailures', 'dps-syscon-dev-migration_personalrelationships_profiledetails_dlq')
-      cy.task('stubDeleteContactPersonProfileDetailsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL' })
+      cy.task('stubDeleteFailuresWithMigrationType', { migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL' })
 
       Page.verifyOnPage(MigrationPage).startNewMigration().click()
       cy.task('stubGetPrisonersMigrationEstimatedCount', 100_988)

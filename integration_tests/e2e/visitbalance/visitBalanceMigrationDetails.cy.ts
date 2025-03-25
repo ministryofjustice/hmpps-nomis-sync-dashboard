@@ -11,9 +11,6 @@ context('Visit Balance Migration Details', () => {
       cy.task('stubGetActiveMigration', {
         migrationType: 'VISIT_BALANCE',
         migrationId,
-        migrated: 1000,
-        failed: 100,
-        stillToBeProcessed: 23100,
       })
       cy.task('stubGetMigration', { migrationId, migrationType: 'VISIT_BALANCE', filter: '{"prisonId":"MDI"}' })
       cy.signIn()
@@ -32,14 +29,10 @@ context('Visit Balance Migration Details', () => {
   context('after migration has completed', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISIT_BALANCE'] })
-      cy.task('stubGetActiveMigration', { migrationType: 'VISIT_BALANCE', migrationId, status: 'COMPLETED' })
-      cy.task('stubGetMigration', {
+      cy.task('stubGetActiveMigrationCompleted', { migrationType: 'VISIT_BALANCE', migrationId })
+      cy.task('stubGetMigrationCompleted', {
         migrationId,
         migrationType: 'VISIT_BALANCE',
-        whenEnded: '2022-03-28T14:59:24.657071',
-        migrated: 2000,
-        failed: 101,
-        status: 'COMPLETED',
         filter: '{"prisonId":"MDI"}',
       })
       cy.signIn()

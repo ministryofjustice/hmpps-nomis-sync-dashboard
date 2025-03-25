@@ -8,15 +8,15 @@ context('Contact Person Profile Details Migration Details', () => {
   context('while migration is in progress', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CONTACTPERSON'] })
-      cy.task('stubMigrationInProgress', {
-        domain: 'contact-person-profile-details',
-        type: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
+      cy.task('stubGetActiveMigration', {
+        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
         migrationId,
-        migrated: 1000,
-        failed: 100,
-        stillToBeProcessed: 23100,
       })
-      cy.task('stubGetContactPersonProfileDetailsMigrationDetailsStarted', migrationId)
+      cy.task('stubGetMigration', {
+        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
+        migrationId,
+        filter: '{"prisonerNumber":"A1234BC"}',
+      })
       cy.signIn()
     })
     it('should show details for migration in progress', () => {
@@ -32,16 +32,14 @@ context('Contact Person Profile Details Migration Details', () => {
   context('after migration has completed', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CONTACTPERSON'] })
-      cy.task('stubMigrationInProgressCompleted', {
-        domain: 'contact-person-profile-details',
-        type: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
+      cy.task('stubGetActiveMigrationCompleted', {
+        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
         migrationId,
       })
-      cy.task('stubGetContactPersonProfileDetailsMigrationDetailsCompleted', {
+      cy.task('stubGetMigrationCompleted', {
+        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
         migrationId,
-        whenEnded: '2022-03-28T14:59:24.657071',
-        migrated: 2000,
-        failed: 101,
+        filter: '{"prisonerNumber":"A1234BC"}',
       })
       cy.signIn()
     })

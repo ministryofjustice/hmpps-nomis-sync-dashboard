@@ -6,7 +6,7 @@ import logger from '../../../logger'
 import startMigrationValidator from './contactPersonMigrationValidator'
 import ContactPersonNomisMigrationService from '../../services/contactperson/contactPersonNomisMigrationService'
 import ContactPersonNomisPrisonerService from '../../services/contactperson/contactPersonNomisPrisonerService'
-import { Context } from '../../services/nomisMigrationService'
+import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
 
 function context(res: Response): Context {
   return {
@@ -17,12 +17,15 @@ function context(res: Response): Context {
 
 export default class ContactPersonMigrationController {
   constructor(
-    private readonly nomisMigrationService: ContactPersonNomisMigrationService,
+    private readonly contactPersonNomisMigrationService: ContactPersonNomisMigrationService,
     private readonly nomisPrisonerService: ContactPersonNomisPrisonerService,
+    private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  async getMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getMigrations(context(res))
+  private migrationType: string = 'PERSONALRELATIONSHIPS'
+
+  async getMigrations(_: Request, res: Response): Promise<void> {
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations.map(history => ({
       ...history,
@@ -38,8 +41,8 @@ export default class ContactPersonMigrationController {
     })
   }
 
-  async viewFailures(req: Request, res: Response): Promise<void> {
-    const failures = await this.nomisMigrationService.getFailures(context(res))
+  async viewFailures(_: Request, res: Response): Promise<void> {
+    const failures = await this.nomisMigrationService.getFailures(this.migrationType, context(res))
     const failuresDecorated = {
       ...failures,
       messages: failures.messages.map(message => ({
@@ -75,7 +78,7 @@ export default class ContactPersonMigrationController {
     } else {
       const filter = req.session.startDateFilteredMigrationForm
       const count = await this.nomisPrisonerService.getMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getDLQMessageCount(context(res))
+      const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startDateFilteredMigrationForm.estimatedCount = count.toLocaleString()
@@ -91,7 +94,7 @@ export default class ContactPersonMigrationController {
   }
 
   async postClearDLQMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.nomisMigrationService.deleteFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startDateFilteredMigrationForm }
     await this.postStartMigration(req, res)
@@ -99,7 +102,7 @@ export default class ContactPersonMigrationController {
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = req.session.startDateFilteredMigrationForm
-    const result = await this.nomisMigrationService.startMigration(filter, context(res))
+    const result = await this.contactPersonNomisMigrationService.startMigration(filter, context(res))
     req.session.startDateFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startDateFilteredMigrationForm.migrationId = result.migrationId
     res.redirect('/contactperson-migration/start/confirmation')
@@ -130,14 +133,14 @@ export default class ContactPersonMigrationController {
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {
     return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
     | order by timestamp desc`
   }
 
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where message contains 'Will not migrate the nomis person'
     | where timestamp between (datetime(${ContactPersonMigrationController.toISODateTime(
       startedDate,

@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import moment from 'moment'
 import { PrisonerFilteredMigrationForm } from 'express-session'
-import NomisMigrationService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisMigrationService'
-import { Context } from '../../../services/nomisMigrationService'
+import NomisMigrationService, { Context } from '../../../services/nomisMigrationService'
 import { MigrationHistory } from '../../../@types/migration'
 import { buildUrlNoTimespan } from '../../../utils/logAnalyticsUrlBuilder'
 import trimForm from '../../../utils/trim'
 import logger from '../../../../logger'
 import NomisPrisonerService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisPrisonerService'
+import ContactPersonProfileDetailsNomisMigrationService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisMigrationService'
 
 interface Filter {
   prisonerNumber?: string
@@ -22,12 +22,15 @@ function context(res: Response): Context {
 
 export default class ContactPersonProfileDetailsMigrationController {
   constructor(
-    private readonly nomisMigrationService: NomisMigrationService,
+    private readonly contactPersonProfileDetailsNomisMigrationService: ContactPersonProfileDetailsNomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
+    private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  async getMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getMigrations(context(res))
+  private migrationType: string = 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
+
+  async getMigrations(_: Request, res: Response): Promise<void> {
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations
       .map(ContactPersonProfileDetailsMigrationController.withFilter)
@@ -72,7 +75,7 @@ export default class ContactPersonProfileDetailsMigrationController {
     req.session.prisonerFilteredMigrationForm = { ...trimForm(req.body) }
 
     const count = await this.countPrisoners(res, req.body.prisonerNumber)
-    const dlqCountString = await this.nomisMigrationService.getDLQMessageCount(context(res))
+    const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
     logger.info(`${dlqCountString} failures found`)
 
     req.session.prisonerFilteredMigrationForm.estimatedCount = count.toLocaleString()
@@ -94,7 +97,7 @@ export default class ContactPersonProfileDetailsMigrationController {
   }
 
   async postClearDLQMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.nomisMigrationService.deleteFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.prisonerFilteredMigrationForm }
     await this.postStartMigration(req, res)
@@ -103,7 +106,7 @@ export default class ContactPersonProfileDetailsMigrationController {
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = ContactPersonProfileDetailsMigrationController.toFilter(req.session.prisonerFilteredMigrationForm)
 
-    const result = await this.nomisMigrationService.startMigration(filter, context(res))
+    const result = await this.contactPersonProfileDetailsNomisMigrationService.startMigration(filter, context(res))
     req.session.prisonerFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.prisonerFilteredMigrationForm.migrationId = result.migrationId
     res.redirect('/contactperson-profiledetails-migration/start/confirmation')
