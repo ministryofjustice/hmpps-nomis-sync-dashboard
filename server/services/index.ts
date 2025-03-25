@@ -28,11 +28,9 @@ export const services = () => {
     nomisPrisonerService,
     mappingService,
     activitiesService,
-    contactPersonNomisMigrationService: new ContactPersonNomisMigrationService(hmppsAuthClient),
+    contactPersonNomisMigrationService: new ContactPersonNomisMigrationService(),
     contactPersonNomisPrisonerService: new ContactPersonNomisPrisonerService(hmppsAuthClient),
-    contactPersonProfileDetailsNomisMigrationService: new ContactPersonProfileDetailsNomisMigrationService(
-      hmppsAuthClient,
-    ),
+    contactPersonProfileDetailsNomisMigrationService: new ContactPersonProfileDetailsNomisMigrationService(),
     contactPersonProfileDetailsNomisPrisonerService: new ContactPersonProfileDetailsNomisPrisonerService(
       hmppsAuthClient,
     ),

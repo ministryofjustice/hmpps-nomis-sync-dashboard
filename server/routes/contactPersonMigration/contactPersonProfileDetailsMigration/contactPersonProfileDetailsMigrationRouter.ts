@@ -1,13 +1,15 @@
 import type { RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../../../middleware/asyncMiddleware'
-import NomisMigrationService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisMigrationService'
-import NomisPrisonerService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisPrisonerService'
 import MigrationController from './contactPersonProfileDetailsMigrationController'
+import NomisMigrationService from '../../../services/nomisMigrationService'
+import ContactPersonProfileDetailsNomisMigrationService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisMigrationService'
+import ContactPersonProfileDetailsNomisPrisonerService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisPrisonerService'
 
 export interface Services {
-  contactPersonProfileDetailsNomisMigrationService: NomisMigrationService
-  contactPersonProfileDetailsNomisPrisonerService: NomisPrisonerService
+  contactPersonProfileDetailsNomisMigrationService: ContactPersonProfileDetailsNomisMigrationService
+  contactPersonProfileDetailsNomisPrisonerService: ContactPersonProfileDetailsNomisPrisonerService
+  nomisMigrationService: NomisMigrationService
 }
 export default function routes(router: Router, services: Services): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -16,6 +18,7 @@ export default function routes(router: Router, services: Services): Router {
   const migrationController = new MigrationController(
     services.contactPersonProfileDetailsNomisMigrationService,
     services.contactPersonProfileDetailsNomisPrisonerService,
+    services.nomisMigrationService,
   )
   get('/contactperson-profiledetails-migration', (req, res) => migrationController.getMigrations(req, res))
   get('/contactperson-profiledetails-migration/start', (req, res) => migrationController.startNewMigration(req, res))

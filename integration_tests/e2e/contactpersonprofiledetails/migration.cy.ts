@@ -10,8 +10,8 @@ context('Contact Person Profile Details Migration Homepage', () => {
   context('With MIGRATE_CONTACTPERSON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CONTACTPERSON'] })
-      cy.task('stubListOfMigrationHistory', {
-        domain: 'contact-person-profile-details',
+      cy.task('stubGetMigrationHistory', {
+        migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
         history: contactPersonProfileDetailsMigrationHistory,
       })
       cy.signIn()
@@ -27,7 +27,7 @@ context('Contact Person Profile Details Migration Homepage', () => {
     })
 
     it('should display list of migrations', () => {
-      cy.task('stubHealth')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL' })
 
       const migrationPage = MigrationPage.goTo()
 
