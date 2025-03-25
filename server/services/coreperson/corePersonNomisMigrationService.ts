@@ -1,10 +1,9 @@
-import { GetDlqResult, PurgeQueueResult, MigrationContextCorePersonMigrationFilter } from '../../@types/migration'
+import { MigrationContextCorePersonMigrationFilter } from '../../@types/migration'
 
-import type HmppsAuthClient from '../../data/hmppsAuthClient'
 import RestClient from '../../data/restClient'
 import config from '../../config'
 import logger from '../../../logger'
-import NomisMigrationService, { Context } from '../nomisMigrationService'
+import { Context } from '../nomisMigrationService'
 
 export default class CorePersonNomisMigrationService {
   constructor() {}
