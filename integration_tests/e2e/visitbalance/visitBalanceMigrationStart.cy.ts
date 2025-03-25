@@ -42,8 +42,8 @@ context('Visit Balance Migration Start', () => {
           estimatedCount: 100_988,
         },
       })
-      cy.task('stubHealth')
-      cy.task('stubGetNoFailures', { queue: 'syscon-devs-dev-migration_visitbalance_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'VISIT_BALANCE' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'VISIT_BALANCE' })
       cy.task('stubGetVisitBalanceMigrationEstimatedCount', 100_988)
 
       Page.verifyOnPage(VisitBalanceMigrationPage).startNewMigration().click()
@@ -63,8 +63,8 @@ context('Visit Balance Migration Start', () => {
           estimatedCount: 100_988,
         },
       })
-      cy.task('stubHealth')
-      cy.task('stubGetFailures', { queue: 'syscon-devs-dev-migration_visitbalance_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'VISIT_BALANCE' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'VISIT_BALANCE' })
 
       Page.verifyOnPage(VisitBalanceMigrationPage).startNewMigration().click()
       cy.task('stubGetVisitBalanceMigrationEstimatedCount', 100_988)

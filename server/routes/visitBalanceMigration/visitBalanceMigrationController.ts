@@ -44,7 +44,7 @@ export default class VisitBalanceMigrationController {
   }
 
   async viewFailures(_: Request, res: Response): Promise<void> {
-    const failures = await this.visitBalanceMigrationService.getFailures(context(res))
+    const failures = await this.nomisMigrationService.getFailures(this.migrationType, context(res))
     const failuresDecorated = {
       ...failures,
       messages: failures.messages.map(message => ({
@@ -80,7 +80,7 @@ export default class VisitBalanceMigrationController {
     } else {
       const filter = req.session.prisonFilteredMigrationForm
       const count = await this.nomisPrisonerService.getMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.visitBalanceMigrationService.getDLQMessageCount(context(res))
+      const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.prisonFilteredMigrationForm.estimatedCount = count.toLocaleString()
@@ -96,7 +96,7 @@ export default class VisitBalanceMigrationController {
   }
 
   async postClearDLQMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.visitBalanceMigrationService.deleteFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.prisonFilteredMigrationForm }
     await this.postStartMigration(req, res)
@@ -126,7 +126,7 @@ export default class VisitBalanceMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.visitBalanceMigrationService.cancelMigration(migrationId, context(res))
+    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/visitbalance/visitBalanceMigrationDetails', {
       migration: { ...migration, history: VisitBalanceMigrationController.withFilter(migration.history) },

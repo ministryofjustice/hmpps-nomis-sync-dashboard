@@ -88,6 +88,14 @@ export default class NomisMigrationService {
     }
   }
 
+  async cancelMigration(migrationId: string, context: Context): Promise<void> {
+    logger.info(`cancelling a migration for ${migrationId}`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+    return NomisMigrationService.restClient(token).post<void>({
+      path: `/migrate/cancel/${migrationId}`,
+    })
+  }
+
   async getVisitsMigrations(context: Context, filter: MigrationViewFilter): Promise<HistoricMigrations> {
     logger.info(`getting migrations with filter ${JSON.stringify(filter)}`)
     return {
@@ -674,5 +682,29 @@ export default class NomisMigrationService {
 
   private static async getIncidentsDLQName(token: string): Promise<string> {
     return NomisMigrationService.getAnyDLQName('migrationincidents-health', token)
+  }
+
+  async getFailures(migrationType: string, context: Context): Promise<GetDlqResult> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+
+    return NomisMigrationService.restClient(token).get<GetDlqResult>({
+      path: `/migrate/dead-letter-queue/${migrationType}`,
+    })
+  }
+
+  async deleteFailures(migrationType: string, context: Context): Promise<PurgeQueueResult> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+
+    return NomisMigrationService.restClient(token).delete<PurgeQueueResult>({
+      path: `/migrate/dead-letter-queue/${migrationType}`,
+    })
+  }
+
+  async getFailureCount(migrationType: string, context: Context): Promise<string> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
+
+    return NomisMigrationService.restClient(token).get<string>({
+      path: `/migrate/dead-letter-queue/${migrationType}/count`,
+    })
   }
 }
