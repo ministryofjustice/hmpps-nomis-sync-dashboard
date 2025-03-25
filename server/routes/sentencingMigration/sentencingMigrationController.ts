@@ -27,8 +27,10 @@ export default class SentencingMigrationController {
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
 
-  async getSentencingMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getSentencingMigrations(context(res))
+  private migrationType: string = 'SENTENCING_ADJUSTMENTS'
+
+  async getSentencingMigrations(_: Request, res: Response): Promise<void> {
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations.map(history => ({
       ...history,
@@ -41,8 +43,8 @@ export default class SentencingMigrationController {
     })
   }
 
-  async viewFailures(req: Request, res: Response): Promise<void> {
-    const failures = await this.nomisMigrationService.getSentencingFailures(context(res))
+  async viewFailures(_: Request, res: Response): Promise<void> {
+    const failures = await this.nomisMigrationService.getFailures(this.migrationType, context(res))
     const failuresDecorated = {
       ...failures,
       messages: failures.messages.map(message => ({
@@ -78,7 +80,7 @@ export default class SentencingMigrationController {
     } else {
       const filter = SentencingMigrationController.toFilter(req.session.startSentencingMigrationForm)
       const count = await this.nomisPrisonerService.getSentencingMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getSentencingDLQMessageCount(context(res))
+      const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startSentencingMigrationForm.estimatedCount = count.toLocaleString()
@@ -92,7 +94,7 @@ export default class SentencingMigrationController {
   }
 
   async postClearDLQSentencingMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.nomisMigrationService.deleteSentencingFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startSentencingMigrationForm }
     await this.postStartSentencingMigration(req, res)
@@ -115,7 +117,7 @@ export default class SentencingMigrationController {
 
   async sentencingMigrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
-    const migration = await this.nomisMigrationService.getSentencingMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/sentencing/sentencingMigrationDetails', {
       migration: { ...migration, history: SentencingMigrationController.withFilter(migration.history) },
     })
@@ -123,8 +125,8 @@ export default class SentencingMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.nomisMigrationService.cancelSentencingMigration(migrationId, context(res))
-    const migration = await this.nomisMigrationService.getSentencingMigration(migrationId, context(res))
+    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/sentencing/sentencingMigrationDetails', {
       migration: { ...migration, history: SentencingMigrationController.withFilter(migration.history) },
     })
@@ -132,14 +134,14 @@ export default class SentencingMigrationController {
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {
     return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
     | order by timestamp desc`
   }
 
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where message contains 'Will not migrate the adjustment since it is migrated already,'
     | where timestamp between (datetime(${SentencingMigrationController.toISODateTime(
       startedDate,

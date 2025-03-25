@@ -35,7 +35,7 @@ export const services = () => {
       hmppsAuthClient,
     ),
     corePersonNomisMigrationService: new CorePersonNomisMigrationService(),
-    corporateNomisMigrationService: new CorporateNomisMigrationService(hmppsAuthClient),
+    corporateNomisMigrationService: new CorporateNomisMigrationService(),
     corporateNomisPrisonerService: new CorporateNomisPrisonerService(hmppsAuthClient),
     visitBalanceNomisMigrationService: new VisitBalanceNomisMigrationService(),
     visitBalanceNomisPrisonerService: new VisitBalanceNomisPrisonerService(hmppsAuthClient),
