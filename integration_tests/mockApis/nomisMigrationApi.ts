@@ -2082,6 +2082,68 @@ const stubGetFailures = (args: { queue: string; failures: unknown }): SuperAgent
 const stubGetNoFailures = (args: { queue: string }): SuperAgentRequest =>
   stubGetFailures({ queue: args.queue, failures: noMessageFailures })
 
+const stubGetFailuresWithMigrationType = ({
+  migrationType,
+  failures = defaultFailures,
+}: {
+  migrationType: string
+  failures: unknown
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/dead-letter-queue/${migrationType}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: failures,
+    },
+  })
+
+const stubGetNoFailuresWithMigrationType = ({ migrationType }: { migrationType: string }): SuperAgentRequest =>
+  stubGetFailuresWithMigrationType({ migrationType, failures: noMessageFailures })
+
+const stubGetFailureCountWithMigrationType = ({
+  migrationType,
+  failures = 153,
+}: {
+  migrationType: string
+  failures: number
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/nomis-migration-api/migrate/dead-letter-queue/${migrationType}/count`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: failures,
+    },
+  })
+
+const stubDeleteFailuresWithMigrationType = ({ migrationType }: { migrationType: string }): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'DELETE',
+      urlPattern: `/nomis-migration-api/migrate/dead-letter-queue/${migrationType}`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: {
+        messagesFoundCount: 5,
+      },
+    },
+  })
+
 const noMessageFailures = {
   messagesFoundCount: 0,
   messagesReturnedCount: 0,
@@ -2149,4 +2211,8 @@ export default {
   stubStartMigration,
   stubGetFailures,
   stubGetNoFailures,
+  stubGetFailuresWithMigrationType,
+  stubGetNoFailuresWithMigrationType,
+  stubGetFailureCountWithMigrationType,
+  stubDeleteFailuresWithMigrationType,
 }

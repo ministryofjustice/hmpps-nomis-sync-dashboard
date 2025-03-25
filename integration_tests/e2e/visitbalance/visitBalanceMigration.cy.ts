@@ -25,8 +25,8 @@ context('Visit Balance Migration Homepage', () => {
     })
 
     it('should display list of migrations', () => {
-      cy.task('stubHealth')
-      cy.task('stubGetNoFailures', { queue: 'syscon-devs-dev-migration_visitbalance_dlq' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'VISIT_BALANCE' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'VISIT_BALANCE' })
 
       const migrationPage = VisitBalanceMigrationPage.goTo()
 
