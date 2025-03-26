@@ -1,4 +1,5 @@
 import IncidentsMigrationFailuresPage from '../../pages/incidents-migration/incidentsMigrationFailures'
+import { incidentsFailures } from '../../mockApis/nomisIncidentsMigrationApi'
 
 context('Incidents Migration Failures', () => {
   beforeEach(() => {
@@ -7,8 +8,8 @@ context('Incidents Migration Failures', () => {
   context('navigating directly to page', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
-      cy.task('stubHealth')
-      cy.task('stubGetIncidentsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'INCIDENTS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'INCIDENTS', failures: incidentsFailures })
       cy.signIn()
     })
     it('should see failures rows', () => {

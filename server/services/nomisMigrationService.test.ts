@@ -112,91 +112,20 @@ describe('NomisMigrationService tests', () => {
     })
   })
 
-  describe('cancelVisitsMigration', () => {
+  describe('cancelMigration', () => {
     it('will cancel migration', async () => {
-      fakeNomisMigrationService.post('/migrate/visits/2022-03-23T11:11:56/cancel').reply(202, {})
+      fakeNomisMigrationService.post('/migrate/cancel/2022-03-23T11:11:56').reply(202, {})
 
-      const response = await nomisMigrationService.cancelVisitsMigration('2022-03-23T11:11:56', { token: 'some token' })
+      const response = await nomisMigrationService.cancelMigration('2022-03-23T11:11:56', { token: 'some token' })
 
       expect(response).toEqual({})
     })
   })
 
-  describe('getVisitsFailures', () => {
+  describe('getFailures', () => {
     it('will return message for current DLQ ', async () => {
-      fakeNomisMigrationService.get('/health').reply(200, {
-        status: 'UP',
-        components: {
-          OAuthApiHealth: {
-            status: 'UP',
-            details: {
-              HttpStatus: 'OK',
-            },
-          },
-          diskSpace: {
-            status: 'UP',
-            details: {
-              total: 107361579008,
-              free: 19944652800,
-              threshold: 10485760,
-              exists: true,
-            },
-          },
-          healthInfo: {
-            status: 'UP',
-            details: {
-              version: '2022-03-24.562.6c6b00d',
-            },
-          },
-          livenessState: {
-            status: 'UP',
-          },
-          'migrationvisits-health': {
-            status: 'UP',
-            details: {
-              queueName: 'dps-syscon-dev-migration_queue',
-              messagesOnQueue: '0',
-              messagesInFlight: '0',
-              dlqStatus: 'UP',
-              dlqName: 'dps-syscon-dev-migration_dlq',
-              messagesOnDlq: '153',
-            },
-          },
-          nomisApiHealth: {
-            status: 'UP',
-            details: {
-              HttpStatus: 'OK',
-            },
-          },
-          ping: {
-            status: 'UP',
-          },
-          r2dbc: {
-            status: 'UP',
-            details: {
-              database: 'PostgreSQL',
-              validationQuery: 'validate(REMOTE)',
-            },
-          },
-          readinessState: {
-            status: 'UP',
-          },
-          visitMappingApi: {
-            status: 'UP',
-            details: {
-              HttpStatus: 'OK',
-            },
-          },
-          visitsApi: {
-            status: 'UP',
-            details: {
-              HttpStatus: 'OK',
-            },
-          },
-        },
-        groups: ['liveness', 'readiness'],
-      })
-      fakeNomisMigrationService.get('/queue-admin/get-dlq-messages/dps-syscon-dev-migration_dlq').reply(200, {
+      fakeNomisMigrationService.get('/migrate/dead-letter-queue/count').reply(200, '153')
+      fakeNomisMigrationService.get('/migrate/dead-letter-queue/VISITS').reply(200, {
         messagesFoundCount: 353,
         messagesReturnedCount: 5,
         messages: [
@@ -267,7 +196,7 @@ describe('NomisMigrationService tests', () => {
           },
         ],
       })
-      const messages = await nomisMigrationService.getVisitsFailures({ token: 'some token' })
+      const messages = await nomisMigrationService.getFailures('VISITS', { token: 'some token' })
 
       expect(messages).toEqual(
         expect.objectContaining({
@@ -297,26 +226,11 @@ describe('NomisMigrationService tests', () => {
 
   describe('deleteFailures', () => {
     it('will delete message on current DLQ ', async () => {
-      fakeNomisMigrationService.get('/health').reply(200, {
-        status: 'UP',
-        components: {
-          'migrationvisits-health': {
-            status: 'UP',
-            details: {
-              queueName: 'dps-syscon-dev-migration_queue',
-              messagesOnQueue: '0',
-              messagesInFlight: '0',
-              dlqStatus: 'UP',
-              dlqName: 'dps-syscon-dev-migration_dlq',
-              messagesOnDlq: '153',
-            },
-          },
-        },
-      })
-      fakeNomisMigrationService.put('/queue-admin/purge-queue/dps-syscon-dev-migration_dlq').reply(200, {
+      fakeNomisMigrationService.get('/migrate/dead-letter-queue/count').reply(200, '153')
+      fakeNomisMigrationService.delete('/migrate/dead-letter-queue/VISITS').reply(200, {
         messagesFoundCount: 5,
       })
-      const count = await nomisMigrationService.deleteVisitsFailures({ token: 'some token' })
+      const count = await nomisMigrationService.deleteFailures('VISITS', { token: 'some token' })
 
       expect(count).toEqual(
         expect.objectContaining({
@@ -326,9 +240,9 @@ describe('NomisMigrationService tests', () => {
     })
   })
 
-  describe('getVisitMigration', () => {
+  describe('getMigration', () => {
     it('will return message lengths along with history', async () => {
-      fakeNomisMigrationService.get('/migrate/visits/history/2022-03-24T13:39:33').reply(200, {
+      fakeNomisMigrationService.get('/migrate/history/2022-03-24T13:39:33').reply(200, {
         migrationId: '2022-03-24T13:39:33',
         whenStarted: '2022-03-24T13:39:33.477466',
         whenEnded: '2022-03-24T13:41:39.83053',
@@ -341,7 +255,7 @@ describe('NomisMigrationService tests', () => {
         status: 'COMPLETED',
         id: '2022-03-24T13:39:33',
       })
-      fakeNomisMigrationService.get('/migrate/visits/active-migration').reply(200, {
+      fakeNomisMigrationService.get('/migrate/history/active/VISITS').reply(200, {
         recordsMigrated: 1,
         toBeProcessedCount: 2367,
         beingProcessedCount: 0,
@@ -352,7 +266,7 @@ describe('NomisMigrationService tests', () => {
         migrationType: 'VISITS',
         status: 'STARTED',
       })
-      const summary = await nomisMigrationService.getVisitsMigration('2022-03-24T13:39:33', { token: 'some token' })
+      const summary = await nomisMigrationService.getMigration('2022-03-24T13:39:33', { token: 'some token' })
 
       expect(summary).toEqual(
         expect.objectContaining({
@@ -405,7 +319,7 @@ describe('NomisMigrationService tests', () => {
           started: '2022-03-14T13:10:54.073256',
         },
       })
-      fakeNomisMigrationService.get('/migrate/visits/active-migration').reply(200, {
+      fakeNomisMigrationService.get('/migrate/history/active/VISITS').reply(200, {
         recordsMigrated: 999,
         toBeProcessedCount: 2367,
         beingProcessedCount: 0,
@@ -416,7 +330,7 @@ describe('NomisMigrationService tests', () => {
         migrationType: 'VISITS',
         status: 'STARTED',
       })
-      fakeNomisMigrationService.get('/migrate/visits/history/2022-03-24T13:39:33').reply(200, {
+      fakeNomisMigrationService.get('/migrate/history/2022-03-24T13:39:33').reply(200, {
         migrationId: '2022-03-24T13:39:33',
         whenStarted: '2022-03-24T13:39:33.477466',
         whenEnded: '2022-03-24T13:41:39.83053',
@@ -429,7 +343,7 @@ describe('NomisMigrationService tests', () => {
         status: 'COMPLETED',
         id: '2022-03-24T13:39:33',
       })
-      const summary = await nomisMigrationService.getVisitsMigration('2022-03-24T13:39:33', { token: 'some token' })
+      const summary = await nomisMigrationService.getMigration('2022-03-24T13:39:33', { token: 'some token' })
 
       expect(summary).toEqual(
         expect.objectContaining({

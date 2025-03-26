@@ -2,6 +2,7 @@ import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import ActivitiesMigrationPage from '../../pages/activities-migration/activitiesMigration'
 import StarAllocationsMigrationPage from '../../pages/allocations-migration/startAllocationsMigration'
+import { activitiesMigrationHistory } from '../../mockApis/nomisActivitiesMigrationApi'
 
 context('Activities Migration Homepage', () => {
   beforeEach(() => {
@@ -10,7 +11,7 @@ context('Activities Migration Homepage', () => {
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
-      cy.task('stubListOfActivitiesMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'ACTIVITIES', history: activitiesMigrationHistory })
       cy.signIn()
     })
     it('should see migrate activities tile', () => {
@@ -24,8 +25,8 @@ context('Activities Migration Homepage', () => {
     })
 
     it('should display list of migrations', () => {
-      cy.task('stubHealth')
-      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-activitiesmigration_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ACTIVITIES' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'ACTIVITIES' })
 
       const migrationPage = ActivitiesMigrationPage.goTo()
 
@@ -74,7 +75,7 @@ context('Activities Migration Homepage', () => {
     })
 
     it('should click through to allocation migration', () => {
-      cy.task('stubHealth')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ACTIVITIES' })
 
       const migrationPage = ActivitiesMigrationPage.goTo()
 

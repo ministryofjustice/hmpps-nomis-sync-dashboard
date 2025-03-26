@@ -2,6 +2,7 @@ import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import IncidentsMigrationPage from '../../pages/incidents-migration/incidentsMigration'
 import IncidentsMigrationFailuresPage from '../../pages/incidents-migration/incidentsMigrationFailures'
+import { incidentsMigrationHistory } from '../../mockApis/nomisIncidentsMigrationApi'
 
 context('Incident Migration Homepage', () => {
   beforeEach(() => {
@@ -10,7 +11,7 @@ context('Incident Migration Homepage', () => {
   context('With MIGRATE_INCIDENT_REPORTS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
-      cy.task('stubListOfIncidentsMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'INCIDENTS', history: incidentsMigrationHistory })
       cy.signIn()
     })
     it('should see migrate incident tile', () => {
@@ -24,8 +25,8 @@ context('Incident Migration Homepage', () => {
     })
 
     it('should display list of migrations', () => {
-      cy.task('stubHealth')
-      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-incidentsmigration_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'INCIDENTS' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'INCIDENTS' })
 
       const migrationPage = IncidentsMigrationPage.goTo()
 

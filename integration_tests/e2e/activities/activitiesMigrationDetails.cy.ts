@@ -8,15 +8,15 @@ context('Activities Migration Details', () => {
   context('while migration is in progress', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
-      cy.task('stubMigrationInProgress', {
-        domain: 'activities',
-        type: 'ACTIVITIES',
+      cy.task('stubGetActiveMigration', {
+        migrationType: 'ACTIVITIES',
         migrationId,
-        migrated: 1000,
-        failed: 100,
-        stillToBeProcessed: 23100,
       })
-      cy.task('stubGetActivitiesMigrationDetailsStarted', migrationId)
+      cy.task('stubGetMigration', {
+        migrationType: 'ACTIVITIES',
+        migrationId,
+        filter: '{"prisonId":"MDI"}',
+      })
       cy.signIn()
     })
     it('should details for a migration in progress', () => {
@@ -32,12 +32,14 @@ context('Activities Migration Details', () => {
   context('after migration has completed', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
-      cy.task('stubMigrationInProgressCompleted', { domain: 'activities', type: 'ACTIVITIES', migrationId })
-      cy.task('stubGetActivitiesMigrationDetailsCompleted', {
+      cy.task('stubGetActiveMigrationCompleted', {
+        migrationType: 'ACTIVITIES',
         migrationId,
-        whenEnded: '2022-03-28T14:59:24.657071',
-        migrated: 2000,
-        failed: 101,
+      })
+      cy.task('stubGetMigrationCompleted', {
+        migrationType: 'ACTIVITIES',
+        migrationId,
+        filter: '{"prisonId":"MDI"}',
       })
       cy.signIn()
     })

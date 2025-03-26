@@ -4,6 +4,7 @@ import StartAllocationsMigrationPage from '../../pages/allocations-migration/sta
 import StartAllocationsMigrationConfirmationPage from '../../pages/allocations-migration/startAllocationsMigrationConfirmation'
 import StartAllocationsMigrationPreviewPage from '../../pages/allocations-migration/startAllocationsMigrationPreview'
 import AllocationsMigrationPage from '../../pages/allocations-migration/allocationsMigration'
+import { allocationsFailures, allocationsMigrationHistory } from '../../mockApis/nomisAllocationsMigrationApi'
 
 context('Allocations Migration Start', () => {
   beforeEach(() => {
@@ -12,7 +13,7 @@ context('Allocations Migration Start', () => {
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
-      cy.task('stubListOfAllocationsMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'ALLOCATIONS', history: allocationsMigrationHistory })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.allocationsMigrationLink().click()
@@ -40,8 +41,8 @@ context('Allocations Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetAllocationsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ALLOCATIONS' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'ALLOCATIONS' })
 
       Page.verifyOnPage(AllocationsMigrationPage).startNewMigration().click()
       cy.task('stubGetAllocationsMigrationEstimatedCount', 100_988)
@@ -86,9 +87,9 @@ context('Allocations Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetAllocationsFailures')
-      cy.task('stubDeleteAllocationsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ALLOCATIONS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'ALLOCATIONS', failures: allocationsFailures })
+      cy.task('stubDeleteFailuresWithMigrationType', { migrationType: 'ALLOCATIONS' })
 
       Page.verifyOnPage(AllocationsMigrationPage).startNewMigration().click()
       cy.task('stubGetAllocationsMigrationEstimatedCount', 100_988)

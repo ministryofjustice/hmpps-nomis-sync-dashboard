@@ -4,6 +4,7 @@ import StartActivitiesMigrationPage from '../../pages/activities-migration/start
 import StartActivitiesMigrationConfirmationPage from '../../pages/activities-migration/startActivitiesMigrationConfirmation'
 import StartActivitiesMigrationPreviewPage from '../../pages/activities-migration/startActivitiesMigrationPreview'
 import ActivitiesMigrationPage from '../../pages/activities-migration/activitiesMigration'
+import { activitiesFailures, activitiesMigrationHistory } from '../../mockApis/nomisActivitiesMigrationApi'
 
 context('Activities Migration Start', () => {
   beforeEach(() => {
@@ -12,7 +13,7 @@ context('Activities Migration Start', () => {
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
-      cy.task('stubListOfActivitiesMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'ACTIVITIES', history: activitiesMigrationHistory })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.activitiesMigrationLink().click()
@@ -40,8 +41,8 @@ context('Activities Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth', '0')
-      cy.task('stubGetActivitiesWithFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ACTIVITIES' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'ACTIVITIES', failures: activitiesFailures })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
@@ -80,9 +81,9 @@ context('Activities Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth', '153')
-      cy.task('stubGetActivitiesWithFailures')
-      cy.task('stubDeleteActivitiesFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ACTIVITIES' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'ACTIVITIES', failures: activitiesFailures })
+      cy.task('stubDeleteFailuresWithMigrationType', { migrationType: 'ACTIVITIES' })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
@@ -127,7 +128,7 @@ context('Activities Migration Start', () => {
         estimatedCount: 100_988,
       })
       cy.task('stubHealth', '0')
-      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-activitiesmigration_dlq' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'ACTIVITIES' })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
@@ -170,8 +171,8 @@ context('Activities Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth', '0')
-      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-activitiesmigration_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ACTIVITIES' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'ACTIVITIES' })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)
@@ -207,8 +208,8 @@ context('Activities Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth', '0')
-      cy.task('stubGetNoFailures', { queue: 'dps-syscon-dev-activitiesmigration_dlq' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ACTIVITIES' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'ACTIVITIES' })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()
       cy.task('stubGetActivitiesMigrationEstimatedCount', 100_988)

@@ -1,6 +1,7 @@
 import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import AllocationsMigrationPage from '../../pages/allocations-migration/allocationsMigration'
+import { allocationsMigrationHistory } from '../../mockApis/nomisAllocationsMigrationApi'
 
 context('Allocations Migration Homepage', () => {
   beforeEach(() => {
@@ -9,7 +10,7 @@ context('Allocations Migration Homepage', () => {
   context('With MIGRATE_ACTIVITIES role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
-      cy.task('stubListOfAllocationsMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'ALLOCATIONS', history: allocationsMigrationHistory })
       cy.signIn()
     })
     it('should see migrate allocations tile', () => {
@@ -23,8 +24,8 @@ context('Allocations Migration Homepage', () => {
     })
 
     it('should display list of migrations', () => {
-      cy.task('stubHealth')
-      cy.task('stubGetAllocationsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ALLOCATIONS' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'ALLOCATIONS' })
 
       const migrationPage = AllocationsMigrationPage.goTo()
 

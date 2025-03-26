@@ -1,4 +1,5 @@
 import AppointmentsMigrationFailuresPage from '../../pages/appointments-migration/appointmentsMigrationFailures'
+import { appointmentsFailures } from '../../mockApis/nomisAppointmentsMigrationApi'
 
 context('Appointment Migration Failures', () => {
   beforeEach(() => {
@@ -7,8 +8,8 @@ context('Appointment Migration Failures', () => {
   context('navigating directly to page', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_APPOINTMENTS'] })
-      cy.task('stubHealth')
-      cy.task('stubGetAppointmentsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'APPOINTMENTS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'APPOINTMENTS', failures: appointmentsFailures })
       cy.signIn()
     })
     it('should see failures rows', () => {

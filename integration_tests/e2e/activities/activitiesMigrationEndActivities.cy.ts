@@ -1,12 +1,13 @@
 import Page from '../../pages/page'
 import IndexPage from '../../pages'
 import ActivitiesMigrationPage from '../../pages/activities-migration/activitiesMigration'
+import { activitiesMigrationHistory } from '../../mockApis/nomisActivitiesMigrationApi'
 
 context('End Activities', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
-    cy.task('stubListOfActivitiesMigrationHistory')
+    cy.task('stubGetMigrationHistory', { migrationType: 'ACTIVITIES', history: activitiesMigrationHistory })
     cy.signIn()
     const indexPage = Page.verifyOnPage(IndexPage)
     indexPage.activitiesMigrationLink().click()

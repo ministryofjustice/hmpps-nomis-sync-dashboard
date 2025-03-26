@@ -38,8 +38,10 @@ export default class ActivitiesMigrationController {
     private readonly activitiesService: ActivitiesService,
   ) {}
 
+  private migrationType: string = 'ACTIVITIES'
+
   async getActivitiesMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getActivitiesMigrations(context(res))
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations.map(ActivitiesMigrationController.withFilter).map(history => ({
       ...history,
@@ -110,7 +112,7 @@ export default class ActivitiesMigrationController {
         return 0
       }),
 
-      this.nomisMigrationService.getActivitiesDLQMessageCount(context(res)).catch(error => {
+      this.nomisMigrationService.getFailureCount(this.migrationType, context(res)).catch(error => {
         errors.push({
           text: `Failed to get DLQ count due to error: ${error.data?.message || error.message}`,
           href: '',
@@ -288,7 +290,7 @@ export default class ActivitiesMigrationController {
   }
 
   async postClearDLQActivitiesMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.nomisMigrationService.deleteActivitiesFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startActivitiesMigrationForm }
     await this.postStartActivitiesMigration(req, res)
@@ -324,7 +326,7 @@ export default class ActivitiesMigrationController {
 
   async activitiesMigrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
-    const migration = await this.nomisMigrationService.getActivitiesMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/activities/activitiesMigrationDetails', {
       migration: { ...migration, history: ActivitiesMigrationController.withFilter(migration.history) },
     })
@@ -332,8 +334,8 @@ export default class ActivitiesMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.nomisMigrationService.cancelActivitiesMigration(migrationId, context(res))
-    const migration = await this.nomisMigrationService.getActivitiesMigration(migrationId, context(res))
+    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/activities/activitiesMigrationDetails', {
       migration: { ...migration, history: ActivitiesMigrationController.withFilter(migration.history) },
     })

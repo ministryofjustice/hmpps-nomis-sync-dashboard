@@ -42,7 +42,7 @@ export default function routes(services: Services): Router {
           heading: 'Visits migration',
           description: 'Migration and synchronisation information',
           href: '/visits-migration',
-          roles: [MIGRATE_VISITS_ROLE],
+          roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -50,7 +50,7 @@ export default function routes(services: Services): Router {
           heading: 'Sentencing migration',
           description: 'Migration and synchronisation information',
           href: '/sentencing-migration',
-          roles: [MIGRATE_SENTENCING_ROLE],
+          roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -58,7 +58,7 @@ export default function routes(services: Services): Router {
           heading: 'Activities migration',
           description: 'Migration and synchronisation information',
           href: '/activities-migration',
-          roles: [MIGRATE_ACTIVITIES_ROLE],
+          roles: [MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -66,7 +66,7 @@ export default function routes(services: Services): Router {
           heading: 'Allocations migration',
           description: 'Migration and synchronisation information',
           href: '/allocations-migration',
-          roles: [MIGRATE_ALLOCATIONS_ROLE],
+          roles: [MIGRATE_ALLOCATIONS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -74,7 +74,7 @@ export default function routes(services: Services): Router {
           heading: 'Appointments migration',
           description: 'Migration and synchronisation information',
           href: '/appointments-migration',
-          roles: [MIGRATE_APPOINTMENTS_ROLE],
+          roles: [MIGRATE_APPOINTMENTS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -82,7 +82,7 @@ export default function routes(services: Services): Router {
           heading: 'Court Sentencing migration',
           description: 'Migration and synchronisation information',
           href: '/court-sentencing-migration',
-          roles: [MIGRATE_SENTENCING_ROLE],
+          roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -90,7 +90,7 @@ export default function routes(services: Services): Router {
           heading: 'Visit room mappings',
           description: 'Manage visit room mappings between NOMIS and VSIP',
           href: '/visits-room-mappings-prison',
-          roles: [MIGRATE_VISITS_ROLE],
+          roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -106,7 +106,7 @@ export default function routes(services: Services): Router {
           heading: 'Incidents migration',
           description: 'Migration and synchronisation information',
           href: '/incidents-migration',
-          roles: [MIGRATE_INCIDENT_REPORTS_ROLE],
+          roles: [MIGRATE_INCIDENT_REPORTS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
