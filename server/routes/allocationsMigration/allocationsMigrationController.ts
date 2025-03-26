@@ -27,8 +27,10 @@ export default class AllocationsMigrationController {
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
 
-  async getAllocationsMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getAllocationsMigrations(context(res))
+  private migrationType: string = 'ALLOCATIONS'
+
+  async getAllocationsMigrations(_: Request, res: Response): Promise<void> {
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations.map(AllocationsMigrationController.withFilter).map(history => ({
       ...history,
@@ -86,7 +88,7 @@ export default class AllocationsMigrationController {
     } else {
       const filter = AllocationsMigrationController.toFilter(req.session.startAllocationsMigrationForm)
       const count = await this.nomisPrisonerService.getAllocationsMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getAllocationsDLQMessageCount(context(res))
+      const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startAllocationsMigrationForm.estimatedCount = count.toLocaleString()
@@ -102,7 +104,7 @@ export default class AllocationsMigrationController {
   }
 
   async postClearDLQAllocationsMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.nomisMigrationService.deleteAllocationsFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startAllocationsMigrationForm }
     await this.postStartAllocationsMigration(req, res)
@@ -125,7 +127,7 @@ export default class AllocationsMigrationController {
 
   async allocationsMigrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
-    const migration = await this.nomisMigrationService.getAllocationsMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/allocations/allocationsMigrationDetails', {
       migration: { ...migration, history: AllocationsMigrationController.withFilter(migration.history) },
     })
@@ -133,8 +135,8 @@ export default class AllocationsMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.nomisMigrationService.cancelAllocationsMigration(migrationId, context(res))
-    const migration = await this.nomisMigrationService.getAllocationsMigration(migrationId, context(res))
+    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/allocations/allocationsMigrationDetails', {
       migration: { ...migration, history: AllocationsMigrationController.withFilter(migration.history) },
     })

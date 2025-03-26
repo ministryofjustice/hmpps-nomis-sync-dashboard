@@ -8,15 +8,15 @@ context('Incidents Migration Details', () => {
   context('while migration is in progress', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
-      cy.task('stubMigrationInProgress', {
-        domain: 'incidents',
-        type: 'INCIDENTS',
+      cy.task('stubGetActiveMigration', {
+        migrationType: 'INCIDENTS',
         migrationId,
-        migrated: 1000,
-        failed: 100,
-        stillToBeProcessed: 23100,
       })
-      cy.task('stubGetIncidentsMigrationDetailsStarted', migrationId)
+      cy.task('stubGetMigration', {
+        migrationType: 'INCIDENTS',
+        migrationId,
+        filter: '{"fromDate":"2016-03-23"}',
+      })
       cy.signIn()
     })
     it('should details for a migration in progress', () => {
@@ -32,12 +32,14 @@ context('Incidents Migration Details', () => {
   context('after migration has completed', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
-      cy.task('stubMigrationInProgressCompleted', { domain: 'incidents', type: 'INCIDENTS', migrationId })
-      cy.task('stubGetIncidentsMigrationDetailsCompleted', {
+      cy.task('stubGetActiveMigrationCompleted', {
+        migrationType: 'INCIDENTS',
         migrationId,
-        whenEnded: '2022-03-28T14:59:24.657071',
-        migrated: 2000,
-        failed: 101,
+      })
+      cy.task('stubGetMigrationCompleted', {
+        migrationType: 'INCIDENTS',
+        migrationId,
+        filter: '{"fromDate":"2016-03-23"}',
       })
       cy.signIn()
     })

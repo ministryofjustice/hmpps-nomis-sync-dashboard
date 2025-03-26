@@ -116,7 +116,7 @@ describe('activitiesMigrationController', () => {
           appInsightsAlreadyMigratedLink: expect.stringContaining(encodeURIComponent('2022-03-11T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
-      nomisMigrationService.getActivitiesMigrations.mockResolvedValue(activitiesMigrationResponse)
+      nomisMigrationService.getMigrationHistory.mockResolvedValue(activitiesMigrationResponse)
 
       await new ActivitiesMigrationController(
         nomisMigrationService,
@@ -138,7 +138,7 @@ describe('activitiesMigrationController', () => {
   describe('postStartActivitiesMigration', () => {
     beforeEach(() => {
       nomisPrisonerService.getActivitiesMigrationEstimatedCount.mockResolvedValue(10)
-      nomisMigrationService.getActivitiesDLQMessageCount.mockResolvedValue('20')
+      nomisMigrationService.getFailureCount.mockResolvedValue('20')
       nomisPrisonerService.getPrisonIncentiveLevels.mockResolvedValue([
         { code: 'ENT', description: 'Entry' },
         { code: 'STD', description: 'Standard' },
@@ -249,7 +249,7 @@ describe('activitiesMigrationController', () => {
       })
 
       it('should show errors from get DLQ count', async () => {
-        nomisMigrationService.getActivitiesDLQMessageCount.mockRejectedValue({
+        nomisMigrationService.getFailureCount.mockRejectedValue({
           data: {
             status: 504,
             message: 'Gateway Timeout',

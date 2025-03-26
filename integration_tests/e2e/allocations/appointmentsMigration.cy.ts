@@ -2,6 +2,7 @@ import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import AppointmentsMigrationPage from '../../pages/appointments-migration/appointmentsMigration'
 import AppointmentsMigrationFailuresPage from '../../pages/appointments-migration/appointmentsMigrationFailures'
+import { appointmentsMigrationHistory } from '../../mockApis/nomisAppointmentsMigrationApi'
 
 context('Appointment Migration Homepage', () => {
   beforeEach(() => {
@@ -10,7 +11,7 @@ context('Appointment Migration Homepage', () => {
   context('With MIGRATE_APPOINTMENTS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_APPOINTMENTS'] })
-      cy.task('stubListOfAppointmentsMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'APPOINTMENTS', history: appointmentsMigrationHistory })
       cy.signIn()
     })
     it('should see migrate appointments tile', () => {
@@ -24,8 +25,8 @@ context('Appointment Migration Homepage', () => {
     })
 
     it('should display list of migrations', () => {
-      cy.task('stubHealth')
-      cy.task('stubGetAppointmentsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'APPOINTMENTS' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'APPOINTMENTS' })
 
       const migrationPage = AppointmentsMigrationPage.goTo()
 

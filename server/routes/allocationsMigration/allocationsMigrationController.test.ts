@@ -112,7 +112,7 @@ describe('allocationsMigrationController', () => {
           appInsightsAlreadyMigratedLink: expect.stringContaining(encodeURIComponent('2022-03-14T11:45:12.615Z')), // GMT was 2022-03-11T11:45:12.615759
         },
       ]
-      nomisMigrationService.getAllocationsMigrations.mockResolvedValue(allocationsMigrationResponse)
+      nomisMigrationService.getMigrationHistory.mockResolvedValue(allocationsMigrationResponse)
 
       await new AllocationsMigrationController(nomisMigrationService, nomisPrisonerService).getAllocationsMigrations(
         req,

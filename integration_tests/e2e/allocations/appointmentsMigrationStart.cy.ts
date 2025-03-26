@@ -4,6 +4,7 @@ import StartAppointmentsMigrationPage from '../../pages/appointments-migration/s
 import StartAppointmentsMigrationConfirmationPage from '../../pages/appointments-migration/startAppointmentsMigrationConfirmation'
 import StartAppointmentsMigrationPreviewPage from '../../pages/appointments-migration/startAppointmentsMigrationPreview'
 import AppointmentsMigrationPage from '../../pages/appointments-migration/appointmentsMigration'
+import { appointmentsFailures, appointmentsMigrationHistory } from '../../mockApis/nomisAppointmentsMigrationApi'
 
 context('Appointments Migration Start', () => {
   beforeEach(() => {
@@ -12,7 +13,7 @@ context('Appointments Migration Start', () => {
   context('With MIGRATE_APPOINTMENTS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_APPOINTMENTS'] })
-      cy.task('stubListOfAppointmentsMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'APPOINTMENTS', history: appointmentsMigrationHistory })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.appointmentsMigrationLink().click()
@@ -41,8 +42,8 @@ context('Appointments Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetAppointmentsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'APPOINTMENTS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'APPOINTMENTS', failures: appointmentsFailures })
       cy.task('stubCheckServiceAgencySwitch', 'APPOINTMENTS')
       cy.task('stubGetAppointmentCounts')
 
@@ -94,9 +95,9 @@ context('Appointments Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetAppointmentsFailures')
-      cy.task('stubDeleteAppointmentsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'APPOINTMENTS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'APPOINTMENTS', failures: appointmentsFailures })
+      cy.task('stubDeleteFailuresWithMigrationType', { migrationType: 'APPOINTMENTS' })
 
       Page.verifyOnPage(AppointmentsMigrationPage).startNewMigration().click()
       cy.task('stubGetAppointmentsMigrationEstimatedCount', 100_988)
@@ -129,9 +130,9 @@ context('Appointments Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetAppointmentsFailures')
-      cy.task('stubDeleteAppointmentsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'APPOINTMENTS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'APPOINTMENTS', failures: appointmentsFailures })
+      cy.task('stubDeleteFailuresWithMigrationType', { migrationType: 'APPOINTMENTS' })
       cy.task('stubCheckServiceAgencySwitchNotFound', 'APPOINTMENTS')
       cy.task('stubCheckServiceAgencySwitchAfterNotFound', 'APPOINTMENTS')
 
@@ -155,7 +156,7 @@ context('Appointments Migration Start', () => {
       previewPage.nomisFeatureSwitch('HEI').should('not.exist')
     })
 
-    it('Should allow copy of allocations missing pay bands', () => {
+    it('Should allow copy of APPOINTMENTS missing pay bands', () => {
       const previewPage = setupPreviewPage()
 
       previewPage.testCopyNomisAppointmentCountsToClipboard(

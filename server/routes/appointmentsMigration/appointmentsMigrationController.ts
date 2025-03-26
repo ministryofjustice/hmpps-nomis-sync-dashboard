@@ -29,8 +29,10 @@ export default class AppointmentsMigrationController {
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
 
-  async getAppointmentsMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getAppointmentsMigrations(context(res))
+  private migrationType: string = 'APPOINTMENTS'
+
+  async getAppointmentsMigrations(_: Request, res: Response): Promise<void> {
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations.map(AppointmentsMigrationController.withFilter).map(history => ({
       ...history,
@@ -87,7 +89,7 @@ export default class AppointmentsMigrationController {
         return 0
       }),
 
-      this.nomisMigrationService.getAppointmentsDLQMessageCount(context(res)).catch(error => {
+      this.nomisMigrationService.getFailureCount(this.migrationType, context(res)).catch(error => {
         errors.push({
           text: `Failed to get DLQ count due to error: ${error.data?.message || error.message}`,
           href: '',
@@ -158,7 +160,7 @@ export default class AppointmentsMigrationController {
   }
 
   async postClearDLQAppointmentsMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.nomisMigrationService.deleteAppointmentsFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startAppointmentsMigrationForm }
     await this.postStartAppointmentsMigration(req, res)
@@ -181,14 +183,14 @@ export default class AppointmentsMigrationController {
 
   async appointmentsMigrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
-    const migration = await this.nomisMigrationService.getAppointmentsMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/appointments/appointmentsMigrationDetails', {
       migration: { ...migration, history: AppointmentsMigrationController.withFilter(migration.history) },
     })
   }
 
-  async viewFailures(req: Request, res: Response): Promise<void> {
-    const failures = await this.nomisMigrationService.getAppointmentsFailures(context(res))
+  async viewFailures(_: Request, res: Response): Promise<void> {
+    const failures = await this.nomisMigrationService.getFailures(this.migrationType, context(res))
     const failuresDecorated = {
       ...failures,
       messages: failures.messages.map(message => ({
@@ -203,8 +205,8 @@ export default class AppointmentsMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.nomisMigrationService.cancelAppointmentsMigration(migrationId, context(res))
-    const migration = await this.nomisMigrationService.getAppointmentsMigration(migrationId, context(res))
+    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/appointments/appointmentsMigrationDetails', {
       migration: { ...migration, history: AppointmentsMigrationController.withFilter(migration.history) },
     })
@@ -227,14 +229,14 @@ export default class AppointmentsMigrationController {
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {
     return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
     | order by timestamp desc`
   }
 
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where message contains 'Will not migrate the appointment since it is migrated already,'
     | where timestamp between (datetime(${AppointmentsMigrationController.toISODateTime(
       startedDate,

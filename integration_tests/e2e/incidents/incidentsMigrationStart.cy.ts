@@ -5,6 +5,7 @@ import StartIncidentsMigrationConfirmationPage from '../../pages/incidents-migra
 import StartIncidentsMigrationPreviewPage from '../../pages/incidents-migration/startIncidentsMigrationPreview'
 
 import IncidentsMigrationPage from '../../pages/incidents-migration/incidentsMigration'
+import { incidentsFailures, incidentsMigrationHistory } from '../../mockApis/nomisIncidentsMigrationApi'
 
 context('Incidents Migration Start', () => {
   beforeEach(() => {
@@ -13,7 +14,7 @@ context('Incidents Migration Start', () => {
   context('With MIGRATE_INCIDENT_REPORTS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
-      cy.task('stubListOfIncidentsMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'INCIDENTS', history: incidentsMigrationHistory })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.incidentsMigrationLink().click()
@@ -39,8 +40,8 @@ context('Incidents Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetIncidentsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'INCIDENTS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'INCIDENTS', failures: incidentsFailures })
 
       Page.verifyOnPage(IncidentsMigrationPage).startNewMigration().click()
       cy.task('stubGetIncidentsMigrationEstimatedCount', 100_988)
@@ -83,9 +84,9 @@ context('Incidents Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetIncidentsFailures')
-      cy.task('stubDeleteIncidentsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'INCIDENTS' })
+      cy.task('stubGetFailuresWithMigrationType', { migrationType: 'INCIDENTS', failures: incidentsFailures })
+      cy.task('stubDeleteFailuresWithMigrationType', { migrationType: 'INCIDENTS' })
 
       Page.verifyOnPage(IncidentsMigrationPage).startNewMigration().click()
       cy.task('stubGetIncidentsMigrationEstimatedCount', 100_988)
