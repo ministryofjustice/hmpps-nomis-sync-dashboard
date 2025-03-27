@@ -2,6 +2,7 @@ import IndexPage from '../../pages/index'
 import Page from '../../pages/page'
 import MigrationPage from '../../pages/contactperson-profiledetails-migration/migration'
 import { MigrationHistory } from '../../../server/@types/migration'
+import AuthErrorPage from '../../pages/authError'
 
 context('Contact Person Profile Details Migration Homepage', () => {
   beforeEach(() => {
@@ -82,6 +83,10 @@ context('Contact Person Profile Details Migration Homepage', () => {
     it('should not see migrate prison person tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.contactPersonProfileDetailsMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the contact persons migration page', () => {
+      cy.visit('/contactperson-profiledetails-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 

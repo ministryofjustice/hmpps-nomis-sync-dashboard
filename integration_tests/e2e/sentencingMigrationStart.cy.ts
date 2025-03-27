@@ -6,6 +6,7 @@ import StartSentencingMigrationPreviewPage from '../pages/sentencing-migration/s
 
 import SentencingMigrationPage from '../pages/sentencing-migration/sentencingMigration'
 import { sentencingFailures, sentencingMigrationHistory } from '../mockApis/nomisSentencingMigrationApi'
+import AuthErrorPage from '../pages/authError'
 
 context('Sentencing Migration Start', () => {
   beforeEach(() => {
@@ -119,6 +120,21 @@ context('Sentencing Migration Start', () => {
       previewPageAgain.startMigrationButton().click()
 
       Page.verifyOnPage(StartSentencingMigrationConfirmationPage)
+    })
+  })
+
+  context('Without MIGRATE_SENTENCING role', () => {
+    beforeEach(() => {
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
+      cy.signIn()
+    })
+    it('should not see migrate sentencing tile', () => {
+      const indexPage = Page.verifyOnPage(IndexPage)
+      indexPage.sentencingMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the sentencing migration page', () => {
+      cy.visit('/sentencing-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

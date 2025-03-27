@@ -1,46 +1,46 @@
-import type { RequestHandler, Router } from 'express'
+import express, { RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 import SentencingMigrationController from './sentencingMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import SentencingNomisMigrationService from '../../services/sentencing/sentencingNomisMigrationService'
+import authorisationMiddleware from '../../middleware/authorisationMiddleware'
+import { MIGRATE_NOMIS_SYSCON, MIGRATE_SENTENCING_ROLE } from '../../authentication/roles'
 
-export interface Services {
+export default function routes({
+  sentencingNomisMigrationService,
+  nomisMigrationService,
+  nomisPrisonerService,
+}: {
   sentencingNomisMigrationService: SentencingNomisMigrationService
   nomisMigrationService: NomisMigrationService
   nomisPrisonerService: NomisPrisonerService
-}
-export default function routes(router: Router, services: Services): Router {
+}): Router {
+  const router = express.Router({ mergeParams: true })
+  router.use(authorisationMiddleware([MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON]))
+
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
   const sentencingMigrationController = new SentencingMigrationController(
-    services.sentencingNomisMigrationService,
-    services.nomisMigrationService,
-    services.nomisPrisonerService,
+    sentencingNomisMigrationService,
+    nomisMigrationService,
+    nomisPrisonerService,
   )
-  get('/sentencing-migration', (req, res) => sentencingMigrationController.getSentencingMigrations(req, res))
-  get('/sentencing-migration/failures', (req, res) => sentencingMigrationController.viewFailures(req, res))
-  get('/sentencing-migration/start', (req, res) => sentencingMigrationController.startNewSentencingMigration(req, res))
-  post('/sentencing-migration/start', (req, res) =>
-    sentencingMigrationController.postStartSentencingMigration(req, res),
-  )
-  get('/sentencing-migration/amend', (req, res) => sentencingMigrationController.startSentencingMigration(req, res))
-  get('/sentencing-migration/start/preview', (req, res) =>
-    sentencingMigrationController.startSentencingMigrationPreview(req, res),
-  )
-  post('/sentencing-migration/start/preview', (req, res) =>
-    sentencingMigrationController.postStartSentencingMigrationPreview(req, res),
-  )
-  post('/sentencing-migration/start/delete-failures', (req, res) =>
+  get('/', (req, res) => sentencingMigrationController.getSentencingMigrations(req, res))
+  get('/failures', (req, res) => sentencingMigrationController.viewFailures(req, res))
+  get('/start', (req, res) => sentencingMigrationController.startNewSentencingMigration(req, res))
+  post('/start', (req, res) => sentencingMigrationController.postStartSentencingMigration(req, res))
+  get('/amend', (req, res) => sentencingMigrationController.startSentencingMigration(req, res))
+  get('/start/preview', (req, res) => sentencingMigrationController.startSentencingMigrationPreview(req, res))
+  post('/start/preview', (req, res) => sentencingMigrationController.postStartSentencingMigrationPreview(req, res))
+  post('/start/delete-failures', (req, res) =>
     sentencingMigrationController.postClearDLQSentencingMigrationPreview(req, res),
   )
-  get('/sentencing-migration/start/confirmation', (req, res) =>
-    sentencingMigrationController.startSentencingMigrationConfirmation(req, res),
-  )
-  get('/sentencing-migration/details', (req, res) => sentencingMigrationController.sentencingMigrationDetails(req, res))
-  post('/sentencing-migration/cancel', (req, res) => sentencingMigrationController.cancelMigration(req, res))
+  get('/start/confirmation', (req, res) => sentencingMigrationController.startSentencingMigrationConfirmation(req, res))
+  get('/details', (req, res) => sentencingMigrationController.sentencingMigrationDetails(req, res))
+  post('/cancel', (req, res) => sentencingMigrationController.cancelMigration(req, res))
 
   return router
 }

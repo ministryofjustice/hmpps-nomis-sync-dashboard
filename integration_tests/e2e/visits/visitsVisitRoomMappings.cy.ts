@@ -2,6 +2,7 @@ import VisitsMappingsPage from '../../pages/visits-room-mapping/viewRoomMappings
 import Page from '../../pages/page'
 import IndexPage from '../../pages'
 import AddRoomMappingPage from '../../pages/visits-room-mapping/addRoomMappings'
+import AuthErrorPage from '../../pages/authError'
 
 context('Visit Room Mappings', () => {
   beforeEach(() => {
@@ -45,6 +46,21 @@ context('Visit Room Mappings', () => {
       page.vsipIdEntry().type('VSIP Open 3')
       page.addMapping().click()
       VisitsMappingsPage.checkOnPage('HEI')
+    })
+  })
+
+  context('Without MIGRATE_VISITS role', () => {
+    beforeEach(() => {
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
+      cy.signIn()
+    })
+    it('should not see migrate room mappings tile', () => {
+      const indexPage = Page.verifyOnPage(IndexPage)
+      indexPage.visitRoomMappingsLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the room mappings migration page', () => {
+      cy.visit('/visits-room-mappings/prison', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

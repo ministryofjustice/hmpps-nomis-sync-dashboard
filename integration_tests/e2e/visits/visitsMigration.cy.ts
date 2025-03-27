@@ -3,6 +3,7 @@ import Page from '../../pages/page'
 import VisitsMigrationPage from '../../pages/visits-migration/visitsMigration'
 import VisitsMigrationFailuresPage from '../../pages/visits-migration/visitsMigrationFailures'
 import { visitsMigrationHistory } from '../../mockApis/nomisVisitsMigrationApi'
+import AuthErrorPage from '../../pages/authError'
 
 context('Visit Migration Homepage', () => {
   beforeEach(() => {
@@ -109,6 +110,10 @@ context('Visit Migration Homepage', () => {
     it('should not see migrate visits tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.visitsMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the visits migration page', () => {
+      cy.visit('/visits-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

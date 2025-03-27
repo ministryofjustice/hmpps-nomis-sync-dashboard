@@ -4,6 +4,7 @@ import CorePersonMigrationPage from '../pages/coreperson-migration/corePersonMig
 import StartCorePersonMigrationPage from '../pages/coreperson-migration/startCorePersonMigration'
 import StartCorePersonMigrationPreviewPage from '../pages/coreperson-migration/startCorePersonMigrationPreview'
 import StartCorePersonMigrationConfirmationPage from '../pages/coreperson-migration/startCorePersonMigrationConfirmation'
+import AuthErrorPage from '../pages/authError'
 
 const migrationType: string = 'CORE_PERSON'
 
@@ -83,6 +84,21 @@ context('Core Person Migration Start', () => {
       Page.verifyOnPage(StartCorePersonMigrationPage).continueButton().click()
       Page.verifyOnPage(StartCorePersonMigrationPreviewPage).startMigrationButton().click()
       Page.verifyOnPage(StartCorePersonMigrationConfirmationPage)
+    })
+  })
+
+  context('Without MIGRATE_NOMIS_SYSCON role', () => {
+    beforeEach(() => {
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
+      cy.signIn()
+    })
+    it('should not see migrate contact person tile', () => {
+      const indexPage = Page.verifyOnPage(IndexPage)
+      indexPage.migrationLink('coreperson-migration').should('not.exist')
+    })
+    it('should not be able to navigate directly to the core person migration page', () => {
+      cy.visit('/coreperson-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })
