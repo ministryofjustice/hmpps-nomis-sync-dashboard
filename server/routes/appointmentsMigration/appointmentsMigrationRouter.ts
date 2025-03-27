@@ -37,7 +37,7 @@ export default function routes(router: Router, services: Services): Router {
   post('/appointments-migration/start/preview', (req, res) =>
     appointmentsMigrationController.postStartAppointmentsMigrationPreview(req, res),
   )
-  post('/appointments-migration/start/delete-faiures', (req, res) =>
+  post('/appointments-migration/start/delete-failures', (req, res) =>
     appointmentsMigrationController.postClearDLQAppointmentsMigrationPreview(req, res),
   )
   get('/appointments-migration/start/confirmation', (req, res) =>

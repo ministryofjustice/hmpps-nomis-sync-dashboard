@@ -27,7 +27,7 @@ export default function routes(router: Router, services: Services): Router {
   get('/corporate-migration/amend', (req, res) => migrationController.startMigration(req, res))
   get('/corporate-migration/start/preview', (req, res) => migrationController.startMigrationPreview(req, res))
   post('/corporate-migration/start/preview', (req, res) => migrationController.postStartMigrationPreview(req, res))
-  post('/corporate-migration/start/delete-faiures', (req, res) =>
+  post('/corporate-migration/start/delete-failures', (req, res) =>
     migrationController.postClearDLQMigrationPreview(req, res),
   )
   get('/corporate-migration/start/confirmation', (req, res) => migrationController.startMigrationConfirmation(req, res))
