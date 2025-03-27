@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import CourtSentencingMigrationController from './courtSentencingMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
+import courtSentencingNomisMigrationService from '../testutils/mockCourtSentencingNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
@@ -86,6 +87,7 @@ describe('courtSentencingMigrationController', () => {
       nomisMigrationService.getMigrationHistory.mockResolvedValue(courtSentencingMigrationResponse)
 
       await new CourtSentencingMigrationController(
+        courtSentencingNomisMigrationService,
         nomisMigrationService,
         nomisPrisonerService,
       ).getCourtSentencingMigrations(req, res)
@@ -118,7 +120,11 @@ describe('courtSentencingMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new CourtSentencingMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      await new CourtSentencingMigrationController(
+        courtSentencingNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/courtSentencing/courtSentencingMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -146,6 +152,7 @@ describe('courtSentencingMigrationController', () => {
           prisonIds: 'MDI',
         }
         await new CourtSentencingMigrationController(
+          courtSentencingNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartCourtSentencingMigration(req, res)

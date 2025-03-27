@@ -2285,7 +2285,27 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/visit-orders/visit-balance-adjustment/{visitBalanceAdjustmentId}': {
+  '/visit-balances/{visitBalanceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get visit balance data for a booking
+     * @description Retrieves visit order balance for a booking . Requires ROLE_NOMIS_VISIT_BALANCE
+     */
+    get: operations['getVisitBalanceByIdToMigrate']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/visit-balances/visit-balance-adjustment/{visitBalanceAdjustmentId}': {
     parameters: {
       query?: never
       header?: never
@@ -2297,26 +2317,6 @@ export interface paths {
      * @description Retrieves offender visit balance adjustment. Requires ROLE_NOMIS_VISIT_BALANCE
      */
     get: operations['getVisitBalanceAdjustment']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/visit-balances/{visitBalanceId}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * Get visit balance data for a booking
-     * @description Retrieves visit order balance details for the last month for a booking. Requires ROLE_NOMIS_VISIT_BALANCE
-     */
-    get: operations['getVisitBalanceByIdToMigrate']
     put?: never
     post?: never
     delete?: never
@@ -2496,9 +2496,9 @@ export interface paths {
     }
     /**
      * Get visit order balance data for a prisoner
-     * @description Retrieves visit order balance details for the last month for a prisoner. Requires ROLE_NOMIS_VISIT_BALANCE
+     * @description Retrieves visit order balance details for a prisoner. Requires ROLE_NOMIS_VISIT_BALANCE
      */
-    get: operations['getVisitBalanceToMigrate']
+    get: operations['getVisitBalanceForOffender']
     put?: never
     post?: never
     delete?: never
@@ -2516,7 +2516,7 @@ export interface paths {
     }
     /**
      * Gets the prisoner's details
-     * @description Requires role NOMIS_ALERTS.
+     * @description Requires role NOMIS_ALERTS or NOMIS_CONTACTPERSONS.
      */
     get: operations['getPrisonerDetails']
     put?: never
@@ -2940,6 +2940,29 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/persons/ids/all-from-id': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets the identifier for all persons.
+     * @description Gets the specified number of persons starting after the given id number.
+     *           Clients can iterate through all persons by calling this endpoint using the id from the last call (omit for first call).
+     *           Iteration ends when the returned prisonerIds list has size less than the requested page size.
+     *           Requires role SYNCHRONISATION_REPORTING.
+     */
+    get: operations['getPersonIdsFromId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/non-associations/offender/{offenderNo}/ns-offender/{nsOffenderNo}': {
     parameters: {
       query?: never
@@ -3009,7 +3032,7 @@ export interface paths {
     }
     /**
      * Get non-associations by booking ID
-     * @description Get non-associations for the given booking ID. Requires role NOMIS_NON_ASSOCIATIONS
+     * @description Get non-associations for the given booking ID. Returns empty list if none found. Requires role NOMIS_NON_ASSOCIATIONS
      */
     get: operations['getByBookingId']
     put?: never
@@ -3312,26 +3335,6 @@ export interface paths {
      * @description Gets csip details. Requires role NOMIS_CSIP
      */
     get: operations['getCSIP']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/csip/ids': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /**
-     * get csip IDs by filter
-     * @description Retrieves a paged list of csip ids by filter. Requires ROLE_NOMIS_CSIP.
-     */
-    get: operations['getIdsByFilter_2']
     put?: never
     post?: never
     delete?: never
@@ -4043,13 +4046,11 @@ export interface components {
        */
       scheduleDate: string
       /**
-       * Format: partial-time
        * @description The time of the course schedule
        * @example 10:00
        */
       startTime: string
       /**
-       * Format: partial-time
        * @description The time the course schedule ends
        * @example 11:00
        */
@@ -5112,7 +5113,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description Date/Time incident occurred
        * @example 10:00
        */
@@ -5343,13 +5343,11 @@ export interface components {
        */
       eventDate: string
       /**
-       * Format: partial-time
        * @description Appointment start time
        * @example 09:45
        */
       startTime: string
       /**
-       * Format: partial-time
        * @description Activity end time
        * @example 15:20
        */
@@ -5419,8 +5417,8 @@ export interface components {
        */
       hearingDate: string
       /**
-       * Format: partial-time
        * @description Hearing time
+       * @example 14:30:00
        */
       hearingTime: string
       /**
@@ -5586,13 +5584,11 @@ export interface components {
        */
       date: string
       /**
-       * Format: partial-time
        * @description The time of the course schedule
        * @example 10:00
        */
       startTime: string
       /**
-       * Format: partial-time
        * @description The time the course schedule ends
        * @example 11:00
        */
@@ -5636,13 +5632,11 @@ export interface components {
     /** @description Course activity creation request schedule rules */
     ScheduleRuleRequest: {
       /**
-       * Format: partial-time
        * @description Schedule start time in 24 hour clock
        * @example 08:00
        */
       startTime: string
       /**
-       * Format: partial-time
        * @description Schedule end time in 24 hour clock
        * @example 11:00
        */
@@ -5752,13 +5746,13 @@ export interface components {
        */
       date: string
       /**
-       * Format: partial-time
        * @description The instance start time
+       * @example 14:30:00
        */
       startTime: string
       /**
-       * Format: partial-time
        * @description The instance end time
+       * @example 14:30:00
        */
       endTime: string
     }
@@ -6046,8 +6040,8 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description Date and time of the associated incident
+       * @example 14:30:00
        */
       incidentTime: string
       /**
@@ -6056,8 +6050,8 @@ export interface components {
        */
       reportedDate: string
       /**
-       * Format: partial-time
        * @description Date and time when the associated incident was reported
+       * @example 14:30:00
        */
       reportedTime: string
       /** @description Username of person who created the record in NOMIS */
@@ -6147,8 +6141,8 @@ export interface components {
        */
       scheduleDate?: string
       /**
-       * Format: partial-time
        * @description Hearing scheduled time as set by DPS but not used by NOMIS or set in NOMIS
+       * @example 14:30:00
        */
       scheduleTime?: string
       /**
@@ -6157,8 +6151,8 @@ export interface components {
        */
       hearingDate?: string
       /**
-       * Format: partial-time
        * @description Hearing time
+       * @example 14:30:00
        */
       hearingTime?: string
       comment?: string
@@ -6186,8 +6180,8 @@ export interface components {
        */
       deliveryDate: string
       /**
-       * Format: partial-time
        * @description Hearing notification time
+       * @example 14:30:00
        */
       deliveryTime: string
       /** @description Notification comment */
@@ -6338,7 +6332,6 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description Date and time of the associated incident
        * @example 12:00:00
        */
@@ -6349,7 +6342,6 @@ export interface components {
        */
       reportedDate: string
       /**
-       * Format: partial-time
        * @description Date and time when the associated incident was reported
        * @example 12:00:00
        */
@@ -7150,13 +7142,11 @@ export interface components {
        */
       eventDate: string
       /**
-       * Format: partial-time
        * @description Appointment start time
        * @example 09:45
        */
       startTime: string
       /**
-       * Format: partial-time
        * @description Activity end time
        * @example 15:20
        */
@@ -7233,8 +7223,8 @@ export interface components {
        */
       hearingDate: string
       /**
-       * Format: partial-time
        * @description Hearing time
+       * @example 14:30:00
        */
       hearingTime: string
       /** @description agency id of hearing */
@@ -7465,30 +7455,53 @@ export interface components {
        */
       visitId: number
     }
+    /** @description The visit balance held against a prisoner's latest booking including the last IEP Allocation date */
+    VisitBalanceDetailResponse: {
+      /**
+       * @description Prison number aka noms id / offender id display
+       * @example A1234BC
+       */
+      prisonNumber: string
+      /**
+       * Format: int32
+       * @description Total number of unallocated (remaining) visit orders
+       */
+      remainingVisitOrders: number
+      /**
+       * Format: int32
+       * @description Total number of unallocated (remaining) privileged visit orders
+       */
+      remainingPrivilegedVisitOrders: number
+      /**
+       * Format: date
+       * @description The date of the last IEP Allocation date via the batch process, if it exists
+       */
+      lastIEPAllocationDate?: string
+    }
     /** @description The visit order balance changes held against a booking for a prisoner */
     VisitBalanceAdjustmentResponse: {
       /**
        * Format: int32
        * @description Number of visit orders affected by the adjustment
        */
-      remainingVisitOrders?: number
+      visitOrderChange?: number
       /**
        * Format: int32
        * @description Previous number of visit orders before the adjustment
        */
-      previousRemainingVisitOrders?: number
+      previousVisitOrderCount?: number
       /**
        * Format: int32
        * @description Number of privileged visit orders affected by the adjustment
        */
-      remainingPrivilegedVisitOrders?: number
+      privilegedVisitOrderChange?: number
       /**
        * Format: int32
        * @description Previous number of privileged visit orders before the adjustment
        */
-      previousRemainingPrivilegedVisitOrders?: number
+      previousPrivilegedVisitOrderCount?: number
       /** @description Adjustment reason */
-      adjustmentReason?: components['schemas']['CodeDescription']
+      adjustmentReason: components['schemas']['CodeDescription']
       /**
        * Format: date
        * @description Date the adjust was made
@@ -7518,29 +7531,6 @@ export interface components {
       authorisedStaffId?: number
       /** @description Who created the adjustment */
       createUsername: string
-    }
-    /** @description The visit balance held against a prisoner's latest booking */
-    PrisonerVisitBalanceResponse: {
-      /**
-       * @description Prison number aka noms id / offender id display
-       * @example A1234BC
-       */
-      prisonNumber: string
-      /**
-       * Format: int32
-       * @description Total number of unallocated (remaining) visit orders
-       */
-      remainingVisitOrders: number
-      /**
-       * Format: int32
-       * @description Total number of unallocated (remaining) privileged visit orders
-       */
-      remainingPrivilegedVisitOrders: number
-      /**
-       * Format: date
-       * @description The date of the last IEP Allocation date via the batch process, if it exists
-       */
-      lastIEPAllocationDate?: string
     }
     PageVisitBalanceIdResponse: {
       /** Format: int64 */
@@ -7877,6 +7867,19 @@ export interface components {
        * @example Standard
        */
       description: string
+    }
+    /** @description The visit balance held against a prisoner's latest booking */
+    VisitBalanceResponse: {
+      /**
+       * Format: int32
+       * @description Total number of unallocated (remaining) visit orders
+       */
+      remainingVisitOrders: number
+      /**
+       * Format: int32
+       * @description Total number of unallocated (remaining) privileged visit orders
+       */
+      remainingPrivilegedVisitOrders: number
     }
     /** @description Offence */
     OffenceResponse: {
@@ -8359,8 +8362,8 @@ export interface components {
        */
       incidentDate: string
       /**
-       * Format: partial-time
        * @description Date/Time incident occurred
+       * @example 14:30:00
        */
       incidentTime?: string
       /** @description Type of incident */
@@ -9321,6 +9324,11 @@ export interface components {
        */
       personId: number
     }
+    PersonIdsWithLast: {
+      personIds: number[]
+      /** Format: int64 */
+      lastPersonId: number
+    }
     /** @description Appointment information */
     NonAssociationResponse: {
       /**
@@ -9997,24 +10005,6 @@ export interface components {
        * @description The csip id
        */
       csipId: number
-    }
-    PageCSIPIdResponse: {
-      /** Format: int64 */
-      totalElements?: number
-      /** Format: int32 */
-      totalPages?: number
-      first?: boolean
-      last?: boolean
-      /** Format: int32 */
-      size?: number
-      content?: components['schemas']['CSIPIdResponse'][]
-      /** Format: int32 */
-      number?: number
-      sort?: components['schemas']['SortObject']
-      /** Format: int32 */
-      numberOfElements?: number
-      pageable?: components['schemas']['PageableObject']
-      empty?: boolean
     }
     /** @description court case id */
     CourtCaseIdResponse: {
@@ -10797,13 +10787,11 @@ export interface components {
     /** @description Activity Schedule Rules */
     ScheduleRulesResponse: {
       /**
-       * Format: partial-time
        * @description Course start time
        * @example 09:00
        */
       startTime: string
       /**
-       * Format: partial-time
        * @description Course end time
        * @example 11:00
        */
@@ -20063,6 +20051,59 @@ export interface operations {
       }
     }
   }
+  getVisitBalanceByIdToMigrate: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Visit balance (offender booking) id.
+         * @example 12345
+         */
+        visitBalanceId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit balance returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitBalanceDetailResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_VISIT_BALANCE */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Visit Balance does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getVisitBalanceAdjustment: {
     parameters: {
       query?: never
@@ -20106,59 +20147,6 @@ export interface operations {
         }
       }
       /** @description Adjustment does not exist */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  getVisitBalanceByIdToMigrate: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /**
-         * @description Visit balance (offender booking) id.
-         * @example 12345
-         */
-        visitBalanceId: number
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Visit balance returned */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['PrisonerVisitBalanceResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_VISIT_BALANCE */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Prisoner does not exist */
       404: {
         headers: {
           [name: string]: unknown
@@ -20609,7 +20597,7 @@ export interface operations {
       }
     }
   }
-  getVisitBalanceToMigrate: {
+  getVisitBalanceForOffender: {
     parameters: {
       query?: never
       header?: never
@@ -20624,13 +20612,13 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description Visit balance returned */
+      /** @description Visit balance returned or null if no visit balance exists */
       200: {
         headers: {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['PrisonerVisitBalanceResponse']
+          'application/json': components['schemas']['VisitBalanceResponse']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -20695,7 +20683,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden to access this endpoint when role NOMIS_ALERTS not present */
+      /** @description Forbidden to access this endpoint when role NOMIS_ALERTS or NOMIS_CONTACTPERSONS not present */
       403: {
         headers: {
           [name: string]: unknown
@@ -21800,6 +21788,52 @@ export interface operations {
       }
     }
   }
+  getPersonIdsFromId: {
+    parameters: {
+      query?: {
+        /**
+         * @description If supplied get person starting after this id
+         * @example 1555999
+         */
+        personId?: number
+        /** @description Number of persons to get */
+        pageSize?: number
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description list of person ids */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonIdsWithLast']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role SYNCHRONISATION_REPORTING not present */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getNonAssociation: {
     parameters: {
       query?: {
@@ -21997,15 +22031,6 @@ export interface operations {
       }
       /** @description Forbidden, requires role NOMIS_NON_ASSOCIATIONS */
       403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description No non-associations found for the given booking ID */
-      404: {
         headers: {
           [name: string]: unknown
         }
@@ -22781,56 +22806,6 @@ export interface operations {
       }
       /** @description Not found */
       404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  getIdsByFilter_2: {
-    parameters: {
-      query: {
-        pageRequest: components['schemas']['Pageable']
-        /**
-         * @description Filter results by those that were created on or after the given date
-         * @example 2021-11-03
-         */
-        fromDate?: string
-        /**
-         * @description Filter results by those that were created on or before the given date
-         * @example 2021-11-03
-         */
-        toDate?: string
-      }
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Pageable list of ids are returned */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          '*/*': components['schemas']['PageCSIPIdResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden to access this endpoint when role NOMIS_CSIP not present */
-      403: {
         headers: {
           [name: string]: unknown
         }

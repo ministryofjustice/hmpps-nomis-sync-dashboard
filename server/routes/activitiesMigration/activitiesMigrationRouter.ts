@@ -5,8 +5,10 @@ import ActivitiesMigrationController from './activitiesMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import ActivitiesService from '../../services/activitiesService'
+import ActivitiesNomisMigrationService from '../../services/activities/activitiesNomisMigrationService'
 
 export interface Services {
+  activitiesNomisMigrationService: ActivitiesNomisMigrationService
   nomisMigrationService: NomisMigrationService
   nomisPrisonerService: NomisPrisonerService
   activitiesService: ActivitiesService
@@ -16,6 +18,7 @@ export default function routes(router: Router, services: Services): Router {
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
   const activitiesMigrationController = new ActivitiesMigrationController(
+    services.activitiesNomisMigrationService,
     services.nomisMigrationService,
     services.nomisPrisonerService,
     services.activitiesService,

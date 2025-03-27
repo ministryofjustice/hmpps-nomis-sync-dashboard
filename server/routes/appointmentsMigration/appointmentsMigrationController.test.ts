@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import AppointmentsMigrationController from './appointmentsMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
+import appointmentsNomisMigrationService from '../testutils/mockAppointmentsNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
@@ -85,10 +86,11 @@ describe('appointmentsMigrationController', () => {
       ]
       nomisMigrationService.getMigrationHistory.mockResolvedValue(appointmentsMigrationResponse)
 
-      await new AppointmentsMigrationController(nomisMigrationService, nomisPrisonerService).getAppointmentsMigrations(
-        req,
-        res,
-      )
+      await new AppointmentsMigrationController(
+        appointmentsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).getAppointmentsMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/appointments/appointmentsMigration', {
         migrations: expect.arrayContaining([
@@ -118,7 +120,11 @@ describe('appointmentsMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new AppointmentsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      await new AppointmentsMigrationController(
+        appointmentsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/appointments/appointmentsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -153,6 +159,7 @@ describe('appointmentsMigrationController', () => {
           prisonIds: 'MDI',
         }
         await new AppointmentsMigrationController(
+          appointmentsNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartAppointmentsMigration(req, res)
@@ -182,6 +189,7 @@ describe('appointmentsMigrationController', () => {
         }
 
         await new AppointmentsMigrationController(
+          appointmentsNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartAppointmentsMigration(req, res)
@@ -205,6 +213,7 @@ describe('appointmentsMigrationController', () => {
         }
 
         await new AppointmentsMigrationController(
+          appointmentsNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartAppointmentsMigration(req, res)
@@ -220,6 +229,7 @@ describe('appointmentsMigrationController', () => {
         }
 
         await new AppointmentsMigrationController(
+          appointmentsNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartAppointmentsMigration(req, res)

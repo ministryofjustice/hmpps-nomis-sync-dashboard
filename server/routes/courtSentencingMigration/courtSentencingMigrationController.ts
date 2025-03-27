@@ -8,6 +8,7 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startCourtSentencingMigrationValidator from './startCourtSentencingMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import CourtSentencingNomisMigrationService from '../../services/courtSentencing/courtSentencingNomisMigrationService'
 
 interface Filter {
   prisonIds?: string[]
@@ -24,6 +25,7 @@ function context(res: Response): Context {
 
 export default class CourtSentencingMigrationController {
   constructor(
+    private readonly courtSentencingNomisMigrationService: CourtSentencingNomisMigrationService,
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
@@ -96,7 +98,7 @@ export default class CourtSentencingMigrationController {
   async postStartCourtSentencingMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = CourtSentencingMigrationController.toFilter(req.session.startCourtSentencingMigrationForm)
 
-    const result = await this.nomisMigrationService.startCourtSentencingMigration(filter, context(res))
+    const result = await this.courtSentencingNomisMigrationService.startCourtSentencingMigration(filter, context(res))
     req.session.startCourtSentencingMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startCourtSentencingMigrationForm.migrationId = result.migrationId
     res.redirect('/court-sentencing-migration/start/confirmation')

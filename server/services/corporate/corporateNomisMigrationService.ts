@@ -9,7 +9,7 @@ export default class CorporateNomisMigrationService {
   constructor() {}
 
   private static restClient(token: string): RestClient {
-    return new RestClient('Contact Person Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
+    return new RestClient('Corporate Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
   }
 
   async startMigration(

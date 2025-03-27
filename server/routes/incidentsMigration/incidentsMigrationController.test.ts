@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import IncidentsMigrationController from './incidentsMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
+import incidentsNomisMigrationService from '../testutils/mockIncidentsNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
@@ -83,10 +84,11 @@ describe('incidentsMigrationController', () => {
       ]
       nomisMigrationService.getMigrationHistory.mockResolvedValue(incidentsMigrationResponse)
 
-      await new IncidentsMigrationController(nomisMigrationService, nomisPrisonerService).getIncidentsMigrations(
-        req,
-        res,
-      )
+      await new IncidentsMigrationController(
+        incidentsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).getIncidentsMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/incidents/incidentsMigration', {
         migrations: expect.arrayContaining([
@@ -115,7 +117,11 @@ describe('incidentsMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new IncidentsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      await new IncidentsMigrationController(
+        incidentsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/incidents/incidentsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -141,10 +147,11 @@ describe('incidentsMigrationController', () => {
           action: 'startMigration',
           toDate: 'banana',
         }
-        await new IncidentsMigrationController(nomisMigrationService, nomisPrisonerService).postStartIncidentsMigration(
-          req,
-          res,
-        )
+        await new IncidentsMigrationController(
+          incidentsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartIncidentsMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
         expect(res.redirect).toHaveBeenCalledWith('/incidents-migration/amend')
       })

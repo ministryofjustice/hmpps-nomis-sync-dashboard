@@ -9,6 +9,7 @@ import logger from '../../../logger'
 import startAppointmentsMigrationValidator from './startAppointmentsMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import { AppointmentCountsResponse } from '../../@types/nomisPrisoner'
+import AppointmentsNomisMigrationService from '../../services/appointments/appointmentsNomisMigrationService'
 
 interface Filter {
   prisonIds?: string[]
@@ -25,6 +26,7 @@ function context(res: Response): Context {
 
 export default class AppointmentsMigrationController {
   constructor(
+    private readonly appointmentsNomisMigrationService: AppointmentsNomisMigrationService,
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
@@ -169,7 +171,7 @@ export default class AppointmentsMigrationController {
   async postStartAppointmentsMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = AppointmentsMigrationController.toFilter(req.session.startAppointmentsMigrationForm)
 
-    const result = await this.nomisMigrationService.startAppointmentsMigration(filter, context(res))
+    const result = await this.appointmentsNomisMigrationService.startAppointmentsMigration(filter, context(res))
     req.session.startAppointmentsMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startAppointmentsMigrationForm.migrationId = result.migrationId
     res.redirect('/appointments-migration/start/confirmation')

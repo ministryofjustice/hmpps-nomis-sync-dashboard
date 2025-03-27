@@ -8,6 +8,7 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startIncidentsMigrationValidator from './startIncidentsMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import IncidentsNomisMigrationService from '../../services/incidents/incidentsNomisMigrationService'
 
 interface Filter {
   fromDate?: string
@@ -23,6 +24,7 @@ function context(res: Response): Context {
 
 export default class IncidentsMigrationController {
   constructor(
+    private readonly incidentsNomisMigrationService: IncidentsNomisMigrationService,
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
@@ -103,7 +105,7 @@ export default class IncidentsMigrationController {
   async postStartIncidentsMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = IncidentsMigrationController.toFilter(req.session.startIncidentsMigrationForm)
 
-    const result = await this.nomisMigrationService.startIncidentsMigration(filter, context(res))
+    const result = await this.incidentsNomisMigrationService.startIncidentsMigration(filter, context(res))
     req.session.startIncidentsMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startIncidentsMigrationForm.migrationId = result.migrationId
     res.redirect('/incidents-migration/start/confirmation')

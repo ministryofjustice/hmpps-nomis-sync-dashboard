@@ -4,8 +4,10 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import IncidentsMigrationController from './incidentsMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import IncidentsNomisMigrationService from '../../services/incidents/incidentsNomisMigrationService'
 
 export interface Services {
+  incidentsNomisMigrationService: IncidentsNomisMigrationService
   nomisMigrationService: NomisMigrationService
   nomisPrisonerService: NomisPrisonerService
 }
@@ -14,6 +16,7 @@ export default function routes(router: Router, services: Services): Router {
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
   const incidentsMigrationController = new IncidentsMigrationController(
+    services.incidentsNomisMigrationService,
     services.nomisMigrationService,
     services.nomisPrisonerService,
   )

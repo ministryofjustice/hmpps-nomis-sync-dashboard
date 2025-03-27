@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import AllocationsMigrationController from './allocationsMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
+import allocationsNomisMigrationService from '../testutils/mockAllocationsNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
@@ -114,10 +115,11 @@ describe('allocationsMigrationController', () => {
       ]
       nomisMigrationService.getMigrationHistory.mockResolvedValue(allocationsMigrationResponse)
 
-      await new AllocationsMigrationController(nomisMigrationService, nomisPrisonerService).getAllocationsMigrations(
-        req,
-        res,
-      )
+      await new AllocationsMigrationController(
+        allocationsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).getAllocationsMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/allocations/allocationsMigration', {
         migrations: expect.arrayContaining([
@@ -137,6 +139,7 @@ describe('allocationsMigrationController', () => {
           action: 'startMigration',
         }
         await new AllocationsMigrationController(
+          allocationsNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartAllocationsMigration(req, res)

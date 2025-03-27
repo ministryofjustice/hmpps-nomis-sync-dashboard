@@ -8,12 +8,16 @@ import { Services } from '../../services'
 
 export default function routes(
   router: Router,
-  { nomisMigrationService, nomisPrisonerService, mappingService }: Services,
+  { visitsNomisMigrationService, nomisMigrationService, nomisPrisonerService, mappingService }: Services,
 ): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  const visitMigrationController = new VisitsMigrationController(nomisMigrationService, nomisPrisonerService)
+  const visitMigrationController = new VisitsMigrationController(
+    visitsNomisMigrationService,
+    nomisMigrationService,
+    nomisPrisonerService,
+  )
 
   const mappingController = new RoomMappingController(mappingService, nomisPrisonerService)
 
