@@ -96,8 +96,8 @@ describe('visitsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).getVisitMigrations(req, res)
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/visits/visitsMigration', {
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith('pages/visits/visitsMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
@@ -120,8 +120,8 @@ describe('visitsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).getVisitMigrations(req, res)
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/visits/visitsMigration', {
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith('pages/visits/visitsMigration', {
         migrationViewFilter: expect.objectContaining({
           fromDateTime: '23/4',
           includeOnlyFailures: false,
@@ -155,7 +155,7 @@ describe('visitsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).startNewVisitMigration(req, res)
-      expect(res.render).toBeCalledWith('pages/visits/startVisitsMigration', {
+      expect(res.render).toHaveBeenCalledWith('pages/visits/startVisitsMigration', {
         form: undefined,
         errors: undefined,
       })
@@ -173,7 +173,7 @@ describe('visitsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).startVisitMigration(req, res)
-      expect(res.render).toBeCalledWith('pages/visits/startVisitsMigration', {
+      expect(res.render).toHaveBeenCalledWith('pages/visits/startVisitsMigration', {
         form: expect.objectContaining({
           fromDateTime: '2020-03-23T12:00:00',
           prisonIds: 'HEI, MDI',
@@ -197,7 +197,7 @@ describe('visitsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartVisitMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [
+        expect(req.flash).toHaveBeenCalledWith('errors', [
           { href: '#prisonIds', text: 'Enter one or more prison IDs' },
           { href: '#visitTypes', text: 'Enter the type of visits to migrate' },
         ])
@@ -265,7 +265,7 @@ describe('visitsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartVisitMigrationPreview(req, res)
-        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalled()
+        expect(visitsNomisMigrationService.startVisitsMigration).toHaveBeenCalled()
       })
       it('should convert prison ids to array', async () => {
         await new VisitsMigrationController(
@@ -273,7 +273,7 @@ describe('visitsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartVisitMigrationPreview(req, res)
-        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalledWith(
+        expect(visitsNomisMigrationService.startVisitsMigration).toHaveBeenCalledWith(
           expect.objectContaining({ prisonIds: ['HEI', 'MDI'] }),
           expect.anything(),
         )
@@ -284,7 +284,7 @@ describe('visitsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartVisitMigrationPreview(req, res)
-        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalledWith(
+        expect(visitsNomisMigrationService.startVisitsMigration).toHaveBeenCalledWith(
           expect.objectContaining({ visitTypes: ['SCON'] }),
           expect.anything(),
         )
@@ -295,7 +295,7 @@ describe('visitsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartVisitMigrationPreview(req, res)
-        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalledWith(
+        expect(visitsNomisMigrationService.startVisitsMigration).toHaveBeenCalledWith(
           expect.objectContaining({ fromDateTime: '2020-03-23T12:00:00' }),
           expect.anything(),
         )
@@ -306,7 +306,7 @@ describe('visitsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartVisitMigrationPreview(req, res)
-        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalledWith(
+        expect(visitsNomisMigrationService.startVisitsMigration).toHaveBeenCalledWith(
           expect.objectContaining({ toDateTime: '2020-03-24T00:00:00' }),
           expect.anything(),
         )
@@ -337,7 +337,7 @@ describe('visitsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).viewFailures(req, res)
-      expect(res.render).toBeCalledWith('pages/visits/visitsMigrationFailures', {
+      expect(res.render).toHaveBeenCalledWith('pages/visits/visitsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
             expect.objectContaining({
@@ -392,8 +392,8 @@ describe('visitsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).cancelMigration(req, res)
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith(
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith(
         'pages/visits/visitsMigrationDetails',
         expect.objectContaining({
           migration: expect.objectContaining({
@@ -403,8 +403,8 @@ describe('visitsMigrationController', () => {
           }),
         }),
       )
-      expect(nomisMigrationService.cancelMigration).toBeCalledWith('2022-03-23T11:11:56', expect.anything())
-      expect(nomisMigrationService.getMigration).toBeCalledWith('2022-03-23T11:11:56', expect.anything())
+      expect(nomisMigrationService.cancelMigration).toHaveBeenCalledWith('2022-03-23T11:11:56', expect.anything())
+      expect(nomisMigrationService.getMigration).toHaveBeenCalledWith('2022-03-23T11:11:56', expect.anything())
     })
   })
 })

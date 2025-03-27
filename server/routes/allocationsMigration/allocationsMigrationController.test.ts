@@ -120,8 +120,8 @@ describe('allocationsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).getAllocationsMigrations(req, res)
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/allocations/allocationsMigration', {
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith('pages/allocations/allocationsMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
@@ -143,7 +143,7 @@ describe('allocationsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartAllocationsMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID.' }])
+        expect(req.flash).toHaveBeenCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID.' }])
         expect(res.redirect).toHaveBeenCalledWith('/allocations-migration/amend')
       })
     })

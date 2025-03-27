@@ -91,8 +91,8 @@ describe('appointmentsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).getAppointmentsMigrations(req, res)
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/appointments/appointmentsMigration', {
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith('pages/appointments/appointmentsMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
@@ -125,7 +125,7 @@ describe('appointmentsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).viewFailures(req, res)
-      expect(res.render).toBeCalledWith('pages/appointments/appointmentsMigrationFailures', {
+      expect(res.render).toHaveBeenCalledWith('pages/appointments/appointmentsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
             expect.objectContaining({
@@ -163,7 +163,9 @@ describe('appointmentsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartAppointmentsMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
+        expect(req.flash).toHaveBeenCalledWith('errors', [
+          { href: '#toDate', text: 'Enter a real date, like 2020-03-23' },
+        ])
         expect(res.redirect).toHaveBeenCalledWith('/appointments-migration/amend')
       })
     })
@@ -194,7 +196,7 @@ describe('appointmentsMigrationController', () => {
           nomisPrisonerService,
         ).postStartAppointmentsMigration(req, res)
 
-        expect(req.flash).toBeCalledWith('errors', [
+        expect(req.flash).toHaveBeenCalledWith('errors', [
           { href: '', text: 'Failed to check if APPOINTMENTS feature switch turned on for XXX: Service unavailable' },
           { href: '', text: 'Failed to check if APPOINTMENTS feature switch turned on for YYY: Service unavailable' },
           { href: '', text: 'Failed to find appointment summary counts due to error: Invalid from date: 2023-02-31' },
