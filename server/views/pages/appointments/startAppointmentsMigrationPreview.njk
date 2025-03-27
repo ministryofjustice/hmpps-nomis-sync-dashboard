@@ -66,7 +66,7 @@
                     {% if form.dlqCount > 0 %}
                         {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear these before starting the migration{% endset %}
                         {% set html %}
-                        <form action="/appointments-migration/start/delete-faiures" method="post" novalidate>
+                        <form action="/appointments-migration/start/delete-failures" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                         <p>If you are sure all previous failures have been successfully understood and processed, you can permanently delete any record of these errors</p>
                         <div class="govuk-button-group">

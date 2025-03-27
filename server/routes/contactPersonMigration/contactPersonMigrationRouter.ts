@@ -27,7 +27,7 @@ export default function routes(router: Router, services: Services): Router {
   get('/contactperson-migration/amend', (req, res) => migrationController.startMigration(req, res))
   get('/contactperson-migration/start/preview', (req, res) => migrationController.startMigrationPreview(req, res))
   post('/contactperson-migration/start/preview', (req, res) => migrationController.postStartMigrationPreview(req, res))
-  post('/contactperson-migration/start/delete-faiures', (req, res) =>
+  post('/contactperson-migration/start/delete-failures', (req, res) =>
     migrationController.postClearDLQMigrationPreview(req, res),
   )
   get('/contactperson-migration/start/confirmation', (req, res) =>

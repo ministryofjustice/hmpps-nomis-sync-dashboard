@@ -27,7 +27,7 @@ export default function routes(router: Router, services: Services): Router {
   get('/visit-balance-migration/amend', (req, res) => migrationController.startMigration(req, res))
   get('/visit-balance-migration/start/preview', (req, res) => migrationController.startMigrationPreview(req, res))
   post('/visit-balance-migration/start/preview', (req, res) => migrationController.postStartMigrationPreview(req, res))
-  post('/visit-balance-migration/start/delete-faiures', (req, res) =>
+  post('/visit-balance-migration/start/delete-failures', (req, res) =>
     migrationController.postClearDLQMigrationPreview(req, res),
   )
   get('/visit-balance-migration/start/confirmation', (req, res) =>

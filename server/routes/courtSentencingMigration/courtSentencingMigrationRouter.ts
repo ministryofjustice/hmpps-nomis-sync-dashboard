@@ -39,7 +39,7 @@ export default function routes(router: Router, services: Services): Router {
   post('/court-sentencing-migration/start/preview', (req, res) =>
     courtSentencingMigrationController.postStartCourtSentencingMigrationPreview(req, res),
   )
-  post('/court-sentencing-migration/start/delete-faiures', (req, res) =>
+  post('/court-sentencing-migration/start/delete-failures', (req, res) =>
     courtSentencingMigrationController.postClearDLQCourtSentencingMigrationPreview(req, res),
   )
   get('/court-sentencing-migration/start/confirmation', (req, res) =>

@@ -33,7 +33,7 @@ export default function routes(router: Router, services: Services): Router {
   post('/sentencing-migration/start/preview', (req, res) =>
     sentencingMigrationController.postStartSentencingMigrationPreview(req, res),
   )
-  post('/sentencing-migration/start/delete-faiures', (req, res) =>
+  post('/sentencing-migration/start/delete-failures', (req, res) =>
     sentencingMigrationController.postClearDLQSentencingMigrationPreview(req, res),
   )
   get('/sentencing-migration/start/confirmation', (req, res) =>

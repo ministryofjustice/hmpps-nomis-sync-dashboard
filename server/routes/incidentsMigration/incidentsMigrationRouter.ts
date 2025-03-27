@@ -31,7 +31,7 @@ export default function routes(router: Router, services: Services): Router {
   post('/incidents-migration/start/preview', (req, res) =>
     incidentsMigrationController.postStartIncidentsMigrationPreview(req, res),
   )
-  post('/incidents-migration/start/delete-faiures', (req, res) =>
+  post('/incidents-migration/start/delete-failures', (req, res) =>
     incidentsMigrationController.postClearDLQIncidentsMigrationPreview(req, res),
   )
   get('/incidents-migration/start/confirmation', (req, res) =>
