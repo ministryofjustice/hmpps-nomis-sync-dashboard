@@ -2,6 +2,7 @@ import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import VisitsMigrationPage from '../../pages/visits-migration/visitsMigration'
 import VisitsMigrationFailuresPage from '../../pages/visits-migration/visitsMigrationFailures'
+import { visitsMigrationHistory } from '../../mockApis/nomisVisitsMigrationApi'
 
 context('Visit Migration Homepage', () => {
   beforeEach(() => {
@@ -10,7 +11,7 @@ context('Visit Migration Homepage', () => {
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISITS'] })
-      cy.task('stubListOfVisitsMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'VISITS', history: visitsMigrationHistory })
       cy.signIn()
     })
     it('should see migrate visits tile', () => {
@@ -24,8 +25,8 @@ context('Visit Migration Homepage', () => {
     })
 
     it('should display list of migrations', () => {
-      cy.task('stubHealth')
-      cy.task('stubGetVisitsFailures')
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'VISITS' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'VISITS' })
 
       const migrationPage = VisitsMigrationPage.goTo()
 

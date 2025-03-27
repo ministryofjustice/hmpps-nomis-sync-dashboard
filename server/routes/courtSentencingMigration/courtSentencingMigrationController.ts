@@ -28,8 +28,10 @@ export default class CourtSentencingMigrationController {
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
 
-  async getCourtSentencingMigrations(req: Request, res: Response): Promise<void> {
-    const { migrations } = await this.nomisMigrationService.getCourtSentencingMigrations(context(res))
+  private migrationType: string = 'COURT_SENTENCING'
+
+  async getCourtSentencingMigrations(_: Request, res: Response): Promise<void> {
+    const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
     const decoratedMigrations = migrations.map(CourtSentencingMigrationController.withFilter).map(history => ({
       ...history,
@@ -69,7 +71,7 @@ export default class CourtSentencingMigrationController {
     } else {
       const filter = CourtSentencingMigrationController.toFilter(req.session.startCourtSentencingMigrationForm)
       const count = await this.nomisPrisonerService.getCourtSentencingMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getCourtSentencingDLQMessageCount(context(res))
+      const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startCourtSentencingMigrationForm.estimatedCount = count.toLocaleString()
@@ -85,7 +87,7 @@ export default class CourtSentencingMigrationController {
   }
 
   async postClearDLQCourtSentencingMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.nomisMigrationService.deleteCourtSentencingFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startCourtSentencingMigrationForm }
     await this.postStartCourtSentencingMigration(req, res)
@@ -108,14 +110,14 @@ export default class CourtSentencingMigrationController {
 
   async courtSentencingMigrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
-    const migration = await this.nomisMigrationService.getCourtSentencingMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/courtSentencing/courtSentencingMigrationDetails', {
       migration: { ...migration, history: CourtSentencingMigrationController.withFilter(migration.history) },
     })
   }
 
-  async viewFailures(req: Request, res: Response): Promise<void> {
-    const failures = await this.nomisMigrationService.getCourtSentencingFailures(context(res))
+  async viewFailures(_: Request, res: Response): Promise<void> {
+    const failures = await this.nomisMigrationService.getFailures(this.migrationType, context(res))
     const failuresDecorated = {
       ...failures,
       messages: failures.messages.map(message => ({
@@ -130,8 +132,8 @@ export default class CourtSentencingMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.nomisMigrationService.cancelCourtSentencingMigration(migrationId, context(res))
-    const migration = await this.nomisMigrationService.getCourtSentencingMigration(migrationId, context(res))
+    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/courtSentencing/courtSentencingMigrationDetails', {
       migration: { ...migration, history: CourtSentencingMigrationController.withFilter(migration.history) },
     })
@@ -146,14 +148,14 @@ export default class CourtSentencingMigrationController {
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {
     return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
     | order by timestamp desc`
   }
 
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where message contains 'Will not migrate the alert since it is migrated already,'
     | where timestamp between (datetime(${CourtSentencingMigrationController.toISODateTime(
       startedDate,
