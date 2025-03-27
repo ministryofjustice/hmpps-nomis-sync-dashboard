@@ -8,15 +8,16 @@ context('Visit Migration Details', () => {
   context('while migration is in progress', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISITS'] })
-      cy.task('stubMigrationInProgress', {
-        domain: 'visits',
-        type: 'VISITS',
+      cy.task('stubGetActiveMigration', {
+        migrationType: 'VISITS',
         migrationId,
-        migrated: 1000,
-        failed: 100,
-        stillToBeProcessed: 23100,
       })
-      cy.task('stubGetVisitsMigrationDetailsStarted', migrationId)
+      cy.task('stubGetMigration', {
+        migrationId,
+        migrationType: 'VISITS',
+        filter:
+          '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2016-03-23T00:00:00","ignoreMissingRoom":false}',
+      })
       cy.signIn()
     })
     it('should details for a migration in progress', () => {
@@ -32,12 +33,12 @@ context('Visit Migration Details', () => {
   context('after migration has completed', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISITS'] })
-      cy.task('stubMigrationInProgressCompleted', { domain: 'visits', type: 'VISITS', migrationId })
-      cy.task('stubGetVisitsMigrationDetailsCompleted', {
+      cy.task('stubGetActiveMigrationCompleted', { migrationType: 'VISITS', migrationId })
+      cy.task('stubGetMigrationCompleted', {
         migrationId,
-        whenEnded: '2022-03-28T14:59:24.657071',
-        migrated: 2000,
-        failed: 101,
+        migrationType: 'VISITS',
+        filter:
+          '{"prisonIds":["HEI"],"visitTypes":["SCON"],"fromDateTime":"2016-03-23T00:00:00","ignoreMissingRoom":false}',
       })
       cy.signIn()
     })

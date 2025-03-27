@@ -28,9 +28,11 @@ function context(res: Response): Context {
 
 export default class VisitsMigrationController {
   constructor(
-    private readonly visitMigrationService: NomisMigrationService,
+    private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
+
+  private migrationType: string = 'VISITS'
 
   async getVisitMigrations(req: Request, res: Response): Promise<void> {
     const searchFilter = this.parseFilter(req)
@@ -43,11 +45,15 @@ export default class VisitsMigrationController {
         migrationViewFilter: searchFilter,
       })
     } else {
-      const { migrations } = await this.visitMigrationService.getVisitsMigrations(context(res), {
-        ...searchFilter,
-        toDateTime: withDefaultTime(searchFilter.toDateTime),
-        fromDateTime: withDefaultTime(searchFilter.fromDateTime),
-      })
+      const { migrations } = await this.nomisMigrationService.getMigrationHistoryWithFilter(
+        this.migrationType,
+        context(res),
+        {
+          ...searchFilter,
+          toDateTime: withDefaultTime(searchFilter.toDateTime),
+          fromDateTime: withDefaultTime(searchFilter.fromDateTime),
+        },
+      )
 
       const decoratedMigrations = migrations.map(VisitsMigrationController.withFilter).map(history => ({
         ...history,
@@ -86,8 +92,8 @@ export default class VisitsMigrationController {
     } else {
       const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
       const count = await this.nomisPrisonerService.getVisitMigrationEstimatedCount(filter, context(res))
-      const roomMappings = await this.visitMigrationService.getVisitMigrationRoomMappings(filter, context(res))
-      const dlqCountString = await this.visitMigrationService.getVisitsDLQMessageCount(context(res))
+      const roomMappings = await this.nomisMigrationService.getVisitMigrationRoomMappings(filter, context(res))
+      const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
       logger.info(`${dlqCountString} failures found`)
 
       req.session.startVisitsMigrationForm.estimatedCount = count.toLocaleString()
@@ -104,7 +110,7 @@ export default class VisitsMigrationController {
   }
 
   async postClearDLQVisitMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.visitMigrationService.deleteVisitsFailures(context(res))
+    const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
     req.body = { ...req.session.startVisitsMigrationForm }
     await this.postStartVisitMigration(req, res)
@@ -113,7 +119,7 @@ export default class VisitsMigrationController {
   async postStartVisitMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
 
-    const result = await this.visitMigrationService.startVisitsMigration(filter, context(res))
+    const result = await this.nomisMigrationService.startVisitsMigration(filter, context(res))
     req.session.startVisitsMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startVisitsMigrationForm.migrationId = result.migrationId
     res.redirect('/visits-migration/start/confirmation')
@@ -125,14 +131,14 @@ export default class VisitsMigrationController {
 
   async visitsMigrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
-    const migration = await this.visitMigrationService.getVisitsMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/visits/visitsMigrationDetails', {
       migration: { ...migration, history: VisitsMigrationController.withFilter(migration.history) },
     })
   }
 
-  async viewFailures(req: Request, res: Response): Promise<void> {
-    const failures = await this.visitMigrationService.getVisitsFailures(context(res))
+  async viewFailures(_: Request, res: Response): Promise<void> {
+    const failures = await this.nomisMigrationService.getFailures(this.migrationType, context(res))
     const failuresDecorated = {
       ...failures,
       messages: failures.messages.map(message => ({
@@ -147,8 +153,8 @@ export default class VisitsMigrationController {
 
   async cancelMigration(req: Request, res: Response): Promise<void> {
     const { migrationId }: { migrationId: string } = req.body
-    await this.visitMigrationService.cancelVisitsMigration(migrationId, context(res))
-    const migration = await this.visitMigrationService.getVisitsMigration(migrationId, context(res))
+    await this.nomisMigrationService.cancelMigration(migrationId, context(res))
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
     res.render('pages/visits/visitsMigrationDetails', {
       migration: { ...migration, history: VisitsMigrationController.withFilter(migration.history) },
     })
@@ -182,14 +188,14 @@ export default class VisitsMigrationController {
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {
     return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
     | order by timestamp desc`
   }
 
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration' 
+    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where message contains 'Will not migrate visit since it is migrated already,'
     | where timestamp between (datetime(${VisitsMigrationController.toISODateTime(
       startedDate,

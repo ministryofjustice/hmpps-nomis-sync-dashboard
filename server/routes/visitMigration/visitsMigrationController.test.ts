@@ -88,7 +88,7 @@ describe('visitsMigrationController', () => {
           applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-14T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
-      nomisMigrationService.getVisitsMigrations.mockResolvedValue(visitMigrationResponse)
+      nomisMigrationService.getMigrationHistoryWithFilter.mockResolvedValue(visitMigrationResponse)
 
       await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).getVisitMigrations(req, res)
       expect(res.render).toBeCalled()
@@ -196,7 +196,7 @@ describe('visitsMigrationController', () => {
         }
         nomisPrisonerService.getVisitMigrationEstimatedCount.mockResolvedValue(124_001)
         nomisMigrationService.getVisitMigrationRoomMappings.mockResolvedValue([])
-        nomisMigrationService.getVisitsDLQMessageCount.mockResolvedValue('4')
+        nomisMigrationService.getFailureCount.mockResolvedValue('4')
       })
       it('should render the migration preview page', async () => {
         await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
@@ -291,7 +291,7 @@ describe('visitsMigrationController', () => {
 
   describe('viewFailures', () => {
     beforeEach(() => {
-      nomisMigrationService.getVisitsFailures.mockResolvedValue({
+      nomisMigrationService.getFailures.mockResolvedValue({
         messagesFoundCount: 353,
         messagesReturnedCount: 5,
         messages: [
@@ -313,11 +313,11 @@ describe('visitsMigrationController', () => {
           messages: expect.arrayContaining([
             expect.objectContaining({
               applicationInsightsLink:
-                "http://localhost:8103/applicationinsights/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Fsubscription%2FresourceGroups%2Fcomponent-rg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fcomponent/source/LogsBlade.AnalyticsShareLinkToQuery/query/exceptions%0A%20%20%20%20%7C%20where%20cloud_RoleName%20%3D%3D%20'hmpps-prisoner-from-nomis-migration'%20%0A%20%20%20%20%7C%20where%20customDimensions.%5B%22Logger%20Message%22%5D%20%3D%3D%20%22MessageID%3Aafeb75fd-a2aa-41c4-9ede-b6bfe9590d36%22%0A%20%20%20%20%7C%20order%20by%20timestamp%20desc/timespan/P1D",
+                "http://localhost:8103/applicationinsights/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Fsubscription%2FresourceGroups%2Fcomponent-rg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fcomponent/source/LogsBlade.AnalyticsShareLinkToQuery/query/exceptions%0A%20%20%20%20%7C%20where%20cloud_RoleName%20%3D%3D%20'hmpps-prisoner-from-nomis-migration'%0A%20%20%20%20%7C%20where%20customDimensions.%5B%22Logger%20Message%22%5D%20%3D%3D%20%22MessageID%3Aafeb75fd-a2aa-41c4-9ede-b6bfe9590d36%22%0A%20%20%20%20%7C%20order%20by%20timestamp%20desc/timespan/P1D",
             }),
             expect.objectContaining({
               applicationInsightsLink:
-                "http://localhost:8103/applicationinsights/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Fsubscription%2FresourceGroups%2Fcomponent-rg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fcomponent/source/LogsBlade.AnalyticsShareLinkToQuery/query/exceptions%0A%20%20%20%20%7C%20where%20cloud_RoleName%20%3D%3D%20'hmpps-prisoner-from-nomis-migration'%20%0A%20%20%20%20%7C%20where%20customDimensions.%5B%22Logger%20Message%22%5D%20%3D%3D%20%22MessageID%3A86b96f0e-2ac3-445c-b3ac-0a4d525d371e%22%0A%20%20%20%20%7C%20order%20by%20timestamp%20desc/timespan/P1D",
+                "http://localhost:8103/applicationinsights/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Fsubscription%2FresourceGroups%2Fcomponent-rg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fcomponent/source/LogsBlade.AnalyticsShareLinkToQuery/query/exceptions%0A%20%20%20%20%7C%20where%20cloud_RoleName%20%3D%3D%20'hmpps-prisoner-from-nomis-migration'%0A%20%20%20%20%7C%20where%20customDimensions.%5B%22Logger%20Message%22%5D%20%3D%3D%20%22MessageID%3A86b96f0e-2ac3-445c-b3ac-0a4d525d371e%22%0A%20%20%20%20%7C%20order%20by%20timestamp%20desc/timespan/P1D",
             }),
           ]),
         }),
@@ -331,7 +331,7 @@ describe('visitsMigrationController', () => {
         _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
         migrationId: '2022-03-23T11:11:56',
       }
-      nomisMigrationService.cancelVisitsMigration.mockResolvedValue()
+      nomisMigrationService.cancelMigration.mockResolvedValue()
       const visitMigrationResponse: HistoricMigrationDetails = {
         history: {
           migrationId: '2022-03-30T10:13:56',
@@ -354,7 +354,7 @@ describe('visitsMigrationController', () => {
         },
       }
 
-      nomisMigrationService.getVisitsMigration.mockResolvedValue(visitMigrationResponse)
+      nomisMigrationService.getMigration.mockResolvedValue(visitMigrationResponse)
     })
 
     it('should cancel migration and get latest status', async () => {
@@ -370,8 +370,8 @@ describe('visitsMigrationController', () => {
           }),
         }),
       )
-      expect(nomisMigrationService.cancelVisitsMigration).toBeCalledWith('2022-03-23T11:11:56', expect.anything())
-      expect(nomisMigrationService.getVisitsMigration).toBeCalledWith('2022-03-23T11:11:56', expect.anything())
+      expect(nomisMigrationService.cancelMigration).toBeCalledWith('2022-03-23T11:11:56', expect.anything())
+      expect(nomisMigrationService.getMigration).toBeCalledWith('2022-03-23T11:11:56', expect.anything())
     })
   })
 })

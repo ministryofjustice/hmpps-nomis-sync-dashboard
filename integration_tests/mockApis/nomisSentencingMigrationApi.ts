@@ -1,4 +1,6 @@
+import { SuperAgentRequest } from 'superagent'
 import { MigrationHistory } from '../../server/@types/migration'
+import { stubFor } from './wiremock'
 
 export const sentencingFailures = {
   messagesFoundCount: 353,
@@ -117,3 +119,29 @@ export const sentencingMigrationHistory: MigrationHistory[] = [
     isNew: false,
   },
 ]
+
+const stubStartSentencingMigration = (
+  response: unknown = {
+    migrationId: '2022-03-23T11:11:56',
+    estimatedCount: 2,
+    body: {
+      fromDate: '2022-03-23',
+      toDate: '2022-03-24',
+    },
+  },
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/nomis-migration-api/migrate/sentencing',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
+export default {
+  stubStartSentencingMigration,
+}

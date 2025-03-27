@@ -127,7 +127,7 @@ context('Activities Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth', '0')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ACTIVITIES', failures: 0 })
       cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'ACTIVITIES' })
 
       Page.verifyOnPage(ActivitiesMigrationPage).startNewMigration().click()

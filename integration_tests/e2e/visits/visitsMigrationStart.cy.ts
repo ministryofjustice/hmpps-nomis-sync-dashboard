@@ -4,6 +4,7 @@ import StartVisitsMigrationPage from '../../pages/visits-migration/startVisitsMi
 import StartVisitsMigrationConfirmationPage from '../../pages/visits-migration/startVisitsMigrationConfirmation'
 import StartVisitsMigrationPreviewPage from '../../pages/visits-migration/startVisitsMigrationPreview'
 import VisitsMigrationPage from '../../pages/visits-migration/visitsMigration'
+import { visitsMigrationHistory } from '../../mockApis/nomisVisitsMigrationApi'
 
 context('Visits Migration Start', () => {
   beforeEach(() => {
@@ -12,7 +13,7 @@ context('Visits Migration Start', () => {
   context('With MIGRATE_VISITS role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISITS'] })
-      cy.task('stubListOfVisitsMigrationHistory')
+      cy.task('stubGetMigrationHistory', { migrationType: 'VISITS', history: visitsMigrationHistory })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.visitsMigrationLink().click()
@@ -42,8 +43,8 @@ context('Visits Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetVisitsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'VISITS' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'VISITS' })
 
       Page.verifyOnPage(VisitsMigrationPage).startNewMigration().click()
       cy.task('stubGetVisitMigrationEstimatedCount', 100_988)
@@ -98,9 +99,9 @@ context('Visits Migration Start', () => {
         migrationId: '2022-03-23T11:11:56',
         estimatedCount: 100_988,
       })
-      cy.task('stubHealth')
-      cy.task('stubGetVisitsFailures')
-      cy.task('stubDeleteVisitsFailures')
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'VISITS' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'VISITS' })
+      cy.task('stubDeleteFailuresWithMigrationType', { migrationType: 'VISITS' })
 
       Page.verifyOnPage(VisitsMigrationPage).startNewMigration().click()
       cy.task('stubGetVisitMigrationEstimatedCount', 100_988)
