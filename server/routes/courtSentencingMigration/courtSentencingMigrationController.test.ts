@@ -91,8 +91,8 @@ describe('courtSentencingMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).getCourtSentencingMigrations(req, res)
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/courtSentencing/courtSentencingMigration', {
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith('pages/courtSentencing/courtSentencingMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
@@ -125,7 +125,7 @@ describe('courtSentencingMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).viewFailures(req, res)
-      expect(res.render).toBeCalledWith('pages/courtSentencing/courtSentencingMigrationFailures', {
+      expect(res.render).toHaveBeenCalledWith('pages/courtSentencing/courtSentencingMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
             expect.objectContaining({
@@ -156,7 +156,9 @@ describe('courtSentencingMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartCourtSentencingMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
+        expect(req.flash).toHaveBeenCalledWith('errors', [
+          { href: '#toDate', text: 'Enter a real date, like 2020-03-23' },
+        ])
         expect(res.redirect).toHaveBeenCalledWith('/court-sentencing-migration/amend')
       })
     })

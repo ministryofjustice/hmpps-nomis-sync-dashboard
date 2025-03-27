@@ -106,8 +106,8 @@ describe('roomMappingController', () => {
 
       await new RoomMappingController(mappingService, nomisPrisonerService).getVisitRoomMappings(req, res)
       expect(nomisPrisonerService.getVisitRooms).toHaveBeenCalledWith('HEI', true, expect.anything())
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/visits/viewRoomMappings', {
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith('pages/visits/viewRoomMappings', {
         rooms: decoratedResponse,
         prisonId: 'HEI',
         futureVisits: true,

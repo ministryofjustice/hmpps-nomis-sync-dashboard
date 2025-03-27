@@ -125,8 +125,8 @@ describe('activitiesMigrationController', () => {
         nomisPrisonerService,
         activitiesService,
       ).getActivitiesMigrations(req, res)
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/activities/activitiesMigration', {
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith('pages/activities/activitiesMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
@@ -221,7 +221,7 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID.' }])
+        expect(req.flash).toHaveBeenCalledWith('errors', [{ href: '#prisonId', text: 'Enter a prison ID.' }])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/amend')
       })
     })
@@ -246,7 +246,7 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [
+        expect(req.flash).toHaveBeenCalledWith('errors', [
           { href: '', text: 'Failed to get count due to error: Not found: prison XXX does not exist' },
         ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
@@ -271,7 +271,7 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [
+        expect(req.flash).toHaveBeenCalledWith('errors', [
           { href: '', text: 'Failed to get DLQ count due to error: Gateway Timeout' },
         ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
@@ -296,7 +296,7 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [
+        expect(req.flash).toHaveBeenCalledWith('errors', [
           { href: '', text: 'Failed to check incentive levels due to error: Not found: Prison XXX does not exist' },
         ])
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')

@@ -89,8 +89,8 @@ describe('incidentsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).getIncidentsMigrations(req, res)
-      expect(res.render).toBeCalled()
-      expect(res.render).toBeCalledWith('pages/incidents/incidentsMigration', {
+      expect(res.render).toHaveBeenCalled()
+      expect(res.render).toHaveBeenCalledWith('pages/incidents/incidentsMigration', {
         migrations: expect.arrayContaining([
           expect.objectContaining(decoratedMigrations[0]),
           expect.objectContaining(decoratedMigrations[1]),
@@ -122,7 +122,7 @@ describe('incidentsMigrationController', () => {
         nomisMigrationService,
         nomisPrisonerService,
       ).viewFailures(req, res)
-      expect(res.render).toBeCalledWith('pages/incidents/incidentsMigrationFailures', {
+      expect(res.render).toHaveBeenCalledWith('pages/incidents/incidentsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
             expect.objectContaining({
@@ -152,7 +152,9 @@ describe('incidentsMigrationController', () => {
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartIncidentsMigration(req, res)
-        expect(req.flash).toBeCalledWith('errors', [{ href: '#toDate', text: 'Enter a real date, like 2020-03-23' }])
+        expect(req.flash).toHaveBeenCalledWith('errors', [
+          { href: '#toDate', text: 'Enter a real date, like 2020-03-23' },
+        ])
         expect(res.redirect).toHaveBeenCalledWith('/incidents-migration/amend')
       })
     })
