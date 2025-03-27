@@ -17,6 +17,7 @@ import {
 } from '../../@types/nomisPrisoner'
 import ActivitiesService from '../../services/activitiesService'
 import { RolloutPrisonPlan } from '../../@types/activities'
+import ActivitiesNomisMigrationService from '../../services/activities/activitiesNomisMigrationService'
 
 interface Filter {
   prisonId?: string
@@ -33,6 +34,7 @@ function context(res: Response): Context {
 
 export default class ActivitiesMigrationController {
   constructor(
+    private readonly activitiesNomisMigrationService: ActivitiesNomisMigrationService,
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
     private readonly activitiesService: ActivitiesService,
@@ -298,7 +300,7 @@ export default class ActivitiesMigrationController {
 
   async postEndMigratedActivities(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
-    const result = await this.nomisMigrationService.endMigratedActivities(context(res), migrationId)
+    const result = await this.activitiesNomisMigrationService.endMigratedActivities(context(res), migrationId)
     req.session.endMigratedActivitiesResult = { migrationId, result }
     res.redirect('/activities-migration')
   }
@@ -312,7 +314,7 @@ export default class ActivitiesMigrationController {
   async postStartActivitiesMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
 
-    const result = await this.nomisMigrationService.startActivitiesMigration(filter, context(res))
+    const result = await this.activitiesNomisMigrationService.startActivitiesMigration(filter, context(res))
     req.session.startActivitiesMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startActivitiesMigrationForm.migrationId = result.migrationId
     res.redirect('/activities-migration/start/confirmation')

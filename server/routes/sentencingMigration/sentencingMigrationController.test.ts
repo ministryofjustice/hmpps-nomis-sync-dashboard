@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import SentencingMigrationController from './sentencingMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
+import sentencingNomisMigrationService from '../testutils/mockSentencingNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
@@ -83,10 +84,11 @@ describe('sentencingMigrationController', () => {
       ]
       nomisMigrationService.getMigrationHistory.mockResolvedValue(sentencingMigrationResponse)
 
-      await new SentencingMigrationController(nomisMigrationService, nomisPrisonerService).getSentencingMigrations(
-        req,
-        res,
-      )
+      await new SentencingMigrationController(
+        sentencingNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).getSentencingMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/sentencing/sentencingMigration', {
         migrations: expect.arrayContaining([
@@ -115,7 +117,11 @@ describe('sentencingMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new SentencingMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      await new SentencingMigrationController(
+        sentencingNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/sentencing/sentencingMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -142,6 +148,7 @@ describe('sentencingMigrationController', () => {
           toDate: 'banana',
         }
         await new SentencingMigrationController(
+          sentencingNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
         ).postStartSentencingMigration(req, res)

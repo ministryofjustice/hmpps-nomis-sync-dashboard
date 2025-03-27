@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import moment from 'moment'
 import ActivitiesMigrationController from './activitiesMigrationController'
 import { HistoricMigrations } from '../../services/nomisMigrationService'
+import activitiesNomisMigrationService from '../testutils/mockActivitiesNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 import activitiesService from '../testutils/mockActivitiesService'
@@ -119,6 +120,7 @@ describe('activitiesMigrationController', () => {
       nomisMigrationService.getMigrationHistory.mockResolvedValue(activitiesMigrationResponse)
 
       await new ActivitiesMigrationController(
+        activitiesNomisMigrationService,
         nomisMigrationService,
         nomisPrisonerService,
         activitiesService,
@@ -214,6 +216,7 @@ describe('activitiesMigrationController', () => {
           activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
+          activitiesNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
           activitiesService,
@@ -238,6 +241,7 @@ describe('activitiesMigrationController', () => {
           activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
+          activitiesNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
           activitiesService,
@@ -262,6 +266,7 @@ describe('activitiesMigrationController', () => {
           activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
+          activitiesNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
           activitiesService,
@@ -286,6 +291,7 @@ describe('activitiesMigrationController', () => {
           activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
+          activitiesNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
           activitiesService,
@@ -306,6 +312,7 @@ describe('activitiesMigrationController', () => {
           activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
+          activitiesNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
           activitiesService,
@@ -358,6 +365,7 @@ describe('activitiesMigrationController', () => {
           activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
+          activitiesNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
           activitiesService,
@@ -382,6 +390,7 @@ describe('activitiesMigrationController', () => {
           activityStartDate: tomorrow,
         }
         await new ActivitiesMigrationController(
+          activitiesNomisMigrationService,
           nomisMigrationService,
           nomisPrisonerService,
           activitiesService,

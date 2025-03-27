@@ -1,0 +1,8 @@
+import AppointmentsNomisMigrationService from '../../services/appointments/appointmentsNomisMigrationService'
+
+jest.mock('../../services/appointments/appointmentsNomisMigrationService')
+
+const appointmentsNomisMigrationService =
+  new AppointmentsNomisMigrationService() as jest.Mocked<AppointmentsNomisMigrationService>
+
+export default appointmentsNomisMigrationService

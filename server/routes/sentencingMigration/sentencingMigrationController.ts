@@ -8,6 +8,7 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startSentencingMigrationValidator from './startSentencingMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import SentencingNomisMigrationService from '../../services/sentencing/sentencingNomisMigrationService'
 
 interface Filter {
   fromDate?: string
@@ -23,6 +24,7 @@ function context(res: Response): Context {
 
 export default class SentencingMigrationController {
   constructor(
+    private readonly sentencingNomisMigrationService: SentencingNomisMigrationService,
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
@@ -103,7 +105,7 @@ export default class SentencingMigrationController {
   async postStartSentencingMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = SentencingMigrationController.toFilter(req.session.startSentencingMigrationForm)
 
-    const result = await this.nomisMigrationService.startSentencingMigration(filter, context(res))
+    const result = await this.sentencingNomisMigrationService.startSentencingMigration(filter, context(res))
     req.session.startSentencingMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startSentencingMigrationForm.migrationId = result.migrationId
     res.redirect('/sentencing-migration/start/confirmation')

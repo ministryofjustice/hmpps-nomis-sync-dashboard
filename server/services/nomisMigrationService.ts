@@ -1,32 +1,11 @@
 import querystring from 'querystring'
-import {
-  ActivitiesMigrationFilter,
-  CourtSentencingMigrationFilter,
-  AllocationsMigrationFilter,
-  AppointmentsMigrationFilter,
-  GetDlqResult,
-  InProgressMigration,
-  IncidentsMigrationFilter,
-  MigrationContextActivitiesMigrationFilter,
-  MigrationContextCourtSentencingMigrationFilter,
-  MigrationContextAllocationsMigrationFilter,
-  MigrationContextAppointmentsMigrationFilter,
-  MigrationContextIncidentsMigrationFilter,
-  MigrationContextSentencingMigrationFilter,
-  MigrationContextVisitsMigrationFilter,
-  MigrationHistory,
-  PurgeQueueResult,
-  RoomMappingsResponse,
-  SentencingMigrationFilter,
-  VisitsMigrationFilter,
-} from '../@types/migration'
+import { GetDlqResult, InProgressMigration, MigrationHistory, PurgeQueueResult } from '../@types/migration'
 
 import type HmppsAuthClient from '../data/hmppsAuthClient'
 import RestClient from '../data/restClient'
 import config from '../config'
 import logger from '../../logger'
 import { MigrationViewFilter } from '../@types/dashboard'
-import { GetVisitsByFilter } from '../@types/nomisPrisoner'
 
 export interface HistoricMigrations {
   migrations: Array<MigrationHistory>
@@ -46,7 +25,7 @@ export interface Context {
 }
 
 export function removeEmptyPropertiesAndStringify(filter: unknown): string {
-  const filterWithoutNulls = JSON.parse(JSON.stringify(filter), (key, value) =>
+  const filterWithoutNulls = JSON.parse(JSON.stringify(filter), (_, value) =>
     value === null || value === '' ? undefined : value,
   )
   return querystring.stringify(filterWithoutNulls)
@@ -103,110 +82,6 @@ export default class NomisMigrationService {
     const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     return NomisMigrationService.restClient(token).post<void>({
       path: `/migrate/cancel/${migrationId}`,
-    })
-  }
-
-  async startVisitsMigration(
-    filter: VisitsMigrationFilter,
-    context: Context,
-  ): Promise<MigrationContextVisitsMigrationFilter> {
-    logger.info(`starting a visits migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextVisitsMigrationFilter>({
-      path: `/migrate/visits`,
-      data: filter,
-    })
-  }
-
-  async startSentencingMigration(
-    filter: SentencingMigrationFilter,
-    context: Context,
-  ): Promise<MigrationContextSentencingMigrationFilter> {
-    logger.info(`starting a sentencing migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextSentencingMigrationFilter>({
-      path: `/migrate/sentencing`,
-      data: filter,
-    })
-  }
-
-  async startAppointmentsMigration(
-    filter: AppointmentsMigrationFilter,
-    context: Context,
-  ): Promise<MigrationContextAppointmentsMigrationFilter> {
-    logger.info(`starting a appointments migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextAppointmentsMigrationFilter>({
-      path: `/migrate/appointments`,
-      data: filter,
-    })
-  }
-
-  async startActivitiesMigration(
-    filter: ActivitiesMigrationFilter,
-    context: Context,
-  ): Promise<MigrationContextActivitiesMigrationFilter> {
-    logger.info(`starting an activities migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextActivitiesMigrationFilter>({
-      path: `/migrate/activities`,
-      data: filter,
-    })
-  }
-
-  async endMigratedActivities(context: Context, migrationId: string): Promise<string> {
-    logger.info(`Ending NOMIS activities for migrationId=${migrationId}`)
-    try {
-      await NomisMigrationService.restClient(context.token).put<void>({
-        path: `/migrate/activities/${migrationId}/end`,
-      })
-    } catch (e) {
-      switch (e.status) {
-        case 404:
-          return 'Not found'
-        default:
-          return 'Error'
-      }
-    }
-    return 'OK'
-  }
-
-  async startAllocationsMigration(
-    filter: AllocationsMigrationFilter,
-    context: Context,
-  ): Promise<MigrationContextAllocationsMigrationFilter> {
-    logger.info(`starting an allocations migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextAllocationsMigrationFilter>({
-      path: `/migrate/allocations`,
-      data: filter,
-    })
-  }
-
-  async startCourtSentencingMigration(
-    filter: CourtSentencingMigrationFilter,
-    context: Context,
-  ): Promise<MigrationContextCourtSentencingMigrationFilter> {
-    logger.info(`starting a court sentencing migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextCourtSentencingMigrationFilter>({
-      path: `/migrate/court-sentencing`,
-      data: filter,
-    })
-  }
-
-  async getVisitMigrationRoomMappings(filter: GetVisitsByFilter, context: Context): Promise<RoomMappingsResponse[]> {
-    logger.info(`getting details for visit migration - room mappings`)
-    return NomisMigrationService.restClient(context.token).get<RoomMappingsResponse[]>({
-      path: `/migrate/visits/rooms/usage`,
-      query: `${querystring.stringify({ ...filter, size: 1 })}`,
-    })
-  }
-
-  // INCIDENTS
-
-  async startIncidentsMigration(
-    filter: IncidentsMigrationFilter,
-    context: Context,
-  ): Promise<MigrationContextIncidentsMigrationFilter> {
-    logger.info(`starting an incidents migration`)
-    return NomisMigrationService.restClient(context.token).post<MigrationContextIncidentsMigrationFilter>({
-      path: `/migrate/incidents`,
-      data: filter,
     })
   }
 

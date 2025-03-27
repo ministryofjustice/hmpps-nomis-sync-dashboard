@@ -4589,7 +4589,28 @@ export interface operations {
   }
   getHistory: {
     parameters: {
-      query?: never
+      query?: {
+        /**
+         * @description Only include migrations started after this date time
+         * @example 2020-03-23T12:00:00
+         */
+        fromDateTime?: string
+        /**
+         * @description Only include migrations started before this date time
+         * @example 2020-03-24T12:00:00
+         */
+        toDateTime?: string
+        /**
+         * @description When true only include migrations that had at least one failure
+         * @example false
+         */
+        includeOnlyFailures?: boolean
+        /**
+         * @description Specify the prison associated with the migration
+         * @example HEI
+         */
+        prisonId?: string
+      }
       header?: never
       path: {
         /** @description Migration Type */

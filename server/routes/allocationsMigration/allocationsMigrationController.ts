@@ -8,6 +8,7 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startAllocationsMigrationValidator from './startAllocationsMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
+import AllocationsNomisMigrationService from '../../services/allocations/allocationsNomisMigrationService'
 
 interface Filter {
   prisonId?: string
@@ -23,6 +24,7 @@ function context(res: Response): Context {
 
 export default class AllocationsMigrationController {
   constructor(
+    private readonly allocationsNomisMigrationService: AllocationsNomisMigrationService,
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
@@ -113,7 +115,7 @@ export default class AllocationsMigrationController {
   async postStartAllocationsMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = AllocationsMigrationController.toFilter(req.session.startAllocationsMigrationForm)
 
-    const result = await this.nomisMigrationService.startAllocationsMigration(filter, context(res))
+    const result = await this.allocationsNomisMigrationService.startAllocationsMigration(filter, context(res))
     req.session.startAllocationsMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startAllocationsMigrationForm.migrationId = result.migrationId
     res.redirect('/allocations-migration/start/confirmation')

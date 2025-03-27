@@ -5,8 +5,10 @@ import AllocationsMigrationController from './allocationsMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import ActivitiesService from '../../services/activitiesService'
+import AllocationsNomisMigrationService from '../../services/allocations/allocationsNomisMigrationService'
 
 export interface Services {
+  allocationsNomisMigrationService: AllocationsNomisMigrationService
   nomisMigrationService: NomisMigrationService
   nomisPrisonerService: NomisPrisonerService
   activitiesService: ActivitiesService
@@ -16,6 +18,7 @@ export default function routes(router: Router, services: Services): Router {
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
   const allocationsMigrationController = new AllocationsMigrationController(
+    services.allocationsNomisMigrationService,
     services.nomisMigrationService,
     services.nomisPrisonerService,
   )

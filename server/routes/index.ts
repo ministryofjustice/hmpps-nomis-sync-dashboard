@@ -33,7 +33,7 @@ export default function routes(services: Services): Router {
   const router = Router()
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  get('/', (req, res, next) => {
+  get('/', (req, res, _) => {
     const roles = extractRoles(res)
     res.render('pages/index', {
       dashboards: [

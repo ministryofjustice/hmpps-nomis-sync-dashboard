@@ -11,6 +11,7 @@ import { buildUrl } from '../../utils/applicationInsightsUrlBuilder'
 import visitsMigrationValidator from './visitsMigrationValidator'
 import logger from '../../../logger'
 import { withDefaultTime } from '../../utils/utils'
+import VisitsNomisMigrationService from '../../services/visits/visitsNomisMigrationService'
 
 interface Filter {
   prisonIds?: string[]
@@ -28,6 +29,7 @@ function context(res: Response): Context {
 
 export default class VisitsMigrationController {
   constructor(
+    private readonly visitsNomisMigrationService: VisitsNomisMigrationService,
     private readonly nomisMigrationService: NomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
   ) {}
@@ -92,7 +94,7 @@ export default class VisitsMigrationController {
     } else {
       const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
       const count = await this.nomisPrisonerService.getVisitMigrationEstimatedCount(filter, context(res))
-      const roomMappings = await this.nomisMigrationService.getVisitMigrationRoomMappings(filter, context(res))
+      const roomMappings = await this.visitsNomisMigrationService.getVisitMigrationRoomMappings(filter, context(res))
       const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
       logger.info(`${dlqCountString} failures found`)
 
@@ -119,7 +121,7 @@ export default class VisitsMigrationController {
   async postStartVisitMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
 
-    const result = await this.nomisMigrationService.startVisitsMigration(filter, context(res))
+    const result = await this.visitsNomisMigrationService.startVisitsMigration(filter, context(res))
     req.session.startVisitsMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startVisitsMigrationForm.migrationId = result.migrationId
     res.redirect('/visits-migration/start/confirmation')

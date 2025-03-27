@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import VisitsMigrationController from './visitsMigrationController'
 import { HistoricMigrations, HistoricMigrationDetails } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
+import visitsNomisMigrationService from '../testutils/mockVisitsNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
 
 describe('visitsMigrationController', () => {
@@ -90,7 +91,11 @@ describe('visitsMigrationController', () => {
       ]
       nomisMigrationService.getMigrationHistoryWithFilter.mockResolvedValue(visitMigrationResponse)
 
-      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).getVisitMigrations(req, res)
+      await new VisitsMigrationController(
+        visitsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).getVisitMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/visits/visitsMigration', {
         migrations: expect.arrayContaining([
@@ -110,7 +115,11 @@ describe('visitsMigrationController', () => {
     it('should return an error response on invalid date', async () => {
       req.query.toDateTime = 'invalid'
       req.query.fromDateTime = '23/4'
-      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).getVisitMigrations(req, res)
+      await new VisitsMigrationController(
+        visitsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).getVisitMigrations(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith('pages/visits/visitsMigration', {
         migrationViewFilter: expect.objectContaining({
@@ -141,7 +150,11 @@ describe('visitsMigrationController', () => {
         toDateTime: '2020-03-24',
         visitTypes: 'SCON',
       }
-      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).startNewVisitMigration(req, res)
+      await new VisitsMigrationController(
+        visitsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).startNewVisitMigration(req, res)
       expect(res.render).toBeCalledWith('pages/visits/startVisitsMigration', {
         form: undefined,
         errors: undefined,
@@ -155,7 +168,11 @@ describe('visitsMigrationController', () => {
         toDateTime: '2020-03-24',
         visitTypes: 'SCON',
       }
-      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).startVisitMigration(req, res)
+      await new VisitsMigrationController(
+        visitsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).startVisitMigration(req, res)
       expect(res.render).toBeCalledWith('pages/visits/startVisitsMigration', {
         form: expect.objectContaining({
           fromDateTime: '2020-03-23T12:00:00',
@@ -175,10 +192,11 @@ describe('visitsMigrationController', () => {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
         }
-        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
-          req,
-          res,
-        )
+        await new VisitsMigrationController(
+          visitsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartVisitMigration(req, res)
         expect(req.flash).toBeCalledWith('errors', [
           { href: '#prisonIds', text: 'Enter one or more prison IDs' },
           { href: '#visitTypes', text: 'Enter the type of visits to migrate' },
@@ -195,14 +213,15 @@ describe('visitsMigrationController', () => {
           visitTypes: 'SCON',
         }
         nomisPrisonerService.getVisitMigrationEstimatedCount.mockResolvedValue(124_001)
-        nomisMigrationService.getVisitMigrationRoomMappings.mockResolvedValue([])
+        visitsNomisMigrationService.getVisitMigrationRoomMappings.mockResolvedValue([])
         nomisMigrationService.getFailureCount.mockResolvedValue('4')
       })
       it('should render the migration preview page', async () => {
-        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigration(
-          req,
-          res,
-        )
+        await new VisitsMigrationController(
+          visitsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartVisitMigration(req, res)
         expect(res.redirect).toHaveBeenCalledWith('/visits-migration/start/preview')
       })
     })
@@ -218,7 +237,7 @@ describe('visitsMigrationController', () => {
           toDateTime: '2020-03-24',
           visitTypes: 'SCON',
         }
-        nomisMigrationService.startVisitsMigration.mockResolvedValue({
+        visitsNomisMigrationService.startVisitsMigration.mockResolvedValue({
           migrationId: '2022-03-14T10:13:56',
           estimatedCount: 124_001,
           type: 'VISITS',
@@ -233,55 +252,61 @@ describe('visitsMigrationController', () => {
       })
 
       it('should render the confirmation page', async () => {
-        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigrationPreview(
-          req,
-          res,
-        )
+        await new VisitsMigrationController(
+          visitsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartVisitMigrationPreview(req, res)
         expect(res.redirect).toHaveBeenCalledWith('/visits-migration/start/confirmation')
       })
       it('should call start migration service', async () => {
-        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigrationPreview(
-          req,
-          res,
-        )
-        expect(nomisMigrationService.startVisitsMigration).toBeCalled()
+        await new VisitsMigrationController(
+          visitsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartVisitMigrationPreview(req, res)
+        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalled()
       })
       it('should convert prison ids to array', async () => {
-        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigrationPreview(
-          req,
-          res,
-        )
-        expect(nomisMigrationService.startVisitsMigration).toBeCalledWith(
+        await new VisitsMigrationController(
+          visitsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartVisitMigrationPreview(req, res)
+        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalledWith(
           expect.objectContaining({ prisonIds: ['HEI', 'MDI'] }),
           expect.anything(),
         )
       })
       it('should convert single visit type to array', async () => {
-        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigrationPreview(
-          req,
-          res,
-        )
-        expect(nomisMigrationService.startVisitsMigration).toBeCalledWith(
+        await new VisitsMigrationController(
+          visitsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartVisitMigrationPreview(req, res)
+        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalledWith(
           expect.objectContaining({ visitTypes: ['SCON'] }),
           expect.anything(),
         )
       })
       it('should pass fromDateTime to service', async () => {
-        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigrationPreview(
-          req,
-          res,
-        )
-        expect(nomisMigrationService.startVisitsMigration).toBeCalledWith(
+        await new VisitsMigrationController(
+          visitsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartVisitMigrationPreview(req, res)
+        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalledWith(
           expect.objectContaining({ fromDateTime: '2020-03-23T12:00:00' }),
           expect.anything(),
         )
       })
       it('should add midnight to date when not present', async () => {
-        await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).postStartVisitMigrationPreview(
-          req,
-          res,
-        )
-        expect(nomisMigrationService.startVisitsMigration).toBeCalledWith(
+        await new VisitsMigrationController(
+          visitsNomisMigrationService,
+          nomisMigrationService,
+          nomisPrisonerService,
+        ).postStartVisitMigrationPreview(req, res)
+        expect(visitsNomisMigrationService.startVisitsMigration).toBeCalledWith(
           expect.objectContaining({ toDateTime: '2020-03-24T00:00:00' }),
           expect.anything(),
         )
@@ -307,7 +332,11 @@ describe('visitsMigrationController', () => {
       })
     })
     it('should render the failures page with application insights link for failed messageId', async () => {
-      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).viewFailures(req, res)
+      await new VisitsMigrationController(
+        visitsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).viewFailures(req, res)
       expect(res.render).toBeCalledWith('pages/visits/visitsMigrationFailures', {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
@@ -358,7 +387,11 @@ describe('visitsMigrationController', () => {
     })
 
     it('should cancel migration and get latest status', async () => {
-      await new VisitsMigrationController(nomisMigrationService, nomisPrisonerService).cancelMigration(req, res)
+      await new VisitsMigrationController(
+        visitsNomisMigrationService,
+        nomisMigrationService,
+        nomisPrisonerService,
+      ).cancelMigration(req, res)
       expect(res.render).toBeCalled()
       expect(res.render).toBeCalledWith(
         'pages/visits/visitsMigrationDetails',
