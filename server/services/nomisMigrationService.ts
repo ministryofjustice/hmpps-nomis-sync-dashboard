@@ -69,8 +69,9 @@ export default class NomisMigrationService {
     filter: MigrationViewFilter,
   ): Promise<HistoricMigrations> {
     logger.info(`getting migrations with filter ${JSON.stringify(filter)}`)
+    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
     return {
-      migrations: await NomisMigrationService.restClient(context.token).get<MigrationHistory[]>({
+      migrations: await NomisMigrationService.restClient(token).get<MigrationHistory[]>({
         path: `/migrate/history/all/${migrationType}`,
         query: `${removeEmptyPropertiesAndStringify(filter)}`,
       }),
