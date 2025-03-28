@@ -3,6 +3,7 @@ import Page from '../../pages/page'
 import ActivitiesMigrationPage from '../../pages/activities-migration/activitiesMigration'
 import StarAllocationsMigrationPage from '../../pages/allocations-migration/startAllocationsMigration'
 import { activitiesMigrationHistory } from '../../mockApis/nomisActivitiesMigrationApi'
+import AuthErrorPage from '../../pages/authError'
 
 context('Activities Migration Homepage', () => {
   beforeEach(() => {
@@ -97,6 +98,10 @@ context('Activities Migration Homepage', () => {
     it('should not see migrate activities tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.activitiesMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the activities migration page', () => {
+      cy.visit('/activities-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

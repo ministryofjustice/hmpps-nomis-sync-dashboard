@@ -4,6 +4,7 @@ import CorporateMigrationPage from '../pages/corporate-migration/corporateMigrat
 import StartCorporateMigrationPage from '../pages/corporate-migration/startCorporateMigration'
 import StartCorporateMigrationPreviewPage from '../pages/corporate-migration/startCorporateMigrationPreview'
 import StartCorporateMigrationConfirmationPage from '../pages/corporate-migration/startCorporateMigrationConfirmation'
+import AuthErrorPage from '../pages/authError'
 
 context('Corporate Migration Start', () => {
   beforeEach(() => {
@@ -78,6 +79,21 @@ context('Corporate Migration Start', () => {
       confirmationPage.confirmationMessage().contains('100,988')
       confirmationPage.confirmationMessage().contains('2022-03-23T11:11:56')
       confirmationPage.detailsLink().contains('View migration status')
+    })
+  })
+
+  context('Without MIGRATE_NOMIS_SYSCON role', () => {
+    beforeEach(() => {
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
+      cy.signIn()
+    })
+    it('should not see migrate corporate tile', () => {
+      const indexPage = Page.verifyOnPage(IndexPage)
+      indexPage.corporateMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the corporate migration page', () => {
+      cy.visit('/corporate-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

@@ -1,6 +1,7 @@
 import { type RequestHandler, Router } from 'express'
 
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
+import visitRoomMappingMigrationRouter from './visitMigration/visitRoomMappingMigrationRouter'
 import sentencingMigrationRoutes from './sentencingMigration/sentencingMigrationRouter'
 import activitiesMigrationRoutes from './activitiesMigration/activitiesMigrationRouter'
 import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrationRouter'
@@ -89,7 +90,7 @@ export default function routes(services: Services): Router {
           id: 'room-mappings',
           heading: 'Visit room mappings',
           description: 'Manage visit room mappings between NOMIS and VSIP',
-          href: '/visits-room-mappings-prison',
+          href: '/visits-room-mappings/prison',
           roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
@@ -148,17 +149,18 @@ export default function routes(services: Services): Router {
     })
   })
 
-  visitMigrationRoutes(router, services)
-  sentencingMigrationRoutes(router, services)
-  activitiesMigrationRoutes(router, services)
-  allocationsMigrationRoutes(router, services)
-  appointmentsMigrationRoutes(router, services)
-  courtSentencingMigrationRoutes(router, services)
-  incidentsMigrationRoutes(router, services)
-  corePersonMigrationRoutes(router, services)
-  contactPersonMigrationRoutes(router, services)
-  contactPersonProfileDetailsMigrationRoutes(router, services)
-  corporateMigrationRoutes(router, services)
-  visitBalanceMigrationRoutes(router, services)
+  router.use('/visits-migration', visitMigrationRoutes(services))
+  router.use('/visits-room-mappings', visitRoomMappingMigrationRouter(services))
+  router.use('/sentencing-migration', sentencingMigrationRoutes(services))
+  router.use('/activities-migration', activitiesMigrationRoutes(services))
+  router.use('/allocations-migration', allocationsMigrationRoutes(services))
+  router.use('/appointments-migration', appointmentsMigrationRoutes(services))
+  router.use('/court-sentencing-migration', courtSentencingMigrationRoutes(services))
+  router.use('/incidents-migration', incidentsMigrationRoutes(services))
+  router.use('/coreperson-migration', corePersonMigrationRoutes(services))
+  router.use('/contactperson-migration', contactPersonMigrationRoutes(services))
+  router.use('/contactperson-profiledetails-migration', contactPersonProfileDetailsMigrationRoutes(services))
+  router.use('/corporate-migration', corporateMigrationRoutes(services))
+  router.use('/visit-balance-migration', visitBalanceMigrationRoutes(services))
   return router
 }

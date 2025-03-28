@@ -4,6 +4,7 @@ import ContactPersonMigrationPage from '../pages/contactperson-migration/contact
 import StartContactPersonMigrationPage from '../pages/contactperson-migration/startContactPersonMigration'
 import StartContactPersonMigrationPreviewPage from '../pages/contactperson-migration/startContactPersonMigrationPreview'
 import StartContactPersonMigrationConfirmationPage from '../pages/contactperson-migration/startContactPersonMigrationConfirmation'
+import AuthErrorPage from '../pages/authError'
 
 context('Contact Person Migration Start', () => {
   beforeEach(() => {
@@ -78,6 +79,21 @@ context('Contact Person Migration Start', () => {
       confirmationPage.confirmationMessage().contains('100,988')
       confirmationPage.confirmationMessage().contains('2022-03-23T11:11:56')
       confirmationPage.detailsLink().contains('View migration status')
+    })
+  })
+
+  context('Without MIGRATE_NOMIS_SYSCON role', () => {
+    beforeEach(() => {
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
+      cy.signIn()
+    })
+    it('should not see migrate contact persons tile', () => {
+      const indexPage = Page.verifyOnPage(IndexPage)
+      indexPage.contactPersonMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the contact persons migration page', () => {
+      cy.visit('/contactperson-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

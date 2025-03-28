@@ -3,6 +3,7 @@ import Page from '../../pages/page'
 import IncidentsMigrationPage from '../../pages/incidents-migration/incidentsMigration'
 import IncidentsMigrationFailuresPage from '../../pages/incidents-migration/incidentsMigrationFailures'
 import { incidentsMigrationHistory } from '../../mockApis/nomisIncidentsMigrationApi'
+import AuthErrorPage from '../../pages/authError'
 
 context('Incident Migration Homepage', () => {
   beforeEach(() => {
@@ -82,6 +83,10 @@ context('Incident Migration Homepage', () => {
     it('should not see migrate incident tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.incidentsMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the incidents migration page', () => {
+      cy.visit('/incidents-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

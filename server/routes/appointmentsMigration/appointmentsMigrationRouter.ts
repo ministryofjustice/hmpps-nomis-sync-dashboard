@@ -1,55 +1,49 @@
-import type { RequestHandler, Router } from 'express'
+import express, { RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 import AppointmentsMigrationController from './appointmentsMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import AppointmentsNomisMigrationService from '../../services/appointments/appointmentsNomisMigrationService'
+import authorisationMiddleware from '../../middleware/authorisationMiddleware'
+import { MIGRATE_APPOINTMENTS_ROLE, MIGRATE_NOMIS_SYSCON } from '../../authentication/roles'
 
-export interface Services {
+export default function routes({
+  appointmentsNomisMigrationService,
+  nomisMigrationService,
+  nomisPrisonerService,
+}: {
   appointmentsNomisMigrationService: AppointmentsNomisMigrationService
   nomisMigrationService: NomisMigrationService
   nomisPrisonerService: NomisPrisonerService
-}
-export default function routes(router: Router, services: Services): Router {
+}): Router {
+  const router = express.Router({ mergeParams: true })
+  router.use(authorisationMiddleware([MIGRATE_APPOINTMENTS_ROLE, MIGRATE_NOMIS_SYSCON]))
+
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
   const appointmentsMigrationController = new AppointmentsMigrationController(
-    services.appointmentsNomisMigrationService,
-    services.nomisMigrationService,
-    services.nomisPrisonerService,
+    appointmentsNomisMigrationService,
+    nomisMigrationService,
+    nomisPrisonerService,
   )
-  get('/appointments-migration', (req, res) => appointmentsMigrationController.getAppointmentsMigrations(req, res))
-  get('/appointments-migration/failures', (req, res) => appointmentsMigrationController.viewFailures(req, res))
-  get('/appointments-migration/start', (req, res) =>
-    appointmentsMigrationController.startNewAppointmentsMigration(req, res),
-  )
-  post('/appointments-migration/start', (req, res) =>
-    appointmentsMigrationController.postStartAppointmentsMigration(req, res),
-  )
-  get('/appointments-migration/amend', (req, res) =>
-    appointmentsMigrationController.startAppointmentsMigration(req, res),
-  )
-  get('/appointments-migration/start/preview', (req, res) =>
-    appointmentsMigrationController.startAppointmentsMigrationPreview(req, res),
-  )
-  post('/appointments-migration/start/preview', (req, res) =>
-    appointmentsMigrationController.postStartAppointmentsMigrationPreview(req, res),
-  )
-  post('/appointments-migration/start/delete-failures', (req, res) =>
+  get('/', (req, res) => appointmentsMigrationController.getAppointmentsMigrations(req, res))
+  get('/failures', (req, res) => appointmentsMigrationController.viewFailures(req, res))
+  get('/start', (req, res) => appointmentsMigrationController.startNewAppointmentsMigration(req, res))
+  post('/start', (req, res) => appointmentsMigrationController.postStartAppointmentsMigration(req, res))
+  get('/amend', (req, res) => appointmentsMigrationController.startAppointmentsMigration(req, res))
+  get('/start/preview', (req, res) => appointmentsMigrationController.startAppointmentsMigrationPreview(req, res))
+  post('/start/preview', (req, res) => appointmentsMigrationController.postStartAppointmentsMigrationPreview(req, res))
+  post('/start/delete-failures', (req, res) =>
     appointmentsMigrationController.postClearDLQAppointmentsMigrationPreview(req, res),
   )
-  get('/appointments-migration/start/confirmation', (req, res) =>
+  get('/start/confirmation', (req, res) =>
     appointmentsMigrationController.startAppointmentsMigrationConfirmation(req, res),
   )
-  get('/appointments-migration/details', (req, res) =>
-    appointmentsMigrationController.appointmentsMigrationDetails(req, res),
-  )
-  post('/appointments-migration/cancel', (req, res) => appointmentsMigrationController.cancelMigration(req, res))
-  get('/appointments-migration/activate-prison', (req, res) =>
-    appointmentsMigrationController.postActivatePrison(req, res),
-  )
+  get('/details', (req, res) => appointmentsMigrationController.appointmentsMigrationDetails(req, res))
+  post('/cancel', (req, res) => appointmentsMigrationController.cancelMigration(req, res))
+  get('/activate-prison', (req, res) => appointmentsMigrationController.postActivatePrison(req, res))
 
   return router
 }

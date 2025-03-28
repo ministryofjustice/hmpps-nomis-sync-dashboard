@@ -3,6 +3,7 @@ import Page from '../../pages/page'
 import VisitBalanceMigrationPage from '../../pages/visit-balance-migration/visitBalanceMigration'
 import VisitBalanceMigrationFailuresPage from '../../pages/visit-balance-migration/visitBalanceMigrationFailures'
 import visitBalanceMigrationHistory from '../../mockApis/nomisVisitBalanceMigrationApi'
+import AuthErrorPage from '../../pages/authError'
 
 context('Visit Balance Migration Homepage', () => {
   beforeEach(() => {
@@ -85,6 +86,10 @@ context('Visit Balance Migration Homepage', () => {
     it('should not see migrate visit balance tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.visitBalanceMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the visit balance migration page', () => {
+      cy.visit('/visit-balance-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

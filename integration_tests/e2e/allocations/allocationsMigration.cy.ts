@@ -2,6 +2,7 @@ import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import AllocationsMigrationPage from '../../pages/allocations-migration/allocationsMigration'
 import { allocationsMigrationHistory } from '../../mockApis/nomisAllocationsMigrationApi'
+import AuthErrorPage from '../../pages/authError'
 
 context('Allocations Migration Homepage', () => {
   beforeEach(() => {
@@ -79,6 +80,10 @@ context('Allocations Migration Homepage', () => {
     it('should not see migrate allocations tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.allocationsMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the allocations migration page', () => {
+      cy.visit('/allocations-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })

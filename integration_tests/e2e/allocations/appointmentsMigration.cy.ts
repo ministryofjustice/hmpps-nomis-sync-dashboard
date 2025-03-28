@@ -3,6 +3,7 @@ import Page from '../../pages/page'
 import AppointmentsMigrationPage from '../../pages/appointments-migration/appointmentsMigration'
 import AppointmentsMigrationFailuresPage from '../../pages/appointments-migration/appointmentsMigrationFailures'
 import { appointmentsMigrationHistory } from '../../mockApis/nomisAppointmentsMigrationApi'
+import AuthErrorPage from '../../pages/authError'
 
 context('Appointment Migration Homepage', () => {
   beforeEach(() => {
@@ -91,6 +92,10 @@ context('Appointment Migration Homepage', () => {
     it('should not see migrate appointments tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.appointmentsMigrationLink().should('not.exist')
+    })
+    it('should not be able to navigate directly to the appointments migration page', () => {
+      cy.visit('/appointments-migration', { failOnStatusCode: false })
+      Page.verifyOnPage(AuthErrorPage)
     })
   })
 })
