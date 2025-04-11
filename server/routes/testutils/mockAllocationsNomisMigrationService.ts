@@ -2,7 +2,8 @@ import AllocationsNomisMigrationService from '../../services/allocations/allocat
 
 jest.mock('../../services/allocations/allocationsNomisMigrationService')
 
-const allocationsNomisMigrationService =
-  new AllocationsNomisMigrationService() as jest.Mocked<AllocationsNomisMigrationService>
+const allocationsNomisMigrationService = new AllocationsNomisMigrationService(
+  null,
+) as jest.Mocked<AllocationsNomisMigrationService>
 
 export default allocationsNomisMigrationService
