@@ -1,27 +1,15 @@
 import { AppointmentsMigrationFilter, MigrationContextAppointmentsMigrationFilter } from '../../@types/migration'
 
-import RestClient from '../../data/restClient'
-import config from '../../config'
-import logger from '../../../logger'
 import { Context } from '../nomisMigrationService'
+import AppointmentsNomisMigrationClient from '../../data/appointmentsNomisMigrationClient'
 
 export default class AppointmentsNomisMigrationService {
-  constructor() {}
-
-  private static restClient(token: string): RestClient {
-    return new RestClient('Appointments Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
-  }
+  constructor(private readonly appointmentsNomisMigrationClient: AppointmentsNomisMigrationClient) {}
 
   async startAppointmentsMigration(
     filter: AppointmentsMigrationFilter,
     context: Context,
   ): Promise<MigrationContextAppointmentsMigrationFilter> {
-    logger.info(`starting a appointments migration`)
-    return AppointmentsNomisMigrationService.restClient(
-      context.token,
-    ).post<MigrationContextAppointmentsMigrationFilter>({
-      path: `/migrate/appointments`,
-      data: filter,
-    })
+    return this.appointmentsNomisMigrationClient.startAppointmentsMigration(filter, context)
   }
 }

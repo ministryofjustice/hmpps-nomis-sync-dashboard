@@ -22,7 +22,18 @@ import SentencingNomisMigrationService from './sentencing/sentencingNomisMigrati
 import VisitsNomisMigrationService from './visits/visitsNomisMigrationService'
 
 export const services = () => {
-  const { hmppsAuthClient, applicationInfo } = dataAccess()
+  const {
+    hmppsAuthClient,
+    applicationInfo,
+    activitiesNomisMigrationClient,
+    allocationsNomisMigrationClient,
+    appointmentsNomisMigrationClient,
+    contactPersonNomisMigrationClient,
+    contactPersonNomisPrisonerClient,
+    contactPersonProfileDetailsNomisMigrationClient,
+    contactPersonProfileDetailsNomisPrisonerClient,
+    corePersonNomisMigrationClient,
+  } = dataAccess()
 
   const nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
   const nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
@@ -35,16 +46,18 @@ export const services = () => {
     nomisPrisonerService,
     mappingService,
     activitiesService,
-    activitiesNomisMigrationService: new ActivitiesNomisMigrationService(),
-    allocationsNomisMigrationService: new AllocationsNomisMigrationService(),
-    appointmentsNomisMigrationService: new AppointmentsNomisMigrationService(),
-    contactPersonNomisMigrationService: new ContactPersonNomisMigrationService(),
-    contactPersonNomisPrisonerService: new ContactPersonNomisPrisonerService(hmppsAuthClient),
-    contactPersonProfileDetailsNomisMigrationService: new ContactPersonProfileDetailsNomisMigrationService(),
-    contactPersonProfileDetailsNomisPrisonerService: new ContactPersonProfileDetailsNomisPrisonerService(
-      hmppsAuthClient,
+    activitiesNomisMigrationService: new ActivitiesNomisMigrationService(activitiesNomisMigrationClient),
+    allocationsNomisMigrationService: new AllocationsNomisMigrationService(allocationsNomisMigrationClient),
+    appointmentsNomisMigrationService: new AppointmentsNomisMigrationService(appointmentsNomisMigrationClient),
+    contactPersonNomisMigrationService: new ContactPersonNomisMigrationService(contactPersonNomisMigrationClient),
+    contactPersonNomisPrisonerService: new ContactPersonNomisPrisonerService(contactPersonNomisPrisonerClient),
+    contactPersonProfileDetailsNomisMigrationService: new ContactPersonProfileDetailsNomisMigrationService(
+      contactPersonProfileDetailsNomisMigrationClient,
     ),
-    corePersonNomisMigrationService: new CorePersonNomisMigrationService(),
+    contactPersonProfileDetailsNomisPrisonerService: new ContactPersonProfileDetailsNomisPrisonerService(
+      contactPersonProfileDetailsNomisPrisonerClient,
+    ),
+    corePersonNomisMigrationService: new CorePersonNomisMigrationService(corePersonNomisMigrationClient),
     corporateNomisMigrationService: new CorporateNomisMigrationService(),
     corporateNomisPrisonerService: new CorporateNomisPrisonerService(hmppsAuthClient),
     courtSentencingNomisMigrationService: new CourtSentencingNomisMigrationService(),
