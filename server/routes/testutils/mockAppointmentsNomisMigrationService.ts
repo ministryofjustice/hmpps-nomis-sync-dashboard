@@ -2,7 +2,8 @@ import AppointmentsNomisMigrationService from '../../services/appointments/appoi
 
 jest.mock('../../services/appointments/appointmentsNomisMigrationService')
 
-const appointmentsNomisMigrationService =
-  new AppointmentsNomisMigrationService() as jest.Mocked<AppointmentsNomisMigrationService>
+const appointmentsNomisMigrationService = new AppointmentsNomisMigrationService(
+  null,
+) as jest.Mocked<AppointmentsNomisMigrationService>
 
 export default appointmentsNomisMigrationService

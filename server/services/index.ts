@@ -22,7 +22,13 @@ import SentencingNomisMigrationService from './sentencing/sentencingNomisMigrati
 import VisitsNomisMigrationService from './visits/visitsNomisMigrationService'
 
 export const services = () => {
-  const { hmppsAuthClient, applicationInfo } = dataAccess()
+  const {
+    hmppsAuthClient,
+    applicationInfo,
+    activitiesNomisMigrationClient,
+    allocationsNomisMigrationClient,
+    appointmentsNomisMigrationClient,
+  } = dataAccess()
 
   const nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
   const nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
@@ -35,9 +41,9 @@ export const services = () => {
     nomisPrisonerService,
     mappingService,
     activitiesService,
-    activitiesNomisMigrationService: new ActivitiesNomisMigrationService(),
-    allocationsNomisMigrationService: new AllocationsNomisMigrationService(),
-    appointmentsNomisMigrationService: new AppointmentsNomisMigrationService(),
+    activitiesNomisMigrationService: new ActivitiesNomisMigrationService(activitiesNomisMigrationClient),
+    allocationsNomisMigrationService: new AllocationsNomisMigrationService(allocationsNomisMigrationClient),
+    appointmentsNomisMigrationService: new AppointmentsNomisMigrationService(appointmentsNomisMigrationClient),
     contactPersonNomisMigrationService: new ContactPersonNomisMigrationService(),
     contactPersonNomisPrisonerService: new ContactPersonNomisPrisonerService(hmppsAuthClient),
     contactPersonProfileDetailsNomisMigrationService: new ContactPersonProfileDetailsNomisMigrationService(),
