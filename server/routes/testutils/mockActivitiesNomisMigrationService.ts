@@ -2,7 +2,8 @@ import ActivitiesNomisMigrationService from '../../services/activities/activitie
 
 jest.mock('../../services/activities/activitiesNomisMigrationService')
 
-const activitiesNomisMigrationService =
-  new ActivitiesNomisMigrationService() as jest.Mocked<ActivitiesNomisMigrationService>
+const activitiesNomisMigrationService = new ActivitiesNomisMigrationService(
+  null,
+) as jest.Mocked<ActivitiesNomisMigrationService>
 
 export default activitiesNomisMigrationService
