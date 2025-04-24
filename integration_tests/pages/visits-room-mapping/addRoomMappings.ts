@@ -1,7 +1,7 @@
 import Page, { PageElement } from '../page'
 
 export default class AddRoomMappingPage extends Page {
-  constructor(prisonId: string, roomId: string) {
+  constructor(prisonId: string) {
     super(`Add room mapping for NOMIS room - ${prisonId}`)
   }
 
