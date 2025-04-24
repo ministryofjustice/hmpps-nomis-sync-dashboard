@@ -1,17 +1,12 @@
 {% extends "../../partials/layout.njk" %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% set pageTitle = applicationName + " - Allocations migration details" %}
+{% set backLinkHref = "/allocations-migration" %}
 
 {% block content %}
-
-  {{ govukBackLink({
-    text: "Back",
-    href: '/allocations-migration'
-  }) }}
 
   <main class="app-container govuk-body">
     <div class="govuk-width-container">

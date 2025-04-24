@@ -4,18 +4,13 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
-
 {% set pageTitle = applicationName + " - Start a Core Person migration - preview" %}
+{% set backLinkHref = "/coreperson-migration/amend" %}
 
 {% block content %}
-    {{ govukBackLink({
-        text: "Back",
-        href: '/coreperson-migration/amend'
-    }) }}
 
     <main class="app-container govuk-body">
         {% if errors.length > 0 %}

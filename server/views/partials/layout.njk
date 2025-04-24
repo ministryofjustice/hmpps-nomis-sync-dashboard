@@ -1,4 +1,5 @@
 {% extends "govuk/template.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% block head %}
   <link href="{{ '/assets/css/app.css' | assetMap }}" rel="stylesheet"/>
@@ -13,6 +14,17 @@
 {% endblock %}
 
 {% block bodyStart %}
+{% endblock %}
+
+{% block beforeContent %}
+  <div role="navigation">
+    {% if backLinkHref %}
+      {{ govukBackLink({
+        text: "Back",
+        href: backLinkHref
+      }) }}
+    {% endif %}
+  </div>
 {% endblock %}
 
 {% block bodyEnd %}

@@ -1,14 +1,15 @@
 {% extends "../../partials/layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set pageTitle = applicationName + " - Room mappings" %}
+{% set backLinkHref = "/visits-room-mappings" %}
 
 {% block content %}
+
 <div class="app-container govuk-body">
     {% if errors.length > 0 %}
     {{ govukErrorSummary({
