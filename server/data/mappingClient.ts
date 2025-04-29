@@ -3,7 +3,7 @@ import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
 import { CreateRoomMappingDto, RoomMappingResponse } from '../@types/mapping'
-import { Context } from '../services/nomisMigrationService'
+import { Context } from '../services/context'
 
 export default class MappingClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {

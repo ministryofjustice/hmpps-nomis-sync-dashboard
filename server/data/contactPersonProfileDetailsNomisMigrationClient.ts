@@ -5,7 +5,7 @@ import {
   ContactPersonProfileDetailsMigrationFilter,
   MigrationContextContactPersonProfileDetailsMigrationFilter,
 } from '../@types/migration'
-import { Context } from '../services/nomisMigrationService'
+import { Context } from '../services/context'
 
 export default class ContactPersonProfileDetailsNomisMigrationClient extends RestClient {
   constructor() {

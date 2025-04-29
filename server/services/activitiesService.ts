@@ -1,4 +1,4 @@
-import { Context } from './nomisMigrationService'
+import { Context } from './context'
 import { RolloutPrisonPlan } from '../@types/activities'
 import ActivitiesClient from '../data/activitiesClient'
 

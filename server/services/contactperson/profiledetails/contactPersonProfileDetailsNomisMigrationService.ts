@@ -3,8 +3,8 @@ import {
   MigrationContextContactPersonProfileDetailsMigrationFilter,
 } from '../../../@types/migration'
 
-import { Context } from '../../nomisMigrationService'
 import ContactPersonProfileDetailsNomisMigrationClient from '../../../data/contactPersonProfileDetailsNomisMigrationClient'
+import { Context } from '../../context'
 
 export default class ContactPersonProfileDetailsNomisMigrationService {
   constructor(

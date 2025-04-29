@@ -4,7 +4,7 @@ import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 
 import config from '../config'
 import logger from '../../logger'
-import { Context } from '../services/nomisMigrationService'
+import { Context } from '../services/context'
 import { GetContactPersonByFilter, PageCorporateOrganisationIdResponse } from '../@types/nomisPrisoner'
 
 export default class CorporateNomisPrisonerClient extends RestClient {

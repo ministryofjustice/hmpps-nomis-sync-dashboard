@@ -1,6 +1,6 @@
 import { AllocationsMigrationFilter, MigrationContextAllocationsMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import AllocationsNomisMigrationClient from '../../data/allocationsNomisMigrationClient'
 
 export default class AllocationsNomisMigrationService {

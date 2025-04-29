@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import moment from 'moment'
 import ActivitiesMigrationController from './activitiesMigrationController'
-import { HistoricMigrations } from '../../services/nomisMigrationService'
+import { HistoricMigrations } from '../../data/nomisMigrationClient'
 import activitiesNomisMigrationService from '../testutils/mockActivitiesNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'

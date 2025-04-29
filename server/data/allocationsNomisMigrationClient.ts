@@ -2,7 +2,7 @@ import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
 import config from '../config'
 import logger from '../../logger'
 import { AllocationsMigrationFilter, MigrationContextAllocationsMigrationFilter } from '../@types/migration'
-import { Context } from '../services/nomisMigrationService'
+import { Context } from '../services/context'
 
 export default class AllocationsNomisMigrationClient extends RestClient {
   constructor() {

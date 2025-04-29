@@ -12,7 +12,7 @@ import {
   AppointmentCountsResponse,
   GetIncidentIdsByFilter,
 } from '../@types/nomisPrisoner'
-import { Context } from './nomisMigrationService'
+import { Context } from './context'
 import type { ActivitiesMigrationFilter, AppointmentsMigrationFilter } from '../@types/migration'
 import type { FindSuspendedAllocationsResponse } from '../@types/nomisPrisoner'
 import NomisPrisonerClient from '../data/nomisPrisonerClient'

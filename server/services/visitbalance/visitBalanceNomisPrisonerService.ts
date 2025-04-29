@@ -1,5 +1,5 @@
 import { GetVisitBalanceIdsByFilter } from '../../@types/nomisPrisoner'
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import VisitBalanceNomisPrisonerClient from '../../data/visitBalanceNomisPrisonerClient'
 
 export default class VisitBalanceNomisPrisonerService {

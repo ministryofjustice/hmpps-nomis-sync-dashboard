@@ -23,7 +23,6 @@ import VisitsNomisMigrationService from './visits/visitsNomisMigrationService'
 
 export const services = () => {
   const {
-    hmppsAuthClient,
     applicationInfo,
     activitiesClient,
     activitiesNomisMigrationClient,
@@ -38,6 +37,7 @@ export const services = () => {
     corporateNomisPrisonerClient,
     courtSentencingNomisMigrationClient,
     mappingClient,
+    nomisMigrationClient,
     nomisPrisonerClient,
     incidentsNomisMigrationClient,
     sentencingNomisMigrationClient,
@@ -46,11 +46,9 @@ export const services = () => {
     visitsNomisMigrationClient,
   } = dataAccess()
 
-  const nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
-
   return {
     applicationInfo,
-    nomisMigrationService,
+    nomisMigrationService: new NomisMigrationService(nomisMigrationClient),
     nomisPrisonerService: new NomisPrisonerService(nomisPrisonerClient),
     mappingService: new MappingService(mappingClient),
     activitiesService: new ActivitiesService(activitiesClient),

@@ -1,6 +1,6 @@
 import { ContactPersonMigrationFilter, MigrationContextContactPersonMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import ContactPersonNomisMigrationClient from '../../data/contactPersonNomisMigrationClient'
 
 export default class ContactPersonNomisMigrationService {

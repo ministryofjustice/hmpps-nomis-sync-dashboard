@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import AllocationsMigrationController from './allocationsMigrationController'
-import { HistoricMigrations } from '../../services/nomisMigrationService'
+import { HistoricMigrations } from '../../data/nomisMigrationClient'
 import allocationsNomisMigrationService from '../testutils/mockAllocationsNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'

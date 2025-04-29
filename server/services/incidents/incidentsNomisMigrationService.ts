@@ -1,6 +1,6 @@
 import { IncidentsMigrationFilter, MigrationContextIncidentsMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import IncidentsNomisMigrationClient from '../../data/incidentsNomisMigrationClient'
 
 export default class IncidentsNomisMigrationService {

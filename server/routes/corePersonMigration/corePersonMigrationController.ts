@@ -5,14 +5,8 @@ import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import CorePersonNomisMigrationService from '../../services/coreperson/corePersonNomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
-import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
-}
+import { context } from '../../services/context'
+import NomisMigrationService from '../../services/nomisMigrationService'
 
 export default class CorePersonMigrationController {
   constructor(

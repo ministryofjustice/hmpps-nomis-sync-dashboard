@@ -1,6 +1,6 @@
 import { MigrationContextCorePersonMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import CorePersonNomisMigrationClient from '../../data/corePersonNomisMigrationClient'
 
 export default class CorePersonNomisMigrationService {

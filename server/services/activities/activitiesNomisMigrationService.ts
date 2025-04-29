@@ -1,6 +1,6 @@
 import { ActivitiesMigrationFilter, MigrationContextActivitiesMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import ActivitiesNomisMigrationClient from '../../data/activitiesNomisMigrationClient'
 
 export default class ActivitiesNomisMigrationService {
