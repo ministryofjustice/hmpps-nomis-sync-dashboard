@@ -41,17 +41,17 @@ export const services = () => {
     visitBalanceNomisMigrationClient,
     visitBalanceNomisPrisonerClient,
     visitsNomisMigrationClient,
+    nomisPrisonerClient,
   } = dataAccess()
 
   const nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
-  const nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
   const mappingService = new MappingService(hmppsAuthClient)
   const activitiesService = new ActivitiesService(hmppsAuthClient)
 
   return {
     applicationInfo,
     nomisMigrationService,
-    nomisPrisonerService,
+    nomisPrisonerService: new NomisPrisonerService(nomisPrisonerClient),
     mappingService,
     activitiesService,
     activitiesNomisMigrationService: new ActivitiesNomisMigrationService(activitiesNomisMigrationClient),
