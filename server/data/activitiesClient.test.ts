@@ -3,7 +3,6 @@ import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import ActivitiesClient from './activitiesClient'
 import config from '../config'
 
-jest.mock('../data/hmppsAuthClient')
 describe('activitiesService tests', () => {
   let activitiesService: ActivitiesClient
   let mockAuthenticationClient: AuthenticationClient

@@ -3,7 +3,6 @@ import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import NomisMigrationClient from './nomisMigrationClient'
 import config from '../config'
 
-jest.mock('../data/hmppsAuthClient')
 describe('NomisMigrationClient tests', () => {
   let nomisMigrationService: NomisMigrationClient
   let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
