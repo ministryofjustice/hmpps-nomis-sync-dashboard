@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { StartCourtSentencingMigrationForm } from 'express-session'
 import moment from 'moment'
-import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
+import { context } from '../../services/context'
+import NomisMigrationService from '../../services/nomisMigrationService'
 import { MigrationHistory, CourtSentencingMigrationFilter } from '../../@types/migration'
 import { buildUrl } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
@@ -14,13 +15,6 @@ interface Filter {
   prisonIds?: string[]
   fromDate?: string
   toDate?: string
-}
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
 }
 
 export default class CourtSentencingMigrationController {

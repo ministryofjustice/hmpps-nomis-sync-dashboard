@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import VisitsMigrationController from './visitsMigrationController'
-import { HistoricMigrations, HistoricMigrationDetails } from '../../services/nomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import visitsNomisMigrationService from '../testutils/mockVisitsNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
+import { HistoricMigrationDetails, HistoricMigrations } from '../../data/nomisMigrationClient'
 
 describe('visitsMigrationController', () => {
   const req = {

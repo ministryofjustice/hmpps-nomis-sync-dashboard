@@ -1,6 +1,6 @@
 import { CourtSentencingMigrationFilter, MigrationContextCourtSentencingMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import CourtSentencingNomisMigrationClient from '../../data/courtSentencingNomisMigrationClient'
 
 export default class CourtSentencingNomisMigrationService {

@@ -1,5 +1,5 @@
 import { MigrationContextVisitBalanceMigrationFilter, VisitBalanceMigrationFilter } from '../../@types/migration'
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import VisitBalanceNomisMigrationClient from '../../data/visitBalanceNomisMigrationClient'
 
 export default class VisitBalanceNomisMigrationService {

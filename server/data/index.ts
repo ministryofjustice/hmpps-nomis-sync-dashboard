@@ -36,6 +36,7 @@ import VisitsNomisMigrationClient from './visitsNomisMigrationClient'
 import NomisPrisonerClient from './nomisPrisonerClient'
 import MappingClient from './mappingClient'
 import ActivitiesClient from './activitiesClient'
+import NomisMigrationClient from './nomisMigrationClient'
 
 type RestClientBuilder<T> = (token: string) => T
 
@@ -65,6 +66,7 @@ export const dataAccess = () => {
     corporateNomisPrisonerClient: new CorporateNomisPrisonerClient(authenticationClient),
     courtSentencingNomisMigrationClient: new CourtSentencingNomisMigrationClient(),
     incidentsNomisMigrationClient: new IncidentsNomisMigrationClient(),
+    nomisMigrationClient: new NomisMigrationClient(authenticationClient),
     nomisPrisonerClient: new NomisPrisonerClient(authenticationClient),
     mappingClient: new MappingClient(authenticationClient),
     sentencingNomisMigrationClient: new SentencingNomisMigrationClient(),

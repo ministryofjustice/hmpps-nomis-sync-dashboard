@@ -1,5 +1,5 @@
 import { GetContactPersonByFilter } from '../../@types/nomisPrisoner'
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import ContactPersonNomisPrisonerClient from '../../data/contactPersonNomisPrisonerClient'
 
 export default class ContactPersonNomisPrisonerService {

@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { StartAllocationsMigrationForm } from 'express-session'
 import moment from 'moment'
-import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
+import { context } from '../../services/context'
+import NomisMigrationService from '../../services/nomisMigrationService'
 import { MigrationHistory, AllocationsMigrationFilter } from '../../@types/migration'
 import { buildUrlNoTimespan } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
@@ -13,13 +14,6 @@ import AllocationsNomisMigrationService from '../../services/allocations/allocat
 interface Filter {
   prisonId?: string
   courseActivityId?: number
-}
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
 }
 
 export default class AllocationsMigrationController {

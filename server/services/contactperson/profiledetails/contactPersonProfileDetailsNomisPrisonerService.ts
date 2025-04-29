@@ -1,4 +1,4 @@
-import { Context } from '../../nomisMigrationService'
+import { Context } from '../../../data/nomisMigrationClient'
 import ContactPersonProfileDetailsNomisPrisonerClient from '../../../data/contactPersonProfileDetailsNomisPrisonerClient'
 
 export default class ContactPersonProfileDetailsNomisPrisonerService {

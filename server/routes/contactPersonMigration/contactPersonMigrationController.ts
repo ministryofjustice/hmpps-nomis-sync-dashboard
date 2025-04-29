@@ -6,14 +6,8 @@ import logger from '../../../logger'
 import startMigrationValidator from './contactPersonMigrationValidator'
 import ContactPersonNomisMigrationService from '../../services/contactperson/contactPersonNomisMigrationService'
 import ContactPersonNomisPrisonerService from '../../services/contactperson/contactPersonNomisPrisonerService'
-import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
-}
+import { context } from '../../services/context'
+import NomisMigrationService from '../../services/nomisMigrationService'
 
 export default class ContactPersonMigrationController {
   constructor(

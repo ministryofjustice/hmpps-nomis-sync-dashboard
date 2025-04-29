@@ -1,6 +1,6 @@
 import { AppointmentsMigrationFilter, MigrationContextAppointmentsMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import AppointmentsNomisMigrationClient from '../../data/appointmentsNomisMigrationClient'
 
 export default class AppointmentsNomisMigrationService {

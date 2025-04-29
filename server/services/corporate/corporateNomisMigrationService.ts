@@ -1,6 +1,6 @@
 import { CorporateMigrationFilter, MigrationContextCorporateMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import CorporateNomisMigrationClient from '../../data/corporateNomisMigrationClient'
 
 export default class CorporateNomisMigrationService {

@@ -4,7 +4,7 @@ import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
 
 import config from '../config'
 import logger from '../../logger'
-import { Context } from '../services/nomisMigrationService'
+import { Context } from '../services/context'
 import { GetVisitBalanceIdsByFilter, PageVisitBalanceIdResponse } from '../@types/nomisPrisoner'
 
 export default class VisitBalanceNomisPrisonerClient extends RestClient {

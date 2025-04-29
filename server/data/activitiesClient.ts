@@ -3,7 +3,7 @@ import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
 import { PrisonPayBand, RolloutPrisonPlan } from '../@types/activities'
-import { Context } from '../services/nomisMigrationService'
+import { Context } from '../services/context'
 
 export default class ActivitiesClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {

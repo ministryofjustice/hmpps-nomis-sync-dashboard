@@ -6,7 +6,7 @@ import {
 
 import { GetVisitsByFilter } from '../../@types/nomisPrisoner'
 import VisitsNomisMigrationClient from '../../data/visitsNomisMigrationClient'
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 
 export default class VisitsNomisMigrationService {
   constructor(private readonly visitsNomisMigrationClient: VisitsNomisMigrationClient) {}

@@ -25,7 +25,7 @@ import {
 import logger from '../../logger'
 import type { ActivitiesMigrationFilter, AppointmentsMigrationFilter } from '../@types/migration'
 import type { FindSuspendedAllocationsResponse } from '../@types/nomisPrisoner'
-import { Context } from '../services/nomisMigrationService'
+import { Context } from '../services/context'
 import config from '../config'
 
 export default class NomisPrisonerClient extends RestClient {

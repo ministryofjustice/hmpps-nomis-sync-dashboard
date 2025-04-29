@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { StartActivitiesMigrationForm } from 'express-session'
 import moment from 'moment'
-import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
+import { context } from '../../services/context'
+import NomisMigrationService from '../../services/nomisMigrationService'
 import { ActivitiesMigrationFilter, MigrationHistory } from '../../@types/migration'
 import { buildUrlNoTimespan } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
@@ -23,13 +24,6 @@ interface Filter {
   prisonId?: string
   activityStartDate?: string
   courseActivityId?: number
-}
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
 }
 
 export default class ActivitiesMigrationController {

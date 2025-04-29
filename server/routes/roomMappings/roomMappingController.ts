@@ -1,16 +1,9 @@
 import { Request, Response } from 'express'
-import { Context } from '../../services/nomisMigrationService'
+import { context } from '../../services/context'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import MappingService from '../../services/mappingService'
 import addRoomMappingValidator from './addRoomMappingValidator'
 import roomMappingPrisonValidator from './roomMappingPrisonValidator'
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
-}
 
 export default class RoomMappingController {
   constructor(
