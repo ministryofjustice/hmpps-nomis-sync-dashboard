@@ -1,15 +1,15 @@
 import nock from 'nock'
-import config from '../../config'
-import VisitsNomisMigrationService from './visitsNomisMigrationService'
+import config from '../config'
+import VisitsNomisMigrationClient from './visitsNomisMigrationClient'
 
-describe('VisitsNomisMigrationService tests', () => {
-  let nomisMigrationService: VisitsNomisMigrationService
+describe('VisitsNomisMigrationClient tests', () => {
+  let nomisMigrationService: VisitsNomisMigrationClient
 
   let fakeNomisMigrationService: nock.Scope
 
   beforeEach(() => {
     fakeNomisMigrationService = nock(config.apis.nomisMigration.url)
-    nomisMigrationService = new VisitsNomisMigrationService()
+    nomisMigrationService = new VisitsNomisMigrationClient()
   })
 
   describe('startVisitsMigration', () => {
