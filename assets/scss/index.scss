@@ -9,4 +9,4 @@ $govuk-page-width: $moj-page-width;
 
 @import './components/header-bar';
 @import './components/card';
-@import './local';
+@import './overrides/local';
