@@ -25,6 +25,7 @@ export const services = () => {
   const {
     hmppsAuthClient,
     applicationInfo,
+    activitiesClient,
     activitiesNomisMigrationClient,
     allocationsNomisMigrationClient,
     appointmentsNomisMigrationClient,
@@ -36,24 +37,23 @@ export const services = () => {
     corporateNomisMigrationClient,
     corporateNomisPrisonerClient,
     courtSentencingNomisMigrationClient,
+    mappingClient,
+    nomisPrisonerClient,
     incidentsNomisMigrationClient,
     sentencingNomisMigrationClient,
     visitBalanceNomisMigrationClient,
     visitBalanceNomisPrisonerClient,
     visitsNomisMigrationClient,
-    nomisPrisonerClient,
   } = dataAccess()
 
   const nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
-  const mappingService = new MappingService(hmppsAuthClient)
-  const activitiesService = new ActivitiesService(hmppsAuthClient)
 
   return {
     applicationInfo,
     nomisMigrationService,
     nomisPrisonerService: new NomisPrisonerService(nomisPrisonerClient),
-    mappingService,
-    activitiesService,
+    mappingService: new MappingService(mappingClient),
+    activitiesService: new ActivitiesService(activitiesClient),
     activitiesNomisMigrationService: new ActivitiesNomisMigrationService(activitiesNomisMigrationClient),
     allocationsNomisMigrationService: new AllocationsNomisMigrationService(allocationsNomisMigrationClient),
     appointmentsNomisMigrationService: new AppointmentsNomisMigrationService(appointmentsNomisMigrationClient),

@@ -34,6 +34,8 @@ import VisitBalanceNomisMigrationClient from './visitBalanceNomisMigrationClient
 import VisitBalanceNomisPrisonerClient from './visitBalanceNomisPrisonerClient'
 import VisitsNomisMigrationClient from './visitsNomisMigrationClient'
 import NomisPrisonerClient from './nomisPrisonerClient'
+import MappingClient from './mappingClient'
+import ActivitiesClient from './activitiesClient'
 
 type RestClientBuilder<T> = (token: string) => T
 
@@ -48,6 +50,7 @@ export const dataAccess = () => {
     hmppsAuthClient: new HmppsAuthClient(
       config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore(),
     ),
+    activitiesClient: new ActivitiesClient(authenticationClient),
     activitiesNomisMigrationClient: new ActivitiesNomisMigrationClient(),
     allocationsNomisMigrationClient: new AllocationsNomisMigrationClient(),
     appointmentsNomisMigrationClient: new AppointmentsNomisMigrationClient(),
@@ -63,6 +66,7 @@ export const dataAccess = () => {
     courtSentencingNomisMigrationClient: new CourtSentencingNomisMigrationClient(),
     incidentsNomisMigrationClient: new IncidentsNomisMigrationClient(),
     nomisPrisonerClient: new NomisPrisonerClient(authenticationClient),
+    mappingClient: new MappingClient(authenticationClient),
     sentencingNomisMigrationClient: new SentencingNomisMigrationClient(),
     visitBalanceNomisMigrationClient: new VisitBalanceNomisMigrationClient(),
     visitBalanceNomisPrisonerClient: new VisitBalanceNomisPrisonerClient(authenticationClient),
