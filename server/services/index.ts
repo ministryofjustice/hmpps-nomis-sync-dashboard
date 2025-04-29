@@ -38,6 +38,9 @@ export const services = () => {
     courtSentencingNomisMigrationClient,
     incidentsNomisMigrationClient,
     sentencingNomisMigrationClient,
+    visitBalanceNomisMigrationClient,
+    visitBalanceNomisPrisonerClient,
+    visitsNomisMigrationClient,
   } = dataAccess()
 
   const nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
@@ -68,9 +71,9 @@ export const services = () => {
     courtSentencingNomisMigrationService: new CourtSentencingNomisMigrationService(courtSentencingNomisMigrationClient),
     incidentsNomisMigrationService: new IncidentsNomisMigrationService(incidentsNomisMigrationClient),
     sentencingNomisMigrationService: new SentencingNomisMigrationService(sentencingNomisMigrationClient),
-    visitBalanceNomisMigrationService: new VisitBalanceNomisMigrationService(),
-    visitBalanceNomisPrisonerService: new VisitBalanceNomisPrisonerService(hmppsAuthClient),
-    visitsNomisMigrationService: new VisitsNomisMigrationService(),
+    visitBalanceNomisMigrationService: new VisitBalanceNomisMigrationService(visitBalanceNomisMigrationClient),
+    visitBalanceNomisPrisonerService: new VisitBalanceNomisPrisonerService(visitBalanceNomisPrisonerClient),
+    visitsNomisMigrationService: new VisitsNomisMigrationService(visitsNomisMigrationClient),
   }
 }
 
