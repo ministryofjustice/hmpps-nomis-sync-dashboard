@@ -33,6 +33,11 @@ export const services = () => {
     contactPersonProfileDetailsNomisMigrationClient,
     contactPersonProfileDetailsNomisPrisonerClient,
     corePersonNomisMigrationClient,
+    corporateNomisMigrationClient,
+    corporateNomisPrisonerClient,
+    courtSentencingNomisMigrationClient,
+    incidentsNomisMigrationClient,
+    sentencingNomisMigrationClient,
   } = dataAccess()
 
   const nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
@@ -58,11 +63,11 @@ export const services = () => {
       contactPersonProfileDetailsNomisPrisonerClient,
     ),
     corePersonNomisMigrationService: new CorePersonNomisMigrationService(corePersonNomisMigrationClient),
-    corporateNomisMigrationService: new CorporateNomisMigrationService(),
-    corporateNomisPrisonerService: new CorporateNomisPrisonerService(hmppsAuthClient),
-    courtSentencingNomisMigrationService: new CourtSentencingNomisMigrationService(),
-    incidentsNomisMigrationService: new IncidentsNomisMigrationService(),
-    sentencingNomisMigrationService: new SentencingNomisMigrationService(),
+    corporateNomisMigrationService: new CorporateNomisMigrationService(corporateNomisMigrationClient),
+    corporateNomisPrisonerService: new CorporateNomisPrisonerService(corporateNomisPrisonerClient),
+    courtSentencingNomisMigrationService: new CourtSentencingNomisMigrationService(courtSentencingNomisMigrationClient),
+    incidentsNomisMigrationService: new IncidentsNomisMigrationService(incidentsNomisMigrationClient),
+    sentencingNomisMigrationService: new SentencingNomisMigrationService(sentencingNomisMigrationClient),
     visitBalanceNomisMigrationService: new VisitBalanceNomisMigrationService(),
     visitBalanceNomisPrisonerService: new VisitBalanceNomisPrisonerService(hmppsAuthClient),
     visitsNomisMigrationService: new VisitsNomisMigrationService(),

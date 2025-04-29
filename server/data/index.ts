@@ -15,6 +15,7 @@ import HmppsAuthClient from './hmppsAuthClient'
 import { createRedisClient } from './redisClient'
 import RedisTokenStore from './tokenStore/redisTokenStore'
 import InMemoryTokenStore from './tokenStore/inMemoryTokenStore'
+import logger from '../../logger'
 import config from '../config'
 import ActivitiesNomisMigrationClient from './activitiesNomisMigrationClient'
 import AllocationsNomisMigrationClient from './allocationsNomisMigrationClient'
@@ -22,9 +23,13 @@ import AppointmentsNomisMigrationClient from './appointmentsNomisMigrationClient
 import ContactPersonNomisMigrationClient from './contactPersonNomisMigrationClient'
 import ContactPersonNomisPrisonerClient from './contactPersonNomisPrisonerClient'
 import ContactPersonProfileDetailsNomisMigrationClient from './contactPersonProfileDetailsNomisMigrationClient'
-import logger from '../../logger'
 import ContactPersonProfileDetailsNomisPrisonerClient from './contactPersonProfileDetailsNomisPrisonerClient'
 import CorePersonNomisMigrationClient from './corePersonNomisMigrationClient'
+import CorporateNomisMigrationClient from './corporateNomisMigrationClient'
+import CorporateNomisPrisonerClient from './corporateNomisPrisonerClient'
+import CourtSentencingNomisMigrationClient from './courtSentencingNomisMigrationClient'
+import IncidentsNomisMigrationClient from './incidentsNomisMigrationClient'
+import SentencingNomisMigrationClient from './sentencingNomisMigrationClient'
 
 type RestClientBuilder<T> = (token: string) => T
 
@@ -49,6 +54,11 @@ export const dataAccess = () => {
       authenticationClient,
     ),
     corePersonNomisMigrationClient: new CorePersonNomisMigrationClient(),
+    corporateNomisMigrationClient: new CorporateNomisMigrationClient(),
+    corporateNomisPrisonerClient: new CorporateNomisPrisonerClient(authenticationClient),
+    courtSentencingNomisMigrationClient: new CourtSentencingNomisMigrationClient(),
+    incidentsNomisMigrationClient: new IncidentsNomisMigrationClient(),
+    sentencingNomisMigrationClient: new SentencingNomisMigrationClient(),
   }
 }
 

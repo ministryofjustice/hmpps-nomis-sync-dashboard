@@ -1,25 +1,11 @@
-import querystring from 'querystring'
-import RestClient from '../../data/restClient'
-import config from '../../config'
-import { GetContactPersonByFilter, PageCorporateOrganisationIdResponse } from '../../@types/nomisPrisoner'
-import logger from '../../../logger'
+import { GetContactPersonByFilter } from '../../@types/nomisPrisoner'
 import { Context } from '../nomisMigrationService'
-import type HmppsAuthClient from '../../data/hmppsAuthClient'
+import CorporateNomisPrisonerClient from '../../data/corporateNomisPrisonerClient'
 
 export default class CorporateNomisPrisonerService {
-  constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
-
-  private static restClient(token: string): RestClient {
-    return new RestClient('Corporate Nomis Prisoner API Client', config.apis.nomisPrisoner, token)
-  }
+  constructor(private readonly corporateNomisPrisonerClient: CorporateNomisPrisonerClient) {}
 
   async getMigrationEstimatedCount(filter: GetContactPersonByFilter, context: Context): Promise<number> {
-    const token = await this.hmppsAuthClient.getSystemClientToken(context.username)
-    logger.info(`getting details for migration estimated count`)
-    const response = await CorporateNomisPrisonerService.restClient(token).get<PageCorporateOrganisationIdResponse>({
-      path: `/corporates/ids`,
-      query: `${querystring.stringify({ ...filter, size: 1 })}`,
-    })
-    return response.totalElements
+    return this.corporateNomisPrisonerClient.getMigrationEstimatedCount(filter, context)
   }
 }
