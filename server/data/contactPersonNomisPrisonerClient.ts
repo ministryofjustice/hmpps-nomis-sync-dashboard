@@ -1,4 +1,3 @@
-import querystring from 'querystring'
 import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
 import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 
@@ -17,7 +16,7 @@ export default class ContactPersonNomisPrisonerClient extends RestClient {
     const response = await this.get<PagePersonIdResponse>(
       {
         path: `/persons/ids`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )
