@@ -1,4 +1,3 @@
-import querystring from 'querystring'
 import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
 import config from '../config'
 import logger from '../../logger'
@@ -30,7 +29,7 @@ export default class VisitsNomisMigrationClient extends RestClient {
     return this.get<RoomMappingsResponse[]>(
       {
         path: `/migrate/visits/rooms/usage`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asUser(context.token),
     )
