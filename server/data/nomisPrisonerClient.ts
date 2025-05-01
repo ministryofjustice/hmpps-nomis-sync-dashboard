@@ -1,4 +1,3 @@
-import querystring from 'querystring'
 import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
 
@@ -38,7 +37,7 @@ export default class NomisPrisonerClient extends RestClient {
     const response = await this.get<PageVisitIdResponse>(
       {
         path: `/visits/ids`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )
@@ -51,7 +50,7 @@ export default class NomisPrisonerClient extends RestClient {
     const response = await this.get<PageAdjustmentIdResponse>(
       {
         path: `/adjustments/ids`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )
@@ -63,7 +62,7 @@ export default class NomisPrisonerClient extends RestClient {
     const response = await this.get<PageAdjustmentIdResponse>(
       {
         path: `/appointments/ids`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )
@@ -75,7 +74,7 @@ export default class NomisPrisonerClient extends RestClient {
     const response = await this.get<PagePrisonerId>(
       {
         path: `/prisoners/ids/all`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )
@@ -87,7 +86,7 @@ export default class NomisPrisonerClient extends RestClient {
     const response = await this.get<PagePrisonerId>(
       {
         path: `/prisoners/ids/all`,
-        query: `${querystring.stringify({ size: 1 })}`,
+        query: { size: 1 },
       },
       asSystem(context.username),
     )
@@ -99,7 +98,7 @@ export default class NomisPrisonerClient extends RestClient {
     const response = await this.get<PageIncidentIdResponse>(
       {
         path: `/incidents/ids`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )
@@ -159,7 +158,7 @@ export default class NomisPrisonerClient extends RestClient {
     const response = await this.get<PageActivitiesIdResponse>(
       {
         path: `/activities/ids`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )
@@ -171,7 +170,7 @@ export default class NomisPrisonerClient extends RestClient {
     const response = await this.get<PageAllocationsIdResponse>(
       {
         path: `/allocations/ids`,
-        query: `${querystring.stringify({ ...filter, size: 1 })}`,
+        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )
@@ -190,7 +189,7 @@ export default class NomisPrisonerClient extends RestClient {
     return this.get<FindSuspendedAllocationsResponse[]>(
       {
         path: `/allocations/suspended`,
-        query: querystring.stringify(queryParams),
+        query: { ...queryParams },
       },
       asSystem(context.username),
     )
@@ -208,7 +207,7 @@ export default class NomisPrisonerClient extends RestClient {
     return this.get<FindAllocationsMissingPayBandsResponse[]>(
       {
         path: `/allocations/missing-pay-bands`,
-        query: querystring.stringify(queryParams),
+        query: { ...queryParams },
       },
       asSystem(context.username),
     )
@@ -226,7 +225,7 @@ export default class NomisPrisonerClient extends RestClient {
     return this.get<FindPayRateWithUnknownIncentiveResponse[]>(
       {
         path: `/activities/rates-with-unknown-incentives`,
-        query: querystring.stringify(queryParams),
+        query: { ...queryParams },
       },
       asSystem(context.username),
     )
@@ -244,7 +243,7 @@ export default class NomisPrisonerClient extends RestClient {
     return this.get<FindActivitiesWithoutScheduleRulesResponse[]>(
       {
         path: `/activities/without-schedule-rules`,
-        query: querystring.stringify(queryParams),
+        query: { ...queryParams },
       },
       asSystem(context.username),
     )
@@ -258,7 +257,7 @@ export default class NomisPrisonerClient extends RestClient {
     return this.get<AppointmentCountsResponse[]>(
       {
         path: `/appointments/counts`,
-        query: querystring.stringify({ ...filter }),
+        query: { ...filter },
       },
       asSystem(context.username),
     )
