@@ -8,6 +8,7 @@ import { buildUrlNoTimespan } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startActivitiesMigrationValidator from './startActivitiesMigrationValidator'
+import moveActivityStartDateValidator from './moveActivityStartDateValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import {
   FindAllocationsMissingPayBandsResponse,
@@ -23,6 +24,7 @@ import ActivitiesNomisMigrationService from '../../services/activities/activitie
 interface Filter {
   prisonId?: string
   activityStartDate?: string
+  nomisActivityEndDate?: string
   courseActivityId?: number
 }
 
@@ -62,11 +64,21 @@ export default class ActivitiesMigrationController {
           history.whenEnded,
         ),
       ),
+      dateAction: (() => {
+        if (!history.filterNomisActivityEndDate) {
+          return 'END'
+        }
+        if (!history.filterCourseActivityId && moment(history.filterActivityStartDate) > moment()) {
+          return 'MOVE'
+        }
+        return 'NONE'
+      })(),
     }))
     res.render('pages/activities/activitiesMigration', {
       migrations: decoratedMigrations,
       endMigratedActivitiesResult: req.session.endMigratedActivitiesResult,
       errors: [],
+      warnings: req.flash('warnings'),
     })
   }
 
@@ -337,6 +349,64 @@ export default class ActivitiesMigrationController {
     })
   }
 
+  async startMoveStartDate(req: Request, res: Response): Promise<void> {
+    const { migrationId } = req.query as { migrationId: string }
+
+    const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
+    const history = ActivitiesMigrationController.withFilter(migration.history)
+    req.session.activityMigrationSummary = {
+      prisonId: history.filterPrisonId,
+      activityStartDate: history.filterActivityStartDate,
+      nomisActivityEndDate: history.filterNomisActivityEndDate,
+      courseActivityId: history.filterCourseActivityId,
+    }
+
+    req.session.moveActivityStartDateForm = {
+      migrationId,
+      activityStartDate: history.filterActivityStartDate,
+      newActivityStartDate: '',
+    }
+    await this.moveStartDate(req, res)
+  }
+
+  async moveStartDate(req: Request, res: Response): Promise<void> {
+    res.render('pages/activities/moveActivityStartDate', {
+      summary: req.session.activityMigrationSummary,
+      form: req.session.moveActivityStartDateForm,
+      errors: req.flash('errors'),
+    })
+  }
+
+  async postMoveStartDate(req: Request, res: Response): Promise<void> {
+    req.session.moveActivityStartDateForm = { ...trimForm(req.body) }
+
+    const validationErrors = moveActivityStartDateValidator(req.session.moveActivityStartDateForm)
+    if (validationErrors.length > 0) {
+      req.flash('errors', validationErrors)
+      res.redirect('/activities-migration/move-start-date/amend')
+      return
+    }
+
+    try {
+      const warnings = await this.activitiesNomisMigrationService.moveStartDate(
+        context(res),
+        req.session.moveActivityStartDateForm.migrationId,
+        req.session.moveActivityStartDateForm.newActivityStartDate,
+      )
+      if (warnings.length > 0) {
+        warnings.unshift('Move date succeeded but with the following warnings from DPS:')
+        req.flash(
+          'warnings',
+          warnings.map(warning => ({ href: '', text: warning })),
+        )
+      }
+      res.redirect('/activities-migration')
+    } catch (error) {
+      req.flash('errors', [{ href: '', text: `${error.message}: ${error.data.message}` }])
+      res.redirect('/activities-migration/move-start-date/amend')
+    }
+  }
+
   private static toFilter(form: StartActivitiesMigrationForm): ActivitiesMigrationFilter {
     return {
       prisonId: form.prisonId,
@@ -395,19 +465,28 @@ export default class ActivitiesMigrationController {
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
     filterPrisonId?: string
     filterActivityStartDate?: string
+    filterNomisActivityEndDate?: string
     filterCourseActivityId?: number
   } {
     const filter: Filter = JSON.parse(migration.filter)
     const filterPrisonId = filter.prisonId
     const filterActivityStartDate = filter.activityStartDate
+    const filterNomisActivityEndDate = filter.nomisActivityEndDate
     const filterCourseActivityId = filter.courseActivityId
-    const filterEndDate = (
-      filterActivityStartDate ? moment(filterActivityStartDate).subtract(1, 'days') : moment()
-    ).format('YYYY-MM-DD')
+    const filterEndDate = (() => {
+      if (filterNomisActivityEndDate) {
+        return moment(filterNomisActivityEndDate)
+      }
+      if (filterActivityStartDate) {
+        return moment(filterActivityStartDate).subtract(1, 'days')
+      }
+      return moment()
+    })().format('YYYY-MM-DD')
     return {
       ...migration,
       ...(filterPrisonId && { filterPrisonId }),
       ...(filterActivityStartDate && { filterActivityStartDate }),
+      ...(filterNomisActivityEndDate && { filterNomisActivityEndDate }),
       ...(filterCourseActivityId && { filterCourseActivityId }),
       ...(filterEndDate && { filterEndDate }),
     }
