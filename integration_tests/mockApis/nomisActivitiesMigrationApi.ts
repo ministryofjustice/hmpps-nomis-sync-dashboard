@@ -147,7 +147,42 @@ const stubEndActivities = (status: string): SuperAgentRequest =>
     },
   })
 
+const stubGetActivityMigration = ({
+  response,
+  status,
+}: {
+  response: MigrationHistory
+  status: string
+  warnings?: string[]
+}): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/nomis-migration-api/migrate/history/.*',
+    },
+    response: {
+      status,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
+const stubMoveStartDate = ({ status, warnings = [] }: { status: string; warnings?: string[] }): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'PUT',
+      urlPattern: '/nomis-migration-api/migrate/activities/.*/move-start-dates',
+    },
+    response: {
+      status,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: warnings,
+    },
+  })
+
 export default {
   stubStartActivitiesMigration,
   stubEndActivities,
+  stubMoveStartDate,
+  stubGetActivityMigration,
 }
