@@ -1,0 +1,94 @@
+{% extends "../../partials/layout.njk" %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set pageTitle = applicationName + " - Move activity start date" %}
+{% set backLinkHref = "/activities-migration" %}
+
+{% block content %}
+
+  <main class="app-container govuk-body">
+    {% if errors.length > 0 %}
+    {{ govukErrorSummary({
+        titleText: 'There is a problem',
+        errorList: errors,
+        attributes: { 'data-qa-errors': true }
+    }) }}
+    {% endif %}
+
+    <div class="govuk-width-container">
+      <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">Move activity start date</h1>
+            </div>
+
+
+            <div class="govuk-grid-column-two-thirds">
+
+                <form action="/activities-migration/move-start-date" method="post" novalidate>
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                    <input type="hidden" name="migrationId" value="{{ form.migrationId }}" />
+                    <input type="hidden" name="activityStartDate" value="{{ form.activityStartDate }}" />
+                    {{ govukInput({
+                        label: {
+                            html: 'New Activity Start Date'
+                        },
+                        id: "newActivityStartDate",
+                        name: "newActivityStartDate",
+                        classes: "govuk-input--width-20",
+                        hint: {
+                            text: "Example 2025-02-05, must be earliest date of tomorrow."
+                        },
+                        value: form.newActivityStartDate,
+                        errorMessage: errors | findError('newActivityStartDate')
+                    }) }}
+                    <div class="govuk-button-group">
+                        {{ govukButton({
+                            text: "Move start date",
+                            name: "action",
+                            value: "moveStartDate",
+                            attributes: { 'data-qa': 'move-start-date-button' }
+                        }) }}
+                    </div>
+                </form>
+
+                <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                    <div class="govuk-grid-column-full govuk-!-margin-bottom-3 govuk-!-margin-top-2">
+                    <span class="govuk-label--s govuk-!-font-weight-bold">Migration properties:</span>
+                  </div>
+                  {% if summary.prisonId %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">Prison:</span>
+                      <span data-qa="summaryPrisonId" class="govuk-!-margin-left-2">{{ summary.prisonId }}</span>
+                    </div>
+                  {% endif %}
+                  {% if summary.activityStartDate %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">Activity Start Date:</span>
+                      <span data-qa="summaryActivityStartDate"
+                            class="govuk-!-margin-left-2">{{ summary.activityStartDate }}</span>
+                    </div>
+                  {% endif %}
+                  {% if summary.nomisActivityEndDate %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">NOMIS Activity End Date:</span>
+                      <span data-qa="summaryNomisActivityEndDate"
+                            class="govuk-!-margin-left-2">{{ summary.nomisActivityEndDate }}</span>
+                    </div>
+                  {% endif %}
+                  {% if summary.courseActivityId %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">Course Activity ID:</span>
+                      <span data-qa="summaryCourseActivityId"
+                            class="govuk-!-margin-left-2">{{ summary.courseActivityId }}</span>
+                    </div>
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+  </main>
+
+{% endblock %}

@@ -42,4 +42,15 @@ export default class ActivitiesNomisMigrationClient extends RestClient {
     }
     return 'OK'
   }
+
+  async moveStartDate(context: Context, migrationId: string, newActivityStartDate: string): Promise<string[]> {
+    logger.info(`Moving activities start date to ${newActivityStartDate} for migrationId=${migrationId}`)
+    return this.put<string[]>(
+      {
+        path: `/migrate/activities/${migrationId}/move-start-dates`,
+        data: { newActivityStartDate },
+      },
+      asUser(context.token),
+    )
+  }
 }

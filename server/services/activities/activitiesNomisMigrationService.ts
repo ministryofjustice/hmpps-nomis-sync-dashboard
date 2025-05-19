@@ -16,4 +16,8 @@ export default class ActivitiesNomisMigrationService {
   async endMigratedActivities(context: Context, migrationId: string): Promise<string> {
     return this.activitiesNomisMigrationClient.endMigratedActivities(context, migrationId)
   }
+
+  async moveStartDate(context: Context, migrationId: string, newStartDate: string): Promise<string[]> {
+    return this.activitiesNomisMigrationClient.moveStartDate(context, migrationId, newStartDate)
+  }
 }

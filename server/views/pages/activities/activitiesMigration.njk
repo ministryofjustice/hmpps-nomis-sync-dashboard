@@ -5,6 +5,7 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 
 {% set pageTitle = applicationName + " - Activities migration" %}
 {% set backLinkHref = "/" %}
@@ -47,6 +48,26 @@
         attributes: { "data-qa": "start-new-migration" }
       }) }}
     </div>
+
+    {% if warnings.length > 0 %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full" data-qa="warnings-div">
+        {% set warningHtml %}
+          {% for warning in warnings %}
+            {% if loop.index == 1 %}
+              <p class="govuk-!-font-weight-bold">{{ warning.text }}</p>
+            {% else %}
+              <p>{{ warning.text }}</p>
+            {% endif %}
+          {% endfor %}
+        {% endset %}
+        {{ govukNotificationBanner({
+            html: warningHtml,
+            attributes: { 'data-qa-warnings': true }
+        }) }}
+        </div>
+      </div>
+    {% endif %}
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full" data-qa="migration-results-div">
@@ -137,6 +158,13 @@
                             class="govuk-!-margin-left-2">{{ u.filterActivityStartDate }}</span>
                     </div>
                   {% endif %}
+                  {% if u.filterNomisActivityEndDate %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">NOMIS Activity End Date:</span>
+                      <span data-qa="filterNomisActivityEndDate"
+                            class="govuk-!-margin-left-2">{{ u.filterNomisActivityEndDate }}</span>
+                    </div>
+                  {% endif %}
                   {% if u.filterCourseActivityId %}
                     <div class="govuk-grid-column-full">
                       <span class="govuk-label--s">Course Activity ID:</span>
@@ -156,25 +184,35 @@
 
                 <div class="govuk-grid-row govuk-!-margin-bottom-2">
                   <div class="govuk-grid-column-full">
-                    {% set endNomisLink = "/activities-migration/end-activities?migrationId=" + u.migrationId %}
-                    {{ govukButton({
-                      text: "End NOMIS activities on " + u.filterEndDate,
-                      href: endNomisLink,
-                      isStartButton: false,
-                      attributes: { 'data-qa': 'end-activities-button' }
-                    }) }}
-                    {% if endMigratedActivitiesResult.migrationId == u.migrationId %}
-                      {% if endMigratedActivitiesResult.result == 'OK' %}
-                        {% set resultClass = 'result-success' %}
-                      {% else %}
-                        {% set resultClass = 'result-error' %}
+                    {% if u.dateAction == 'END' %}
+                      {% set endNomisLink = "/activities-migration/end-activities?migrationId=" + u.migrationId %}
+                      {{ govukButton({
+                        text: "End NOMIS activities on " + u.filterEndDate,
+                        href: endNomisLink,
+                        isStartButton: false,
+                        attributes: { 'data-qa': 'end-activities-button' }
+                      }) }}
+                      {% if endMigratedActivitiesResult.migrationId == u.migrationId %}
+                        {% if endMigratedActivitiesResult.result == 'OK' %}
+                          {% set resultClass = 'result-success' %}
+                        {% else %}
+                          {% set resultClass = 'result-error' %}
+                        {% endif %}
+                        <span class="{{ resultClass }}" data-qa="end-activities-result">
+                                  {{ endMigratedActivitiesResult.result }}
+                                </span>
                       {% endif %}
-                      <span class="{{ resultClass }}" data-qa="end-activities-result">
-                                {{ endMigratedActivitiesResult.result }}
-                              </span>
+                    {% elseif u.dateAction == 'MOVE' %}
+                      {% set moveStartDateLink = "/activities-migration/move-start-date/start?migrationId=" + u.migrationId %}
+                      {{ govukButton({
+                        text: "Move start date",
+                        href: moveStartDateLink,
+                        isStartButton: false,
+                        attributes: { 'data-qa': 'start-move-start-date-button' }
+                      }) }}
                     {% endif %}
                   </div>
-                </div>
+                  </div>
               </div>
             {% endset %}
 

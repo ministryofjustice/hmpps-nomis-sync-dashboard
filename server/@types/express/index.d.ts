@@ -27,6 +27,19 @@ declare module 'express-session' {
     result: string
   }
 
+  interface MoveActivityStartDateForm {
+    migrationId: string
+    activityStartDate: string
+    newActivityStartDate: string
+  }
+
+  interface ActivityMigrationSummary {
+    prisonId?: string
+    activityStartDate?: string
+    nomisActivityEndDate?: string
+    courseActivityId?: number
+  }
+
   interface StartSentencingMigrationForm extends MigrationForm {
     fromDate?: string
     toDate?: string
@@ -100,6 +113,8 @@ declare module 'express-session' {
     startDateFilteredMigrationForm: StartDateFilteredMigrationForm
     prisonFilteredMigrationForm: PrisonFilteredMigrationForm
     prisonerFilteredMigrationForm: PrisonerFilteredMigrationForm
+    moveActivityStartDateForm: MoveActivityStartDateForm
+    activityMigrationSummary: ActivityMigrationSummary
   }
 }
 
