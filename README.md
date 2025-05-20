@@ -2,14 +2,14 @@
 Dashboard providing overview and management of nomis migration and synchronisation
 
 ## Running the app
-The easiest way to run the app is to use docker compose to create the service and all dependencies. 
+The easiest way to run the app is to use docker compose to create the service and all dependencies.
 
 `docker compose pull`
 
 `docker compose up`
 
 ### Dependencies
-The app requires: 
+The app requires:
 * hmpps-auth - for authentication
 * redis - session store and token caching
 * nomis-prisoner-api - for prisoner data
@@ -17,13 +17,13 @@ The app requires:
 
 ### Running the app for development
 
-To start the main services excluding the example typescript template app: 
+To start the main services excluding the example typescript template app:
 
 `docker compose up --scale=app=0`
 
 Install dependencies using `npm install`, ensuring you are using `node v18.x` and `npm v9.x`
 
-Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the CircleCI build config.
+Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the github action build config.
 
 And then, to build the assets and start the app with nodemon:
 
@@ -50,7 +50,7 @@ Then run the server in test mode by:
 And then either, run tests in headless mode with:
 
 `npm run int-test`
- 
+
 Or run tests with the cypress UI:
 
 `npm run int-test-ui`
@@ -74,7 +74,7 @@ This service is built to control and monitor any migration of data from NOMIS to
 
 Migration uses AWS SQS messaging to asynchronously process a large number of records. This involves the service sending itself messages that are commands to do an action. This allows for failures to be automatically retried and eventually sent to a dead letter queue.
 
-This dashboard invokes the [migration service](https://github.com/ministryofjustice/hmpps-prisoner-from-nomis-migration) to control the migration process. 
+This dashboard invokes the [migration service](https://github.com/ministryofjustice/hmpps-prisoner-from-nomis-migration) to control the migration process.
 
 The process runs in 5 stages:
 - Estimation stage - estimate the number of records to be migrated and create a unique migration id
@@ -98,7 +98,7 @@ The namespace is: `hmpps-prisoner-from-nomis-migration-prod`
 
 ### How to login
 
-Since the dashboard is internal and used only by developers there is no menu tile to access the dashboard via either DPS or HMPPS Auth; access is via the direct link [https://nomis-sync-dashboard.hmpps.service.justice.gov.uk](https://nomis-sync-dashboard.hmpps.service.justice.gov.uk) with [dev](https://nomis-sync-dashboard-dev.hmpps.service.justice.gov.uk) and [pre-prod](https://nomis-sync-dashboard-preprod.hmpps.service.justice.gov.uk) accessible here. 
+Since the dashboard is internal and used only by developers there is no menu tile to access the dashboard via either DPS or HMPPS Auth; access is via the direct link [https://nomis-sync-dashboard.hmpps.service.justice.gov.uk](https://nomis-sync-dashboard.hmpps.service.justice.gov.uk) with [dev](https://nomis-sync-dashboard-dev.hmpps.service.justice.gov.uk) and [pre-prod](https://nomis-sync-dashboard-preprod.hmpps.service.justice.gov.uk) accessible here.
 
 The credentials you should use will either be your NOMIS (DPS) credentials or external HMPPS credentials which have been created in HMPPS Auth. These credentials are *not* related to any client credentials you might have access to.
 
@@ -127,10 +127,10 @@ After selecting the *Start new migration* button expect to see the following:
 ![](documentation/StartMigration.png)
 
 After selecting the visit types (obviously this will be `Social visits` for family and social visits) and the prison (making sure to use the 3-letter code) there is an option to only migrate a partial set of data based on dates.
-The date used is the date the visit is created, so this function could be used to migrate all the visits up to a certain date with the expectation that the remaining visits would be done at a later date, or it could be used to migrate 
+The date used is the date the visit is created, so this function could be used to migrate all the visits up to a certain date with the expectation that the remaining visits would be done at a later date, or it could be used to migrate
 more visits that have been accidentally created in NOMIS after VSIP was scheduled to be sole creator of visits.
 
-There is no danger of a visit being migrated twice, since the service always checks if a visit has been migrated at the point that particular visit is about to be migrated. 
+There is no danger of a visit being migrated twice, since the service always checks if a visit has been migrated at the point that particular visit is about to be migrated.
 
 Once a filter has been selected the `Preview` button should be selected:
 
@@ -187,7 +187,7 @@ When previewing a migration you may see a warning like the following:
 
 ![](documentation/RoomsNotMatched.png)
 
-This means NOMIS rooms have not been mapped to VSIP rooms. Attempting to start the migration in this state would result in the visits that occurred in these rooms not being migrated. 
+This means NOMIS rooms have not been mapped to VSIP rooms. Attempting to start the migration in this state would result in the visits that occurred in these rooms not being migrated.
 We would advise the migration to be abandoned and the room mappings corrected.
 This is currently fixed with a PR and release of the [Mapping Service](https://github.com/ministryofjustice/hmpps-nomis-mapping-service)
 

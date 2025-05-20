@@ -4,7 +4,7 @@ generic-service:
   replicaCount: 4
 
   image:
-    repository: quay.io/hmpps/hmpps-nomis-sync-dashboard
+    repository: ghcr.io/ministryofjustice/hmpps-nomis-sync-dashboard
     tag: app_version # override at deployment time
     port: 3000
 
@@ -31,15 +31,18 @@ generic-service:
     PRODUCT_ID: "DPS060"
 
   namespace_secrets:
-    application-insights:
+    hmpps-nomis-sync-dashboard-application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
+    hmpps-nomis-sync-dashboard-auth-code:
+      AUTH_CODE_CLIENT_ID: "AUTH_CODE_CLIENT_ID"
+      AUTH_CODE_CLIENT_SECRET: "AUTH_CODE_CLIENT_SECRET"
+    hmpps-nomis-sync-dashboard-client-creds:
+      CLIENT_CREDS_CLIENT_ID: "CLIENT_CREDS_CLIENT_ID"
+      CLIENT_CREDS_CLIENT_SECRET: "CLIENT_CREDS_CLIENT_SECRET"
+    hmpps-nomis-sync-dashboard-session-secret:
+      SESSION_SECRET: "SESSION_SECRET"
     hmpps-nomis-sync-dashboard:
       APPINSIGHTS_SUBSCRIPTION_ID: "APPINSIGHTS_SUBSCRIPTION_ID"
-      AUTH_CODE_CLIENT_ID: "API_CLIENT_ID"
-      AUTH_CODE_CLIENT_SECRET: "API_CLIENT_SECRET"
-      CLIENT_CREDS_CLIENT_ID: "SYSTEM_CLIENT_ID"
-      CLIENT_CREDS_CLIENT_SECRET: "SYSTEM_CLIENT_SECRET"
-      SESSION_SECRET: "SESSION_SECRET"
     hmpps-redis:
       REDIS_HOST: "REDIS_HOST"
       REDIS_PASSWORD: "REDIS_PASSWORD"
