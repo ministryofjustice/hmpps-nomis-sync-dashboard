@@ -129,7 +129,7 @@
                   {% if (u.whenEnded) and (u.recordsFailed + u.recordsMigrated < u.estimatedRecordCount) %}
                     <div class="govuk-grid-column-full">
                       <a data-qa="already-migrated-link" class="govuk-link" target="_blank"
-                         href="{{ u.appInsightsAlreadyMigratedLink }}">View already migrated activities in
+                         href="{{ u.appInsightsActivityIgnoredLink }}">View ignored activities in
                         AppInsights</a>
                     </div>
                   {% endif %}

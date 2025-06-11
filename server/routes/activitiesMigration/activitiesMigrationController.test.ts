@@ -114,7 +114,7 @@ describe('activitiesMigrationController', () => {
           id: '2022-03-11T11:45:12',
           isNew: false,
           appInsightsFullMigrationLink: expect.stringContaining(encodeURIComponent('2022-03-11T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
-          appInsightsAlreadyMigratedLink: expect.stringContaining(encodeURIComponent('2022-03-11T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
+          appInsightsActivityIgnoredLink: expect.stringContaining(encodeURIComponent('2022-03-11T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
       nomisMigrationService.getMigrationHistory.mockResolvedValue(activitiesMigrationResponse)
@@ -317,7 +317,7 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.session.startActivitiesMigrationForm.estimatedCount).toBe('10')
+        expect(req.session.startActivitiesMigrationForm.estimatedCount).toBe('8')
         expect(req.session.startActivitiesMigrationForm.dlqCount).toBe('20')
         expect(req.session.startActivitiesMigrationForm.incentiveLevelIds.sort()).toEqual(['STD', 'ENT'].sort())
         expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis).toEqual(true)

@@ -43,8 +43,8 @@ export default class ActivitiesMigrationController {
 
     const decoratedMigrations = migrations.map(ActivitiesMigrationController.withFilter).map(history => ({
       ...history,
-      appInsightsAlreadyMigratedLink: ActivitiesMigrationController.applicationInsightsUrlNoTimespan(
-        ActivitiesMigrationController.alreadyMigratedAppInsightsQuery(
+      appInsightsActivityIgnoredLink: ActivitiesMigrationController.applicationInsightsUrlNoTimespan(
+        ActivitiesMigrationController.activityIgnoredAppInsightsQuery(
           history.migrationId,
           history.whenStarted,
           history.whenEnded,
@@ -218,7 +218,9 @@ export default class ActivitiesMigrationController {
         nomisPayRatesUnknownIncentive,
         nomisActivitiesWithoutScheduleRules,
       ]) => {
-        req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
+        req.session.startActivitiesMigrationForm.estimatedCount = (
+          estimatedCount - nomisActivitiesWithoutScheduleRules.length
+        ).toLocaleString()
         req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
         req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
           (level: IncentiveLevel) => level.code,
@@ -426,7 +428,7 @@ export default class ActivitiesMigrationController {
     `.trim()
   }
 
-  private static alreadyMigratedAppInsightsQuery(migrationId: string, startedDate: string, endedDate?: string): string {
+  private static activityIgnoredAppInsightsQuery(migrationId: string, startedDate: string, endedDate?: string): string {
     return `${this.fullMigrationAppInsightsQuery(migrationId, startedDate, endedDate)}
       | where name endswith 'ignored'
       | join kind=leftouter (
