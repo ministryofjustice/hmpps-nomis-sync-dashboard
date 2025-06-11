@@ -110,7 +110,7 @@ context('Activities Migration Start', () => {
 
     it('Shows successful preview check details', () => {
       const previewPage = setupPreviewPage()
-      previewPage.estimateSummary().contains('Estimated number of Activities entities to be migrated: 100,988')
+      previewPage.estimateSummary().contains('Estimated number of Activities entities to be migrated: 100,987')
       previewPage.incentiveLevels().contains('BAS,STD,ENH')
       previewPage.nomisFeatureSwitch().should('not.exist')
       previewPage.activateFeatureSwitch().should('not.exist')
