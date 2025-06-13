@@ -218,9 +218,7 @@ export default class ActivitiesMigrationController {
         nomisPayRatesUnknownIncentive,
         nomisActivitiesWithoutScheduleRules,
       ]) => {
-        req.session.startActivitiesMigrationForm.estimatedCount = (
-          estimatedCount - nomisActivitiesWithoutScheduleRules.length
-        ).toLocaleString()
+        req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
         req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
         req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
           (level: IncentiveLevel) => level.code,

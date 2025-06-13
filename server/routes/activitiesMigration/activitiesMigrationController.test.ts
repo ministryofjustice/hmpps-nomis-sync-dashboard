@@ -317,7 +317,7 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.session.startActivitiesMigrationForm.estimatedCount).toBe('8')
+        expect(req.session.startActivitiesMigrationForm.estimatedCount).toBe('10')
         expect(req.session.startActivitiesMigrationForm.dlqCount).toBe('20')
         expect(req.session.startActivitiesMigrationForm.incentiveLevelIds.sort()).toEqual(['STD', 'ENT'].sort())
         expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis).toEqual(true)
