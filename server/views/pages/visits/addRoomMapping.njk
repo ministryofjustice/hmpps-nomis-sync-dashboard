@@ -10,6 +10,7 @@
 {% block content %}
 
 <div class="app-container govuk-body">
+
     {% if errors.length > 0 %}
     {{ govukErrorSummary({
     titleText: 'There is a problem',
@@ -17,10 +18,12 @@
     attributes: { 'data-qa-errors': true }
     }) }}
     {% endif %}
+
     <div class="govuk-width-container">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-                <h1 class="govuk-heading-m govuk-!-margin-top-7">Add room mapping for Nomis room: {{ nomisRoomDescription }} at Prison {{ prisonId }}</h1>
+                <h1 class="govuk-heading-l">Add room mapping for NOMIS room - {{ prisonId }}</h1>
+                <h2 class="govuk-heading-m">{{ nomisRoomDescription }}</h2>
             </div>
             <div class="govuk-grid-column-full">
                 <form id="mapping-form" method="post" action="/visits-room-mappings/add" novalidate>
