@@ -15,6 +15,10 @@ export default class ActivitiesMigrationPage extends Page {
 
   endActivitiesResult = (resultRow: PageElement) => resultRow.find('[data-qa=end-activities-result]')
 
+  moveStartDate = (resultRow: PageElement) => resultRow.find('[data-qa=start-move-start-date-button]')
+
+  warnings = (): PageElement => cy.get('[data-qa=warnings-div]')
+
   static goTo(): ActivitiesMigrationPage {
     cy.visit('/activities-migration')
     return Page.verifyOnPage(ActivitiesMigrationPage)

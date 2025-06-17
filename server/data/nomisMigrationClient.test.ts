@@ -1,20 +1,20 @@
 import nock from 'nock'
-import NomisMigrationService from './nomisMigrationService'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import NomisMigrationClient from './nomisMigrationClient'
 import config from '../config'
-import HmppsAuthClient from '../data/hmppsAuthClient'
-import TokenStore from '../data/tokenStore/redisTokenStore'
 
-jest.mock('../data/hmppsAuthClient')
-describe('NomisMigrationService tests', () => {
-  let nomisMigrationService: NomisMigrationService
-  let hmppsAuthClient: jest.Mocked<HmppsAuthClient>
-
+describe('NomisMigrationClient tests', () => {
+  let nomisMigrationService: NomisMigrationClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
   let fakeNomisMigrationService: nock.Scope
 
   beforeEach(() => {
     fakeNomisMigrationService = nock(config.apis.nomisMigration.url)
-    hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-    nomisMigrationService = new NomisMigrationService(hmppsAuthClient)
+
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+    nomisMigrationService = new NomisMigrationClient(mockAuthenticationClient)
   })
 
   describe('cancelMigration', () => {

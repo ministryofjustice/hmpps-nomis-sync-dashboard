@@ -2,7 +2,8 @@ import IncidentsNomisMigrationService from '../../services/incidents/incidentsNo
 
 jest.mock('../../services/incidents/incidentsNomisMigrationService')
 
-const incidentsNomisMigrationService =
-  new IncidentsNomisMigrationService() as jest.Mocked<IncidentsNomisMigrationService>
+const incidentsNomisMigrationService = new IncidentsNomisMigrationService(
+  null,
+) as jest.Mocked<IncidentsNomisMigrationService>
 
 export default incidentsNomisMigrationService

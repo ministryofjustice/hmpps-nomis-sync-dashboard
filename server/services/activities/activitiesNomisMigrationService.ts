@@ -1,6 +1,6 @@
 import { ActivitiesMigrationFilter, MigrationContextActivitiesMigrationFilter } from '../../@types/migration'
 
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
 import ActivitiesNomisMigrationClient from '../../data/activitiesNomisMigrationClient'
 
 export default class ActivitiesNomisMigrationService {
@@ -15,5 +15,9 @@ export default class ActivitiesNomisMigrationService {
 
   async endMigratedActivities(context: Context, migrationId: string): Promise<string> {
     return this.activitiesNomisMigrationClient.endMigratedActivities(context, migrationId)
+  }
+
+  async moveStartDate(context: Context, migrationId: string, newStartDate: string): Promise<string[]> {
+    return this.activitiesNomisMigrationClient.moveStartDate(context, migrationId, newStartDate)
   }
 }

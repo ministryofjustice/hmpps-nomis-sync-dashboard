@@ -2,7 +2,8 @@ import SentencingNomisMigrationService from '../../services/sentencing/sentencin
 
 jest.mock('../../services/sentencing/sentencingNomisMigrationService')
 
-const sentencingNomisMigrationService =
-  new SentencingNomisMigrationService() as jest.Mocked<SentencingNomisMigrationService>
+const sentencingNomisMigrationService = new SentencingNomisMigrationService(
+  null,
+) as jest.Mocked<SentencingNomisMigrationService>
 
 export default sentencingNomisMigrationService

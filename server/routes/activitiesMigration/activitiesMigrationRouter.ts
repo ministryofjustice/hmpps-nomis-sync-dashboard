@@ -46,6 +46,9 @@ export default function routes({
   get('/details', (req, res) => activitiesMigrationController.activitiesMigrationDetails(req, res))
   post('/cancel', (req, res) => activitiesMigrationController.cancelMigration(req, res))
   get('/end-activities', (req, res) => activitiesMigrationController.postEndMigratedActivities(req, res))
+  get('/move-start-date/start', (req, res) => activitiesMigrationController.startMoveStartDate(req, res))
+  get('/move-start-date/amend', (req, res) => activitiesMigrationController.moveStartDate(req, res))
+  post('/move-start-date', (req, res) => activitiesMigrationController.postMoveStartDate(req, res))
   get('/activate-prison', (req, res) => activitiesMigrationController.postActivatePrison(req, res))
   return router
 }

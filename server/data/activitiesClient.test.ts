@@ -1,19 +1,20 @@
 import nock from 'nock'
-import ActivitiesService from './activitiesService'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import ActivitiesClient from './activitiesClient'
 import config from '../config'
-import HmppsAuthClient from '../data/hmppsAuthClient'
-import TokenStore from '../data/tokenStore/redisTokenStore'
 
-jest.mock('../data/hmppsAuthClient')
 describe('activitiesService tests', () => {
-  let activitiesService: ActivitiesService
+  let activitiesService: ActivitiesClient
+  let mockAuthenticationClient: AuthenticationClient
   let fakeActivitiesService: nock.Scope
-  let hmppsAuthClient: jest.Mocked<HmppsAuthClient>
 
   beforeEach(() => {
     fakeActivitiesService = nock(config.apis.activities.url)
-    hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-    activitiesService = new ActivitiesService(hmppsAuthClient)
+
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+    activitiesService = new ActivitiesClient(mockAuthenticationClient)
   })
 
   describe('Get Rollout Prison', () => {

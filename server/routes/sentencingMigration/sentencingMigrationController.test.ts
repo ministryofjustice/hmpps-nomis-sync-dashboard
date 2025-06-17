@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import SentencingMigrationController from './sentencingMigrationController'
-import { HistoricMigrations } from '../../services/nomisMigrationService'
+import { HistoricMigrations } from '../../data/nomisMigrationClient'
 import sentencingNomisMigrationService from '../testutils/mockSentencingNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'

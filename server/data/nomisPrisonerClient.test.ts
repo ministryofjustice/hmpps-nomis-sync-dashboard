@@ -1,13 +1,11 @@
 import nock from 'nock'
-import NomisPrisonerService from './nomisPrisonerService'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
-import HmppsAuthClient from '../data/hmppsAuthClient'
-import TokenStore from '../data/tokenStore/redisTokenStore'
+import NomisPrisonerClient from './nomisPrisonerClient'
 
-jest.mock('../data/hmppsAuthClient')
-describe('NomisPrisonerService tests', () => {
-  let nomisPrisonerService: NomisPrisonerService
-  let hmppsAuthClient: jest.Mocked<HmppsAuthClient>
+describe('NomisPrisonerClient tests', () => {
+  let nomisPrisonerService: NomisPrisonerClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   let fakeNomisPrisonerService: nock.Scope
 
@@ -17,8 +15,10 @@ describe('NomisPrisonerService tests', () => {
 
   describe('getVisitMigrationEstimatedCount', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
 
     it('will allow empty filter', async () => {
@@ -91,11 +91,13 @@ describe('NomisPrisonerService tests', () => {
 
   describe('checkServiceAgencySwitch', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return true if found', async () => {
-      fakeNomisPrisonerService.get('/service-prisons/ACTIVITY/prison/BXI').reply(200)
+      fakeNomisPrisonerService.get('/service-prisons/ACTIVITY/prison/BXI').reply(204)
 
       const response = await nomisPrisonerService.checkServiceAgencySwitch('BXI', 'ACTIVITY', { username: 'some user' })
 
@@ -122,8 +124,10 @@ describe('NomisPrisonerService tests', () => {
 
   describe('findActivitiesSuspendedAllocations', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return suspended allocations', async () => {
       fakeNomisPrisonerService
@@ -159,8 +163,10 @@ describe('NomisPrisonerService tests', () => {
 
   describe('getActivitiesMigrationEstimatedCount', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return activity count', async () => {
       fakeNomisPrisonerService
@@ -248,8 +254,10 @@ describe('NomisPrisonerService tests', () => {
 
   describe('getAllocationsMigrationEstimatedCount', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return allocation count', async () => {
       fakeNomisPrisonerService
@@ -337,8 +345,10 @@ describe('NomisPrisonerService tests', () => {
 
   describe('findAllocationsWithMissingPayBands', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return allocations missing pay bands', async () => {
       fakeNomisPrisonerService
@@ -394,8 +404,10 @@ describe('NomisPrisonerService tests', () => {
 
   describe('findPayRatesWithUnknownIncentive', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return pay rates', async () => {
       fakeNomisPrisonerService
@@ -451,8 +463,10 @@ describe('NomisPrisonerService tests', () => {
 
   describe('findActivitiesWithoutScheduleRules', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return activities', async () => {
       fakeNomisPrisonerService
@@ -500,8 +514,10 @@ describe('NomisPrisonerService tests', () => {
 
   describe('findAppointmentsCounts', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient({} as TokenStore) as jest.Mocked<HmppsAuthClient>
-      nomisPrisonerService = new NomisPrisonerService(hmppsAuthClient)
+      mockAuthenticationClient = {
+        getToken: jest.fn().mockResolvedValue('test-system-token'),
+      } as unknown as jest.Mocked<AuthenticationClient>
+      nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return appointment counts', async () => {
       fakeNomisPrisonerService

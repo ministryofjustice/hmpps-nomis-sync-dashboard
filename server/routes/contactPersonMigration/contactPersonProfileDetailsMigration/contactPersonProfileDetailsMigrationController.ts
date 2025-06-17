@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import moment from 'moment'
 import { PrisonerFilteredMigrationForm } from 'express-session'
-import NomisMigrationService, { Context } from '../../../services/nomisMigrationService'
+import { context } from '../../../services/context'
+import NomisMigrationService from '../../../services/nomisMigrationService'
 import { MigrationHistory } from '../../../@types/migration'
 import { buildUrlNoTimespan } from '../../../utils/logAnalyticsUrlBuilder'
 import trimForm from '../../../utils/trim'
@@ -11,13 +12,6 @@ import ContactPersonProfileDetailsNomisMigrationService from '../../../services/
 
 interface Filter {
   prisonerNumber?: string
-}
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
 }
 
 export default class ContactPersonProfileDetailsMigrationController {

@@ -1,12 +1,10 @@
 {% extends "../../partials/layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "moj/components/filter/macro.njk" import mojFilter %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
 {% set pageTitle = applicationName + " - Appointments migration" %}
-{% set bodyAttributes = {'data-page': 'filter-toggle'} %}
 {% set backLinkHref = "/" %}
 
 {% block content %}
@@ -24,117 +22,116 @@
     </div>
 
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-full">
-        <div class="moj-filter-layout">
-          <div class="moj-filter-layout__content" data-qa="migration-results-div">
-            <div>
-              <div class="govuk-grid-column-full">
-                <div class="moj-action-bar__filterTagsContainer" ></div>
-                {% if migrations.length %}
+      <div class="govuk-grid-column-full" data-qa="migration-results-div">
+        {% if migrations.length %}
 
-                  {% set rows = [] %}
-                  {% for u in migrations %}
+          {% set rows = [] %}
+          {% for u in migrations %}
 
-                    {% set cellHtml %}
-                      <div class="govuk-!-margin-bottom-5">
-                        <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                          <div class="govuk-grid-column-two-thirds">
-                            <span class="govuk-label--s govuk-!-font-weight-bold">Migration Id: </span>
-                            <span data-qa="migration-id" class="govuk-!-margin-left-2">{{ u.migrationId }}</span>
-                          </div>
-                          <div class="govuk-grid-column-one-third">
-                            <span class="govuk-label--s govuk-!-font-weight-bold">Status: </span>
-                            <span data-qa="status" class="govuk-!-margin-left-2">{{ u.status }}</span>
-                          </div>
-                        </div>
+            {% set cellHtml %}
+              <div class="govuk-!-margin-bottom-5">
+                <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                  <div class="govuk-grid-column-two-thirds">
+                    <span class="govuk-label--s govuk-!-font-weight-bold">Migration Id: </span>
+                    <span data-qa="migration-id" class="govuk-!-margin-left-2">{{ u.migrationId }}</span>
+                  </div>
+                  <div class="govuk-grid-column-one-third">
+                    <span class="govuk-label--s govuk-!-font-weight-bold">Status: </span>
+                    <span data-qa="status" class="govuk-!-margin-left-2">{{ u.status }}</span>
+                  </div>
+                </div>
 
-                        <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                          <div class="govuk-grid-column-full">
-                            <span class="govuk-label--s">Started: </span>
-                            <span data-qa="whenStarted"
-                                  class="govuk-!-margin-left-2">{{ u.whenStarted | formatDate('D MMMM YYYY - HH:mm') }}</span>
-                            {% if u.whenEnded %}
-                              <span class="govuk-label--s govuk-!-margin-left-3">Ended: </span>
-                              <span data-qa="whenEnded"
-                                    class="govuk-!-margin-left-2">{{ u.whenEnded | formatDate('D MMMM YYYY - HH:mm') }}</span>
-                            {% endif %}
-                          </div>
-                        </div>
-                        {% if u.status == 'STARTED' or u.status == 'CANCELLED_REQUESTED'  %}
-                          <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                            <div class="govuk-grid-column-full">
-                              <a data-qa="progress-link" class="govuk-link" href="/appointments-migration/details?migrationId={{ u.migrationId }}">View progress</a>
-                            </div>
-                          </div>
-                        {% endif %}
-
-                        <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                          <div class="govuk-grid-column-full">
-                            <span class="govuk-label--s">Migrated: </span>
-                            <span data-qa="migratedCount" class="govuk-!-margin-left-1">{{ u.recordsMigrated }}</span>
-                            <span class="govuk-label--s govuk-!-margin-left-5">Failed: </span>
-                            <span data-qa="failedCount" class="govuk-!-margin-left-1">{{ u.recordsFailed }}</span>
-                            <span class="govuk-label--s govuk-!-margin-left-5">Estimated: </span>
-                            <span data-qa="estimatedCount" class="govuk-!-margin-left-1">{{ u.estimatedRecordCount }}</span>
-                          </div>
-                        </div>
-
-                          <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                          {% if u.recordsFailed + u.recordsMigrated < u.estimatedRecordCount %}
-                            <div class="govuk-grid-column-two-thirds">
-                              <a data-qa="already-migrated-link" class="govuk-link"  target="_blank" href="{{ u.applicationInsightsLink }}">View Insights</a> for already migrated records
-                            </div>
-                          {% endif %}
-                          {% if u.recordsFailed > 0 %}
-                            <div class="govuk-grid-column-one-third">
-                              <a data-qa="failures-link" class="govuk-link" href="/appointments-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
-                            </div>
-                          {% endif %}
-                          </div>
-
-                        <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                          <div class="govuk-grid-column-full govuk-!-margin-bottom-3 govuk-!-margin-top-2">
-                            <span class="govuk-label--s govuk-!-font-weight-bold">Migration properties:</span>
-                          </div>
-                          {% if u.filterPrisonIds %}
-                            <div class="govuk-grid-column-full">
-                              <span class="govuk-label--s">Prisons:</span><span data-qa="filterPrisonIds" class="govuk-!-margin-left-2">{{ u.filterPrisonIds }}</span>
-                            </div>
-                          {% endif %}
-                          {% if u.filterFromDate %}
-                            <div class="govuk-grid-column-full">
-                              <span class="govuk-label--s">From date:</span><span data-qa="filterFromDate" class="govuk-!-margin-left-2">{{ u.filterFromDate | formatDate('D MMMM YYYY') }}</span>
-                            </div>
-                          {% endif %}
-                          {% if u.filterToDate %}
-                            <div class="govuk-grid-column-full">
-                              <span class="govuk-label--s">To date:</span><span data-qa="filterToDate" class="govuk-!-margin-left-2"> {{ u.filterToDate | formatDate('D MMMM YYYY') }}</span>
-                            </div>
-                          {% endif %}
-                        </div>
-                      </div>
-                    {% endset %}
-
-                    {% set rows = (rows.push([
-                      { html: cellHtml }
-                    ]), rows) %}
-                  {% endfor %}
-
-                  {{ govukTable({
-                    rows: rows
-                  }) }}
-
-                {% else %}
-                  <div class="govuk-!-margin-bottom-5">
-                    <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                      No migration records found
+                <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                  <div class="govuk-grid-column-full">
+                    <span class="govuk-label--s">Started: </span>
+                    <span data-qa="whenStarted"
+                          class="govuk-!-margin-left-2">{{ u.whenStarted | formatDate('D MMMM YYYY - HH:mm') }}</span>
+                    {% if u.whenEnded %}
+                      <span class="govuk-label--s govuk-!-margin-left-3">Ended: </span>
+                      <span data-qa="whenEnded"
+                            class="govuk-!-margin-left-2">{{ u.whenEnded | formatDate('D MMMM YYYY - HH:mm') }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+                {% if u.status == 'STARTED' or u.status == 'CANCELLED_REQUESTED' %}
+                  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                    <div class="govuk-grid-column-full">
+                      <a data-qa="progress-link" class="govuk-link"
+                         href="/appointments-migration/details?migrationId={{ u.migrationId }}">View progress</a>
                     </div>
                   </div>
                 {% endif %}
+
+                <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                  <div class="govuk-grid-column-full">
+                    <span class="govuk-label--s">Migrated: </span>
+                    <span data-qa="migratedCount" class="govuk-!-margin-left-1">{{ u.recordsMigrated }}</span>
+                    <span class="govuk-label--s govuk-!-margin-left-5">Failed: </span>
+                    <span data-qa="failedCount" class="govuk-!-margin-left-1">{{ u.recordsFailed }}</span>
+                    <span class="govuk-label--s govuk-!-margin-left-5">Estimated: </span>
+                    <span data-qa="estimatedCount" class="govuk-!-margin-left-1">{{ u.estimatedRecordCount }}</span>
+                  </div>
+                </div>
+
+                <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                  {% if u.recordsFailed + u.recordsMigrated < u.estimatedRecordCount %}
+                    <div class="govuk-grid-column-two-thirds">
+                      <a data-qa="already-migrated-link" class="govuk-link" target="_blank"
+                         href="{{ u.applicationInsightsLink }}">View Insights</a> for already migrated records
+                    </div>
+                  {% endif %}
+                  {% if u.recordsFailed > 0 %}
+                    <div class="govuk-grid-column-one-third">
+                      <a data-qa="failures-link" class="govuk-link"
+                         href="/appointments-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="govuk-grid-row govuk-!-margin-bottom-2">
+                  <div class="govuk-grid-column-full govuk-!-margin-bottom-3 govuk-!-margin-top-2">
+                    <span class="govuk-label--s govuk-!-font-weight-bold">Migration properties:</span>
+                  </div>
+                  {% if u.filterPrisonIds %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">Prisons:</span>
+                      <span data-qa="filterPrisonIds" class="govuk-!-margin-left-2">{{ u.filterPrisonIds }}</span>
+                    </div>
+                  {% endif %}
+                  {% if u.filterFromDate %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">From date:</span>
+                      <span data-qa="filterFromDate"
+                            class="govuk-!-margin-left-2">{{ u.filterFromDate | formatDate('D MMMM YYYY') }}</span>
+                    </div>
+                  {% endif %}
+                  {% if u.filterToDate %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">To date:</span>
+                      <span data-qa="filterToDate"
+                            class="govuk-!-margin-left-2"> {{ u.filterToDate | formatDate('D MMMM YYYY') }}</span>
+                    </div>
+                  {% endif %}
+                </div>
               </div>
+            {% endset %}
+
+            {% set rows = (rows.push([
+              { html: cellHtml }
+            ]), rows) %}
+          {% endfor %}
+
+          {{ govukTable({
+            rows: rows
+          }) }}
+
+        {% else %}
+          <div class="govuk-!-margin-bottom-5">
+            <div class="govuk-grid-row govuk-!-margin-bottom-2">
+              No migration records found
             </div>
           </div>
-        </div>
+        {% endif %}
       </div>
     </div>
   </div>

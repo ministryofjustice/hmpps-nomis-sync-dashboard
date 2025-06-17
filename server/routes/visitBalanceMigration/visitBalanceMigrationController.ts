@@ -6,18 +6,12 @@ import logger from '../../../logger'
 import startMigrationValidator from './visitBalanceMigrationValidator'
 import VisitBalanceNomisMigrationService from '../../services/visitbalance/visitBalanceNomisMigrationService'
 import VisitBalanceNomisPrisonerService from '../../services/visitbalance/visitBalanceNomisPrisonerService'
-import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
+import { context } from '../../services/context'
+import NomisMigrationService from '../../services/nomisMigrationService'
 import { MigrationHistory } from '../../@types/migration'
 
 interface Filter {
   prisonId?: string
-}
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
 }
 
 export default class VisitBalanceMigrationController {

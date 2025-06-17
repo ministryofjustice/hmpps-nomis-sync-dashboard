@@ -6,14 +6,8 @@ import logger from '../../../logger'
 import startMigrationValidator from './corporateMigrationValidator'
 import CorporateNomisMigrationService from '../../services/corporate/corporateNomisMigrationService'
 import CorporateNomisPrisonerService from '../../services/corporate/corporateNomisPrisonerService'
-import NomisMigrationService, { Context } from '../../services/nomisMigrationService'
-
-function context(res: Response): Context {
-  return {
-    username: res?.locals?.user?.username,
-    token: res?.locals?.user?.token,
-  }
-}
+import { context } from '../../services/context'
+import NomisMigrationService from '../../services/nomisMigrationService'
 
 export default class CorporateMigrationController {
   constructor(

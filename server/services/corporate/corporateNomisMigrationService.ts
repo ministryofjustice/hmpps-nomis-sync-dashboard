@@ -1,25 +1,15 @@
 import { CorporateMigrationFilter, MigrationContextCorporateMigrationFilter } from '../../@types/migration'
 
-import RestClient from '../../data/restClient'
-import config from '../../config'
-import logger from '../../../logger'
-import { Context } from '../nomisMigrationService'
+import { Context } from '../context'
+import CorporateNomisMigrationClient from '../../data/corporateNomisMigrationClient'
 
 export default class CorporateNomisMigrationService {
-  constructor() {}
-
-  private static restClient(token: string): RestClient {
-    return new RestClient('Corporate Nomis MigrationHistory API Client', config.apis.nomisMigration, token)
-  }
+  constructor(private readonly corporateNomisMigrationClient: CorporateNomisMigrationClient) {}
 
   async startMigration(
     filter: CorporateMigrationFilter,
     context: Context,
   ): Promise<MigrationContextCorporateMigrationFilter> {
-    logger.info(`starting a migration`)
-    return CorporateNomisMigrationService.restClient(context.token).post<MigrationContextCorporateMigrationFilter>({
-      path: `/migrate/corporate`,
-      data: filter,
-    })
+    return this.corporateNomisMigrationClient.startMigration(filter, context)
   }
 }

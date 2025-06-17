@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import moment from 'moment'
 import ActivitiesMigrationController from './activitiesMigrationController'
-import { HistoricMigrations } from '../../services/nomisMigrationService'
+import { HistoricMigrations } from '../../data/nomisMigrationClient'
 import activitiesNomisMigrationService from '../testutils/mockActivitiesNomisMigrationService'
 import nomisMigrationService from '../testutils/mockNomisMigrationService'
 import nomisPrisonerService from '../testutils/mockNomisPrisonerService'
@@ -114,7 +114,7 @@ describe('activitiesMigrationController', () => {
           id: '2022-03-11T11:45:12',
           isNew: false,
           appInsightsFullMigrationLink: expect.stringContaining(encodeURIComponent('2022-03-11T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
-          appInsightsAlreadyMigratedLink: expect.stringContaining(encodeURIComponent('2022-03-11T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
+          appInsightsActivityIgnoredLink: expect.stringContaining(encodeURIComponent('2022-03-11T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
         },
       ]
       nomisMigrationService.getMigrationHistory.mockResolvedValue(activitiesMigrationResponse)

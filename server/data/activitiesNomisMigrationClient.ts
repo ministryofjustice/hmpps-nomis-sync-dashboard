@@ -2,7 +2,7 @@ import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
 import config from '../config'
 import logger from '../../logger'
 import { ActivitiesMigrationFilter, MigrationContextActivitiesMigrationFilter } from '../@types/migration'
-import { Context } from '../services/nomisMigrationService'
+import { Context } from '../services/context'
 
 export default class ActivitiesNomisMigrationClient extends RestClient {
   constructor() {
@@ -41,5 +41,16 @@ export default class ActivitiesNomisMigrationClient extends RestClient {
       }
     }
     return 'OK'
+  }
+
+  async moveStartDate(context: Context, migrationId: string, newActivityStartDate: string): Promise<string[]> {
+    logger.info(`Moving activities start date to ${newActivityStartDate} for migrationId=${migrationId}`)
+    return this.put<string[]>(
+      {
+        path: `/migrate/activities/${migrationId}/move-start-dates`,
+        data: { newActivityStartDate },
+      },
+      asUser(context.token),
+    )
   }
 }
