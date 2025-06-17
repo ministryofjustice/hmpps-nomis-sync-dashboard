@@ -478,7 +478,7 @@ export default class ActivitiesMigrationController {
         return moment(filterNomisActivityEndDate)
       }
       if (filterActivityStartDate) {
-        return moment(filterActivityStartDate).subtract(1, 'days')
+        return moment(filterActivityStartDate)
       }
       return moment()
     })().format('YYYY-MM-DD')
