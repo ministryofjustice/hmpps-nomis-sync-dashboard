@@ -17,6 +17,7 @@ describe('GET /', () => {
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
+      .expect(200)
       .expect(res => {
         expect(res.text).toContain('NOMIS migration and synchronisation dashboard')
       })

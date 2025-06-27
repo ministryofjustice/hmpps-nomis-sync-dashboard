@@ -1,7 +1,6 @@
 import express from 'express'
-import type { RequestHandler, Router } from 'express'
+import type { Router } from 'express'
 
-import asyncMiddleware from '../../middleware/asyncMiddleware'
 import ActivitiesMigrationController from './activitiesMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
@@ -24,31 +23,32 @@ export default function routes({
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware([MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON]))
 
-  const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
-  const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
-
   const activitiesMigrationController = new ActivitiesMigrationController(
     activitiesNomisMigrationService,
     nomisMigrationService,
     nomisPrisonerService,
     activitiesService,
   )
-  get('/', (req, res) => activitiesMigrationController.getActivitiesMigrations(req, res))
-  get('/start', (req, res) => activitiesMigrationController.startNewActivitiesMigration(req, res))
-  post('/start', (req, res) => activitiesMigrationController.postStartActivitiesMigration(req, res))
-  get('/amend', (req, res) => activitiesMigrationController.startActivitiesMigration(req, res))
-  get('/start/preview', (req, res) => activitiesMigrationController.startActivitiesMigrationPreview(req, res))
-  post('/start/preview', (req, res) => activitiesMigrationController.postStartActivitiesMigrationPreview(req, res))
-  post('/start/delete-failures', (req, res) =>
+  router.get('/', (req, res) => activitiesMigrationController.getActivitiesMigrations(req, res))
+  router.get('/start', (req, res) => activitiesMigrationController.startNewActivitiesMigration(req, res))
+  router.post('/start', (req, res) => activitiesMigrationController.postStartActivitiesMigration(req, res))
+  router.get('/amend', (req, res) => activitiesMigrationController.startActivitiesMigration(req, res))
+  router.get('/start/preview', (req, res) => activitiesMigrationController.startActivitiesMigrationPreview(req, res))
+  router.post('/start/preview', (req, res) =>
+    activitiesMigrationController.postStartActivitiesMigrationPreview(req, res),
+  )
+  router.post('/start/delete-failures', (req, res) =>
     activitiesMigrationController.postClearDLQActivitiesMigrationPreview(req, res),
   )
-  get('/start/confirmation', (req, res) => activitiesMigrationController.startActivitiesMigrationConfirmation(req, res))
-  get('/details', (req, res) => activitiesMigrationController.activitiesMigrationDetails(req, res))
-  post('/cancel', (req, res) => activitiesMigrationController.cancelMigration(req, res))
-  get('/end-activities', (req, res) => activitiesMigrationController.postEndMigratedActivities(req, res))
-  get('/move-start-date/start', (req, res) => activitiesMigrationController.startMoveStartDate(req, res))
-  get('/move-start-date/amend', (req, res) => activitiesMigrationController.moveStartDate(req, res))
-  post('/move-start-date', (req, res) => activitiesMigrationController.postMoveStartDate(req, res))
-  get('/activate-prison', (req, res) => activitiesMigrationController.postActivatePrison(req, res))
+  router.get('/start/confirmation', (req, res) =>
+    activitiesMigrationController.startActivitiesMigrationConfirmation(req, res),
+  )
+  router.get('/details', (req, res) => activitiesMigrationController.activitiesMigrationDetails(req, res))
+  router.post('/cancel', (req, res) => activitiesMigrationController.cancelMigration(req, res))
+  router.get('/end-activities', (req, res) => activitiesMigrationController.postEndMigratedActivities(req, res))
+  router.get('/move-start-date/start', (req, res) => activitiesMigrationController.startMoveStartDate(req, res))
+  router.get('/move-start-date/amend', (req, res) => activitiesMigrationController.moveStartDate(req, res))
+  router.post('/move-start-date', (req, res) => activitiesMigrationController.postMoveStartDate(req, res))
+  router.get('/activate-prison', (req, res) => activitiesMigrationController.postActivatePrison(req, res))
   return router
 }
