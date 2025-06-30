@@ -97,14 +97,14 @@ describe('NomisPrisonerClient tests', () => {
       nomisPrisonerService = new NomisPrisonerClient(mockAuthenticationClient)
     })
     it('should return true if found', async () => {
-      fakeNomisPrisonerService.get('/service-prisons/ACTIVITY/prison/BXI').reply(204)
+      fakeNomisPrisonerService.get('/agency-switches/ACTIVITY/agency/BXI').reply(204)
 
       const response = await nomisPrisonerService.checkServiceAgencySwitch('BXI', 'ACTIVITY', { username: 'some user' })
 
       expect(response).toBeTruthy()
     })
     it('should return false if not found', async () => {
-      fakeNomisPrisonerService.get('/service-prisons/ACTIVITY/prison/BXI').reply(404)
+      fakeNomisPrisonerService.get('/agency-switches/ACTIVITY/agency/BXI').reply(404)
 
       const response = await nomisPrisonerService.checkServiceAgencySwitch('BXI', 'ACTIVITY', { username: 'some user' })
 
@@ -112,7 +112,7 @@ describe('NomisPrisonerClient tests', () => {
     })
     it('should throw for any other error', () => {
       fakeNomisPrisonerService
-        .get('/service-prisons/ACTIVITY/prison/BXI')
+        .get('/agency-switches/ACTIVITY/agency/BXI')
         .reply(504, { message: 'Gateway Timeout' })
         .persist(true)
 
