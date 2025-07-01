@@ -4441,9 +4441,7 @@ export interface paths {
     trace?: never
   }
 }
-
 export type webhooks = Record<string, never>
-
 export interface components {
   schemas: {
     ErrorResponse: {
@@ -8922,6 +8920,11 @@ export interface components {
        */
       id: number
       /**
+       * @description Offender no aka prisoner number
+       * @example A1234AA
+       */
+      offenderNo: string
+      /**
        * Format: int64
        * @description Unique NOMIS Id of booking associated with the contact
        */
@@ -8948,7 +8951,7 @@ export interface components {
       /** @description Staff member who created the restriction */
       enteredStaff: components['schemas']['ContactRestrictionEnteredStaff']
       /** @description Staff member who authorised the restriction */
-      authorisedStaff?: components['schemas']['ContactRestrictionEnteredStaff']
+      authorisedStaff: components['schemas']['ContactRestrictionEnteredStaff']
       /** @description Audit data associated with the records */
       audit: components['schemas']['NomisAudit']
     }
@@ -12020,9 +12023,7 @@ export interface components {
   headers: never
   pathItems: never
 }
-
 export type $defs = Record<string, never>
-
 export interface operations {
   getSentenceAdjustment: {
     parameters: {

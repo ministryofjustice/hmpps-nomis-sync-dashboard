@@ -21,7 +21,12 @@ export type FindActivitiesWithoutScheduleRulesResponse = components['schemas']['
 export type AppointmentCountsResponse = components['schemas']['AppointmentCountsResponse']
 export type PageCourtCaseIdResponse = components['schemas']['PageCourtCaseIdResponse']
 export type PagePersonIdResponse = components['schemas']['PagePersonIdResponse']
+export type PagePrisonerRestrictionIdResponse = components['schemas']['PagePrisonerRestrictionIdResponse']
 export type GetContactPersonByFilter = Omit<operations['getPersonIds']['parameters']['query'], 'pageRequest'>
+export type GetPrisonerRestrictionByFilter = Omit<
+  operations['getPrisonerRestrictionIds']['parameters']['query'],
+  'pageRequest'
+>
 export type PageCorporateOrganisationIdResponse = components['schemas']['PageCorporateOrganisationIdResponse']
 export type GetCorporateByFilter = Omit<operations['getCorporateIds']['parameters']['query'], 'pageRequest'>
 export type PageVisitBalanceIdResponse = components['schemas']['PageVisitBalanceIdResponse']

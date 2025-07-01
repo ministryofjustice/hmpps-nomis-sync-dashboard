@@ -2,7 +2,7 @@ import Page from '../page'
 
 export default class StartContactPersonMigrationPage extends Page {
   constructor() {
-    super('Start a new Contact Person migration')
+    super('Start a new Prisoner Restriction migration')
   }
 
   continueButton = () => cy.get('[data-qa=continue-button]')

@@ -2,7 +2,7 @@ import Page from '../page'
 
 export default class StartContactPersonMigrationConfirmationPage extends Page {
   constructor() {
-    super('Contact Person migration started')
+    super('Prisoner Restriction migration started')
   }
 
   confirmationMessage = () => cy.get('#confirmationMessage')

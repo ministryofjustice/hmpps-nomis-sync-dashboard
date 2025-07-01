@@ -135,7 +135,7 @@ export default class ContactPersonMigrationController {
   private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where message contains 'Will not migrate the nomis person'
+    | where message contains 'Will not migrate the nomis prisoner restriction'
     | where timestamp between (datetime(${ContactPersonMigrationController.toISODateTime(
       startedDate,
     )}) .. datetime(${ContactPersonMigrationController.toISODateTime(endedDate)}))
