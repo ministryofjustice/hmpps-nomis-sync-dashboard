@@ -6,7 +6,7 @@ import StartContactPersonMigrationPreviewPage from '../pages/contactperson-migra
 import StartContactPersonMigrationConfirmationPage from '../pages/contactperson-migration/startContactPersonMigrationConfirmation'
 import AuthErrorPage from '../pages/authError'
 
-context('Contact Person Migration Start', () => {
+context('Prisoner Restriction Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })
@@ -87,11 +87,11 @@ context('Contact Person Migration Start', () => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
     })
-    it('should not see migrate contact persons tile', () => {
+    it('should not see migrate prisoner restriction tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
       indexPage.contactPersonMigrationLink().should('not.exist')
     })
-    it('should not be able to navigate directly to the contact persons migration page', () => {
+    it('should not be able to navigate directly to the prisoner restriction migration page', () => {
       cy.visit('/contactperson-migration', { failOnStatusCode: false })
       Page.verifyOnPage(AuthErrorPage)
     })

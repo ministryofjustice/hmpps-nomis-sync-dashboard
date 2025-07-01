@@ -4,7 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% set pageTitle = applicationName + " - Start a Contact Person migration" %}
+{% set pageTitle = applicationName + " - Start a Prisoner Restriction migration" %}
 {% set backLinkHref = "/contactperson-migration" %}
 
 {% block content %}
@@ -21,7 +21,7 @@
     <div class="govuk-width-container">
       <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Contact Person migration</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Prisoner Restriction migration</h1>
             </div>
 
             <div class="govuk-grid-column-two-thirds">
@@ -29,7 +29,7 @@
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     {% call govukFieldset({
                         legend: {
-                            text: "Enter the filter details for the Contact Person entities you want to migrate",
+                            text: "Enter the filter details for the Prisoner Restriction entities you want to migrate",
                             classes: "govuk-fieldset__legend--m",
                             isPageHeading: false
                         }
@@ -37,7 +37,7 @@
 
                         {{ govukInput({
                             label: {
-                                html: 'Only include Person entities created after or on this date'
+                                html: 'Only include Restrictions entities created after or on this date'
                             },
                             id: "fromDate",
                             name: "fromDate",
@@ -51,7 +51,7 @@
 
                         {{ govukInput({
                             label: {
-                                html: 'Only include Person entities created before or on this date'
+                                html: 'Only include Restrictions entities created before or on this date'
                             },
                             id: "toDate",
                             name: "toDate",
@@ -75,7 +75,7 @@
                     {% endcall %}
                 </form>
             </div>
-        </div>      
+        </div>
     </div>
   </main>
 

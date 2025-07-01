@@ -615,7 +615,7 @@ const stubGetContactPersonMigrationEstimatedCount = (count: number): SuperAgentR
   stubFor({
     request: {
       method: 'GET',
-      urlPath: '/nomis-prisoner-api/persons/ids',
+      urlPath: '/nomis-prisoner-api/prisoners/restrictions/ids',
     },
     response: {
       status: 200,

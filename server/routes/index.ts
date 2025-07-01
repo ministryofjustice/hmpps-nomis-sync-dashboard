@@ -110,7 +110,7 @@ export default function routes(services: Services): Router {
         },
         {
           id: 'contactperson-migration',
-          heading: 'Contact Person migration',
+          heading: 'Prisoner Restriction migration',
           description: 'Migration and synchronisation information',
           href: '/contactperson-migration',
           roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
