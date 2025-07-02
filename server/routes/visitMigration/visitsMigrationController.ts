@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { StartVisitsMigrationForm } from 'express-session'
-import moment from 'moment'
 import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
@@ -8,11 +7,11 @@ import trimForm from '../../utils/trim'
 import startVisitsMigrationValidator from './startVisitsMigrationValidator'
 import { MigrationHistory, VisitsMigrationFilter } from '../../@types/migration'
 import { MigrationViewFilter } from '../../@types/dashboard'
-import { buildUrl } from '../../utils/applicationInsightsUrlBuilder'
 import visitsMigrationValidator from './visitsMigrationValidator'
 import logger from '../../../logger'
 import { withDefaultTime } from '../../utils/utils'
 import VisitsNomisMigrationService from '../../services/visits/visitsNomisMigrationService'
+import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../utils/logAnalyticsUrlBuilder'
 
 interface Filter {
   prisonIds?: string[]
@@ -53,8 +52,10 @@ export default class VisitsMigrationController {
 
       const decoratedMigrations = migrations.map(VisitsMigrationController.withFilter).map(history => ({
         ...history,
-        applicationInsightsLink: VisitsMigrationController.applicationInsightsUrl(
-          VisitsMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
+        applicationInsightsLink: alreadyMigratedLogAnalyticsLink(
+          'Will not migrate visit since',
+          history.whenStarted,
+          history.whenEnded,
         ),
       }))
       res.render('pages/visits/visitsMigration', {
@@ -139,9 +140,7 @@ export default class VisitsMigrationController {
       ...failures,
       messages: failures.messages.map(message => ({
         ...message,
-        applicationInsightsLink: VisitsMigrationController.applicationInsightsUrl(
-          VisitsMigrationController.messageApplicationInsightsQuery(message),
-        ),
+        applicationInsightsLink: messageLogAnalyticsLink(message),
       })),
     }
     res.render('pages/visits/visitsMigrationFailures', { failures: failuresDecorated })
@@ -180,31 +179,6 @@ export default class VisitsMigrationController {
       fromDateTime: req.query.fromDateTime as string | undefined,
       includeOnlyFailures: (req.query.includeOnlyFailures as string) === 'true',
     }
-  }
-
-  private static messageApplicationInsightsQuery(message: { messageId: string }): string {
-    return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
-    | order by timestamp desc`
-  }
-
-  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
-    return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where message contains 'Will not migrate visit since it is migrated already,'
-    | where timestamp between (datetime(${VisitsMigrationController.toISODateTime(
-      startedDate,
-    )}) .. datetime(${VisitsMigrationController.toISODateTime(endedDate)}))
-    | summarize dcount(message)`
-  }
-
-  private static toISODateTime(localDateTime: string): string {
-    return moment(localDateTime).toISOString()
-  }
-
-  private static applicationInsightsUrl(query: string): string {
-    return buildUrl(query, 'P1D')
   }
 
   private static withFilter(migration: MigrationHistory): MigrationHistory & {

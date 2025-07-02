@@ -1,6 +1,4 @@
 import { Request, Response } from 'express'
-import moment from 'moment'
-import { buildUrl } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startMigrationValidator from './corporateMigrationValidator'
@@ -8,6 +6,7 @@ import CorporateNomisMigrationService from '../../services/corporate/corporateNo
 import CorporateNomisPrisonerService from '../../services/corporate/corporateNomisPrisonerService'
 import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
+import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../utils/logAnalyticsUrlBuilder'
 
 export default class CorporateMigrationController {
   constructor(
@@ -23,8 +22,10 @@ export default class CorporateMigrationController {
 
     const decoratedMigrations = migrations.map(history => ({
       ...history,
-      applicationInsightsLink: CorporateMigrationController.applicationInsightsUrl(
-        CorporateMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
+      applicationInsightsLink: alreadyMigratedLogAnalyticsLink(
+        'Will not migrate the nomis corporate',
+        history.whenStarted,
+        history.whenEnded,
       ),
     }))
     res.render('pages/corporate/corporateMigration', {
@@ -38,9 +39,7 @@ export default class CorporateMigrationController {
       ...failures,
       messages: failures.messages.map(message => ({
         ...message,
-        applicationInsightsLink: CorporateMigrationController.applicationInsightsUrl(
-          CorporateMigrationController.messageApplicationInsightsQuery(message),
-        ),
+        applicationInsightsLink: messageLogAnalyticsLink(message),
       })),
     }
     res.render('pages/corporate/corporateMigrationFailures', { failures: failuresDecorated })
@@ -120,30 +119,5 @@ export default class CorporateMigrationController {
     res.render('pages/corporate/corporateMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
-  }
-
-  private static messageApplicationInsightsQuery(message: { messageId: string }): string {
-    return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
-    | order by timestamp desc`
-  }
-
-  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
-    return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where message contains 'Will not migrate the nomis corporate'
-    | where timestamp between (datetime(${CorporateMigrationController.toISODateTime(
-      startedDate,
-    )}) .. datetime(${CorporateMigrationController.toISODateTime(endedDate)}))
-    | summarize dcount(message)`
-  }
-
-  private static toISODateTime(localDateTime: string): string {
-    return moment(localDateTime).toISOString()
-  }
-
-  private static applicationInsightsUrl(query: string): string {
-    return buildUrl(query, 'P1D')
   }
 }

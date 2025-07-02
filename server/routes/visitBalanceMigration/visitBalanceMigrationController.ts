@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
-import moment from 'moment'
-import { buildUrl } from '../../utils/logAnalyticsUrlBuilder'
+import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../utils/logAnalyticsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startMigrationValidator from './visitBalanceMigrationValidator'
@@ -28,8 +27,10 @@ export default class VisitBalanceMigrationController {
 
     const decoratedMigrations = migrations.map(VisitBalanceMigrationController.withFilter).map(history => ({
       ...history,
-      applicationInsightsLink: VisitBalanceMigrationController.applicationInsightsUrl(
-        VisitBalanceMigrationController.alreadyMigratedApplicationInsightsQuery(history.whenStarted, history.whenEnded),
+      applicationInsightsLink: alreadyMigratedLogAnalyticsLink(
+        'Will not migrate the nomis visit balance',
+        history.whenStarted,
+        history.whenEnded,
       ),
     }))
     res.render('pages/visitbalance/visitBalanceMigration', {
@@ -43,9 +44,7 @@ export default class VisitBalanceMigrationController {
       ...failures,
       messages: failures.messages.map(message => ({
         ...message,
-        applicationInsightsLink: VisitBalanceMigrationController.applicationInsightsUrl(
-          VisitBalanceMigrationController.messageApplicationInsightsQuery(message),
-        ),
+        applicationInsightsLink: messageLogAnalyticsLink(message),
       })),
     }
     res.render('pages/visitbalance/visitBalanceMigrationFailures', { failures: failuresDecorated })
@@ -125,31 +124,6 @@ export default class VisitBalanceMigrationController {
     res.render('pages/visitbalance/visitBalanceMigrationDetails', {
       migration: { ...migration, history: VisitBalanceMigrationController.withFilter(migration.history) },
     })
-  }
-
-  private static messageApplicationInsightsQuery(message: { messageId: string }): string {
-    return `AppExceptions
-| where AppRoleName == 'hmpps-prisoner-from-nomis-migration'
-| where Properties.["Logger Message"] == "MessageID:${message.messageId}"
-| order by TimeGenerated desc`
-  }
-
-  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
-    return `AppTraces
-| where AppRoleName == 'hmpps-prisoner-from-nomis-migration'
-| where Message contains 'Will not migrate the nomis visit balance'
-| where TimeGenerated between (datetime(${VisitBalanceMigrationController.toISODateTime(
-      startedDate,
-    )}) .. datetime(${VisitBalanceMigrationController.toISODateTime(endedDate)}))
-| summarize dcount(Message)`
-  }
-
-  private static toISODateTime(localDateTime: string): string {
-    return moment(localDateTime).toISOString()
-  }
-
-  private static applicationInsightsUrl(query: string): string {
-    return buildUrl(query, 'P1D')
   }
 
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
