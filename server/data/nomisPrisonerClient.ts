@@ -123,11 +123,11 @@ export default class NomisPrisonerClient extends RestClient {
     )
   }
 
-  async checkServiceAgencySwitch(prisonId: string, serviceName: string, context: Context): Promise<boolean> {
+  async checkServiceAgencySwitch(agencyId: string, serviceName: string, context: Context): Promise<boolean> {
     try {
       await this.get<void>(
         {
-          path: `/service-prisons/${serviceName}/prison/${prisonId}`,
+          path: `/agency-switches/${serviceName}/agency/${agencyId}`,
         },
         asSystem(context.username),
       )
@@ -140,16 +140,16 @@ export default class NomisPrisonerClient extends RestClient {
     return true
   }
 
-  async createServiceAgencySwitch(prisonId: string, serviceName: string, context: Context): Promise<void> {
+  async createServiceAgencySwitch(agencyId: string, serviceName: string, context: Context): Promise<void> {
     try {
       await this.post<void>(
         {
-          path: `/service-prisons/${serviceName}/prison/${prisonId}`,
+          path: `/agency-switches/${serviceName}/agency/${agencyId}`,
         },
         asSystem(context.username),
       )
     } catch (error) {
-      logger.info(`Failed to turn on ${serviceName} service for ${prisonId} - error ${error}`)
+      logger.info(`Failed to turn on ${serviceName} service for ${agencyId} - error ${error}`)
     }
   }
 

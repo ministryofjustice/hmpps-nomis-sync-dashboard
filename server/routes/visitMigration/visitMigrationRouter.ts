@@ -1,6 +1,5 @@
-import express, { RequestHandler, Router } from 'express'
+import express, { Router } from 'express'
 
-import asyncMiddleware from '../../middleware/asyncMiddleware'
 import VisitsMigrationController from './visitsMigrationController'
 
 import NomisMigrationService from '../../services/nomisMigrationService'
@@ -21,26 +20,25 @@ export default function routes({
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware([MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON]))
 
-  const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
-  const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
-
   const visitMigrationController = new VisitsMigrationController(
     visitsNomisMigrationService,
     nomisMigrationService,
     nomisPrisonerService,
   )
 
-  get('/', (req, res) => visitMigrationController.getVisitMigrations(req, res))
-  get('/start', (req, res) => visitMigrationController.startNewVisitMigration(req, res))
-  get('/amend', (req, res) => visitMigrationController.startVisitMigration(req, res))
-  post('/start', (req, res) => visitMigrationController.postStartVisitMigration(req, res))
-  post('/start/delete-failures', (req, res) => visitMigrationController.postClearDLQVisitMigrationPreview(req, res))
-  get('/start/preview', (req, res) => visitMigrationController.startVisitMigrationPreview(req, res))
-  post('/start/preview', (req, res) => visitMigrationController.postStartVisitMigrationPreview(req, res))
-  get('/start/confirmation', (req, res) => visitMigrationController.startVisitMigrationConfirmation(req, res))
-  get('/failures', (req, res) => visitMigrationController.viewFailures(req, res))
-  get('/details', (req, res) => visitMigrationController.visitsMigrationDetails(req, res))
-  post('/cancel', (req, res) => visitMigrationController.cancelMigration(req, res))
+  router.get('/', (req, res) => visitMigrationController.getVisitMigrations(req, res))
+  router.get('/start', (req, res) => visitMigrationController.startNewVisitMigration(req, res))
+  router.get('/amend', (req, res) => visitMigrationController.startVisitMigration(req, res))
+  router.post('/start', (req, res) => visitMigrationController.postStartVisitMigration(req, res))
+  router.post('/start/delete-failures', (req, res) =>
+    visitMigrationController.postClearDLQVisitMigrationPreview(req, res),
+  )
+  router.get('/start/preview', (req, res) => visitMigrationController.startVisitMigrationPreview(req, res))
+  router.post('/start/preview', (req, res) => visitMigrationController.postStartVisitMigrationPreview(req, res))
+  router.get('/start/confirmation', (req, res) => visitMigrationController.startVisitMigrationConfirmation(req, res))
+  router.get('/failures', (req, res) => visitMigrationController.viewFailures(req, res))
+  router.get('/details', (req, res) => visitMigrationController.visitsMigrationDetails(req, res))
+  router.post('/cancel', (req, res) => visitMigrationController.cancelMigration(req, res))
 
   return router
 }

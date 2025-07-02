@@ -2,7 +2,7 @@ import Page, { PageElement } from '../page'
 
 export default class StartContactPersonMigrationPreviewPage extends Page {
   constructor() {
-    super('Start a new Contact Person migration - preview')
+    super('Start a new Prisoner Restriction migration - preview')
   }
 
   startMigrationButton = () => cy.contains('Start migration')

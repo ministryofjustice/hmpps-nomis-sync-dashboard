@@ -190,7 +190,7 @@ const stubCheckServiceAgencySwitch = (service: string): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/nomis-prisoner-api/service-prisons/${service}/prison/.*`,
+      urlPattern: `/nomis-prisoner-api/agency-switches/${service}/agency/.*`,
     },
     response: {
       status: 204,
@@ -201,7 +201,7 @@ const stubPostServiceAgencySwitch = (): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'POST',
-      urlPattern: '/nomis-prisoner-api/service-prisons/ACTIVITY/prison/.*',
+      urlPattern: '/nomis-prisoner-api/agency-switches/ACTIVITY/agency/.*',
     },
     response: {
       status: 201,
@@ -212,7 +212,7 @@ const stubCheckServiceAgencySwitchNotFound = (service: string): SuperAgentReques
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/nomis-prisoner-api/service-prisons/${service}/prison/.*`,
+      urlPattern: `/nomis-prisoner-api/agency-switches/${service}/agency/.*`,
     },
     response: {
       status: 404,
@@ -226,7 +226,7 @@ const stubCheckServiceAgencySwitchAfterNotFound = (service: string): SuperAgentR
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/nomis-prisoner-api/service-prisons/${service}/prison/.*`,
+      urlPattern: `/nomis-prisoner-api/agency-switches/${service}/agency/.*`,
     },
     response: {
       status: 204,
@@ -239,7 +239,7 @@ const stubCheckServiceAgencySwitchErrors = (service: string): SuperAgentRequest 
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/nomis-prisoner-api/service-prisons/${service}/prison/.*`,
+      urlPattern: `/nomis-prisoner-api/agency-switches/${service}/agency/.*`,
     },
     response: {
       status: 504,
@@ -615,7 +615,7 @@ const stubGetContactPersonMigrationEstimatedCount = (count: number): SuperAgentR
   stubFor({
     request: {
       method: 'GET',
-      urlPath: '/nomis-prisoner-api/persons/ids',
+      urlPath: '/nomis-prisoner-api/prisoners/restrictions/ids',
     },
     response: {
       status: 200,

@@ -1,4 +1,4 @@
-import { type RequestHandler, Router } from 'express'
+import { Router } from 'express'
 
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
 import visitRoomMappingMigrationRouter from './visitMigration/visitRoomMappingMigrationRouter'
@@ -27,14 +27,12 @@ import {
   MIGRATE_NOMIS_SYSCON,
 } from '../authentication/roles'
 
-import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
 
 export default function routes(services: Services): Router {
   const router = Router()
-  const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  get('/', (req, res, _) => {
+  router.get('/', (req, res, _) => {
     const roles = extractRoles(res)
     res.render('pages/index', {
       dashboards: [
@@ -112,7 +110,7 @@ export default function routes(services: Services): Router {
         },
         {
           id: 'contactperson-migration',
-          heading: 'Contact Person migration',
+          heading: 'Prisoner Restriction migration',
           description: 'Migration and synchronisation information',
           href: '/contactperson-migration',
           roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
