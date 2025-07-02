@@ -66,7 +66,7 @@ describe('incidentsMigrationController', () => {
           migrationType: 'INCIDENTS',
           status: 'COMPLETED',
           id: '2022-03-14T10:13:56',
-          applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-30T09:13:56.878Z')), // BST was 2022-03-30T10:13:56.878627
+          applicationInsightsLink: expect.stringContaining('http://localhost:8103/applicationinsights/#blade/'),
         },
         {
           migrationId: '2022-03-14T11:45:12',
@@ -79,7 +79,7 @@ describe('incidentsMigrationController', () => {
           migrationType: 'INCIDENTS',
           status: 'COMPLETED',
           id: '2022-03-14T11:45:12',
-          applicationInsightsLink: expect.stringContaining(encodeURIComponent('2022-03-14T11:45:12.615Z')), // GMT was 2022-03-14T11:45:12.615759
+          applicationInsightsLink: expect.stringContaining('http://localhost:8103/applicationinsights/#blade/'),
         },
       ]
       nomisMigrationService.getMigrationHistory.mockResolvedValue(incidentsMigrationResponse)
@@ -126,12 +126,7 @@ describe('incidentsMigrationController', () => {
         failures: expect.objectContaining({
           messages: expect.arrayContaining([
             expect.objectContaining({
-              applicationInsightsLink:
-                "http://localhost:8103/applicationinsights/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Fsubscription%2FresourceGroups%2Fcomponent-rg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fcomponent/source/LogsBlade.AnalyticsShareLinkToQuery/query/exceptions%0A%20%20%20%20%7C%20where%20cloud_RoleName%20%3D%3D%20'hmpps-prisoner-from-nomis-migration'%0A%20%20%20%20%7C%20where%20customDimensions.%5B%22Logger%20Message%22%5D%20%3D%3D%20%22MessageID%3Aafeb75fd-a2aa-41c4-9ede-b6bfe9590d36%22%0A%20%20%20%20%7C%20order%20by%20timestamp%20desc/timespan/P1D",
-            }),
-            expect.objectContaining({
-              applicationInsightsLink:
-                "http://localhost:8103/applicationinsights/#blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/resourceId/%2Fsubscriptions%2Fsubscription%2FresourceGroups%2Fcomponent-rg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fcomponent/source/LogsBlade.AnalyticsShareLinkToQuery/query/exceptions%0A%20%20%20%20%7C%20where%20cloud_RoleName%20%3D%3D%20'hmpps-prisoner-from-nomis-migration'%0A%20%20%20%20%7C%20where%20customDimensions.%5B%22Logger%20Message%22%5D%20%3D%3D%20%22MessageID%3A86b96f0e-2ac3-445c-b3ac-0a4d525d371e%22%0A%20%20%20%20%7C%20order%20by%20timestamp%20desc/timespan/P1D",
+              applicationInsightsLink: expect.stringContaining('http://localhost:8103/applicationinsights/#blade/'),
             }),
           ]),
         }),

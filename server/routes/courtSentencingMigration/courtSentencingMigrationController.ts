@@ -1,15 +1,14 @@
 import { Request, Response } from 'express'
 import { StartCourtSentencingMigrationForm } from 'express-session'
-import moment from 'moment'
 import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import { MigrationHistory, CourtSentencingMigrationFilter } from '../../@types/migration'
-import { buildUrl } from '../../utils/applicationInsightsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startCourtSentencingMigrationValidator from './startCourtSentencingMigrationValidator'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import CourtSentencingNomisMigrationService from '../../services/courtSentencing/courtSentencingNomisMigrationService'
+import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../utils/logAnalyticsUrlBuilder'
 
 interface Filter {
   prisonIds?: string[]
@@ -31,11 +30,10 @@ export default class CourtSentencingMigrationController {
 
     const decoratedMigrations = migrations.map(CourtSentencingMigrationController.withFilter).map(history => ({
       ...history,
-      applicationInsightsLink: CourtSentencingMigrationController.applicationInsightsUrl(
-        CourtSentencingMigrationController.alreadyMigratedApplicationInsightsQuery(
-          history.whenStarted,
-          history.whenEnded,
-        ),
+      applicationInsightsLink: alreadyMigratedLogAnalyticsLink(
+        'Will not migrate the alert since it is migrated',
+        history.whenStarted,
+        history.whenEnded,
       ),
     }))
     res.render('pages/courtSentencing/courtSentencingMigration', {
@@ -118,9 +116,7 @@ export default class CourtSentencingMigrationController {
       ...failures,
       messages: failures.messages.map(message => ({
         ...message,
-        applicationInsightsLink: CourtSentencingMigrationController.applicationInsightsUrl(
-          CourtSentencingMigrationController.messageApplicationInsightsQuery(message),
-        ),
+        applicationInsightsLink: messageLogAnalyticsLink(message),
       })),
     }
     res.render('pages/courtSentencing/courtSentencingMigrationFailures', { failures: failuresDecorated })
@@ -140,31 +136,6 @@ export default class CourtSentencingMigrationController {
       fromDate: form.fromDate,
       toDate: form.toDate,
     }
-  }
-
-  private static messageApplicationInsightsQuery(message: { messageId: string }): string {
-    return `exceptions
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where customDimensions.["Logger Message"] == "MessageID:${message.messageId}"
-    | order by timestamp desc`
-  }
-
-  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
-    return `traces
-    | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
-    | where message contains 'Will not migrate the alert since it is migrated already,'
-    | where timestamp between (datetime(${CourtSentencingMigrationController.toISODateTime(
-      startedDate,
-    )}) .. datetime(${CourtSentencingMigrationController.toISODateTime(endedDate)}))
-    | summarize dcount(message)`
-  }
-
-  private static toISODateTime(localDateTime: string): string {
-    return moment(localDateTime).toISOString()
-  }
-
-  private static applicationInsightsUrl(query: string): string {
-    return buildUrl(query, 'P1D')
   }
 
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
