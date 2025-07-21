@@ -121,6 +121,13 @@
                             class="govuk-!-margin-left-2">{{ u.filterCourseActivityId }}</span>
                     </div>
                   {% endif %}
+                  {% if u.filterActivityStartDate %}
+                    <div class="govuk-grid-column-full">
+                      <span class="govuk-label--s">Course Activity Start Date:</span>
+                      <span data-qa="filterActivityStartDate"
+                            class="govuk-!-margin-left-2">{{ u.filterActivityStartDate }}</span>
+                    </div>
+                  {% endif %}
                 </div>
               </div>
             {% endset %}

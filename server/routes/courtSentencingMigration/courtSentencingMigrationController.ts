@@ -135,6 +135,7 @@ export default class CourtSentencingMigrationController {
     return {
       fromDate: form.fromDate,
       toDate: form.toDate,
+      deleteExisting: false,
     }
   }
 

@@ -1,4 +1,5 @@
 import { SuperAgentRequest } from 'superagent'
+import moment from 'moment'
 import { MigrationHistory } from '../../server/@types/migration'
 import { stubFor } from './wiremock'
 
@@ -20,7 +21,7 @@ export const activitiesMigrationHistory: MigrationHistory[] = [
     migrationId: '2022-03-14T11:45:12',
     whenStarted: '2022-03-14T11:45:12.615759',
     estimatedRecordCount: 205630,
-    filter: '{"prisonId": "WWI", "courseActivityId": 123456}',
+    filter: `{"prisonId": "WWI", "courseActivityId": 123456, "activityStartDate": "${moment().add(2, 'days').format('YYYY-MM-DD')}"}`,
     recordsMigrated: 1,
     recordsFailed: 162794,
     migrationType: 'ACTIVITIES',

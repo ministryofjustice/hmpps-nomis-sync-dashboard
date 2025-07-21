@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import moment from 'moment'
 import AllocationsMigrationController from './allocationsMigrationController'
 import { HistoricMigrations } from '../../data/nomisMigrationClient'
 import allocationsNomisMigrationService from '../testutils/mockAllocationsNomisMigrationService'
@@ -137,6 +138,7 @@ describe('allocationsMigrationController', () => {
         req.body = {
           _csrf: 'ArcKbKvR-OU86UdNwW8RgAGJjIQ9N081rlgM',
           action: 'startMigration',
+          activityStartDate: moment().add(1, 'days').format('YYYY-MM-DD'),
         }
         await new AllocationsMigrationController(
           allocationsNomisMigrationService,

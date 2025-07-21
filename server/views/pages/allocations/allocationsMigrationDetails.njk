@@ -15,30 +15,30 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
       {% set detailsHtml %}
-      <p> 
+      <p>
         When a migration is in progress a background service counts all allocation entities that can possibly be migrated and adds each entity to a queue. That initial count is the <b>Estimated</b> number.
         That number does not take into account if any record had previously been migrated. Also, if an entity was created just after the initial calculation it may still be processed.
         At the beginning of the process the <b>Still to be processed</b> count will go up until it eventually gets close to the <b>Estimated</b> number. The <b>Still to be processed</b> number represents the number of records that still requiring processing. By the end of the process that number will go to zero.
-        </p> 
+        </p>
         <p>
           The <b>Migrated</b> number represents the number of records that have successfully migrated in this session. By the end of the process that number should equal the <b>Estimated</b> number if all records found in NOMIS were successfully migrated.
         </p>
         <p>
           The <b>Failed</b> number represents the number of records that failed to migrate. A failed record is held in a dead letter queue. It may take a long time before any records that are destined to fail actually appear in this number because they retried several times, each time going to the back of the queue.
-        </p>    
+        </p>
         <p>
           The <b>Failed</b> number technically is just the current number of records on the dead letter queue. So messages that have not been fixed from the previous migration would appear in this number, hence it is important a new migration should not be started before any failed records from previous migrations are dealt with (either fixed or discarded).
-        </p>  
+        </p>
         <p>
           <b>Note:</b> Since the numbers are counts from the AWS SQS messaging system, that itself are just approximations, numbers can go up and down when the <b>Refresh</b> button is pressed.
-        </p>  
-       
+        </p>
+
       {% endset %}
 
       {{ govukDetails({
         summaryText: "What do all the numbers mean?",
         html: detailsHtml
-      }) }}                
+      }) }}
     </div>
 </div>
 
@@ -52,6 +52,11 @@
         {% if migration.history.filterCourseActivityId %}
           <div>
             <span class="govuk-label--s">Course Activity ID:</span><span data-qa="filterCourseActivityId" class="govuk-!-margin-left-2">{{ migration.history.filterCourseActivityId }}</span>
+          </div>
+        {% endif %}
+        {% if migration.history.filterActivityStartDate %}
+          <div>
+            <span class="govuk-label--s">Course Activity Start Date:</span><span data-qa="filterActivityStartDate" class="govuk-!-margin-left-2">{{ migration.history.filterActivityStartDate }}</span>
           </div>
         {% endif %}
       {% endset %}
@@ -107,7 +112,7 @@
                 text: "Estimated"
               },
               value: {
-                text:  migration.history.estimatedRecordCount 
+                text:  migration.history.estimatedRecordCount
               }
             },
             {

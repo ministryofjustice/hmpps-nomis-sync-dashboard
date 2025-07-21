@@ -72,6 +72,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/migrate/activities/{migrationId}/move-start-dates': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Moves the start date for future activities in DPS.
+     * @description Update all DPS activities for this prison to the new start date. Get all NOMIS activities migrated move the end dates to the day before the new start date. Requires role MIGRATE_ACTIVITIES
+     */
+    put: operations['moveActivityStartDates']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/migrate/activities/{migrationId}/end': {
     parameters: {
       query?: never
@@ -81,8 +101,8 @@ export interface paths {
     }
     get?: never
     /**
-     * End all activities and allocations for a migration
-     * @description Get all NOMIS activities migrated on a migrationId and ends them all. Requires role MIGRATE_ACTIVITIES
+     * End all NOMIS activities and allocations for a migration on the day before the DPS activity start date
+     * @description Get all NOMIS activities migrated on a migrationId and ends them all on the day before the DPS activity start date. Requires role MIGRATE_ACTIVITIES
      */
     put: operations['endMigratedActivities']
     post?: never
@@ -92,7 +112,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/incidents/reports/reconciliation': {
+  '/prisoners/{prisonNumber}/visit-balance/repair': {
     parameters: {
       query?: never
       header?: never
@@ -100,8 +120,12 @@ export interface paths {
       cookie?: never
     }
     get?: never
-    put: operations['incidentsReconciliation']
-    post?: never
+    put?: never
+    /**
+     * Resynchronises a visit balance for the given prisoner from NOMIS to DPS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_VISIT_BALANCE
+     */
+    post: operations['repairVisitBalance']
     delete?: never
     options?: never
     head?: never
@@ -382,7 +406,7 @@ export interface paths {
     get?: never
     put?: never
     /**
-     * Starts a contact person migration. The entity type is determined by the migration filter
+     * Starts a prisoner restriction migration. The entity type is determined by the migration filter
      * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CONTACTPERSON</b>
      */
     post: operations['migrateContactPerson']
@@ -672,7 +696,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/incidents/reconciliation/{nomisIncidentId}': {
+  '/migrate/court-sentencing/offender-payload/{offenderNo}': {
     parameters: {
       query?: never
       header?: never
@@ -680,11 +704,10 @@ export interface paths {
       cookie?: never
     }
     /**
-     * Run reconciliation against this incident
-     * @description Retrieves the differences for the incident report. Empty response returned if no differences found.
-     *           Requires NOMIS_INCIDENTS
+     * provides the migration payload for debug purposes
+     * @description Provides the migration payload for an offender, no migration is performed. Useful for investigating migration errors. Requires role <b>MIGRATE_SENTENCING</b>
      */
-    get: operations['generateReconciliationReportForIncident']
+    get: operations['offenderMigrationPayload']
     put?: never
     post?: never
     delete?: never
@@ -717,7 +740,9 @@ export interface paths {
     trace?: never
   }
 }
+
 export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     ErrorResponse: {
@@ -729,7 +754,6 @@ export interface components {
       developerMessage?: string
       moreInfo?: string
     }
-    ResultUnit: Record<string, never>
     RetryDlqResult: {
       /** Format: int32 */
       messagesFoundCount: number
@@ -737,6 +761,14 @@ export interface components {
     PurgeQueueResult: {
       /** Format: int32 */
       messagesFoundCount: number
+    }
+    /**
+     * @description The new start date for all activities
+     * @example 2023-01-01
+     */
+    MoveActivityStartDateRequest: {
+      /** Format: date */
+      newActivityStartDate: string
     }
     /** @description Filter specifying what should be migrated from NOMIS to Visits service */
     VisitsMigrationFilter: {
@@ -792,6 +824,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['VisitsMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying what should be migrated from NOMIS to DPS */
     VisitBalanceMigrationFilter: {
@@ -820,6 +855,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['VisitBalanceMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying what should be migrated from NOMIS to Sentencing service */
     SentencingMigrationFilter: {
@@ -855,6 +893,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['SentencingMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying what should be migrated from NOMIS to the Incident Reporting service */
     IncidentsMigrationFilter: {
@@ -890,6 +931,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['IncidentsMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter to allow initial migration testing with 1 offender */
     CourtSentencingMigrationFilter: {
@@ -906,6 +950,7 @@ export interface components {
        * @example 2020-03-24
        */
       toDate?: string
+      deleteExisting: boolean
     }
     MigrationContextCourtSentencingMigrationFilter: {
       /** @enum {string} */
@@ -926,6 +971,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['CourtSentencingMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying what should be migrated from NOMIS to DPS */
     OrganisationsMigrationFilter: {
@@ -961,6 +1009,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['OrganisationsMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying what should be migrated from NOMIS to DPS */
     CorePersonMigrationFilter: {
@@ -996,23 +1047,26 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['CorePersonMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying what should be migrated from NOMIS to DPS */
-    ContactPersonMigrationFilter: {
+    PrisonerRestrictionMigrationFilter: {
       /**
        * Format: date
-       * @description Only include Persons created on or after this date
+       * @description Only include restrictions created on or after this date
        * @example 2020-03-23
        */
       fromDate?: string
       /**
        * Format: date
-       * @description Only include Persons created before or on this date
+       * @description Only include restrictions created before or on this date
        * @example 2020-03-24
        */
       toDate?: string
     }
-    MigrationContextContactPersonMigrationFilter: {
+    MigrationContextPrisonerRestrictionMigrationFilter: {
       /** @enum {string} */
       type:
         | 'VISITS'
@@ -1030,7 +1084,10 @@ export interface components {
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
-      body: components['schemas']['ContactPersonMigrationFilter']
+      body: components['schemas']['PrisonerRestrictionMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying what should be migrated from NOMIS to DPS */
     ContactPersonProfileDetailsMigrationFilter: {
@@ -1059,6 +1116,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['ContactPersonProfileDetailsMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying what should be migrated from NOMIS to Appointments service */
     AppointmentsMigrationFilter: {
@@ -1099,6 +1159,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['AppointmentsMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying which allocations should be migrated from NOMIS to DPS service */
     AllocationsMigrationFilter: {
@@ -1113,6 +1176,12 @@ export interface components {
        * @example 12345
        */
       courseActivityId?: number
+      /**
+       * Format: date
+       * @description The date the new activity will start. This should be the same as the related activity migration.
+       * @example 2025-01-31
+       */
+      activityStartDate?: string
     }
     MigrationContextAllocationsMigrationFilter: {
       /** @enum {string} */
@@ -1133,6 +1202,9 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['AllocationsMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     /** @description Filter specifying which activities should be migrated from NOMIS to DPS service */
     ActivitiesMigrationFilter: {
@@ -1149,13 +1221,13 @@ export interface components {
       courseActivityId?: number
       /**
        * Format: date
-       * @description The date the new activity will start
+       * @description The date the new activity will start. Cannot be null except for old data prior to start date being mandatory.
        * @example 2025-01-31
        */
       activityStartDate?: string
       /**
        * Format: date
-       * @description The date the NOMIS activity will end
+       * @description The date the NOMIS activities will end. If null then they have not been ended yet.
        * @example 2025-01-30
        */
       nomisActivityEndDate?: string
@@ -1179,10 +1251,13 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['ActivitiesMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
     }
     DlqMessage: {
       body: {
-        [key: string]: Record<string, never>
+        [key: string]: unknown
       }
       messageId: string
     }
@@ -1270,29 +1345,120 @@ export interface components {
       /** @enum {string} */
       status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
     }
-    IncidentReportDetail: {
-      type?: string
-      status?: string
-      reportedBy: string
+    CaseReferenceLegacyData: {
+      offenderCaseReference: string
       /** Format: date-time */
-      reportedDateTime: string
-      offenderParties?: string[]
-      /** Format: int32 */
-      totalStaffParties?: number
-      /** Format: int32 */
-      totalQuestions?: number
-      /** Format: int32 */
-      totalRequirements?: number
-      /** Format: int32 */
-      totalResponses?: number
+      updatedDate: string
     }
-    MismatchIncident: {
+    ChargeLegacyData: {
+      postedDate?: string
+      nomisOutcomeCode?: string
+      outcomeDescription?: string
+      outcomeDispositionCode?: string
+      outcomeConvictionFlag?: boolean
+    }
+    CourtAppearanceLegacyData: {
+      postedDate?: string
+      nomisOutcomeCode?: string
+      outcomeDescription?: string
+      /** Format: date-time */
+      nextEventDateTime?: string
+      appearanceTime?: string
+      outcomeDispositionCode?: string
+      outcomeConvictionFlag?: boolean
+    }
+    CourtCaseLegacyData: {
+      caseReferences: components['schemas']['CaseReferenceLegacyData'][]
+    }
+    MigrationCreateCharge: {
       /** Format: int64 */
-      nomisId: number
+      chargeNOMISId: number
+      offenceCode: string
+      legacyData: components['schemas']['ChargeLegacyData']
+      /** Format: date */
+      offenceStartDate?: string
+      /** Format: date */
+      offenceEndDate?: string
+      sentence?: components['schemas']['MigrationCreateSentence']
+      /** Format: int64 */
+      mergedFromCaseId?: number
+      /** Format: date */
+      mergedFromDate?: string
+    }
+    MigrationCreateCourtAppearance: {
+      /** Format: int64 */
+      eventId: number
+      courtCode: string
+      /** Format: date */
+      appearanceDate: string
       /** Format: uuid */
-      dpsId: string
-      nomisIncident?: components['schemas']['IncidentReportDetail']
-      dpsIncident?: components['schemas']['IncidentReportDetail']
+      appearanceTypeUuid: string
+      legacyData: components['schemas']['CourtAppearanceLegacyData']
+      charges: components['schemas']['MigrationCreateCharge'][]
+    }
+    MigrationCreateCourtCase: {
+      /** Format: int64 */
+      caseId: number
+      active: boolean
+      courtCaseLegacyData: components['schemas']['CourtCaseLegacyData']
+      appearances: components['schemas']['MigrationCreateCourtAppearance'][]
+      merged?: boolean
+    }
+    MigrationCreateCourtCases: {
+      prisonerId: string
+      courtCases: components['schemas']['MigrationCreateCourtCase'][]
+    }
+    MigrationCreateFine: {
+      fineAmount: number
+    }
+    MigrationCreatePeriodLength: {
+      periodLengthId: components['schemas']['NomisPeriodLengthId']
+      legacyData: components['schemas']['PeriodLengthLegacyData']
+      /** Format: int32 */
+      periodYears?: number
+      /** Format: int32 */
+      periodMonths?: number
+      /** Format: int32 */
+      periodWeeks?: number
+      /** Format: int32 */
+      periodDays?: number
+    }
+    MigrationCreateSentence: {
+      sentenceId: components['schemas']['MigrationSentenceId']
+      active: boolean
+      legacyData: components['schemas']['SentenceLegacyData']
+      periodLengths: components['schemas']['MigrationCreatePeriodLength'][]
+      fine?: components['schemas']['MigrationCreateFine']
+      consecutiveToSentenceId?: components['schemas']['MigrationSentenceId']
+      /** Format: date */
+      returnToCustodyDate?: string
+    }
+    MigrationSentenceId: {
+      /** Format: int64 */
+      offenderBookingId: number
+      /** Format: int32 */
+      sequence: number
+    }
+    NomisPeriodLengthId: {
+      /** Format: int64 */
+      offenderBookingId: number
+      /** Format: int32 */
+      sentenceSequence: number
+      /** Format: int32 */
+      termSequence: number
+    }
+    PeriodLengthLegacyData: {
+      lifeSentence?: boolean
+      sentenceTermCode?: string
+      sentenceTermDescription?: string
+    }
+    SentenceLegacyData: {
+      postedDate: string
+      sentenceCalcType?: string
+      sentenceCategory?: string
+      sentenceTypeDesc?: string
+      active?: boolean
+      nomisLineReference?: string
     }
   }
   responses: never
@@ -1301,7 +1467,9 @@ export interface components {
   headers: never
   pathItems: never
 }
+
 export type $defs = Record<string, never>
+
 export interface operations {
   'syncContactPersonProfileDetail-0E7RQCE': {
     parameters: {
@@ -1321,7 +1489,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['ResultUnit']
+          'application/json': Record<string, never>
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -1417,6 +1585,69 @@ export interface operations {
       }
     }
   }
+  moveActivityStartDates: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description Migration ID */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MoveActivityStartDateRequest']
+      }
+    }
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': string[]
+        }
+      }
+      /** @description Invalid request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden, requires role NOMIS_ACTIVITIES */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Not found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   endMigratedActivities: {
     parameters: {
       query?: never
@@ -1474,17 +1705,19 @@ export interface operations {
       }
     }
   }
-  incidentsReconciliation: {
+  repairVisitBalance: {
     parameters: {
       query?: never
       header?: never
-      path?: never
+      path: {
+        prisonNumber: string
+      }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description Accepted */
-      202: {
+      /** @description No Content */
+      204: {
         headers: {
           [name: string]: unknown
         }
@@ -2025,7 +2258,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        'application/json': components['schemas']['ContactPersonMigrationFilter']
+        'application/json': components['schemas']['PrisonerRestrictionMigrationFilter']
       }
     }
     responses: {
@@ -2035,7 +2268,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['MigrationContextContactPersonMigrationFilter']
+          'application/json': components['schemas']['MigrationContextPrisonerRestrictionMigrationFilter']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -2791,28 +3024,28 @@ export interface operations {
       }
     }
   }
-  generateReconciliationReportForIncident: {
+  offenderMigrationPayload: {
     parameters: {
       query?: never
       header?: never
       path: {
         /**
-         * @description Nomis Incident Id
-         * @example 123
+         * @description Offender No AKA prisoner number
+         * @example A1234AK
          */
-        nomisIncidentId: number
+        offenderNo: string
       }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description Reconciliation differences returned */
+      /** @description Migration payload returned */
       200: {
         headers: {
           [name: string]: unknown
         }
         content: {
-          '*/*': components['schemas']['MismatchIncident']
+          'application/json': components['schemas']['MigrationCreateCourtCases']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -2824,17 +3057,8 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** @description Forbidden to access this endpoint. Requires NOMIS_INCIDENTS */
+      /** @description Incorrect permissions to call endpoint */
       403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Incident does not exist */
-      404: {
         headers: {
           [name: string]: unknown
         }
