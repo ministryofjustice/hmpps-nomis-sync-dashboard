@@ -14,6 +14,7 @@ import AllocationsNomisMigrationService from '../../services/allocations/allocat
 interface Filter {
   prisonId?: string
   courseActivityId?: number
+  activityStartDate?: string
 }
 
 export default class AllocationsMigrationController {
@@ -59,9 +60,9 @@ export default class AllocationsMigrationController {
   }
 
   async startNewAllocationsMigration(req: Request, res: Response): Promise<void> {
-    delete req.session.startAllocationsMigrationForm
-    if (req.query.prisonId || req.query.courseActivityId) {
-      req.session.startAllocationsMigrationForm = { ...req.query }
+    req.session.startAllocationsMigrationForm = { protectStartDate: false }
+    if (req.query.prisonId || req.query.courseActivityId || req.query.activityStartDate) {
+      req.session.startAllocationsMigrationForm = { ...req.query, protectStartDate: !!req.query.activityStartDate }
     }
     await this.startAllocationsMigration(req, res)
   }
@@ -142,6 +143,7 @@ export default class AllocationsMigrationController {
     return {
       prisonId: form.prisonId,
       courseActivityId: form.courseActivityId,
+      activityStartDate: form.activityStartDate,
     }
   }
 
@@ -195,14 +197,17 @@ export default class AllocationsMigrationController {
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
     filterPrisonId?: string
     filterCourseActivityId?: number
+    filterActivityStartDate?: string
   } {
     const filter: Filter = JSON.parse(migration.filter)
     const filterPrisonId = filter.prisonId
     const filterCourseActivityId = filter.courseActivityId
+    const filterActivityStartDate = filter.activityStartDate
     return {
       ...migration,
       ...(filterPrisonId && { filterPrisonId }),
       ...(filterCourseActivityId && { filterCourseActivityId }),
+      ...(filterActivityStartDate && { filterActivityStartDate }),
     }
   }
 }

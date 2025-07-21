@@ -35,6 +35,7 @@ declare module 'forms' {
 
   export interface StartAllocationsMigrationForm {
     prisonId?: string
+    activityStartDate?: string
     courseActivityId?: number
     action?: 'startMigration' | 'viewEstimatedCount'
   }

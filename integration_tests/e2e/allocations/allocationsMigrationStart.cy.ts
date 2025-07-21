@@ -1,3 +1,4 @@
+import moment from 'moment'
 import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import StartAllocationsMigrationPage from '../../pages/allocations-migration/startAllocationsMigration'
@@ -50,6 +51,7 @@ context('Allocations Migration Start', () => {
       const page = Page.verifyOnPage(StartAllocationsMigrationPage)
       page.prisonId().type('MDI')
       page.courseActivityId().type('123456')
+      page.activityStartDate().type(moment().add(2, 'days').format('YYYY-MM-DD'))
 
       page.continueButton().click()
       const previewPage = Page.verifyOnPage(StartAllocationsMigrationPreviewPage)
@@ -62,18 +64,21 @@ context('Allocations Migration Start', () => {
 
       previewPage.prisonIdRow().contains('MDI')
       previewPage.courseActivityIdRow().contains('123456')
+      previewPage.activityStartDateRow().contains(moment().add(2, 'days').format('YYYY-MM-DD'))
       previewPage.prisonIdChangeLink().click()
 
       // amend the from date
       const amendPage = Page.verifyOnPage(StartAllocationsMigrationPage)
       amendPage.prisonId().clear().type('LEI')
       amendPage.courseActivityId().clear().type('333333')
+      amendPage.activityStartDate().clear().type(moment().add(3, 'days').format('YYYY-MM-DD'))
       amendPage.continueButton().click()
 
       // check amended date displayed
       const previewPageAgain = Page.verifyOnPage(StartAllocationsMigrationPreviewPage)
       previewPageAgain.prisonIdRow().contains('LEI')
       previewPageAgain.courseActivityIdRow().contains('333333')
+      previewPageAgain.activityStartDateRow().contains(moment().add(3, 'days').format('YYYY-MM-DD'))
       previewPageAgain.startMigrationButton().click()
 
       const confirmationPage = Page.verifyOnPage(StartAllocationsMigrationConfirmationPage)
@@ -96,6 +101,7 @@ context('Allocations Migration Start', () => {
 
       const page = Page.verifyOnPage(StartAllocationsMigrationPage)
       page.prisonId().type('MDI')
+      page.activityStartDate().type(moment().add(2, 'days').format('YYYY-MM-DD'))
 
       page.continueButton().click()
       const previewPage = Page.verifyOnPage(StartAllocationsMigrationPreviewPage)

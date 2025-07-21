@@ -1,9 +1,11 @@
+import moment from 'moment/moment'
 import IndexPage from '../../pages'
 import Page from '../../pages/page'
 import ActivitiesMigrationPage from '../../pages/activities-migration/activitiesMigration'
 import StarAllocationsMigrationPage from '../../pages/allocations-migration/startAllocationsMigration'
 import { activitiesMigrationHistory } from '../../mockApis/nomisActivitiesMigrationApi'
 import AuthErrorPage from '../../pages/authError'
+import StartAllocationsMigrationPreviewPage from '../../pages/allocations-migration/startAllocationsMigrationPreview'
 
 context('Activities Migration Homepage', () => {
   beforeEach(() => {
@@ -77,6 +79,13 @@ context('Activities Migration Homepage', () => {
 
     it('should click through to allocation migration', () => {
       cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ACTIVITIES' })
+      cy.task('stubStartAllocationsMigration', {
+        migrationId: '2022-03-23T11:11:56',
+        estimatedCount: 100_988,
+      })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'ALLOCATIONS' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'ALLOCATIONS' })
+      cy.task('stubGetAllocationsMigrationEstimatedCount', 100_988)
 
       const migrationPage = ActivitiesMigrationPage.goTo()
 
@@ -87,6 +96,15 @@ context('Activities Migration Homepage', () => {
       const allocationPage = Page.verifyOnPage(StarAllocationsMigrationPage)
       allocationPage.prisonId().should('have.value', 'WWI')
       allocationPage.courseActivityId().should('have.value', '123456')
+      // The start date should be disabled but stored in a hidden form field
+      allocationPage.activityStartDate().should('have.value', moment().add(2, 'days').format('YYYY-MM-DD'))
+      allocationPage.activityStartDate().should('have.attr', 'disabled')
+      allocationPage.hiddenActivityStartDate().should('have.value', moment().add(2, 'days').format('YYYY-MM-DD'))
+
+      // The hidden start date should be pulled through to the preview form
+      allocationPage.continueButton().click()
+      const allocationPreviewPage = Page.verifyOnPage(StartAllocationsMigrationPreviewPage)
+      allocationPreviewPage.activityStartDateRow().contains(moment().add(2, 'days').format('YYYY-MM-DD'))
     })
   })
 

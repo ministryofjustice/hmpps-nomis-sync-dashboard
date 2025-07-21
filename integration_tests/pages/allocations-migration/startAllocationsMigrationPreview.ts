@@ -13,6 +13,8 @@ export default class StartAllocationsMigrationPreviewPage extends Page {
 
   courseActivityIdRow = (): PageElement => cy.get('[data-qa=course-activity-id]').parent().parent()
 
+  activityStartDateRow = (): PageElement => cy.get('[data-qa=activity-start-date]').parent().parent()
+
   estimateSummary = () => cy.get('#estimateSummary')
 
   dlqWarning = () => cy.get('#dlqWarning')

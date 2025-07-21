@@ -11,6 +11,10 @@ export default class StartAllocationsMigrationPage extends Page {
 
   courseActivityId = () => cy.get('#courseActivityId')
 
+  activityStartDate = () => cy.get('#activityStartDate')
+
+  hiddenActivityStartDate = () => cy.get('[data-qa=hidden-activityStartDate]')
+
   errorSummary = () => cy.get('.govuk-error-summary')
 
   estimateSummary = () => cy.get('#estimateSummary')

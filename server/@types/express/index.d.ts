@@ -71,6 +71,8 @@ declare module 'express-session' {
   interface StartAllocationsMigrationForm extends MigrationForm {
     prisonId?: string
     courseActivityId?: number
+    activityStartDate?: string
+    protectStartDate?: boolean
   }
 
   interface StartCourtSentencingMigrationForm extends MigrationForm {

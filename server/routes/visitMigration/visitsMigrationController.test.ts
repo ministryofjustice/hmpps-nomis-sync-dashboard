@@ -248,6 +248,7 @@ describe('visitsMigrationController', () => {
             toDateTime: '2020-03-24T00:00:00',
             ignoreMissingRoom: false,
           },
+          properties: {},
         })
       })
 

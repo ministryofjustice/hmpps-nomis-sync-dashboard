@@ -63,6 +63,24 @@
                             errorMessage: errors | findError('courseActivityId')
                         }) }}
 
+                        {{ govukInput({
+                            label: {
+                                html: 'The date activities will start in DPS.'
+                            },
+                            id: "activityStartDate",
+                            name: "activityStartDate",
+                            classes: "govuk-input--width-20",
+                            hint: {
+                                text: "Example 2025-05-31, must be after today. Allocations active on this date will be migrated. Cannot be changed if defaulted from the Activities migration."
+                            },
+                            value: form.activityStartDate,
+                            disabled: form.protectStartDate,
+                            errorMessage: errors | findError('activityStartDate')
+                        }) }}
+                        {%if form.protectStartDate %}
+                          <input type="hidden" name="activityStartDate" data-qa="hidden-activityStartDate" value="{{ form.activityStartDate }}" />
+                        {% endif %}
+
                         <div class="govuk-button-group">
                             {{ govukButton({
                                 text: "Continue to preview",
@@ -75,7 +93,7 @@
                     {% endcall %}
                 </form>
             </div>
-        </div>      
+        </div>
     </div>
   </main>
 
