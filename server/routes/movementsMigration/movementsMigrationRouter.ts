@@ -7,7 +7,11 @@ import MovementsMigrationController from './movementsMigrationController'
 import MovementsNomisPrisonerService from '../../services/movements/movementsNomisPrisonerService'
 import MovementsNomisMigrationService from '../../services/movements/movementsNomisMigrationService'
 
-export default function routes({ movementsNomisMigrationService, movementsNomisPrisonerService, nomisMigrationService }: {
+export default function routes({
+  movementsNomisMigrationService,
+  movementsNomisPrisonerService,
+  nomisMigrationService,
+}: {
   movementsNomisMigrationService: MovementsNomisMigrationService
   movementsNomisPrisonerService: MovementsNomisPrisonerService
   nomisMigrationService: NomisMigrationService
@@ -15,7 +19,11 @@ export default function routes({ movementsNomisMigrationService, movementsNomisP
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware([MIGRATE_NOMIS_SYSCON]))
 
-  const migrationController = new MovementsMigrationController(movementsNomisMigrationService, movementsNomisPrisonerService,nomisMigrationService)
+  const migrationController = new MovementsMigrationController(
+    movementsNomisMigrationService,
+    movementsNomisPrisonerService,
+    nomisMigrationService,
+  )
 
   router.get('/', (req, res) => migrationController.getMigrations(req, res))
   router.get('/start', (req, res) => migrationController.startNewMigration(req, res))

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import moment from 'moment/moment'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import { context } from '../../services/context'
@@ -6,7 +7,6 @@ import NomisMigrationService from '../../services/nomisMigrationService'
 import { buildUrlNoTimespan } from '../../utils/logAnalyticsUrlBuilder'
 import MovementsNomisPrisonerService from '../../services/movements/movementsNomisPrisonerService'
 import MovementsNomisMigrationService from '../../services/movements/movementsNomisMigrationService'
-import moment from 'moment/moment'
 import { MigrationHistory } from '../../@types/migration'
 
 interface Filter {

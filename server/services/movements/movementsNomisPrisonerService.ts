@@ -1,6 +1,6 @@
+import { PrisonerFilteredMigrationForm } from 'express-session'
 import { Context } from '../context'
 import MovementsNomisPrisonerClient from '../../data/movementsNomisPrisonerClient'
-import { PrisonerFilteredMigrationForm } from 'express-session'
 
 export default class MovementsNomisPrisonerService {
   constructor(private readonly movementsNomisPrisonerClient: MovementsNomisPrisonerClient) {}
@@ -8,8 +8,7 @@ export default class MovementsNomisPrisonerService {
   async getMigrationEstimatedCount(filter: PrisonerFilteredMigrationForm, context: Context): Promise<number> {
     if (filter.prisonerNumber) {
       return Promise.resolve(1)
-    } else {
-      return this.movementsNomisPrisonerClient.getMigrationEstimatedCount(context)
     }
+    return this.movementsNomisPrisonerClient.getMigrationEstimatedCount(context)
   }
 }
