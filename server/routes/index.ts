@@ -13,6 +13,8 @@ import contactPersonMigrationRoutes from './contactPersonMigration/contactPerson
 import contactPersonProfileDetailsMigrationRoutes from './contactPersonMigration/contactPersonProfileDetailsMigration/contactPersonProfileDetailsMigrationRouter'
 import corporateMigrationRoutes from './corporateMigration/corporateMigrationRouter'
 import visitBalanceMigrationRoutes from './visitBalanceMigration/visitBalanceMigrationRouter'
+import movementsMigrationRoutes from './movementsMigration/movementsMigrationRouter'
+
 import {
   extractRoles,
   MIGRATE_SENTENCING_ROLE,
@@ -140,6 +142,14 @@ export default function routes(services: Services): Router {
           roles: [MIGRATE_VISIT_BALANCE_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
+        {
+          id: 'movements-migration',
+          heading: 'Temporary Absence migration',
+          description: 'Migration and synchronisation information',
+          href: '/movements-migration',
+          roles: [MIGRATE_NOMIS_SYSCON],
+          enabled: true,
+        },
       ].filter(
         register =>
           Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled,
@@ -160,5 +170,6 @@ export default function routes(services: Services): Router {
   router.use('/contactperson-profiledetails-migration', contactPersonProfileDetailsMigrationRoutes(services))
   router.use('/corporate-migration', corporateMigrationRoutes(services))
   router.use('/visit-balance-migration', visitBalanceMigrationRoutes(services))
+  router.use('/movements-migration', movementsMigrationRoutes(services))
   return router
 }

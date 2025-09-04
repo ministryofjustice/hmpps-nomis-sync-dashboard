@@ -45,3 +45,6 @@ export type ContactPersonProfileDetailsMigrationFilter =
   components['schemas']['ContactPersonProfileDetailsMigrationFilter']
 export type MigrationContextContactPersonProfileDetailsMigrationFilter =
   components['schemas']['MigrationContextContactPersonProfileDetailsMigrationFilter']
+
+export type MovementsMigrationFilter = components['schemas']['MovementsMigrationFilter']
+export type MigrationContextMovementsMigrationFilter = components['schemas']['MigrationContextMovementsMigrationFilter']
