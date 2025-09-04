@@ -34,6 +34,8 @@ import NomisPrisonerClient from './nomisPrisonerClient'
 import MappingClient from './mappingClient'
 import ActivitiesClient from './activitiesClient'
 import NomisMigrationClient from './nomisMigrationClient'
+import MovementsNomisPrisonerClient from './movementsNomisPrisonerClient'
+import MovementsNomisMigrationClient from './movementsNomisMigrationClient'
 
 export const dataAccess = () => {
   const hmppsAuthClient = new AuthenticationClient(
@@ -65,6 +67,8 @@ export const dataAccess = () => {
     visitBalanceNomisMigrationClient: new VisitBalanceNomisMigrationClient(),
     visitBalanceNomisPrisonerClient: new VisitBalanceNomisPrisonerClient(hmppsAuthClient),
     visitsNomisMigrationClient: new VisitsNomisMigrationClient(),
+    movementsNomisMigrationClient: new MovementsNomisMigrationClient(),
+    movementsNomisPrisonerClient: new MovementsNomisPrisonerClient(hmppsAuthClient),
   }
 }
 
