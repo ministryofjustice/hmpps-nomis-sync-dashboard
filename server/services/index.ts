@@ -9,6 +9,8 @@ import ContactPersonNomisPrisonerService from './contactperson/contactPersonNomi
 import CorePersonNomisMigrationService from './coreperson/corePersonNomisMigrationService'
 import CorporateNomisMigrationService from './corporate/corporateNomisMigrationService'
 import CorporateNomisPrisonerService from './corporate/corporateNomisPrisonerService'
+import PrisonerBalanceNomisMigrationService from './prisonerbalance/prisonerBalanceNomisMigrationService'
+import PrisonerBalanceNomisPrisonerService from './prisonerbalance/prisonerBalanceNomisPrisonerService'
 import VisitBalanceNomisMigrationService from './visitbalance/visitBalanceNomisMigrationService'
 import VisitBalanceNomisPrisonerService from './visitbalance/visitBalanceNomisPrisonerService'
 import ContactPersonProfileDetailsNomisMigrationService from './contactperson/profiledetails/contactPersonProfileDetailsNomisMigrationService'
@@ -43,6 +45,8 @@ export const services = () => {
     nomisPrisonerClient,
     incidentsNomisMigrationClient,
     sentencingNomisMigrationClient,
+    prisonerBalanceNomisMigrationClient,
+    prisonerBalanceNomisPrisonerClient,
     visitBalanceNomisMigrationClient,
     visitBalanceNomisPrisonerClient,
     visitsNomisMigrationClient,
@@ -73,6 +77,8 @@ export const services = () => {
     courtSentencingNomisMigrationService: new CourtSentencingNomisMigrationService(courtSentencingNomisMigrationClient),
     incidentsNomisMigrationService: new IncidentsNomisMigrationService(incidentsNomisMigrationClient),
     sentencingNomisMigrationService: new SentencingNomisMigrationService(sentencingNomisMigrationClient),
+    prisonerBalanceNomisMigrationService: new PrisonerBalanceNomisMigrationService(prisonerBalanceNomisMigrationClient),
+    prisonerBalanceNomisPrisonerService: new PrisonerBalanceNomisPrisonerService(prisonerBalanceNomisPrisonerClient),
     visitBalanceNomisMigrationService: new VisitBalanceNomisMigrationService(visitBalanceNomisMigrationClient),
     visitBalanceNomisPrisonerService: new VisitBalanceNomisPrisonerService(visitBalanceNomisPrisonerClient),
     visitsNomisMigrationService: new VisitsNomisMigrationService(visitsNomisMigrationClient),

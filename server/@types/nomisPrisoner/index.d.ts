@@ -8,6 +8,10 @@ export type GetVisitsByFilter = Omit<operations['getVisitsByFilter']['parameters
 export type GetAdjustmentsByFilter = Omit<operations['getAdjustmentsByFilter']['parameters']['query'], 'pageRequest'>
 export type GetCourtCaseIdsByFilter = Omit<operations['getCourtCaseIdsByFilter']['parameters']['query'], 'pageRequest'>
 export type GetIncidentIdsByFilter = Omit<operations['getIncidentIdsByFilter']['parameters']['query'], 'pageRequest'>
+export type GetPrisonerBalanceIdsByFilter = Omit<
+  operations['getPrisonerBalanceIdsByFilter']['parameters']['query'],
+  'pageRequest'
+>
 export type GetActivitiesByFilter = Omit<operations['findActiveActivities']['parameters']['query'], 'pageRequest'>
 export type GetAllocationsByFilter = Omit<operations['findActiveAllocations']['parameters']['query'], 'pageRequest'>
 export type VisitRoomCountResponse = components['schemas']['VisitRoomCountResponse']
@@ -31,3 +35,4 @@ export type PageCorporateOrganisationIdResponse = components['schemas']['PageCor
 export type GetCorporateByFilter = Omit<operations['getCorporateIds']['parameters']['query'], 'pageRequest'>
 export type PageVisitBalanceIdResponse = components['schemas']['PageVisitBalanceIdResponse']
 export type GetVisitBalanceIdsByFilter = Omit<operations['findVisitBalanceIds']['parameters']['query'], 'pageRequest'>
+export type PagedModelLong = components['schemas']['PagedModelLong']
