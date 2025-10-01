@@ -37,6 +37,10 @@ export type MigrationContextContactPersonMigrationFilter =
 export type CorporateMigrationFilter = components['schemas']['CorporateMigrationFilter']
 export type MigrationContextCorporateMigrationFilter = components['schemas']['MigrationContextCorporateMigrationFilter']
 
+export type PrisonerBalanceMigrationFilter = components['schemas']['PrisonerBalanceMigrationFilter']
+export type MigrationContextPrisonerBalanceMigrationFilter =
+  components['schemas']['MigrationContextPrisonerBalanceMigrationFilter']
+
 export type VisitBalanceMigrationFilter = components['schemas']['VisitBalanceMigrationFilter']
 export type MigrationContextVisitBalanceMigrationFilter =
   components['schemas']['MigrationContextVisitBalanceMigrationFilter']
