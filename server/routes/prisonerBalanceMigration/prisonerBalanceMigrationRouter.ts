@@ -3,9 +3,9 @@ import express, { Router } from 'express'
 import PrisonerBalanceMigrationController from './prisonerBalanceMigrationController'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 import { MIGRATE_NOMIS_SYSCON } from '../../authentication/roles'
-import PrisonerBalanceNomisMigrationService from '../../services/prisonerbalance/prisonerBalanceNomisMigrationService'
+import PrisonerBalanceNomisMigrationService from '../../services/finance/prisonerBalanceNomisMigrationService'
 import NomisMigrationService from '../../services/nomisMigrationService'
-import PrisonerBalanceNomisPrisonerService from '../../services/prisonerbalance/prisonerBalanceNomisPrisonerService'
+import PrisonerBalanceNomisPrisonerService from '../../services/finance/prisonerBalanceNomisPrisonerService'
 
 export default function routes({
   prisonerBalanceNomisMigrationService,

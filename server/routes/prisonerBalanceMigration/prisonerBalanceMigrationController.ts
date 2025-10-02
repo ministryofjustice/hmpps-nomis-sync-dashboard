@@ -3,11 +3,11 @@ import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
 import startMigrationValidator from './prisonerBalanceMigrationValidator'
-import PrisonerBalanceNomisMigrationService from '../../services/prisonerbalance/prisonerBalanceNomisMigrationService'
+import PrisonerBalanceNomisMigrationService from '../../services/finance/prisonerBalanceNomisMigrationService'
 import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import { MigrationHistory } from '../../@types/migration'
-import PrisonerBalanceNomisPrisonerService from '../../services/prisonerbalance/prisonerBalanceNomisPrisonerService'
+import PrisonerBalanceNomisPrisonerService from '../../services/finance/prisonerBalanceNomisPrisonerService'
 
 interface Filter {
   prisonId?: string
