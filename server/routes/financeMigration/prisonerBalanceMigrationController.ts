@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../utils/logAnalyticsUrlBuilder'
 import trimForm from '../../utils/trim'
 import logger from '../../../logger'
-import startMigrationValidator from './prisonerBalanceMigrationValidator'
+import startMigrationValidator from './balanceMigrationValidator'
 import PrisonerBalanceNomisMigrationService from '../../services/finance/prisonerBalanceNomisMigrationService'
 import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
@@ -33,7 +33,7 @@ export default class PrisonerBalanceMigrationController {
         history.whenEnded,
       ),
     }))
-    res.render('pages/prisonerbalance/prisonerBalanceMigration', {
+    res.render('pages/finance/prisonerBalanceMigration', {
       migrations: decoratedMigrations,
     })
   }
@@ -47,7 +47,7 @@ export default class PrisonerBalanceMigrationController {
         applicationInsightsLink: messageLogAnalyticsLink(message),
       })),
     }
-    res.render('pages/prisonerbalance/prisonerBalanceMigrationFailures', { failures: failuresDecorated })
+    res.render('pages/finance/prisonerBalanceMigrationFailures', { failures: failuresDecorated })
   }
 
   async startNewMigration(req: Request, res: Response): Promise<void> {
@@ -56,7 +56,7 @@ export default class PrisonerBalanceMigrationController {
   }
 
   async startMigration(req: Request, res: Response): Promise<void> {
-    res.render('pages/prisonerbalance/startPrisonerBalanceMigration', {
+    res.render('pages/finance/startPrisonerBalanceMigration', {
       form: req.session.prisonFilteredMigrationForm,
       errors: req.flash('errors'),
     })
@@ -83,7 +83,7 @@ export default class PrisonerBalanceMigrationController {
   }
 
   async startMigrationPreview(req: Request, res: Response): Promise<void> {
-    res.render('pages/prisonerbalance/startPrisonerBalanceMigrationPreview', {
+    res.render('pages/finance/startPrisonerBalanceMigrationPreview', {
       form: req.session.prisonFilteredMigrationForm,
     })
   }
@@ -104,7 +104,7 @@ export default class PrisonerBalanceMigrationController {
   }
 
   async startMigrationConfirmation(req: Request, res: Response): Promise<void> {
-    res.render('pages/prisonerbalance/startPrisonerBalanceMigrationConfirmation', {
+    res.render('pages/finance/startPrisonerBalanceMigrationConfirmation', {
       form: req.session.prisonFilteredMigrationForm,
     })
   }
@@ -112,7 +112,7 @@ export default class PrisonerBalanceMigrationController {
   async migrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/prisonerbalance/prisonerBalanceMigrationDetails', {
+    res.render('pages/finance/prisonerBalanceMigrationDetails', {
       migration: { ...migration, history: PrisonerBalanceMigrationController.withFilter(migration.history) },
     })
   }
@@ -121,7 +121,7 @@ export default class PrisonerBalanceMigrationController {
     const { migrationId }: { migrationId: string } = req.body
     await this.nomisMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/prisonerbalance/prisonerBalanceMigrationDetails', {
+    res.render('pages/finance/prisonerBalanceMigrationDetails', {
       migration: { ...migration, history: PrisonerBalanceMigrationController.withFilter(migration.history) },
     })
   }
