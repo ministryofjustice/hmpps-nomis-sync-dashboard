@@ -1,6 +1,6 @@
-import PrisonerBalanceMigrationDetailsPage from '../../pages/prisoner-balance-migration/prisonerBalanceMigrationDetails'
+import PrisonBalanceMigrationDetailsPage from '../../pages/finance-migration/prisonBalanceMigrationDetails'
 
-context('Prisoner Balance Migration Details', () => {
+context('Prison Balance Migration Details', () => {
   const migrationId = '2022-03-28T14:28:04'
   beforeEach(() => {
     cy.task('reset')
@@ -9,14 +9,14 @@ context('Prisoner Balance Migration Details', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetActiveMigration', {
-        migrationType: 'PRISONER_BALANCE',
+        migrationType: 'PRISON_BALANCE',
         migrationId,
       })
-      cy.task('stubGetMigration', { migrationId, migrationType: 'PRISONER_BALANCE', filter: '{"prisonId":"MDI"}' })
+      cy.task('stubGetMigration', { migrationId, migrationType: 'PRISON_BALANCE', filter: '{"prisonId":"MDI"}' })
       cy.signIn()
     })
     it('should show details for a migration in progress', () => {
-      const page = PrisonerBalanceMigrationDetailsPage.goTo(migrationId)
+      const page = PrisonBalanceMigrationDetailsPage.goTo(migrationId)
       page.status().contains('STARTED')
       page.ended().contains('-')
       page.migrated().contains('1000')
@@ -29,16 +29,16 @@ context('Prisoner Balance Migration Details', () => {
   context('after migration has completed', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
-      cy.task('stubGetActiveMigrationCompleted', { migrationType: 'PRISONER_BALANCE', migrationId })
+      cy.task('stubGetActiveMigrationCompleted', { migrationType: 'PRISON_BALANCE', migrationId })
       cy.task('stubGetMigrationCompleted', {
         migrationId,
-        migrationType: 'PRISONER_BALANCE',
+        migrationType: 'PRISON_BALANCE',
         filter: '{"prisonId":"MDI"}',
       })
       cy.signIn()
     })
     it('should details for a migration in progress', () => {
-      const page = PrisonerBalanceMigrationDetailsPage.goTo(migrationId)
+      const page = PrisonBalanceMigrationDetailsPage.goTo(migrationId)
       page.status().contains('COMPLETED')
       page.ended().contains('-')
       page.migrated().contains('2000')

@@ -1,6 +1,10 @@
 # The Fingerprint of false positive alerts can be added here to be excluded from future scans.
 integration_tests/e2e/movementsMigrationStart.cy.ts:token:15
-integration_tests/e2e/prisonerbalance/prisonerBalanceMigrationDetails.cy.ts:token:10
-integration_tests/e2e/prisonerbalance/prisonerBalanceMigrationDetails.cy.ts:token:31
-integration_tests/e2e/prisonerbalance/prisonerBalanceMigration.cy.ts:token:14
-integration_tests/e2e/prisonerbalance/prisonerBalanceMigrationStart.cy.ts:token:15
+integration_tests/e2e/finance/prisonBalanceMigrationDetails.cy.ts:token:10
+integration_tests/e2e/finance/prisonBalanceMigrationDetails.cy.ts:token:31
+integration_tests/e2e/finance/prisonBalanceMigration.cy.ts:token:14
+integration_tests/e2e/finance/prisonBalanceMigrationStart.cy.ts:token:15
+integration_tests/e2e/finance/prisonerBalanceMigrationDetails.cy.ts:token:10
+integration_tests/e2e/finance/prisonerBalanceMigrationDetails.cy.ts:token:31
+integration_tests/e2e/finance/prisonerBalanceMigration.cy.ts:token:14
+integration_tests/e2e/finance/prisonerBalanceMigrationStart.cy.ts:token:15
