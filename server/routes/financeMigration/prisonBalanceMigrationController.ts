@@ -20,7 +20,7 @@ export default class PrisonBalanceMigrationController {
     private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  private migrationType: string = 'PRISONER_BALANCE'
+  private migrationType: string = 'PRISON_BALANCE'
 
   async getMigrations(_: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
@@ -28,7 +28,7 @@ export default class PrisonBalanceMigrationController {
     const decoratedMigrations = migrations.map(PrisonBalanceMigrationController.withFilter).map(history => ({
       ...history,
       applicationInsightsLink: alreadyMigratedLogAnalyticsLink(
-        'Will not migrate the nomis prisoner balance',
+        'Will not migrate the nomis prison balance',
         history.whenStarted,
         history.whenEnded,
       ),
@@ -69,7 +69,7 @@ export default class PrisonBalanceMigrationController {
 
     if (errors.length > 0) {
       req.flash('errors', errors)
-      res.redirect('/prisoner-balance-migration/amend')
+      res.redirect('/prison-balance-migration/amend')
     } else {
       const filter = req.session.prisonFilteredMigrationForm
       const count = filter.prisonId ? 1 : await this.nomisPrisonerService.getMigrationEstimatedCount(context(res))
@@ -78,7 +78,7 @@ export default class PrisonBalanceMigrationController {
 
       req.session.prisonFilteredMigrationForm.estimatedCount = count.toLocaleString()
       req.session.prisonFilteredMigrationForm.dlqCount = dlqCountString.toLocaleString()
-      res.redirect('/prisoner-balance-migration/start/preview')
+      res.redirect('/prison-balance-migration/start/preview')
     }
   }
 
@@ -100,7 +100,7 @@ export default class PrisonBalanceMigrationController {
     const result = await this.prisonBalanceMigrationService.startMigration(filter, context(res))
     req.session.prisonFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.prisonFilteredMigrationForm.migrationId = result.migrationId
-    res.redirect('/prisoner-balance-migration/start/confirmation')
+    res.redirect('/prison-balance-migration/start/confirmation')
   }
 
   async startMigrationConfirmation(req: Request, res: Response): Promise<void> {

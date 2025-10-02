@@ -1,11 +1,11 @@
 import IndexPage from '../../pages'
 import Page from '../../pages/page'
-import PrisonerBalanceMigrationPage from '../../pages/prisoner-balance-migration/prisonerBalanceMigration'
-import PrisonerBalanceMigrationFailuresPage from '../../pages/prisoner-balance-migration/prisonerBalanceMigrationFailures'
-import prisonerBalanceMigrationHistory from '../../mockApis/nomisPrisonerBalanceMigrationApi'
+import PrisonBalanceMigrationPage from '../../pages/finance-migration/prisonBalanceMigration'
+import PrisonBalanceMigrationFailuresPage from '../../pages/finance-migration/prisonBalanceMigrationFailures'
+import prisonBalanceMigrationHistory from '../../mockApis/nomisPrisonBalanceMigrationApi'
 import AuthErrorPage from '../../pages/authError'
 
-context('Prisoner Balance Migration Homepage', () => {
+context('Prison Balance Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
   })
@@ -13,26 +13,26 @@ context('Prisoner Balance Migration Homepage', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetMigrationHistory', {
-        migrationType: 'PRISONER_BALANCE',
-        history: prisonerBalanceMigrationHistory,
+        migrationType: 'PRISON_BALANCE',
+        history: prisonBalanceMigrationHistory,
       })
       cy.signIn()
     })
-    it('should see migrate prisoner balance tile', () => {
+    it('should see migrate prison balance tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.migrationLink('prisoner-balance-migration').should('be.visible')
+      indexPage.migrationLink('prison-balance-migration').should('be.visible')
     })
-    it('should be able to navigate to the prisoner balance migration home page', () => {
+    it('should be able to navigate to the prison balance migration home page', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.migrationLink('prisoner-balance-migration').click()
-      Page.verifyOnPage(PrisonerBalanceMigrationPage)
+      indexPage.migrationLink('prison-balance-migration').click()
+      Page.verifyOnPage(PrisonBalanceMigrationPage)
     })
 
     it('should display list of migrations', () => {
-      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'PRISONER_BALANCE' })
-      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'PRISONER_BALANCE' })
+      cy.task('stubGetNoFailuresWithMigrationType', { migrationType: 'PRISON_BALANCE' })
+      cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'PRISON_BALANCE' })
 
-      const migrationPage = PrisonerBalanceMigrationPage.goTo()
+      const migrationPage = PrisonBalanceMigrationPage.goTo()
 
       migrationPage.migrationResultsRow(0).within(() => {
         cy.get('[data-qa=migration-id]').should('contain.text', '2022-03-14T10:13:56')
@@ -77,7 +77,7 @@ context('Prisoner Balance Migration Homepage', () => {
       migrationPage.migrationResultsRow(1).within(() => {
         cy.get('[data-qa=failures-link]').click()
       })
-      Page.verifyOnPage(PrisonerBalanceMigrationFailuresPage)
+      Page.verifyOnPage(PrisonBalanceMigrationFailuresPage)
     })
   })
 
@@ -86,12 +86,12 @@ context('Prisoner Balance Migration Homepage', () => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_SOMETHING_ELSE'] })
       cy.signIn()
     })
-    it('should not see migrate prisoner balance tile', () => {
+    it('should not see migrate prison balance tile', () => {
       const indexPage = Page.verifyOnPage(IndexPage)
-      indexPage.migrationLink('prisoner-balance-migration').should('not.exist')
+      indexPage.migrationLink('prison-balance-migration').should('not.exist')
     })
-    it('should not be able to navigate directly to the prisoner balance migration page', () => {
-      cy.visit('/prisoner-balance-migration', { failOnStatusCode: false })
+    it('should not be able to navigate directly to the prison balance migration page', () => {
+      cy.visit('/prison-balance-migration', { failOnStatusCode: false })
       Page.verifyOnPage(AuthErrorPage)
     })
   })

@@ -1,9 +1,9 @@
 import IndexPage from '../../pages'
 import Page from '../../pages/page'
-import PrisonerBalanceMigrationPage from '../../pages/prisoner-balance-migration/prisonerBalanceMigration'
-import StartPrisonerBalanceMigrationPage from '../../pages/prisoner-balance-migration/startPrisonerBalanceMigration'
-import StartPrisonerBalanceMigrationPreviewPage from '../../pages/prisoner-balance-migration/startPrisonerBalanceMigrationPreview'
-import StartPrisonerBalanceMigrationConfirmationPage from '../../pages/prisoner-balance-migration/startPrisonerBalanceMigrationConfirmation'
+import PrisonerBalanceMigrationPage from '../../pages/finance-migration/prisonerBalanceMigration'
+import StartPrisonerBalanceMigrationPage from '../../pages/finance-migration/startPrisonerBalanceMigration'
+import StartPrisonerBalanceMigrationPreviewPage from '../../pages/finance-migration/startPrisonerBalanceMigrationPreview'
+import StartPrisonerBalanceMigrationConfirmationPage from '../../pages/finance-migration/startPrisonerBalanceMigrationConfirmation'
 import prisonerBalanceMigrationHistory from '../../mockApis/nomisPrisonerBalanceMigrationApi'
 
 context('Prisoner Balance Migration Start', () => {
