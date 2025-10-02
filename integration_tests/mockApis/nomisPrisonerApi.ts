@@ -567,6 +567,27 @@ const stubGetIncidentsMigrationEstimatedCount = (count: number): SuperAgentReque
     },
   })
 
+const stubGetPrisonerBalanceMigrationEstimatedCount = (count: number): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPath: '/nomis-prisoner-api/finance/prisoners/ids',
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: {
+        content: [180935],
+        page: {
+          size: 1,
+          number: 0,
+          totalElements: count,
+          totalPages: count,
+        },
+      },
+    },
+  })
+
 const stubGetPrisonersMigrationEstimatedCount = (count: number): SuperAgentRequest =>
   stubFor({
     request: {
@@ -772,5 +793,6 @@ export default {
   stubGetPrisonersMigrationEstimatedCount,
   stubGetContactPersonMigrationEstimatedCount,
   stubGetCorporateMigrationEstimatedCount,
+  stubGetPrisonerBalanceMigrationEstimatedCount,
   stubGetVisitBalanceMigrationEstimatedCount,
 }
