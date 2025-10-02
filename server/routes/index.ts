@@ -12,7 +12,8 @@ import corePersonMigrationRoutes from './corePersonMigration/corePersonMigration
 import contactPersonMigrationRoutes from './contactPersonMigration/contactPersonMigrationRouter'
 import contactPersonProfileDetailsMigrationRoutes from './contactPersonMigration/contactPersonProfileDetailsMigration/contactPersonProfileDetailsMigrationRouter'
 import corporateMigrationRoutes from './corporateMigration/corporateMigrationRouter'
-import prisonerBalanceMigrationRoutes from './prisonerBalanceMigration/prisonerBalanceMigrationRouter'
+import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrationRouter'
+import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
 import visitBalanceMigrationRoutes from './visitBalanceMigration/visitBalanceMigrationRouter'
 import movementsMigrationRoutes from './movementsMigration/movementsMigrationRouter'
 
@@ -178,6 +179,7 @@ export default function routes(services: Services): Router {
   router.use('/contactperson-migration', contactPersonMigrationRoutes(services))
   router.use('/contactperson-profiledetails-migration', contactPersonProfileDetailsMigrationRoutes(services))
   router.use('/corporate-migration', corporateMigrationRoutes(services))
+  router.use('/prison-balance-migration', prisonBalanceMigrationRoutes(services))
   router.use('/prisoner-balance-migration', prisonerBalanceMigrationRoutes(services))
   router.use('/visit-balance-migration', visitBalanceMigrationRoutes(services))
   router.use('/movements-migration', movementsMigrationRoutes(services))
