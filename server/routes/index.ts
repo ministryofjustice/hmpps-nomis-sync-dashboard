@@ -43,7 +43,6 @@ export default function routes(services: Services): Router {
         {
           id: 'visits-migration',
           heading: 'Visits migration',
-          description: 'Migration and synchronisation information',
           href: '/visits-migration',
           roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -51,7 +50,6 @@ export default function routes(services: Services): Router {
         {
           id: 'sentencing-migration',
           heading: 'Sentencing migration',
-          description: 'Migration and synchronisation information',
           href: '/sentencing-migration',
           roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -59,7 +57,6 @@ export default function routes(services: Services): Router {
         {
           id: 'activities-migration',
           heading: 'Activities migration',
-          description: 'Migration and synchronisation information',
           href: '/activities-migration',
           roles: [MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -67,7 +64,6 @@ export default function routes(services: Services): Router {
         {
           id: 'allocations-migration',
           heading: 'Allocations migration',
-          description: 'Migration and synchronisation information',
           href: '/allocations-migration',
           roles: [MIGRATE_ALLOCATIONS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -75,7 +71,6 @@ export default function routes(services: Services): Router {
         {
           id: 'appointments-migration',
           heading: 'Appointments migration',
-          description: 'Migration and synchronisation information',
           href: '/appointments-migration',
           roles: [MIGRATE_APPOINTMENTS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -83,7 +78,6 @@ export default function routes(services: Services): Router {
         {
           id: 'court-sentencing-migration',
           heading: 'Court Sentencing migration',
-          description: 'Migration and synchronisation information',
           href: '/court-sentencing-migration',
           roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -99,7 +93,6 @@ export default function routes(services: Services): Router {
         {
           id: 'coreperson-migration',
           heading: 'Core Person migration',
-          description: 'Migration and synchronisation information',
           href: '/coreperson-migration',
           roles: [MIGRATE_CORE_PERSON_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -107,7 +100,6 @@ export default function routes(services: Services): Router {
         {
           id: 'incidents-migration',
           heading: 'Incidents migration',
-          description: 'Migration and synchronisation information',
           href: '/incidents-migration',
           roles: [MIGRATE_INCIDENT_REPORTS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -115,7 +107,6 @@ export default function routes(services: Services): Router {
         {
           id: 'contactperson-migration',
           heading: 'Prisoner Restriction migration',
-          description: 'Migration and synchronisation information',
           href: '/contactperson-migration',
           roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -123,7 +114,6 @@ export default function routes(services: Services): Router {
         {
           id: 'contactperson-profiledetails-migration',
           heading: 'Contact Person Profile Details migration',
-          description: 'Migration and synchronisation information',
           href: '/contactperson-profiledetails-migration',
           roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -131,7 +121,6 @@ export default function routes(services: Services): Router {
         {
           id: 'corporate-migration',
           heading: 'Corporate migration',
-          description: 'Migration and synchronisation information',
           href: '/corporate-migration',
           roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -153,7 +142,6 @@ export default function routes(services: Services): Router {
         {
           id: 'visit-balance-migration',
           heading: 'Visit balance migration',
-          description: 'Migration and synchronisation information',
           href: '/visit-balance-migration',
           roles: [MIGRATE_VISIT_BALANCE_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -161,7 +149,6 @@ export default function routes(services: Services): Router {
         {
           id: 'movements-migration',
           heading: 'Temporary Absence migration',
-          description: 'Migration and synchronisation information',
           href: '/movements-migration',
           roles: [MIGRATE_NOMIS_SYSCON],
           enabled: true,
