@@ -14,8 +14,7 @@ export default class PrisonBalanceNomisPrisonerClient extends RestClient {
     logger.info('getting details for migration estimated count')
     const response = await this.get<string[]>(
       {
-        path: `/finance/prisons/ids`,
-        query: { size: 1 },
+        path: `/finance/prison/ids`,
       },
       asSystem(context.username),
     )

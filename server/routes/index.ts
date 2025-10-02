@@ -137,9 +137,15 @@ export default function routes(services: Services): Router {
           enabled: true,
         },
         {
+          id: 'prison-balance-migration',
+          heading: 'Prison balance migration',
+          href: '/prison-balance-migration',
+          roles: [MIGRATE_NOMIS_SYSCON],
+          enabled: true,
+        },
+        {
           id: 'prisoner-balance-migration',
           heading: 'Prisoner balance migration',
-          description: 'Migration and synchronisation information',
           href: '/prisoner-balance-migration',
           roles: [MIGRATE_NOMIS_SYSCON],
           enabled: true,
