@@ -6,7 +6,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% set pageTitle = applicationName + " - Room mappings" %}
-{% set backLinkHref = "/visits-room-mappings" %}
+{% set backLinkHref = "/" %}
 
 {% block content %}
 
@@ -80,7 +80,7 @@
             {% else %}
             <div class="govuk-!-margin-bottom-5">
                 <div class="govuk-grid-row govuk-!-margin-bottom-2">
-                    No mapping records found
+                    <p>No mapping records found</p>
                 </div>
             </div>
             {% endif %}
