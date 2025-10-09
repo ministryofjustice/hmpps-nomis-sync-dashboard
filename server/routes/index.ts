@@ -43,6 +43,7 @@ export default function routes(services: Services): Router {
         {
           id: 'visits-migration',
           heading: 'Visits migration',
+          description: 'Start a new migration and view previous migrations',
           href: '/visits-migration',
           roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
@@ -85,7 +86,7 @@ export default function routes(services: Services): Router {
         {
           id: 'room-mappings',
           heading: 'Visit room mappings',
-          description: 'Manage visit room mappings between NOMIS and VSIP',
+          description: 'Manage visit room mappings between NOMIS and DPS',
           href: '/visits-room-mappings/prison',
           roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
