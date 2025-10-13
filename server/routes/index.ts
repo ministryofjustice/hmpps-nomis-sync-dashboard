@@ -24,7 +24,6 @@ import {
   MIGRATE_ACTIVITIES_ROLE,
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
-  MIGRATE_CONTACTPERSON_ROLE,
   MIGRATE_NOMIS_SYSCON,
 } from '../authentication/roles'
 
@@ -105,21 +104,21 @@ export default function routes(services: Services): Router {
           id: 'contactperson-migration',
           heading: 'Prisoner Restriction migration',
           href: '/contactperson-migration',
-          roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
+          roles: [MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
           id: 'contactperson-profiledetails-migration',
           heading: 'Contact Person Profile Details migration',
           href: '/contactperson-profiledetails-migration',
-          roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
+          roles: [MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
           id: 'corporate-migration',
           heading: 'Corporate migration',
           href: '/corporate-migration',
-          roles: [MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON],
+          roles: [MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {

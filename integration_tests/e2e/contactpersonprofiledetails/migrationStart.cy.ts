@@ -10,9 +10,9 @@ context('Contact Person Profile Details Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })
-  context('With MIGRATE_CONTACTPERSON role', () => {
+  context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CONTACTPERSON'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetMigrationHistory', {
         migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
         history: contactPersonProfileDetailsMigrationHistory,

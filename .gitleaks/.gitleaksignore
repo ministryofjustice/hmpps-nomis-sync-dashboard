@@ -1,4 +1,8 @@
 # The Fingerprint of false positive alerts can be added here to be excluded from future scans.
+integration_tests/e2e/contactpersonprofiledetails/migration.cy.ts:token:13
+integration_tests/e2e/contactpersonprofiledetails/migrationDetails.cy.ts:token:10
+integration_tests/e2e/contactpersonprofiledetails/migrationDetails.cy.ts:token:34
+integration_tests/e2e/contactpersonprofiledetails/migrationStart.cy.ts:token:15
 integration_tests/e2e/finance/prisonBalanceMigration.cy.ts:token:14
 integration_tests/e2e/finance/prisonBalanceMigrationDetails.cy.ts:token:10
 integration_tests/e2e/finance/prisonBalanceMigrationDetails.cy.ts:token:31

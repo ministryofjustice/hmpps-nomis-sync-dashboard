@@ -5,7 +5,7 @@ import NomisMigrationService from '../../../services/nomisMigrationService'
 import ContactPersonProfileDetailsNomisMigrationService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisMigrationService'
 import ContactPersonProfileDetailsNomisPrisonerService from '../../../services/contactperson/profiledetails/contactPersonProfileDetailsNomisPrisonerService'
 import authorisationMiddleware from '../../../middleware/authorisationMiddleware'
-import { MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON } from '../../../authentication/roles'
+import { MIGRATE_NOMIS_SYSCON } from '../../../authentication/roles'
 
 export interface Services {
   contactPersonProfileDetailsNomisMigrationService: ContactPersonProfileDetailsNomisMigrationService
@@ -22,7 +22,7 @@ export default function routes({
   nomisMigrationService: NomisMigrationService
 }): Router {
   const router = express.Router({ mergeParams: true })
-  router.use(authorisationMiddleware([MIGRATE_CONTACTPERSON_ROLE, MIGRATE_NOMIS_SYSCON]))
+  router.use(authorisationMiddleware([MIGRATE_NOMIS_SYSCON]))
 
   const migrationController = new MigrationController(
     contactPersonProfileDetailsNomisMigrationService,
