@@ -7,7 +7,7 @@ context('Visit Balance Migration Details', () => {
   })
   context('while migration is in progress', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISIT_BALANCE'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetActiveMigration', {
         migrationType: 'VISIT_BALANCE',
         migrationId,
@@ -28,7 +28,7 @@ context('Visit Balance Migration Details', () => {
   })
   context('after migration has completed', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISIT_BALANCE'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetActiveMigrationCompleted', { migrationType: 'VISIT_BALANCE', migrationId })
       cy.task('stubGetMigrationCompleted', {
         migrationId,
