@@ -9,9 +9,9 @@ context('Incident Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
   })
-  context('With MIGRATE_INCIDENT_REPORTS role', () => {
+  context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetMigrationHistory', { migrationType: 'INCIDENTS', history: incidentsMigrationHistory })
       cy.signIn()
     })
@@ -75,7 +75,7 @@ context('Incident Migration Homepage', () => {
     })
   })
 
-  context('Without MIGRATE_INCIDENT_REPORTS role', () => {
+  context('Without MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()
