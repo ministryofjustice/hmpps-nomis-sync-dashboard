@@ -11,9 +11,9 @@ context('Incidents Migration Start', () => {
   beforeEach(() => {
     cy.task('reset')
   })
-  context('With MIGRATE_INCIDENT_REPORTS role', () => {
+  context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetMigrationHistory', { migrationType: 'INCIDENTS', history: incidentsMigrationHistory })
       cy.signIn()
       const indexPage = Page.verifyOnPage(IndexPage)

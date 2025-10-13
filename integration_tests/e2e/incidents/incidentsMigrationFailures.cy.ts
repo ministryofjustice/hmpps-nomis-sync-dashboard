@@ -7,7 +7,7 @@ context('Incidents Migration Failures', () => {
   })
   context('navigating directly to page', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_INCIDENT_REPORTS'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetFailureCountWithMigrationType', { migrationType: 'INCIDENTS' })
       cy.task('stubGetFailuresWithMigrationType', { migrationType: 'INCIDENTS', failures: incidentsFailures })
       cy.signIn()

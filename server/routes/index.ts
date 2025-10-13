@@ -24,7 +24,6 @@ import {
   MIGRATE_ACTIVITIES_ROLE,
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
-  MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_CONTACTPERSON_ROLE,
   MIGRATE_NOMIS_SYSCON,
 } from '../authentication/roles'
@@ -99,7 +98,7 @@ export default function routes(services: Services): Router {
           id: 'incidents-migration',
           heading: 'Incidents migration',
           href: '/incidents-migration',
-          roles: [MIGRATE_INCIDENT_REPORTS_ROLE, MIGRATE_NOMIS_SYSCON],
+          roles: [MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
