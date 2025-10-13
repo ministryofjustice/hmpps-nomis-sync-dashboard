@@ -9,9 +9,9 @@ context('Visit Balance Migration Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
   })
-  context('With MIGRATE_VISIT_BALANCE role', () => {
+  context('With MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_VISIT_BALANCE'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetMigrationHistory', { migrationType: 'VISIT_BALANCE', history: visitBalanceMigrationHistory })
       cy.signIn()
     })
@@ -78,7 +78,7 @@ context('Visit Balance Migration Homepage', () => {
     })
   })
 
-  context('Without MIGRATE_VISIT_BALANCE role', () => {
+  context('Without MIGRATE_NOMIS_SYSCON role', () => {
     beforeEach(() => {
       cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_PRISONERS'] })
       cy.signIn()

@@ -24,10 +24,8 @@ import {
   MIGRATE_ACTIVITIES_ROLE,
   MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
-  MIGRATE_CORE_PERSON_ROLE,
   MIGRATE_INCIDENT_REPORTS_ROLE,
   MIGRATE_CONTACTPERSON_ROLE,
-  MIGRATE_VISIT_BALANCE_ROLE,
   MIGRATE_NOMIS_SYSCON,
 } from '../authentication/roles'
 
@@ -94,7 +92,7 @@ export default function routes(services: Services): Router {
           id: 'coreperson-migration',
           heading: 'Core Person migration',
           href: '/coreperson-migration',
-          roles: [MIGRATE_CORE_PERSON_ROLE, MIGRATE_NOMIS_SYSCON],
+          roles: [MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {
@@ -143,7 +141,7 @@ export default function routes(services: Services): Router {
           id: 'visit-balance-migration',
           heading: 'Visit balance migration',
           href: '/visit-balance-migration',
-          roles: [MIGRATE_VISIT_BALANCE_ROLE, MIGRATE_NOMIS_SYSCON],
+          roles: [MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {

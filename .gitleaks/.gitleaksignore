@@ -8,3 +8,6 @@ integration_tests/e2e/finance/prisonerBalanceMigrationDetails.cy.ts:token:10
 integration_tests/e2e/finance/prisonerBalanceMigrationDetails.cy.ts:token:31
 integration_tests/e2e/finance/prisonerBalanceMigration.cy.ts:token:14
 integration_tests/e2e/finance/prisonerBalanceMigrationStart.cy.ts:token:15
+integration_tests/e2e/visitbalance/visitBalanceMigrationDetails.cy.ts:token:10
+integration_tests/e2e/visitbalance/visitBalanceMigration.cy.ts:token:14
+integration_tests/e2e/visitbalance/visitBalanceMigrationDetails.cy.ts:token:31
