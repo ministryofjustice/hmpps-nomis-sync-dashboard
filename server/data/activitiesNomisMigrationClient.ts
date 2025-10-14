@@ -1,12 +1,13 @@
-import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
 import { ActivitiesMigrationFilter, MigrationContextActivitiesMigrationFilter } from '../@types/migration'
 import { Context } from '../services/context'
 
 export default class ActivitiesNomisMigrationClient extends RestClient {
-  constructor() {
-    super('Activities Nomis MigrationHistory API Client', config.apis.nomisMigration, logger)
+  constructor(authenticationClient: AuthenticationClient) {
+    super('Activities Nomis MigrationHistory API Client', config.apis.nomisMigration, logger, authenticationClient)
   }
 
   async startActivitiesMigration(
@@ -19,7 +20,7 @@ export default class ActivitiesNomisMigrationClient extends RestClient {
         path: `/migrate/activities`,
         data: filter,
       },
-      asUser(context.token),
+      asSystem(context.username),
     )
   }
 
@@ -30,7 +31,7 @@ export default class ActivitiesNomisMigrationClient extends RestClient {
         {
           path: `/migrate/activities/${migrationId}/end`,
         },
-        asUser(context.token),
+        asSystem(context.username),
       )
     } catch (e) {
       switch (e.responseStatus) {
@@ -50,7 +51,7 @@ export default class ActivitiesNomisMigrationClient extends RestClient {
         path: `/migrate/activities/${migrationId}/move-start-dates`,
         data: { newActivityStartDate },
       },
-      asUser(context.token),
+      asSystem(context.username),
     )
   }
 }
