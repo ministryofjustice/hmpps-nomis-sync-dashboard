@@ -1,4 +1,5 @@
-import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
 import { Context } from '../services/context'
@@ -6,8 +7,8 @@ import { MigrationContextVisitsMigrationFilter, RoomMappingsResponse, VisitsMigr
 import { GetVisitsByFilter } from '../@types/nomisPrisoner'
 
 export default class VisitsNomisMigrationClient extends RestClient {
-  constructor() {
-    super('Visits Nomis MigrationHistory API Client', config.apis.nomisMigration, logger)
+  constructor(authenticationClient: AuthenticationClient) {
+    super('Visits Nomis MigrationHistory API Client', config.apis.nomisMigration, logger, authenticationClient)
   }
 
   async startVisitsMigration(
@@ -20,7 +21,7 @@ export default class VisitsNomisMigrationClient extends RestClient {
         path: `/migrate/visits`,
         data: filter,
       },
-      asUser(context.token),
+      asSystem(context.username),
     )
   }
 
@@ -31,7 +32,7 @@ export default class VisitsNomisMigrationClient extends RestClient {
         path: `/migrate/visits/rooms/usage`,
         query: { ...filter, size: 1 },
       },
-      asUser(context.token),
+      asSystem(context.username),
     )
   }
 }

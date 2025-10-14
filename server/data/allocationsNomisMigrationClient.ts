@@ -1,12 +1,13 @@
-import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
 import { AllocationsMigrationFilter, MigrationContextAllocationsMigrationFilter } from '../@types/migration'
 import { Context } from '../services/context'
 
 export default class AllocationsNomisMigrationClient extends RestClient {
-  constructor() {
-    super('Appointments Nomis MigrationHistory API Client', config.apis.nomisMigration, logger)
+  constructor(authenticationClient: AuthenticationClient) {
+    super('Appointments Nomis MigrationHistory API Client', config.apis.nomisMigration, logger, authenticationClient)
   }
 
   async startAllocationsMigration(
@@ -19,7 +20,7 @@ export default class AllocationsNomisMigrationClient extends RestClient {
         path: `/migrate/allocations`,
         data: filter,
       },
-      asUser(context.token),
+      asSystem(context.username),
     )
   }
 }

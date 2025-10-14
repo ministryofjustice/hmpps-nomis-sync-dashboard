@@ -1,12 +1,13 @@
-import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
 import { Context } from '../services/context'
 import { MigrationContextSentencingMigrationFilter, SentencingMigrationFilter } from '../@types/migration'
 
 export default class SentencingNomisMigrationClient extends RestClient {
-  constructor() {
-    super('Sentencing Nomis MigrationHistory API Client', config.apis.nomisMigration, logger)
+  constructor(authenticationClient: AuthenticationClient) {
+    super('Sentencing Nomis MigrationHistory API Client', config.apis.nomisMigration, logger, authenticationClient)
   }
 
   async startSentencingMigration(
@@ -19,7 +20,7 @@ export default class SentencingNomisMigrationClient extends RestClient {
         path: `/migrate/sentencing`,
         data: filter,
       },
-      asUser(context.token),
+      asSystem(context.username),
     )
   }
 }

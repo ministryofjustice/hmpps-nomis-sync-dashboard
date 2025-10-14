@@ -1,15 +1,19 @@
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import nock from 'nock'
 import config from '../config'
 import VisitsNomisMigrationClient from './visitsNomisMigrationClient'
 
 describe('VisitsNomisMigrationClient tests', () => {
   let nomisMigrationService: VisitsNomisMigrationClient
-
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
   let fakeNomisMigrationService: nock.Scope
 
   beforeEach(() => {
     fakeNomisMigrationService = nock(config.apis.nomisMigration.url)
-    nomisMigrationService = new VisitsNomisMigrationClient()
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+    nomisMigrationService = new VisitsNomisMigrationClient(mockAuthenticationClient)
   })
 
   describe('startVisitsMigration', () => {
