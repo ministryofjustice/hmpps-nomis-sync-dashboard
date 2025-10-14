@@ -22,7 +22,6 @@ import {
   MIGRATE_SENTENCING_ROLE,
   MIGRATE_VISITS_ROLE,
   MIGRATE_ACTIVITIES_ROLE,
-  MIGRATE_ALLOCATIONS_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_NOMIS_SYSCON,
 } from '../authentication/roles'
@@ -61,7 +60,7 @@ export default function routes(services: Services): Router {
           id: 'allocations-migration',
           heading: 'Allocations migration',
           href: '/allocations-migration',
-          roles: [MIGRATE_ALLOCATIONS_ROLE, MIGRATE_NOMIS_SYSCON],
+          roles: [MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON],
           enabled: true,
         },
         {

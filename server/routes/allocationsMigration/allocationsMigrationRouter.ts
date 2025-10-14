@@ -5,7 +5,7 @@ import NomisMigrationService from '../../services/nomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
 import AllocationsNomisMigrationService from '../../services/allocations/allocationsNomisMigrationService'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
-import { MIGRATE_ALLOCATIONS_ROLE, MIGRATE_NOMIS_SYSCON } from '../../authentication/roles'
+import { MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON } from '../../authentication/roles'
 
 export default function routes({
   allocationsNomisMigrationService,
@@ -17,7 +17,7 @@ export default function routes({
   nomisPrisonerService: NomisPrisonerService
 }): Router {
   const router = express.Router({ mergeParams: true })
-  router.use(authorisationMiddleware([MIGRATE_ALLOCATIONS_ROLE, MIGRATE_NOMIS_SYSCON]))
+  router.use(authorisationMiddleware([MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON]))
 
   const allocationsMigrationController = new AllocationsMigrationController(
     allocationsNomisMigrationService,
