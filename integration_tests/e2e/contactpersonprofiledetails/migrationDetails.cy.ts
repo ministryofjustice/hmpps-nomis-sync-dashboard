@@ -7,7 +7,7 @@ context('Contact Person Profile Details Migration Details', () => {
   })
   context('while migration is in progress', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CONTACTPERSON'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetActiveMigration', {
         migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
         migrationId,
@@ -31,7 +31,7 @@ context('Contact Person Profile Details Migration Details', () => {
   })
   context('after migration has completed', () => {
     beforeEach(() => {
-      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_CONTACTPERSON'] })
+      cy.task('stubSignIn', { roles: ['ROLE_MIGRATE_NOMIS_SYSCON'] })
       cy.task('stubGetActiveMigrationCompleted', {
         migrationType: 'PERSONALRELATIONSHIPS_PROFILEDETAIL',
         migrationId,

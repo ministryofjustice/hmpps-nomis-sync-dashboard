@@ -1,4 +1,5 @@
-import { asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 
 import config from '../config'
 import logger from '../../logger'
@@ -6,8 +7,8 @@ import { ContactPersonMigrationFilter, MigrationContextContactPersonMigrationFil
 import { Context } from '../services/context'
 
 export default class ContactPersonNomisMigrationClient extends RestClient {
-  constructor() {
-    super('Contact Person Nomis MigrationHistory API Client', config.apis.nomisMigration, logger)
+  constructor(authenticationClient: AuthenticationClient) {
+    super('Contact Person Nomis MigrationHistory API Client', config.apis.nomisMigration, logger, authenticationClient)
   }
 
   async startMigration(
@@ -20,7 +21,7 @@ export default class ContactPersonNomisMigrationClient extends RestClient {
         path: `/migrate/contactperson`,
         data: filter,
       },
-      asUser(context.token),
+      asSystem(context.username),
     )
   }
 }
