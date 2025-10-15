@@ -14,7 +14,7 @@ export interface paths {
     get?: never
     /**
      * Synchronises a profile detail to DPS
-     * @description Manually synchronises a profile detail to DPS. This is intended for use by developers to recover from errors. Requires role <b>MIGRATE_CONTACTPERSON</b> or <b>MIGRATE_NOMIS_SYSCON/b>
+     * @description Manually synchronises a profile detail to DPS. This is intended for use by developers to recover from errors. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b> or <b>PRISONER_FROM_NOMIS__MIGRATION__RW/b>
      */
     put: operations['syncContactPersonProfileDetail-0E7RQCE']
     post?: never
@@ -82,7 +82,7 @@ export interface paths {
     get?: never
     /**
      * Moves the start date for future activities in DPS.
-     * @description Update all DPS activities for this prison to the new start date. Get all NOMIS activities migrated move the end dates to the day before the new start date. Requires role MIGRATE_ACTIVITIES
+     * @description Update all DPS activities for this prison to the new start date. Get all NOMIS activities migrated move the end dates to the day before the new start date. Requires role PRISONER_FROM_NOMIS__MIGRATION__RW
      */
     put: operations['moveActivityStartDates']
     post?: never
@@ -102,7 +102,7 @@ export interface paths {
     get?: never
     /**
      * End all NOMIS activities and allocations for a migration on the day before the DPS activity start date
-     * @description Get all NOMIS activities migrated on a migrationId and ends them all on the day before the DPS activity start date. Requires role MIGRATE_ACTIVITIES
+     * @description Get all NOMIS activities migrated on a migrationId and ends them all on the day before the DPS activity start date. Requires role PRISONER_FROM_NOMIS__MIGRATION__RW
      */
     put: operations['endMigratedActivities']
     post?: never
@@ -123,7 +123,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises account balances for the given prison (Nomis prisonId) from NOMIS to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_NOMIS_SYSCON
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPrisonerBalance']
     delete?: never
@@ -143,7 +143,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises account balances for the given prisoner (Nomis rootOffenderId) from NOMIS to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_NOMIS_SYSCON
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPrisonerBalance_1']
     delete?: never
@@ -163,7 +163,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises a visit balance for the given prisoner from NOMIS to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_VISIT_BALANCE
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairVisitBalance']
     delete?: never
@@ -183,9 +183,29 @@ export interface paths {
     put?: never
     /**
      * Resynchronises prisoner restrictions from NOMIS back to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_CONTACTPERSON or ROLE_MIGRATE_NOMIS_SYSCON
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPrisonerRestrictions']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/court-sentencing/court-cases/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * We synchronises all prisoner cases from NOMIS to the DPS replacing the existing DPS cases
+     * @description Used cases in DPS have become out of sync with NOMIS and NOMIS is the source of truth, so emergency use only. This is equivalent to migrating cases again for a specific prisoner. Requires PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['prisonerCourtCasesRepair']
     delete?: never
     options?: never
     head?: never
@@ -203,7 +223,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises prisoner contacts from NOMIS back to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_CONTACTPERSON or ROLE_MIGRATE_NOMIS_SYSCON
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPrisonerContacts']
     delete?: never
@@ -223,7 +243,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises current alerts for the given prisoner from NOMIS back to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_ALERTS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairAlerts']
     delete?: never
@@ -243,7 +263,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises new adjustments for the given booking from NOMIS back to DPS
-     * @description Used when a merge has not be detected so new adjustments have not been copied to DPS, so emergency use only. Requires ROLE_MIGRATE_SENTENCING
+     * @description Used when a merge has not be detected so new adjustments have not been copied to DPS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPostMergeAdjustments']
     delete?: never
@@ -263,7 +283,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises person data from NOMIS back to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_CONTACTPERSON or ROLE_MIGRATE_NOMIS_SYSCON
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPerson']
     delete?: never
@@ -283,7 +303,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises person data from NOMIS back to DPS asynchronously
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only and when operation will take a very long time. Requires ROLE_MIGRATE_CONTACTPERSON or ROLE_MIGRATE_NOMIS_SYSCON
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only and when operation will take a very long time. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPersonAsync']
     delete?: never
@@ -303,7 +323,7 @@ export interface paths {
     put?: never
     /**
      * Starts a visit migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISITS</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateVisits']
     delete?: never
@@ -323,7 +343,7 @@ export interface paths {
     put?: never
     /**
      * Starts a visit balance migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_VISIT_BALANCE</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateVisitBalance']
     delete?: never
@@ -343,7 +363,7 @@ export interface paths {
     put?: never
     /**
      * Starts a sentencing migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateSentencing']
     delete?: never
@@ -387,7 +407,7 @@ export interface paths {
     put?: never
     /**
      * Starts a prisoner balance migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_PRISONER_BALANCE</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migratePrisonerBalance']
     delete?: never
@@ -407,7 +427,7 @@ export interface paths {
     put?: never
     /**
      * Starts a prison balance migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>ROLE_MIGRATE_NOMIS_SYSCON</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>ROLE_PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migratePrisonBalance']
     delete?: never
@@ -427,7 +447,7 @@ export interface paths {
     put?: never
     /**
      * Starts an incidents migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_INCIDENT_REPORTS</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateIncidents']
     delete?: never
@@ -447,7 +467,7 @@ export interface paths {
     put?: never
     /**
      * Starts an external movements migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_EXTERNAL_MOVEMENTS</b> ot <b>MIGRATE_NOMIS_SYSCON</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b> ot <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateExternalMovements']
     delete?: never
@@ -467,7 +487,7 @@ export interface paths {
     put?: never
     /**
      * Starts a court case migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_SENTENCING</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateCourtSentencing']
     delete?: never
@@ -487,7 +507,7 @@ export interface paths {
     put?: never
     /**
      * Starts a organisation migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CONTACTPERSON</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateCorporate']
     delete?: never
@@ -507,7 +527,7 @@ export interface paths {
     put?: never
     /**
      * Starts a core person migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CORE_PERSON</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateCorePerson']
     delete?: never
@@ -527,7 +547,7 @@ export interface paths {
     put?: never
     /**
      * Starts a prisoner restriction migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CONTACTPERSON</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateContactPerson']
     delete?: never
@@ -547,7 +567,7 @@ export interface paths {
     put?: never
     /**
      * Starts a contact person profile details migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_CONTACTPERSON</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateContactPerson_1']
     delete?: never
@@ -587,7 +607,7 @@ export interface paths {
     put?: never
     /**
      * Starts an appointments migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_APPOINTMENTS</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateAppointments']
     delete?: never
@@ -607,7 +627,7 @@ export interface paths {
     put?: never
     /**
      * Starts an allocations migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateAllocations']
     delete?: never
@@ -627,7 +647,7 @@ export interface paths {
     put?: never
     /**
      * Starts an activities migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>MIGRATE_ACTIVITIES</b>
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateActivities']
     delete?: never
@@ -647,7 +667,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises location from NOMIS to DPS, i.e. updates DPS with the data from Nomis
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_NOMIS_LOCATIONS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPunishments']
     delete?: never
@@ -667,7 +687,7 @@ export interface paths {
     put?: never
     /**
      * Resynchronises an existing incident from NOMIS back to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_MIGRATE_INCIDENT_REPORTS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairIncident']
     delete?: never
@@ -825,7 +845,7 @@ export interface paths {
     }
     /**
      * provides the migration payload for debug purposes
-     * @description Provides the migration payload for an offender, no migration is performed. Useful for investigating migration errors. Requires role <b>MIGRATE_SENTENCING</b>
+     * @description Provides the migration payload for an offender, no migration is performed. Useful for investigating migration errors. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     get: operations['offenderMigrationPayload']
     put?: never
@@ -851,7 +871,7 @@ export interface paths {
      *           *** IMPORTANT*** This endpoint will delete any other associated Nomis Mappings (if matching the associated DPS Case Note) as there is a
      *           one to many mapping between DPS and Nomis case notes.
      *           Any related (deleted) Nomis case notes will be indicated with the casenotes-synchronisation-deleted-related-success telemetry event
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_NOMIS_CASENOTES
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     delete: operations['repairDeletedCaseNote']
     options?: never
@@ -2033,6 +2053,26 @@ export interface operations {
     }
   }
   repairPrisonerRestrictions: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  prisonerCourtCasesRepair: {
     parameters: {
       query?: never
       header?: never
