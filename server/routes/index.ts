@@ -28,127 +28,137 @@ import {
 
 import type { Services } from '../services'
 
+interface Dashboard {
+  id: string
+  heading: string
+  description?: string
+  href: string
+  roles: string[]
+  enabled: boolean
+}
+const dashboards: Dashboard[] = [
+  {
+    id: 'visits-migration',
+    heading: 'Visits migration',
+    href: '/visits-migration',
+    roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'sentencing-migration',
+    heading: 'Sentencing migration',
+    href: '/sentencing-migration',
+    roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'activities-migration',
+    heading: 'Activities migration',
+    href: '/activities-migration',
+    roles: [MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'allocations-migration',
+    heading: 'Allocations migration',
+    href: '/allocations-migration',
+    roles: [MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'appointments-migration',
+    heading: 'Appointments migration',
+    href: '/appointments-migration',
+    roles: [MIGRATE_APPOINTMENTS_ROLE, MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'court-sentencing-migration',
+    heading: 'Court Sentencing migration',
+    href: '/court-sentencing-migration',
+    roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'room-mappings',
+    heading: 'Visit room mappings',
+    description: 'Manage visit room mappings between NOMIS and VSIP',
+    href: '/visits-room-mappings/prison',
+    roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'coreperson-migration',
+    heading: 'Core Person migration',
+    href: '/coreperson-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'incidents-migration',
+    heading: 'Incidents migration',
+    href: '/incidents-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'contactperson-migration',
+    heading: 'Prisoner Restriction migration',
+    href: '/contactperson-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'contactperson-profiledetails-migration',
+    heading: 'Contact Person Profile Details migration',
+    href: '/contactperson-profiledetails-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'corporate-migration',
+    heading: 'Corporate migration',
+    href: '/corporate-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'prison-balance-migration',
+    heading: 'Prison balance migration',
+    href: '/prison-balance-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'prisoner-balance-migration',
+    heading: 'Prisoner balance migration',
+    href: '/prisoner-balance-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'visit-balance-migration',
+    heading: 'Visit balance migration',
+    href: '/visit-balance-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'movements-migration',
+    heading: 'Temporary Absence migration',
+    href: '/movements-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+].sort((a: Dashboard, b: Dashboard) => a.heading.localeCompare(b.heading))
+
 export default function routes(services: Services): Router {
   const router = Router()
 
   router.get('/', (req, res, _) => {
     const roles = extractRoles(res)
     res.render('pages/index', {
-      dashboards: [
-        {
-          id: 'visits-migration',
-          heading: 'Visits migration',
-          href: '/visits-migration',
-          roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'sentencing-migration',
-          heading: 'Sentencing migration',
-          href: '/sentencing-migration',
-          roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'activities-migration',
-          heading: 'Activities migration',
-          href: '/activities-migration',
-          roles: [MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'allocations-migration',
-          heading: 'Allocations migration',
-          href: '/allocations-migration',
-          roles: [MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'appointments-migration',
-          heading: 'Appointments migration',
-          href: '/appointments-migration',
-          roles: [MIGRATE_APPOINTMENTS_ROLE, MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'court-sentencing-migration',
-          heading: 'Court Sentencing migration',
-          href: '/court-sentencing-migration',
-          roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'room-mappings',
-          heading: 'Visit room mappings',
-          description: 'Manage visit room mappings between NOMIS and VSIP',
-          href: '/visits-room-mappings/prison',
-          roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'coreperson-migration',
-          heading: 'Core Person migration',
-          href: '/coreperson-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'incidents-migration',
-          heading: 'Incidents migration',
-          href: '/incidents-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'contactperson-migration',
-          heading: 'Prisoner Restriction migration',
-          href: '/contactperson-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'contactperson-profiledetails-migration',
-          heading: 'Contact Person Profile Details migration',
-          href: '/contactperson-profiledetails-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'corporate-migration',
-          heading: 'Corporate migration',
-          href: '/corporate-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'prison-balance-migration',
-          heading: 'Prison balance migration',
-          href: '/prison-balance-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'prisoner-balance-migration',
-          heading: 'Prisoner balance migration',
-          href: '/prisoner-balance-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'visit-balance-migration',
-          heading: 'Visit balance migration',
-          href: '/visit-balance-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-        {
-          id: 'movements-migration',
-          heading: 'Temporary Absence migration',
-          href: '/movements-migration',
-          roles: [MIGRATE_NOMIS_SYSCON],
-          enabled: true,
-        },
-      ].filter(
+      dashboards: dashboards.filter(
         register =>
           Boolean(register.roles === null || register.roles.find(role => roles.includes(role))) && register.enabled,
       ),

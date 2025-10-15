@@ -1569,6 +1569,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prisoners/{offenderNo}/sentencing/court-cases/{id}/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new Court Case
+     * @description Required role NOMIS_PRISONER_API__SYNCHRONISATION__RW Replaces existing court case for the offender.
+     */
+    post: operations['repairCourtCase']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisoners/{offenderNo}/sentencing/court-cases/{caseId}/court-appearances': {
     parameters: {
       query?: never
@@ -1643,6 +1663,26 @@ export interface paths {
      * @description Requires role <b>NOMIS_PRISONER_API__SYNCHRONISATION__RW</b>
      */
     post: operations['getCourtCasesByOffender_1']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/sentencing/court-cases/clone/{caseId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Clones court cases from the cases' booking to the current booking
+     * @description Required role NOMIS_PRISONER_API__SYNCHRONISATION__RW. The court cases along with dependent cases and all child elements including adjustments are copied to the current booking
+     */
+    post: operations['cloneCourtCasesToLatestBooking']
     delete?: never
     options?: never
     head?: never
@@ -1807,26 +1847,6 @@ export interface paths {
      * @description Requires role NOMIS_PRISONER_API__SYNCHRONISATION__RW.
      */
     post: operations['getPrisonerBookings']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/prisoners/booking-id/{bookingId}/sentencing/court-cases/clone': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Clones court cases from the supplied booking to the current booking
-     * @description Required role NOMIS_PRISONER_API__SYNCHRONISATION__RW. Court cases and all child elements including adjustments are copied to the current booking
-     */
-    post: operations['cloneCourtCasesFromBooking']
     delete?: never
     options?: never
     head?: never
@@ -4115,6 +4135,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/finance/prisoners/ids/all-from-id': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets the rootOffenderIds for all prisoners with a non-negative trust account balance
+     * @description Requires role NOMIS_PRISONER_API__SYNCHRONISATION__RW.
+     */
+    get: operations['getPrisonerBalanceIdentifiersFromId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/finance/prison/{prisonId}/balance': {
     parameters: {
       query?: never
@@ -5720,6 +5760,8 @@ export interface components {
       comment?: string
       /** @description Whether internal transfers are tracked */
       tracking?: boolean
+      /** @description Whether location is activated */
+      active?: boolean
       /** @description Profiles */
       profiles?: components['schemas']['ProfileRequest'][]
       /** @description Usages */
@@ -7506,6 +7548,57 @@ export interface components {
     CaseIdentifierRequest: {
       caseIdentifiers: components['schemas']['CaseIdentifier'][]
     }
+    /** @description Court Event */
+    CourtAppearanceRepairRequest: {
+      /** Format: date-time */
+      eventDateTime: string
+      courtEventType: string
+      courtId: string
+      outcomeReasonCode?: string
+      /** Format: date-time */
+      nextEventDateTime?: string
+      courtEventCharges: components['schemas']['CourtEventChargeRepairRequest'][]
+      nextCourtId?: string
+    }
+    /** @description Court case repair request */
+    CourtCaseRepairRequest: {
+      /** Format: date */
+      startDate: string
+      legalCaseType: string
+      courtId: string
+      status: string
+      courtAppearances: components['schemas']['CourtAppearanceRepairRequest'][]
+      offenderCharges: components['schemas']['OffenderChargeRepairRequest'][]
+      caseReferences?: components['schemas']['CaseIdentifierRequest']
+    }
+    /** @description Court Charge */
+    CourtEventChargeRepairRequest: {
+      id: string
+      /** Format: date */
+      offenceDate?: string
+      /** Format: date */
+      offenceEndDate?: string
+      resultCode1?: string
+    }
+    /** @description Court Charge */
+    OffenderChargeRepairRequest: {
+      id: string
+      offenceCode: string
+      /** Format: date */
+      offenceDate?: string
+      /** Format: date */
+      offenceEndDate?: string
+      resultCode1?: string
+    }
+    /** @description Court case repair response */
+    CourtCaseRepairResponse: {
+      /** Format: int64 */
+      caseId: number
+      /** Format: int64 */
+      bookingId: number
+      courtAppearanceIds: number[]
+      offenderChargeIds: number[]
+    }
     /** @description Recall convert request */
     ConvertToRecallRequest: {
       sentences: components['schemas']['RecallRelatedSentenceDetails'][]
@@ -8920,6 +9013,8 @@ export interface components {
       comment?: string
       /** @description Whether internal transfers are tracked */
       tracking?: boolean
+      /** @description Whether location is activated */
+      active?: boolean
       /** @description Profiles */
       profiles?: components['schemas']['ProfileRequest'][]
       /** @description Usages */
@@ -9386,13 +9481,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['VisitIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -9507,13 +9602,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['VisitBalanceIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -9950,13 +10045,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['QuestionnaireIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -10761,13 +10856,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['PrisonerRestrictionIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -10791,13 +10886,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['PrisonerIds'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -10823,13 +10918,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['PrisonerId'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -11210,13 +11305,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['PersonIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -11308,13 +11403,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['NonAssociationIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -11694,6 +11789,22 @@ export interface components {
       toAddressId?: number
       /** @description To address owner class */
       toAddressOwnerClass?: string
+      /** @description To address description */
+      toAddressDescription?: string
+      /** @description To address house */
+      toAddressHouse?: string
+      /** @description To address street */
+      toAddressStreet?: string
+      /** @description To address locality */
+      toAddressLocality?: string
+      /** @description To address city */
+      toAddressCity?: string
+      /** @description To address county */
+      toAddressCounty?: string
+      /** @description To address country */
+      toAddressCountry?: string
+      /** @description To address postcode */
+      toAddressPostcode?: string
       /** @description Audit data associated with the records */
       audit: components['schemas']['NomisAudit']
     }
@@ -11748,6 +11859,22 @@ export interface components {
       fromAddressId?: number
       /** @description From address owner class */
       fromAddressOwnerClass?: string
+      /** @description From address description */
+      fromAddressDescription?: string
+      /** @description From address house */
+      fromAddressHouse?: string
+      /** @description From address street */
+      fromAddressStreet?: string
+      /** @description From address locality */
+      fromAddressLocality?: string
+      /** @description From address city */
+      fromAddressCity?: string
+      /** @description From address county */
+      fromAddressCounty?: string
+      /** @description From address country */
+      fromAddressCountry?: string
+      /** @description From address postcode */
+      fromAddressPostcode?: string
       /** @description Audit data associated with the records */
       audit: components['schemas']['NomisAudit']
     }
@@ -12143,13 +12270,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['LocationIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -12462,13 +12589,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['IncidentIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -12526,13 +12653,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['IncentiveIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -12597,6 +12724,11 @@ export interface components {
        */
       lastTransactionId: number
       /**
+       * Format: date-time
+       * @description The date and time of the last transaction
+       */
+      transactionDate: string
+      /**
        * Format: int64
        * @description The account code for the balance entry
        * @example 2101
@@ -12642,6 +12774,11 @@ export interface components {
     PagedModelLong: {
       content?: number[]
       page?: components['schemas']['PageMetadata']
+    }
+    RootOffenderIdsWithLast: {
+      rootOffenderIds: number[]
+      /** Format: int64 */
+      lastOffenderId: number
     }
     PrisonAccountBalanceDto: {
       /**
@@ -12691,13 +12828,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['CourtCaseIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -12869,13 +13006,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['CorporateOrganisationIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -13361,13 +13498,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AppointmentIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -13583,13 +13720,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveAllocationIdsResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -13624,13 +13761,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjustmentIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -13657,13 +13794,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['AdjudicationChargeIdResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -13869,13 +14006,13 @@ export interface components {
       totalElements?: number
       /** Format: int32 */
       totalPages?: number
-      first?: boolean
-      last?: boolean
       /** Format: int32 */
       size?: number
       content?: components['schemas']['FindActiveActivityIdsResponse'][]
       /** Format: int32 */
       number?: number
+      first?: boolean
+      last?: boolean
       sort?: components['schemas']['SortObject']
       /** Format: int32 */
       numberOfElements?: number
@@ -20697,6 +20834,77 @@ export interface operations {
       }
     }
   }
+  repairCourtCase: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description case ID
+         * @example 1234
+         */
+        id: number
+        /**
+         * @description Offender No
+         * @example AK1234B
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtCaseRepairRequest']
+      }
+    }
+    responses: {
+      /** @description Repaired Court case */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtCaseRepairResponse']
+        }
+      }
+      /** @description Supplied data is invalid, for instance missing required fields or invalid values. See schema for details */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_PRISONER_API__SYNCHRONISATION__RW not present */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Offender does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   createCourtAppearance: {
     parameters: {
       query?: never
@@ -20952,6 +21160,73 @@ export interface operations {
       }
       /** @description Forbidden to access this endpoint when role NOMIS_PRISONER_API__SYNCHRONISATION__RW not present */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  cloneCourtCasesToLatestBooking: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender number
+         * @example A1234KT
+         */
+        offenderNo: string
+        /**
+         * @description Case id
+         * @example 1233
+         */
+        caseId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Created Court cases */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['BookingCourtCaseCloneResponse']
+        }
+      }
+      /** @description Case id supplied is already the latest booking or doesn't belong to the prisoner */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_PRISONER_API__SYNCHRONISATION__RW not present */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Case does not exist */
+      404: {
         headers: {
           [name: string]: unknown
         }
@@ -21533,68 +21808,6 @@ export interface operations {
       }
       /** @description Forbidden to access this endpoint when role NOMIS_PRISONER_API__SYNCHRONISATION__RW not present */
       403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  cloneCourtCasesFromBooking: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /**
-         * @description Booking id
-         * @example 1233
-         */
-        bookingId: number
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Created Court cases */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['BookingCourtCaseCloneResponse']
-        }
-      }
-      /** @description Booking id supplied is already the latest booking */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden to access this endpoint when role NOMIS_PRISONER_API__SYNCHRONISATION__RW not present */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Booking does not exist */
-      404: {
         headers: {
           [name: string]: unknown
         }
@@ -28110,6 +28323,52 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['PagedModelLong']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint when role NOMIS_PRISONER_API__SYNCHRONISATION__RW not present */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonerBalanceIdentifiersFromId: {
+    parameters: {
+      query?: {
+        /**
+         * @description If supplied get offenders starting after this id
+         * @example 1555999
+         */
+        rootOffenderId?: number
+        /** @description Number of offenders to get */
+        pageSize?: number
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description paged list of prisoner ids */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['RootOffenderIdsWithLast']
         }
       }
       /** @description Unauthorized to access this endpoint */
