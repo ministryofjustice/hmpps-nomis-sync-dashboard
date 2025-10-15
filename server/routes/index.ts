@@ -82,7 +82,6 @@ const dashboards: Dashboard[] = [
   {
     id: 'room-mappings',
     heading: 'Visit room mappings',
-    description: 'Manage visit room mappings between NOMIS and VSIP',
     href: '/visits-room-mappings/prison',
     roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
     enabled: true,
