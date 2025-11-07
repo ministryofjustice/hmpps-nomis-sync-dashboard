@@ -5,6 +5,7 @@ import VisitslotsNomisPrisonerService from '../../services/visitslots/visitslots
 import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../utils/logAnalyticsUrlBuilder'
+import trimForm from '../../utils/trim'
 
 export default class VisitslotsMigrationController {
   constructor(
@@ -56,6 +57,7 @@ export default class VisitslotsMigrationController {
   }
 
   async postStartMigration(req: Request, res: Response): Promise<void> {
+    req.session.noFilterMigrationForm = { ...trimForm(req.body) }
     const count = await this.visitslotsNomisPrisonerService.getMigrationEstimatedCount(context(res))
     const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
     logger.info(`${dlqCountString} failures found`)
