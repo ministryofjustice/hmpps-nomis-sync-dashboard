@@ -1,8 +1,8 @@
 import Page from '../page'
 
-export default class StartCorporateMigrationConfirmationPage extends Page {
+export default class StartVisitslotsMigrationConfirmationPage extends Page {
   constructor() {
-    super('Corporate migration started')
+    super('Visit Time Slots migration started')
   }
 
   confirmationMessage = () => cy.get('#confirmationMessage')

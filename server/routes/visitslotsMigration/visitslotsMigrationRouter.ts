@@ -1,32 +1,32 @@
 import express, { Router } from 'express'
 
-import CorporateNomisMigrationService from '../../services/corporate/corporateNomisMigrationService'
-import CorporateNomisPrisonerService from '../../services/corporate/corporateNomisPrisonerService'
-import CorporateMigrationController from './corporateMigrationController'
+import VisitslotsNomisMigrationService from '../../services/visitslots/visitslotsNomisMigrationService'
+import VisitslotsNomisPrisonerService from '../../services/visitslots/visitslotsNomisPrisonerService'
+import VisitslotsMigrationController from './visitslotsMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 import { MIGRATE_NOMIS_SYSCON } from '../../authentication/roles'
 
 export interface Services {
-  corporateNomisMigrationService: CorporateNomisMigrationService
-  corporateNomisPrisonerService: CorporateNomisPrisonerService
+  visitslotsNomisMigrationService: VisitslotsNomisMigrationService
+  visitslotsNomisPrisonerService: VisitslotsNomisPrisonerService
   nomisMigrationService: NomisMigrationService
 }
 export default function routes({
-  corporateNomisMigrationService,
-  corporateNomisPrisonerService,
+  visitslotsNomisMigrationService,
+  visitslotsNomisPrisonerService,
   nomisMigrationService,
 }: {
-  corporateNomisMigrationService: CorporateNomisMigrationService
-  corporateNomisPrisonerService: CorporateNomisPrisonerService
+  visitslotsNomisMigrationService: VisitslotsNomisMigrationService
+  visitslotsNomisPrisonerService: VisitslotsNomisPrisonerService
   nomisMigrationService: NomisMigrationService
 }): Router {
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware([MIGRATE_NOMIS_SYSCON]))
 
-  const migrationController = new CorporateMigrationController(
-    corporateNomisMigrationService,
-    corporateNomisPrisonerService,
+  const migrationController = new VisitslotsMigrationController(
+    visitslotsNomisMigrationService,
+    visitslotsNomisPrisonerService,
     nomisMigrationService,
   )
   router.get('/', (req, res) => migrationController.getMigrations(req, res))

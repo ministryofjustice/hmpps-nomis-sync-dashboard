@@ -7,8 +7,8 @@ import ActivitiesService from './activitiesService'
 import ContactPersonNomisMigrationService from './contactperson/contactPersonNomisMigrationService'
 import ContactPersonNomisPrisonerService from './contactperson/contactPersonNomisPrisonerService'
 import CorePersonNomisMigrationService from './coreperson/corePersonNomisMigrationService'
-import CorporateNomisMigrationService from './corporate/corporateNomisMigrationService'
-import CorporateNomisPrisonerService from './corporate/corporateNomisPrisonerService'
+import VisitslotsNomisMigrationService from './visitslots/visitslotsNomisMigrationService'
+import VisitslotsNomisPrisonerService from './visitslots/visitslotsNomisPrisonerService'
 import PrisonBalanceNomisMigrationService from './finance/prisonBalanceNomisMigrationService'
 import PrisonBalanceNomisPrisonerService from './finance/prisonBalanceNomisPrisonerService'
 import PrisonerBalanceNomisMigrationService from './finance/prisonerBalanceNomisMigrationService'
@@ -39,8 +39,8 @@ export const services = () => {
     contactPersonProfileDetailsNomisMigrationClient,
     contactPersonProfileDetailsNomisPrisonerClient,
     corePersonNomisMigrationClient,
-    corporateNomisMigrationClient,
-    corporateNomisPrisonerClient,
+    visitslotsNomisMigrationClient,
+    visitslotsNomisPrisonerClient,
     courtSentencingNomisMigrationClient,
     mappingClient,
     nomisMigrationClient,
@@ -76,8 +76,8 @@ export const services = () => {
       contactPersonProfileDetailsNomisPrisonerClient,
     ),
     corePersonNomisMigrationService: new CorePersonNomisMigrationService(corePersonNomisMigrationClient),
-    corporateNomisMigrationService: new CorporateNomisMigrationService(corporateNomisMigrationClient),
-    corporateNomisPrisonerService: new CorporateNomisPrisonerService(corporateNomisPrisonerClient),
+    visitslotsNomisMigrationService: new VisitslotsNomisMigrationService(visitslotsNomisMigrationClient),
+    visitslotsNomisPrisonerService: new VisitslotsNomisPrisonerService(visitslotsNomisPrisonerClient),
     courtSentencingNomisMigrationService: new CourtSentencingNomisMigrationService(courtSentencingNomisMigrationClient),
     incidentsNomisMigrationService: new IncidentsNomisMigrationService(incidentsNomisMigrationClient),
     sentencingNomisMigrationService: new SentencingNomisMigrationService(sentencingNomisMigrationClient),

@@ -20,3 +20,4 @@ integration_tests/e2e/movementsMigrationStart.cy.ts:token:15
 integration_tests/e2e/visitbalance/visitBalanceMigration.cy.ts:token:14
 integration_tests/e2e/visitbalance/visitBalanceMigrationDetails.cy.ts:token:10
 integration_tests/e2e/visitbalance/visitBalanceMigrationDetails.cy.ts:token:31
+integration_tests/e2e/visitslotsMigrationStart.cy.ts:token:15

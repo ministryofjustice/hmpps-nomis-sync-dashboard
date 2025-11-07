@@ -11,7 +11,7 @@ import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRou
 import corePersonMigrationRoutes from './corePersonMigration/corePersonMigrationRouter'
 import contactPersonMigrationRoutes from './contactPersonMigration/contactPersonMigrationRouter'
 import contactPersonProfileDetailsMigrationRoutes from './contactPersonMigration/contactPersonProfileDetailsMigration/contactPersonProfileDetailsMigrationRouter'
-import corporateMigrationRoutes from './corporateMigration/corporateMigrationRouter'
+import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
 import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrationRouter'
 import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
 import visitBalanceMigrationRoutes from './visitBalanceMigration/visitBalanceMigrationRouter'
@@ -115,9 +115,9 @@ const dashboards: Dashboard[] = [
     enabled: true,
   },
   {
-    id: 'corporate-migration',
-    heading: 'Corporate migration',
-    href: '/corporate-migration',
+    id: 'visitslots-migration',
+    heading: 'Visit Slots migration',
+    href: '/visitslots-migration',
     roles: [MIGRATE_NOMIS_SYSCON],
     enabled: true,
   },
@@ -175,7 +175,7 @@ export default function routes(services: Services): Router {
   router.use('/coreperson-migration', corePersonMigrationRoutes(services))
   router.use('/contactperson-migration', contactPersonMigrationRoutes(services))
   router.use('/contactperson-profiledetails-migration', contactPersonProfileDetailsMigrationRoutes(services))
-  router.use('/corporate-migration', corporateMigrationRoutes(services))
+  router.use('/visitslots-migration', visitslotsMigrationRoutes(services))
   router.use('/prison-balance-migration', prisonBalanceMigrationRoutes(services))
   router.use('/prisoner-balance-migration', prisonerBalanceMigrationRoutes(services))
   router.use('/visit-balance-migration', visitBalanceMigrationRoutes(services))

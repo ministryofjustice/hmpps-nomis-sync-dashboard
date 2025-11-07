@@ -641,6 +641,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/movements/{offenderNo}/temporary-absences/application': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Inserts or updates a temporary absence application for an offender
+     * @description Creates or updates a temporary absence application on the prisoner's latest booking. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW
+     */
+    put: operations['upsertTemporaryAbsenceApplication']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/locations/{locationId}': {
     parameters: {
       query?: never
@@ -2253,26 +2273,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/movements/{offenderNo}/temporary-absences/application': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Inserts a temporary absence application for an offender
-     * @description Creates a temporary absence application on the prisoner's latest booking. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW
-     */
-    post: operations['createTemporaryAbsenceApplication']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/locations': {
     parameters: {
       query?: never
@@ -2710,6 +2710,46 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/visits/configuration/time-slots/prison-id/{prisonId}/day-of-week/{dayOfWeek}/time-slot-sequence/{timeSlotSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get visit time slot
+     * @description Retrieves visit time slot along with visit slots. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitTimeSlot']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/visits/configuration/time-slots/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get all visit time slot Ids
+     * @description Retrieves all visit time slot ids - typically for a migration. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitTimeSlotIds']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/visit-balances/{visitBalanceId}': {
     parameters: {
       query?: never
@@ -2759,8 +2799,7 @@ export interface paths {
     }
     /**
      * Find paged visit balance ids
-     * @description
-     *           Returns the visit balance ids (which are booking ids) for the latest booking for offenders with balance entries.
+     * @description Returns the visit balance ids (which are booking ids) for the latest booking for offenders with balance entries.
      *           Requires role NOMIS_PRISONER_API__SYNCHRONISATION__RW
      */
     get: operations['findVisitBalanceIds']
@@ -5357,7 +5396,7 @@ export interface components {
        * @description Date time record was created
        */
       createDatetime: string
-      /** @description Username of person that created the record (might also be a system)  */
+      /** @description Username of person that created the record (might also be a system) */
       createUsername: string
       /** @description Real name of person that created the record (might by null for system users) */
       createDisplayName?: string
@@ -5404,7 +5443,7 @@ export interface components {
       isActive: boolean
       /** @description Free format comment */
       comment?: string
-      /** @description Username of person that update the record (might also be a system)  */
+      /** @description Username of person that update the record (might also be a system) */
       updateUsername: string
       /**
        * @description Free format text of person or department that authorised the alert
@@ -5660,6 +5699,72 @@ export interface components {
        * @example 2024-08-12
        */
       expiryDate?: string
+    }
+    /** @description Upsert temporary absence application request */
+    UpsertTemporaryAbsenceApplicationRequest: {
+      /**
+       * Format: int64
+       * @description Existing PK, null if new
+       */
+      movementApplicationId?: number
+      /** @description Event sub type */
+      eventSubType: string
+      /**
+       * Format: date
+       * @description Application date
+       */
+      applicationDate: string
+      /**
+       * Format: date
+       * @description From date
+       */
+      fromDate: string
+      /**
+       * Format: date-time
+       * @description Release time
+       */
+      releaseTime: string
+      /**
+       * Format: date
+       * @description To date
+       */
+      toDate: string
+      /**
+       * Format: date-time
+       * @description Return time
+       */
+      returnTime: string
+      /** @description Application status */
+      applicationStatus: string
+      /** @description Escort code */
+      escortCode?: string
+      /** @description Transport type */
+      transportType?: string
+      /** @description Comment */
+      comment?: string
+      /** @description Prison ID */
+      prisonId?: string
+      /** @description Contact person name */
+      contactPersonName?: string
+      /** @description Application type */
+      applicationType: string
+      /** @description Temporary absence type */
+      temporaryAbsenceType?: string
+      /** @description Temporary absence sub type */
+      temporaryAbsenceSubType?: string
+    }
+    /** @description Upsert temporary absence application response */
+    UpsertTemporaryAbsenceApplicationResponse: {
+      /**
+       * Format: int64
+       * @description Booking ID
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description Movement application ID
+       */
+      movementApplicationId: number
     }
     /** @description Location profile or attribute */
     ProfileRequest: {
@@ -7264,6 +7369,7 @@ export interface components {
       /** Format: date-time */
       createdDateTime: string
       createdByUsername: string
+      modifiedByUsername?: string
       courtEvents: components['schemas']['CourtEventResponse'][]
       offenderCharges: components['schemas']['OffenderChargeResponse'][]
       caseInfoNumbers: components['schemas']['CaseIdentifierResponse'][]
@@ -7290,6 +7396,8 @@ export interface components {
       resultCode2?: components['schemas']['OffenceResultCodeResponse']
       mostSeriousFlag: boolean
       linkedCaseDetails?: components['schemas']['LinkedCaseChargeDetails']
+      createdByUsername: string
+      modifiedByUsername?: string
     }
     /** @description Court Event */
     CourtEventResponse: {
@@ -7315,6 +7423,7 @@ export interface components {
       /** Format: date-time */
       createdDateTime: string
       createdByUsername: string
+      modifiedByUsername?: string
       courtEventCharges: components['schemas']['CourtEventChargeResponse'][]
       courtOrders: components['schemas']['CourtOrderResponse'][]
     }
@@ -7405,6 +7514,8 @@ export interface components {
       mostSeriousFlag: boolean
       /** Format: int32 */
       lidsOffenceNumber?: number
+      createdByUsername: string
+      modifiedByUsername?: string
     }
     /** @description Recall custody return date data */
     RecallCustodyDate: {
@@ -7510,6 +7621,7 @@ export interface components {
       /** Format: date-time */
       createdDateTime: string
       createdByUsername: string
+      modifiedByUsername?: string
       sentenceTerms: components['schemas']['SentenceTermResponse'][]
       offenderCharges: components['schemas']['OffenderChargeResponse'][]
       missingCourtOffenderChargeIds: number[]
@@ -7537,6 +7649,8 @@ export interface components {
       endDate?: string
       lifeSentenceFlag: boolean
       prisonId: string
+      createdByUsername: string
+      modifiedByUsername?: string
     }
     /** @description Court case associated reference */
     CaseIdentifier: {
@@ -7738,7 +7852,7 @@ export interface components {
        * @example security
        */
       authorisedBy?: string
-      /** @description Username of person that created the record (might also be a system)  */
+      /** @description Username of person that created the record (might also be a system) */
       createUsername: string
     }
     AdjudicationCharge: {
@@ -7780,7 +7894,7 @@ export interface components {
       createdDateTime: string
       /** @description location where incident took place */
       internalLocation: components['schemas']['InternalLocation']
-      /** @description Incident type  */
+      /** @description Incident type */
       incidentType: components['schemas']['CodeDescription']
       /** @description Incident details */
       details?: string
@@ -8115,13 +8229,25 @@ export interface components {
        */
       cost?: number
     }
-    /** @description Details of a prisoner booking */
+    /** @description Details of a prisoner or booking */
     PrisonerDetails: {
       /**
        * @description The NOMIS reference
        * @example A1234AA
        */
       offenderNo: string
+      /**
+       * Format: int64
+       * @description The NOMIS offenderId
+       * @example 1234567
+       */
+      offenderId: number
+      /**
+       * Format: int64
+       * @description The NOMIS rootOffenderId
+       * @example 1234567
+       */
+      rootOffenderId?: number
       /**
        * Format: int64
        * @description The NOMIS booking ID
@@ -8831,74 +8957,6 @@ export interface components {
        */
       outsideMovementId: number
     }
-    /** @description Create temporary absence application request */
-    CreateTemporaryAbsenceApplicationRequest: {
-      /** @description Event sub type */
-      eventSubType: string
-      /**
-       * Format: date
-       * @description Application date
-       */
-      applicationDate: string
-      /**
-       * Format: date
-       * @description From date
-       */
-      fromDate: string
-      /**
-       * Format: date-time
-       * @description Release time
-       */
-      releaseTime: string
-      /**
-       * Format: date
-       * @description To date
-       */
-      toDate: string
-      /**
-       * Format: date-time
-       * @description Return time
-       */
-      returnTime: string
-      /** @description Application status */
-      applicationStatus: string
-      /** @description Escort code */
-      escortCode?: string
-      /** @description Transport type */
-      transportType?: string
-      /** @description Comment */
-      comment?: string
-      /** @description Prison ID */
-      prisonId?: string
-      /** @description To agency ID */
-      toAgencyId?: string
-      /**
-       * Format: int64
-       * @description To address ID
-       */
-      toAddressId?: number
-      /** @description Contact person name */
-      contactPersonName?: string
-      /** @description Application type */
-      applicationType: string
-      /** @description Temporary absence type */
-      temporaryAbsenceType?: string
-      /** @description Temporary absence sub type */
-      temporaryAbsenceSubType?: string
-    }
-    /** @description Create temporary absence application response */
-    CreateTemporaryAbsenceApplicationResponse: {
-      /**
-       * Format: int64
-       * @description Booking ID
-       */
-      bookingId: number
-      /**
-       * Format: int64
-       * @description Movement application ID
-       */
-      movementApplicationId: number
-    }
     /** @description Location creation request */
     CreateLocationRequest: {
       /**
@@ -9517,6 +9575,113 @@ export interface components {
        * @description The visit id
        */
       visitId: number
+    }
+    VisitInternalLocationResponse: {
+      /** Format: int64 */
+      id: number
+      code: string
+    }
+    VisitSlotResponse: {
+      /**
+       * Format: int64
+       * @description Slot ID
+       * @example 1
+       */
+      id: number
+      /** @description Room location of  visit slot */
+      internalLocation: components['schemas']['VisitInternalLocationResponse']
+      /**
+       * Format: int32
+       * @description Optional max groups allowed in slot
+       * @example 1
+       */
+      maxGroups?: number
+      /**
+       * Format: int32
+       * @description Optional max adults allowed in slot
+       * @example 1
+       */
+      maxAdults?: number
+      /** @description Audit information */
+      audit: components['schemas']['NomisAudit']
+    }
+    VisitTimeSlotResponse: {
+      /**
+       * @description The prison id
+       * @example MDI
+       */
+      prisonId: string
+      /**
+       * @description Day of the week time slot is for
+       * @example MON
+       * @enum {string}
+       */
+      dayOfWeek: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN'
+      /**
+       * Format: int32
+       * @description The time slot sequence
+       * @example 1
+       */
+      timeSlotSequence: number
+      /**
+       * @description Slot start time
+       * @example 10:00
+       */
+      startTime: string
+      /**
+       * @description Slot end time
+       * @example 11:00
+       */
+      endTime: string
+      /**
+       * Format: date
+       * @description Date slot can first be used
+       * @example 2022-09-01
+       */
+      effectiveDate: string
+      /**
+       * Format: date
+       * @description Date slot can no longer be used
+       * @example 2032-09-01
+       */
+      expiryDate?: string
+      /** @description List of slots at this time slot */
+      visitSlots: components['schemas']['VisitSlotResponse'][]
+      /** @description Audit information */
+      audit: components['schemas']['NomisAudit']
+    }
+    PageMetadata: {
+      /** Format: int64 */
+      size?: number
+      /** Format: int64 */
+      number?: number
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int64 */
+      totalPages?: number
+    }
+    PagedModelVisitTimeSlotIdResponse: {
+      content?: components['schemas']['VisitTimeSlotIdResponse'][]
+      page?: components['schemas']['PageMetadata']
+    }
+    VisitTimeSlotIdResponse: {
+      /**
+       * @description The prison id
+       * @example MDI
+       */
+      prisonId: string
+      /**
+       * @description Day of the week time slot is for
+       * @example MON
+       * @enum {string}
+       */
+      dayOfWeek: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN'
+      /**
+       * Format: int32
+       * @description The time slot sequence
+       * @example 1
+       */
+      timeSlotSequence: number
     }
     /** @description The visit balance held against a prisoner's latest booking including the last IEP Allocation date */
     VisitBalanceDetailResponse: {
@@ -11494,6 +11659,12 @@ export interface components {
       toAddressId?: number
       /** @description To address owner class */
       toAddressOwnerClass?: string
+      /** @description To address description */
+      toAddressDescription?: string
+      /** @description To full address */
+      toFullAddress?: string
+      /** @description TO address postcode */
+      toAddressPostcode?: string
       /**
        * Format: date-time
        * @description Application date
@@ -11577,6 +11748,12 @@ export interface components {
       toAddressId?: number
       /** @description To address owner class */
       toAddressOwnerClass?: string
+      /** @description To address description */
+      toAddressDescription?: string
+      /** @description Full to address */
+      toFullAddress?: string
+      /** @description To address postcode */
+      toAddressPostcode?: string
       /** @description Audit data associated with the records */
       audit: components['schemas']['NomisAudit']
     }
@@ -11733,6 +11910,12 @@ export interface components {
       fromAddressId?: number
       /** @description From address owner class */
       fromAddressOwnerClass?: string
+      /** @description From address description */
+      fromAddressDescription?: string
+      /** @description From full address */
+      fromFullAddress?: string
+      /** @description From address postcode */
+      fromAddressPostcode?: string
       /** @description Audit data associated with the records */
       audit: components['schemas']['NomisAudit']
     }
@@ -11791,18 +11974,8 @@ export interface components {
       toAddressOwnerClass?: string
       /** @description To address description */
       toAddressDescription?: string
-      /** @description To address house */
-      toAddressHouse?: string
-      /** @description To address street */
-      toAddressStreet?: string
-      /** @description To address locality */
-      toAddressLocality?: string
-      /** @description To address city */
-      toAddressCity?: string
-      /** @description To address county */
-      toAddressCounty?: string
-      /** @description To address country */
-      toAddressCountry?: string
+      /** @description Full to address */
+      toFullAddress?: string
       /** @description To address postcode */
       toAddressPostcode?: string
       /** @description Audit data associated with the records */
@@ -11822,7 +11995,12 @@ export interface components {
       movementApplicationId?: number
       /**
        * Format: int64
-       * @description Scheduled temporary absence return event ID. Empty for unscheduled movements.
+       * @description Scheduled temporary absence event ID (outbound). Empty for unscheduled movements.
+       */
+      scheduledTemporaryAbsenceId?: number
+      /**
+       * Format: int64
+       * @description Scheduled temporary absence return event ID (inbound). Empty for unscheduled movements.
        */
       scheduledTemporaryAbsenceReturnId?: number
       /**
@@ -11861,18 +12039,8 @@ export interface components {
       fromAddressOwnerClass?: string
       /** @description From address description */
       fromAddressDescription?: string
-      /** @description From address house */
-      fromAddressHouse?: string
-      /** @description From address street */
-      fromAddressStreet?: string
-      /** @description From address locality */
-      fromAddressLocality?: string
-      /** @description From address city */
-      fromAddressCity?: string
-      /** @description From address county */
-      fromAddressCounty?: string
-      /** @description From address country */
-      fromAddressCountry?: string
+      /** @description From full address */
+      fromFullAddress?: string
       /** @description From address postcode */
       fromAddressPostcode?: string
       /** @description Audit data associated with the records */
@@ -11936,6 +12104,12 @@ export interface components {
       toAddressId?: number
       /** @description To address owner class */
       toAddressOwnerClass?: string
+      /** @description To address description */
+      toAddressDescription?: string
+      /** @description To full address */
+      toFullAddress?: string
+      /** @description To address postcode */
+      toAddressPostcode?: string
       /**
        * Format: date-time
        * @description Application date
@@ -12465,6 +12639,8 @@ export interface components {
       sequence: number
       /** @description The Question being asked */
       question: string
+      /** @description Whether this question can have multiple answers */
+      hasMultipleAnswers: boolean
       /** @description List of Responses to this question */
       answers: components['schemas']['Response'][]
       /**
@@ -12761,16 +12937,6 @@ export interface components {
       /** @description The accounts associated with the prisoner */
       accounts: components['schemas']['PrisonerAccountDto'][]
     }
-    PageMetadata: {
-      /** Format: int64 */
-      size?: number
-      /** Format: int64 */
-      number?: number
-      /** Format: int64 */
-      totalElements?: number
-      /** Format: int64 */
-      totalPages?: number
-    }
     PagedModelLong: {
       content?: number[]
       page?: components['schemas']['PageMetadata']
@@ -12973,7 +13139,7 @@ export interface components {
     }
     /** @description The data held in NOMIS about a corporate entity */
     CorporateOrganisationType: {
-      /** @description The type of corporate, for instance ACCOM - Accommodation Provider  */
+      /** @description The type of corporate, for instance ACCOM - Accommodation Provider */
       type: components['schemas']['CodeDescription']
       /** @description Audit data associated with the records */
       audit: components['schemas']['NomisAudit']
@@ -17253,6 +17419,72 @@ export interface operations {
         }
       }
       /** @description Non-association does not exist */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  upsertTemporaryAbsenceApplication: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender no (aka prisoner number)
+         * @example A1234AK
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpsertTemporaryAbsenceApplicationRequest']
+      }
+    }
+    responses: {
+      /** @description Temporary absence application created */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['UpsertTemporaryAbsenceApplicationResponse']
+        }
+      }
+      /** @description One or more fields in the request contains invalid data */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner does not exist */
       404: {
         headers: {
           [name: string]: unknown
@@ -23098,72 +23330,6 @@ export interface operations {
       }
     }
   }
-  createTemporaryAbsenceApplication: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /**
-         * @description Offender no (aka prisoner number)
-         * @example A1234AK
-         */
-        offenderNo: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CreateTemporaryAbsenceApplicationRequest']
-      }
-    }
-    responses: {
-      /** @description Temporary absence application created */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['CreateTemporaryAbsenceApplicationResponse']
-        }
-      }
-      /** @description One or more fields in the request contains invalid data */
-      400: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Prisoner does not exist */
-      404: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
   createLocation: {
     parameters: {
       query?: never
@@ -24497,6 +24663,93 @@ export interface operations {
       }
       /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitTimeSlot: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonId: string
+        dayOfWeek: 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN'
+        timeSlotSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Time slot with visits slots */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitTimeSlotResponse']
+        }
+      }
+      /** @description Visit time slot not found */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitTimeSlotIds: {
+    parameters: {
+      query?: {
+        /** @description Zero-based page index (0..N) */
+        page?: number
+        /** @description The size of the page to be returned */
+        size?: number
+        /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
+        sort?: string[]
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Page of time slots Ids */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PagedModelVisitTimeSlotIdResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW */
+      403: {
         headers: {
           [name: string]: unknown
         }
@@ -28308,7 +28561,7 @@ export interface operations {
         /** @description Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. */
         sort?: string[]
         /** @description Prison id */
-        prisonId?: string
+        prisonId?: string[]
       }
       header?: never
       path?: never
