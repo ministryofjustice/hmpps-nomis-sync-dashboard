@@ -7,8 +7,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
-{% set pageTitle = applicationName + " - Start a Corporate migration - preview" %}
-{% set backLinkHref = "/corporate-migration/amend" %}
+{% set pageTitle = applicationName + " - Start a Visit Time Slots migration - preview" %}
+{% set backLinkHref = "/visitslots-migration/amend" %}
 
 {% block content %}
 
@@ -24,13 +24,13 @@
         <div class="govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full">
-                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Corporate migration - preview</h1>
+                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Visit Time Slots migration - preview</h1>
                 </div>
                 <div class="govuk-grid-column-two-thirds">
                     {% if form.estimatedCount %}
                         {% set html %}
                             <p class="govuk-notification-banner__heading" id="estimateSummary">
-                                Estimated number of Corporate entities to be migrated: {{ form.estimatedCount }}
+                                Estimated number of Visit Time Slots entities to be migrated: {{ form.estimatedCount }}
                             </p>
                         {% endset %}
 
@@ -42,7 +42,7 @@
                     {% if form.dlqCount > 0 %}
                         {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear these before starting the migration{% endset %}
                         {% set html %}
-                        <form action="/corporate-migration/start/delete-failures" method="post" novalidate>
+                        <form action="/visitslots-migration/start/delete-failures" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                         <p>If you are sure all previous failures have been successfully understood and processed, you can permanently delete any record of these errors</p>
                         <div class="govuk-button-group">
@@ -66,17 +66,8 @@
 
                     {% endif %}
 
-                    {% set summaryRows = [] %}
 
-                    {{ summaryRow(form.fromDate, "Issued on or after date", summaryRows, "created-after") }}
-                    {{ summaryRow(form.toDate, "Issued on or before date", summaryRows, "created-before") }}
-
-                    {{ govukSummaryList({
-                        rows: summaryRows
-                    }) }}
-
-
-                    <form action="/corporate-migration/start/preview" method="post" novalidate>
+                    <form action="/visitslots-migration/start/preview" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
                         <div class="govuk-button-group">
@@ -87,7 +78,7 @@
                                 attributes: { 'data-qa': 'start-migration-button' },
                                 preventDoubleClick: true
                             }) }}
-                            <a class="govuk-link" href="/corporate-migration">Cancel</a>
+                            <a class="govuk-link" href="/visitslots-migration">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -109,7 +100,7 @@
             actions: {
                 items: [
                     {
-                        href: "/corporate-migration/amend",
+                        href: "/visitslots-migration/amend",
                         text: "Change",
                         visuallyHiddenText: label,
                         attributes: { 'data-qa': dataQa }

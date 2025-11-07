@@ -1,21 +1,20 @@
 import { Request, Response } from 'express'
-import trimForm from '../../utils/trim'
 import logger from '../../../logger'
-import startMigrationValidator from './corporateMigrationValidator'
-import CorporateNomisMigrationService from '../../services/corporate/corporateNomisMigrationService'
-import CorporateNomisPrisonerService from '../../services/corporate/corporateNomisPrisonerService'
+import VisitslotsNomisMigrationService from '../../services/visitslots/visitslotsNomisMigrationService'
+import VisitslotsNomisPrisonerService from '../../services/visitslots/visitslotsNomisPrisonerService'
 import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../utils/logAnalyticsUrlBuilder'
+import trimForm from '../../utils/trim'
 
-export default class CorporateMigrationController {
+export default class VisitslotsMigrationController {
   constructor(
-    private readonly corporateNomisMigrationService: CorporateNomisMigrationService,
-    private readonly corporateNomisPrisonerService: CorporateNomisPrisonerService,
+    private readonly visitslotsNomisMigrationService: VisitslotsNomisMigrationService,
+    private readonly visitslotsNomisPrisonerService: VisitslotsNomisPrisonerService,
     private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  private migrationType: string = 'ORGANISATIONS'
+  private migrationType: string = 'VISIT_SLOTS'
 
   async getMigrations(_: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
@@ -23,12 +22,12 @@ export default class CorporateMigrationController {
     const decoratedMigrations = migrations.map(history => ({
       ...history,
       applicationInsightsLink: alreadyMigratedLogAnalyticsLink(
-        'Will not migrate the nomis corporate',
+        'Will not migrate the nomis visit time slot',
         history.whenStarted,
         history.whenEnded,
       ),
     }))
-    res.render('pages/corporate/corporateMigration', {
+    res.render('pages/visitslots/visitslotsMigration', {
       migrations: decoratedMigrations,
     })
   }
@@ -42,72 +41,62 @@ export default class CorporateMigrationController {
         applicationInsightsLink: messageLogAnalyticsLink(message),
       })),
     }
-    res.render('pages/corporate/corporateMigrationFailures', { failures: failuresDecorated })
+    res.render('pages/visitslots/visitslotsMigrationFailures', { failures: failuresDecorated })
   }
 
   async startNewMigration(req: Request, res: Response): Promise<void> {
-    delete req.session.startDateFilteredMigrationForm
+    delete req.session.noFilterMigrationForm
     await this.startMigration(req, res)
   }
 
   async startMigration(req: Request, res: Response): Promise<void> {
-    res.render('pages/corporate/startCorporateMigration', {
-      form: req.session.startDateFilteredMigrationForm,
+    res.render('pages/visitslots/startVisitslotsMigration', {
+      form: req.session.noFilterMigrationForm,
       errors: req.flash('errors'),
     })
   }
 
   async postStartMigration(req: Request, res: Response): Promise<void> {
-    req.session.startDateFilteredMigrationForm = { ...trimForm(req.body) }
+    req.session.noFilterMigrationForm = { ...trimForm(req.body) }
+    const count = await this.visitslotsNomisPrisonerService.getMigrationEstimatedCount(context(res))
+    const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
+    logger.info(`${dlqCountString} failures found`)
 
-    const errors = startMigrationValidator(req.session.startDateFilteredMigrationForm)
-
-    if (errors.length > 0) {
-      req.flash('errors', errors)
-      res.redirect('/corporate-migration/amend')
-    } else {
-      const filter = req.session.startDateFilteredMigrationForm
-      const count = await this.corporateNomisPrisonerService.getMigrationEstimatedCount(filter, context(res))
-      const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
-      logger.info(`${dlqCountString} failures found`)
-
-      req.session.startDateFilteredMigrationForm.estimatedCount = count.toLocaleString()
-      req.session.startDateFilteredMigrationForm.dlqCount = dlqCountString.toLocaleString()
-      res.redirect('/corporate-migration/start/preview')
-    }
+    req.session.noFilterMigrationForm.estimatedCount = count.toLocaleString()
+    req.session.noFilterMigrationForm.dlqCount = dlqCountString.toLocaleString()
+    res.redirect('/visitslots-migration/start/preview')
   }
 
   async startMigrationPreview(req: Request, res: Response): Promise<void> {
-    res.render('pages/corporate/startCorporateMigrationPreview', {
-      form: req.session.startDateFilteredMigrationForm,
+    res.render('pages/visitslots/startVisitslotsMigrationPreview', {
+      form: req.session.noFilterMigrationForm,
     })
   }
 
   async postClearDLQMigrationPreview(req: Request, res: Response): Promise<void> {
     const result = await this.nomisMigrationService.deleteFailures(this.migrationType, context(res))
     logger.info(`${result.messagesFoundCount} failures deleted`)
-    req.body = { ...req.session.startDateFilteredMigrationForm }
+    req.body = { ...req.session.noFilterMigrationForm }
     await this.postStartMigration(req, res)
   }
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
-    const filter = req.session.startDateFilteredMigrationForm
-    const result = await this.corporateNomisMigrationService.startMigration(filter, context(res))
-    req.session.startDateFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
-    req.session.startDateFilteredMigrationForm.migrationId = result.migrationId
-    res.redirect('/corporate-migration/start/confirmation')
+    const result = await this.visitslotsNomisMigrationService.startMigration(context(res))
+    req.session.noFilterMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
+    req.session.noFilterMigrationForm.migrationId = result.migrationId
+    res.redirect('/visitslots-migration/start/confirmation')
   }
 
   async startMigrationConfirmation(req: Request, res: Response): Promise<void> {
-    res.render('pages/corporate/startCorporateMigrationConfirmation', {
-      form: req.session.startDateFilteredMigrationForm,
+    res.render('pages/visitslots/startVisitslotsMigrationConfirmation', {
+      form: req.session.noFilterMigrationForm,
     })
   }
 
   async migrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/corporate/corporateMigrationDetails', {
+    res.render('pages/visitslots/visitslotsMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
   }
@@ -116,7 +105,7 @@ export default class CorporateMigrationController {
     const { migrationId }: { migrationId: string } = req.body
     await this.nomisMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/corporate/corporateMigrationDetails', {
+    res.render('pages/visitslots/visitslotsMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
   }

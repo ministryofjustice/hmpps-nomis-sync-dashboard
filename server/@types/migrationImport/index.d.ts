@@ -14,7 +14,7 @@ export interface paths {
     get?: never
     /**
      * Synchronises a profile detail to DPS
-     * @description Manually synchronises a profile detail to DPS. This is intended for use by developers to recover from errors. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b> or <b>PRISONER_FROM_NOMIS__MIGRATION__RW/b>
+     * @description Manually synchronises a profile detail to DPS. This is intended for use by developers to recover from errors. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     put: operations['syncContactPersonProfileDetail-0E7RQCE']
     post?: never
@@ -132,26 +132,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/prisoners/{rootOffenderId}/prisoner-balance/repair': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Resynchronises account balances for the given prisoner (Nomis rootOffenderId) from NOMIS to DPS
-     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
-     */
-    post: operations['repairPrisonerBalance_1']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/prisoners/{prisonNumber}/visit-balance/repair': {
     parameters: {
       query?: never
@@ -186,6 +166,26 @@ export interface paths {
      * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPrisonerRestrictions']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/prisoner-balance/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Resynchronises account balances for the given prisoner number from NOMIS to DPS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['repairPrisonerBalance_1']
     delete?: never
     options?: never
     head?: never
@@ -252,6 +252,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prisoners/id/{rootOffenderId}/prisoner-balance/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Resynchronises account balances for the given prisoner (Nomis rootOffenderId) from NOMIS to DPS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['repairPrisonerBalanceId']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisoners/booking-id/{bookingId}/merge/sentencing-adjustments/repair': {
     parameters: {
       query?: never
@@ -306,6 +326,26 @@ export interface paths {
      * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only and when operation will take a very long time. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPersonAsync']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/migrate/visitslots': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Starts a visit slots migration. This migration has no filter
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
+     */
+    post: operations['startMigration']
     delete?: never
     options?: never
     head?: never
@@ -908,6 +948,34 @@ export interface components {
       /** Format: date */
       newActivityStartDate: string
     }
+    MigrationContextObject: {
+      /** @enum {string} */
+      type:
+        | 'ACTIVITIES'
+        | 'ALLOCATIONS'
+        | 'APPOINTMENTS'
+        | 'CORE_PERSON'
+        | 'COURT_SENTENCING'
+        | 'EXTERNAL_MOVEMENTS'
+        | 'INCIDENTS'
+        | 'ORGANISATIONS'
+        | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
+        | 'PRISON_BALANCE'
+        | 'PRISONER_BALANCE'
+        | 'SENTENCING_ADJUSTMENTS'
+        | 'VISIT_BALANCE'
+        | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: unknown
+      properties: {
+        [key: string]: unknown
+      }
+    }
     /** @description Filter specifying what should be migrated from NOMIS to Visits service */
     VisitsMigrationFilter: {
       /**
@@ -961,6 +1029,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -995,6 +1065,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1036,6 +1108,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1070,6 +1144,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1104,6 +1180,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1145,6 +1223,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1179,6 +1259,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1222,6 +1304,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1263,6 +1347,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1304,6 +1390,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1345,6 +1433,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1379,6 +1469,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1425,6 +1517,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1471,6 +1565,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1523,6 +1619,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
@@ -1588,6 +1686,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       /** @enum {string} */
       status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
       id: string
@@ -1624,6 +1724,8 @@ export interface components {
         | 'SENTENCING_ADJUSTMENTS'
         | 'VISIT_BALANCE'
         | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
       /** @enum {string} */
       status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
     }
@@ -2012,26 +2114,6 @@ export interface operations {
       }
     }
   }
-  repairPrisonerBalance_1: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        rootOffenderId: number
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description No Content */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
   repairVisitBalance: {
     parameters: {
       query?: never
@@ -2065,6 +2147,30 @@ export interface operations {
     responses: {
       /** @description OK */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  repairPrisonerBalance_1: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Prisoner number
+         * @example A1234BC
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No Content */
+      204: {
         headers: {
           [name: string]: unknown
         }
@@ -2132,6 +2238,26 @@ export interface operations {
       }
     }
   }
+  repairPrisonerBalanceId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        rootOffenderId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
   repairPostMergeAdjustments: {
     parameters: {
       query?: never
@@ -2189,6 +2315,53 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+    }
+  }
+  startMigration: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Migration process started */
+      202: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['MigrationContextObject']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Migration already in progress */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }
@@ -3283,6 +3456,8 @@ export interface operations {
           | 'SENTENCING_ADJUSTMENTS'
           | 'VISIT_BALANCE'
           | 'VISITS'
+          | 'OFFICIAL_VISITS'
+          | 'VISIT_SLOTS'
       }
       cookie?: never
     }
@@ -3339,6 +3514,8 @@ export interface operations {
           | 'SENTENCING_ADJUSTMENTS'
           | 'VISIT_BALANCE'
           | 'VISITS'
+          | 'OFFICIAL_VISITS'
+          | 'VISIT_SLOTS'
       }
       cookie?: never
     }
@@ -3404,6 +3581,8 @@ export interface operations {
           | 'SENTENCING_ADJUSTMENTS'
           | 'VISIT_BALANCE'
           | 'VISITS'
+          | 'OFFICIAL_VISITS'
+          | 'VISIT_SLOTS'
       }
       cookie?: never
     }
@@ -3460,6 +3639,8 @@ export interface operations {
           | 'SENTENCING_ADJUSTMENTS'
           | 'VISIT_BALANCE'
           | 'VISITS'
+          | 'OFFICIAL_VISITS'
+          | 'VISIT_SLOTS'
       }
       cookie?: never
     }
@@ -3516,6 +3697,8 @@ export interface operations {
           | 'SENTENCING_ADJUSTMENTS'
           | 'VISIT_BALANCE'
           | 'VISITS'
+          | 'OFFICIAL_VISITS'
+          | 'VISIT_SLOTS'
       }
       cookie?: never
     }

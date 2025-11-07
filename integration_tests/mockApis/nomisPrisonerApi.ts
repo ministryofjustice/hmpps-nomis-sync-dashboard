@@ -689,11 +689,11 @@ const stubGetContactPersonMigrationEstimatedCount = (count: number): SuperAgentR
     },
   })
 
-const stubGetCorporateMigrationEstimatedCount = (count: number): SuperAgentRequest =>
+const stubGetVisitslotsMigrationEstimatedCount = (count: number): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      urlPath: '/nomis-prisoner-api/corporates/ids',
+      urlPath: '/nomis-prisoner-api/visits/configuration/time-slots/ids',
     },
     response: {
       status: 200,
@@ -701,34 +701,17 @@ const stubGetCorporateMigrationEstimatedCount = (count: number): SuperAgentReque
       jsonBody: {
         content: [
           {
-            personId: 180935,
+            prisonId: 'MDI',
+            dayOfWeek: 'MONDAY',
+            timeSlotSequence: 1,
           },
         ],
-        pageable: {
-          sort: {
-            empty: false,
-            sorted: true,
-            unsorted: false,
-          },
-          offset: 0,
-          pageSize: 1,
-          pageNumber: 0,
-          paged: true,
-          unpaged: false,
+        page: {
+          size: 1,
+          number: 0,
+          totalElements: count,
+          totalPages: count,
         },
-        last: false,
-        totalPages: count,
-        totalElements: count,
-        size: 1,
-        number: 0,
-        sort: {
-          empty: false,
-          sorted: true,
-          unsorted: false,
-        },
-        first: true,
-        numberOfElements: 1,
-        empty: false,
       },
     },
   })
@@ -805,7 +788,7 @@ export default {
   stubGetAppointmentCountsErrors,
   stubGetPrisonersMigrationEstimatedCount,
   stubGetContactPersonMigrationEstimatedCount,
-  stubGetCorporateMigrationEstimatedCount,
+  stubGetVisitslotsMigrationEstimatedCount,
   stubGetPrisonBalanceMigrationEstimatedCount,
   stubGetPrisonerBalanceMigrationEstimatedCount,
   stubGetVisitBalanceMigrationEstimatedCount,

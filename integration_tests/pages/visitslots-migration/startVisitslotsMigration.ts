@@ -1,15 +1,11 @@
 import Page from '../page'
 
-export default class StartCorporateMigrationPage extends Page {
+export default class StartVisitslotsMigrationPage extends Page {
   constructor() {
-    super('Start a new Corporate migration')
+    super('Start a new Visit Time Slots migration')
   }
 
   continueButton = () => cy.get('[data-qa=continue-button]')
-
-  fromDate = () => cy.get('#fromDate')
-
-  toDate = () => cy.get('#toDate')
 
   errorSummary = () => cy.get('.govuk-error-summary')
 

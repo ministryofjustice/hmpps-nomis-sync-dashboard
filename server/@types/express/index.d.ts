@@ -117,6 +117,7 @@ declare module 'express-session' {
     prisonerFilteredMigrationForm: PrisonerFilteredMigrationForm
     moveActivityStartDateForm: MoveActivityStartDateForm
     activityMigrationSummary: ActivityMigrationSummary
+    noFilterMigrationForm: MigrationForm
   }
 }
 
