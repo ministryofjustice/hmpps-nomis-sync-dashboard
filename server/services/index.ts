@@ -26,6 +26,8 @@ import SentencingNomisMigrationService from './sentencing/sentencingNomisMigrati
 import VisitsNomisMigrationService from './visits/visitsNomisMigrationService'
 import MovementsNomisMigrationService from './movements/movementsNomisMigrationService'
 import MovementsNomisPrisonerService from './movements/movementsNomisPrisonerService'
+import OfficialvisitsNomisMigrationService from './officialvisits/officialvisitsNomisMigrationService'
+import OfficialvisitsNomisPrisonerService from './officialvisits/officialvisitsNomisPrisonerService'
 
 export const services = () => {
   const {
@@ -56,6 +58,8 @@ export const services = () => {
     visitsNomisMigrationClient,
     movementsNomisMigrationClient,
     movementsNomisPrisonerClient,
+    officialvisitsNomisMigrationClient,
+    officialvisitsNomisPrisonerClient,
   } = dataAccess()
 
   return {
@@ -90,6 +94,8 @@ export const services = () => {
     visitsNomisMigrationService: new VisitsNomisMigrationService(visitsNomisMigrationClient),
     movementsNomisMigrationService: new MovementsNomisMigrationService(movementsNomisMigrationClient),
     movementsNomisPrisonerService: new MovementsNomisPrisonerService(movementsNomisPrisonerClient),
+    officialvisitsNomisMigrationService: new OfficialvisitsNomisMigrationService(officialvisitsNomisMigrationClient),
+    officialvisitsNomisPrisonerService: new OfficialvisitsNomisPrisonerService(officialvisitsNomisPrisonerClient),
   }
 }
 

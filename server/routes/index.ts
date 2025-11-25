@@ -16,6 +16,7 @@ import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrat
 import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
 import visitBalanceMigrationRoutes from './visitBalanceMigration/visitBalanceMigrationRouter'
 import movementsMigrationRoutes from './movementsMigration/movementsMigrationRouter'
+import officialvisitsMigrationRoutes from './officialvisitsMigration/officialvisitsMigrationRouter'
 
 import {
   extractRoles,
@@ -122,6 +123,13 @@ const dashboards: Dashboard[] = [
     enabled: true,
   },
   {
+    id: 'officialvisits-migration',
+    heading: 'Official Visits migration',
+    href: '/officialvisits-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
     id: 'prison-balance-migration',
     heading: 'Prison balance migration',
     href: '/prison-balance-migration',
@@ -180,5 +188,7 @@ export default function routes(services: Services): Router {
   router.use('/prisoner-balance-migration', prisonerBalanceMigrationRoutes(services))
   router.use('/visit-balance-migration', visitBalanceMigrationRoutes(services))
   router.use('/movements-migration', movementsMigrationRoutes(services))
+  router.use('/officialvisits-migration', officialvisitsMigrationRoutes(services))
+
   return router
 }
