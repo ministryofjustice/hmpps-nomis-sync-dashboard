@@ -17,7 +17,7 @@ export default class OfficialvisitsNomisMigrationClient extends RestClient {
     logger.info(`starting a migration`)
     return this.post<MigrationContextOfficialVisitsMigrationFilter>(
       {
-        path: `/migrate/officialvisits`,
+        path: `/migrate/official-visits`,
         data: filter,
       },
       asSystem(context.username),

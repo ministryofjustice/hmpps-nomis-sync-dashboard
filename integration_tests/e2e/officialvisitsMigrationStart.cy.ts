@@ -36,7 +36,7 @@ context('Official visits Migration Start', () => {
     })
     it('Preview of migration will be shown and changes allowed prior to starting a migration', () => {
       cy.task('stubStartMigration', {
-        domain: 'officialvisits',
+        domain: 'official-visits',
         response: {
           migrationId: '2022-03-23T11:11:56',
           estimatedCount: 100_988,
