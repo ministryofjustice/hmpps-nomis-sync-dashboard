@@ -81,6 +81,12 @@ declare module 'express-session' {
     prisonIds?: string
   }
 
+  interface DateRangeAndPrisonFilterMigrationForm extends MigrationForm {
+    fromDate?: string
+    toDate?: string
+    prisonIds?: string
+  }
+
   interface StartIncidentsMigrationForm extends MigrationForm {
     fromDate?: string
     toDate?: string
@@ -117,6 +123,7 @@ declare module 'express-session' {
     moveActivityStartDateForm: MoveActivityStartDateForm
     activityMigrationSummary: ActivityMigrationSummary
     noFilterMigrationForm: MigrationForm
+    dateRangeAndPrisonFilterMigrationForm: DateRangeAndPrisonFilterMigrationForm
   }
 }
 

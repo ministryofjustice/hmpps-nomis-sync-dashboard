@@ -476,6 +476,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/migrate/official-visits': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Starts an official visit migration. This migration currently has no filter
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
+     */
+    post: operations['startMigration_1']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/migrate/incidents': {
     parameters: {
       query?: never
@@ -1186,6 +1206,54 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['PrisonBalanceMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
+    }
+    /** @description Filter specifying what should be migrated from NOMIS to DPS */
+    OfficialVisitsMigrationFilter: {
+      /**
+       * @description List of prison Ids (AKA Agency Ids) to migrate visits from
+       * @example MDI
+       */
+      prisonIds: string[]
+      /**
+       * Format: date
+       * @description Only include visits created after this date. NB this is creation date not the actual visit date
+       * @example 2020-03-23
+       */
+      fromDate?: string
+      /**
+       * Format: date
+       * @description Only include visits created before this date. NB this is creation date not the actual visit date
+       * @example 2020-03-24
+       */
+      toDate?: string
+    }
+    MigrationContextOfficialVisitsMigrationFilter: {
+      /** @enum {string} */
+      type:
+        | 'ACTIVITIES'
+        | 'ALLOCATIONS'
+        | 'APPOINTMENTS'
+        | 'CORE_PERSON'
+        | 'COURT_SENTENCING'
+        | 'EXTERNAL_MOVEMENTS'
+        | 'INCIDENTS'
+        | 'ORGANISATIONS'
+        | 'PERSONALRELATIONSHIPS'
+        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
+        | 'PRISON_BALANCE'
+        | 'PRISONER_BALANCE'
+        | 'SENTENCING_ADJUSTMENTS'
+        | 'VISIT_BALANCE'
+        | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: components['schemas']['OfficialVisitsMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -2656,6 +2724,57 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['MigrationContextPrisonBalanceMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Migration already in progress */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  startMigration_1: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OfficialVisitsMigrationFilter']
+      }
+    }
+    responses: {
+      /** @description Migration process started */
+      202: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['MigrationContextOfficialVisitsMigrationFilter']
         }
       }
       /** @description Unauthorized to access this endpoint */

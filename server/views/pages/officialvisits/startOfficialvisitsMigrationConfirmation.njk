@@ -1,0 +1,35 @@
+{% extends "../../partials/layout.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% set pageTitle = applicationName + " - Official Visits migration started" %}
+{% set backLinkHref = "/officialvisits-migration" %}
+
+{% block content %}
+
+  <main class="govuk-body">
+    <div class="govuk-width-container">
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Official Visits migration started</h1>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        {% set html %}
+        <div id="confirmationMessage">
+          Migration id: <strong>{{form.migrationId}}</strong><br/>
+          Estimated number of Visits entities to be migrated: <strong>{{form.estimatedCount}}</strong><br/>
+        </div>
+        {% endset %}
+
+        {{ govukPanel({
+          titleText: "Official Visits migration has successfully started",
+          html: html
+        }) }}
+      </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <a data-qa="details-link" href="/officialvisits-migration/details?migrationId={{form.migrationId}}">View migration status</a>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}

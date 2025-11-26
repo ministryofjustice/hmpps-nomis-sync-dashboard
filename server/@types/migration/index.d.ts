@@ -27,6 +27,9 @@ export type MigrationContextAllocationsMigrationFilter =
   components['schemas']['MigrationContextAllocationsMigrationFilter']
 export type MigrationContextCourtSentencingMigrationFilter =
   components['schemas']['MigrationContextCourtSentencingMigrationFilter']
+export type MigrationContextOfficialVisitsMigrationFilter =
+  components['schemas']['MigrationContextOfficialVisitsMigrationFilter']
+export type OfficialVisitsMigrationFilter = components['schemas']['OfficialVisitsMigrationFilter']
 
 export type GetDlqResult = components['schemas']['GetDlqResult']
 export type PurgeQueueResult = components['schemas']['PurgeQueueResult']

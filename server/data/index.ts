@@ -40,6 +40,8 @@ import PrisonBalanceNomisMigrationClient from './prisonBalanceNomisMigrationClie
 import PrisonBalanceNomisPrisonerClient from './prisonBalanceNomisPrisonerClient'
 import PrisonerBalanceNomisMigrationClient from './prisonerBalanceNomisMigrationClient'
 import PrisonerBalanceNomisPrisonerClient from './prisonerBalanceNomisPrisonerClient'
+import OfficialvisitsNomisMigrationClient from './officialvisitsNomisMigrationClient'
+import OfficialvisitsNomisPrisonerClient from './officialvisitsNomisPrisonerClient'
 
 export const dataAccess = () => {
   const hmppsAuthClient = new AuthenticationClient(
@@ -79,6 +81,8 @@ export const dataAccess = () => {
     visitsNomisMigrationClient: new VisitsNomisMigrationClient(hmppsAuthClient),
     movementsNomisMigrationClient: new MovementsNomisMigrationClient(hmppsAuthClient),
     movementsNomisPrisonerClient: new MovementsNomisPrisonerClient(hmppsAuthClient),
+    officialvisitsNomisMigrationClient: new OfficialvisitsNomisMigrationClient(hmppsAuthClient),
+    officialvisitsNomisPrisonerClient: new OfficialvisitsNomisPrisonerClient(hmppsAuthClient),
   }
 }
 
