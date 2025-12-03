@@ -17,8 +17,5 @@ integration_tests/e2e/incidents/incidentsMigrationDetails.cy.ts:token:34
 integration_tests/e2e/incidents/incidentsMigrationFailures.cy.ts:token:10
 integration_tests/e2e/incidents/incidentsMigrationStart.cy.ts:token:16
 integration_tests/e2e/movementsMigrationStart.cy.ts:token:15
-integration_tests/e2e/visitbalance/visitBalanceMigration.cy.ts:token:14
-integration_tests/e2e/visitbalance/visitBalanceMigrationDetails.cy.ts:token:10
-integration_tests/e2e/visitbalance/visitBalanceMigrationDetails.cy.ts:token:31
 integration_tests/e2e/visitslotsMigrationStart.cy.ts:token:15
 integration_tests/e2e/officialvisitsMigrationStart.cy.ts:token:15

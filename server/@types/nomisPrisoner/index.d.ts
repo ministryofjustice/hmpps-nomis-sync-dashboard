@@ -33,6 +33,4 @@ export type GetPrisonerRestrictionByFilter = Omit<
 >
 export type PagedModelVisitTimeSlotIdResponse = components['schemas']['PagedModelVisitTimeSlotIdResponse']
 export type PagedModelVisitIdResponse = components['schemas']['PagedModelVisitIdResponse']
-export type PageVisitBalanceIdResponse = components['schemas']['PageVisitBalanceIdResponse']
-export type GetVisitBalanceIdsByFilter = Omit<operations['findVisitBalanceIds']['parameters']['query'], 'pageRequest'>
 export type PagedModelLong = components['schemas']['PagedModelLong']

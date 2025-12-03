@@ -46,10 +46,6 @@ export type PrisonerBalanceMigrationFilter = components['schemas']['PrisonerBala
 export type MigrationContextPrisonerBalanceMigrationFilter =
   components['schemas']['MigrationContextPrisonerBalanceMigrationFilter']
 
-export type VisitBalanceMigrationFilter = components['schemas']['VisitBalanceMigrationFilter']
-export type MigrationContextVisitBalanceMigrationFilter =
-  components['schemas']['MigrationContextVisitBalanceMigrationFilter']
-
 export type ContactPersonProfileDetailsMigrationFilter =
   components['schemas']['ContactPersonProfileDetailsMigrationFilter']
 export type MigrationContextContactPersonProfileDetailsMigrationFilter =

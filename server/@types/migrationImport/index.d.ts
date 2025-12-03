@@ -372,26 +372,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/visit-balance': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Starts a visit balance migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
-     */
-    post: operations['migrateVisitBalance']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/migrate/sentencing': {
     parameters: {
       query?: never
@@ -984,7 +964,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1047,7 +1026,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1055,42 +1033,6 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['VisitsMigrationFilter']
-      properties: {
-        [key: string]: unknown
-      }
-    }
-    /** @description Filter specifying what should be migrated from NOMIS to DPS */
-    VisitBalanceMigrationFilter: {
-      /**
-       * @description Only include visit balances for this prison id
-       * @example MDI
-       */
-      prisonId?: string
-    }
-    MigrationContextVisitBalanceMigrationFilter: {
-      /** @enum {string} */
-      type:
-        | 'ACTIVITIES'
-        | 'ALLOCATIONS'
-        | 'APPOINTMENTS'
-        | 'CORE_PERSON'
-        | 'COURT_SENTENCING'
-        | 'EXTERNAL_MOVEMENTS'
-        | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
-        | 'PRISON_BALANCE'
-        | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
-        | 'VISITS'
-        | 'OFFICIAL_VISITS'
-        | 'VISIT_SLOTS'
-      migrationId: string
-      /** Format: int64 */
-      estimatedCount: number
-      body: components['schemas']['VisitBalanceMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -1126,7 +1068,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1162,7 +1103,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1198,7 +1138,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1246,7 +1185,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1289,7 +1227,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1325,7 +1262,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1370,7 +1306,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1456,7 +1391,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1583,7 +1517,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1631,7 +1564,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1685,7 +1617,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1752,7 +1683,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1790,7 +1720,6 @@ export interface components {
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
         | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -3573,7 +3502,6 @@ export interface operations {
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
           | 'SENTENCING_ADJUSTMENTS'
-          | 'VISIT_BALANCE'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
@@ -3631,7 +3559,6 @@ export interface operations {
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
           | 'SENTENCING_ADJUSTMENTS'
-          | 'VISIT_BALANCE'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
@@ -3698,7 +3625,6 @@ export interface operations {
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
           | 'SENTENCING_ADJUSTMENTS'
-          | 'VISIT_BALANCE'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
@@ -3756,7 +3682,6 @@ export interface operations {
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
           | 'SENTENCING_ADJUSTMENTS'
-          | 'VISIT_BALANCE'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
@@ -3814,7 +3739,6 @@ export interface operations {
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
           | 'SENTENCING_ADJUSTMENTS'
-          | 'VISIT_BALANCE'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
