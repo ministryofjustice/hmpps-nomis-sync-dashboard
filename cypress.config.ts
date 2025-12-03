@@ -7,7 +7,6 @@ import nomisActivitiesMigrationApi from './integration_tests/mockApis/nomisActiv
 import nomisAllocationsMigrationApi from './integration_tests/mockApis/nomisAllocationsMigrationApi'
 import nomisAppointmentsMigrationApi from './integration_tests/mockApis/nomisAppointmentsMigrationApi'
 import nomisIncidentsMigrationApi from './integration_tests/mockApis/nomisIncidentsMigrationApi'
-import nomisVisitBalanceMigrationApi from './integration_tests/mockApis/nomisVisitBalanceMigrationApi'
 import nomisPrisonerApi from './integration_tests/mockApis/nomisPrisonerApi'
 import mappingApi from './integration_tests/mockApis/mappingApi'
 import activitiesApi from './integration_tests/mockApis/activitiesApi'
@@ -39,7 +38,6 @@ export default defineConfig({
         ...nomisContactDetailsMigrationApi,
         ...nomisIncidentsMigrationApi,
         ...nomisSentencingMigrationApi,
-        ...nomisVisitBalanceMigrationApi,
         ...nomisVisitsMigrationApi,
         ...mappingApi,
         ...activitiesApi,

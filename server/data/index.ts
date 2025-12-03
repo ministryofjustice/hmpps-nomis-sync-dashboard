@@ -27,8 +27,6 @@ import VisitslotsNomisPrisonerClient from './visitslotsNomisPrisonerClient'
 import CourtSentencingNomisMigrationClient from './courtSentencingNomisMigrationClient'
 import IncidentsNomisMigrationClient from './incidentsNomisMigrationClient'
 import SentencingNomisMigrationClient from './sentencingNomisMigrationClient'
-import VisitBalanceNomisMigrationClient from './visitBalanceNomisMigrationClient'
-import VisitBalanceNomisPrisonerClient from './visitBalanceNomisPrisonerClient'
 import VisitsNomisMigrationClient from './visitsNomisMigrationClient'
 import NomisPrisonerClient from './nomisPrisonerClient'
 import MappingClient from './mappingClient'
@@ -76,8 +74,6 @@ export const dataAccess = () => {
     prisonBalanceNomisPrisonerClient: new PrisonBalanceNomisPrisonerClient(hmppsAuthClient),
     prisonerBalanceNomisMigrationClient: new PrisonerBalanceNomisMigrationClient(hmppsAuthClient),
     prisonerBalanceNomisPrisonerClient: new PrisonerBalanceNomisPrisonerClient(hmppsAuthClient),
-    visitBalanceNomisMigrationClient: new VisitBalanceNomisMigrationClient(hmppsAuthClient),
-    visitBalanceNomisPrisonerClient: new VisitBalanceNomisPrisonerClient(hmppsAuthClient),
     visitsNomisMigrationClient: new VisitsNomisMigrationClient(hmppsAuthClient),
     movementsNomisMigrationClient: new MovementsNomisMigrationClient(hmppsAuthClient),
     movementsNomisPrisonerClient: new MovementsNomisPrisonerClient(hmppsAuthClient),
