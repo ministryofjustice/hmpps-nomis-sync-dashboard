@@ -143,13 +143,6 @@ const dashboards: Dashboard[] = [
     enabled: true,
   },
   {
-    id: 'visit-balance-migration',
-    heading: 'Visit balance migration',
-    href: '/visit-balance-migration',
-    roles: [MIGRATE_NOMIS_SYSCON],
-    enabled: true,
-  },
-  {
     id: 'movements-migration',
     heading: 'Temporary Absence migration',
     href: '/movements-migration',
