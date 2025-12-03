@@ -58,51 +58,6 @@ const stubGetVisitMigrationEstimatedCount = (count: number): SuperAgentRequest =
     },
   })
 
-const stubGetSentencingMigrationEstimatedCount = (count: number): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPath: '/nomis-prisoner-api/adjustments/ids',
-    },
-    response: {
-      status: 200,
-      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: {
-        content: [
-          {
-            bookingId: 180935,
-            sequence: 1,
-          },
-        ],
-        pageable: {
-          sort: {
-            empty: false,
-            sorted: true,
-            unsorted: false,
-          },
-          offset: 0,
-          pageSize: 1,
-          pageNumber: 0,
-          paged: true,
-          unpaged: false,
-        },
-        last: false,
-        totalPages: count,
-        totalElements: count,
-        size: 1,
-        number: 0,
-        sort: {
-          empty: false,
-          sorted: true,
-          unsorted: false,
-        },
-        first: true,
-        numberOfElements: 1,
-        empty: false,
-      },
-    },
-  })
-
 const stubGetAppointmentsMigrationEstimatedCount = (count: number): SuperAgentRequest =>
   stubFor({
     request: {
@@ -645,50 +600,6 @@ const stubGetPrisonersMigrationEstimatedCount = (count: number): SuperAgentReque
     },
   })
 
-const stubGetContactPersonMigrationEstimatedCount = (count: number): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPath: '/nomis-prisoner-api/prisoners/restrictions/ids',
-    },
-    response: {
-      status: 200,
-      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: {
-        content: [
-          {
-            personId: 180935,
-          },
-        ],
-        pageable: {
-          sort: {
-            empty: false,
-            sorted: true,
-            unsorted: false,
-          },
-          offset: 0,
-          pageSize: 1,
-          pageNumber: 0,
-          paged: true,
-          unpaged: false,
-        },
-        last: false,
-        totalPages: count,
-        totalElements: count,
-        size: 1,
-        number: 0,
-        sort: {
-          empty: false,
-          sorted: true,
-          unsorted: false,
-        },
-        first: true,
-        numberOfElements: 1,
-        empty: false,
-      },
-    },
-  })
-
 const stubGetVisitslotsMigrationEstimatedCount = (count: number): SuperAgentRequest =>
   stubFor({
     request: {
@@ -743,7 +654,6 @@ const stubGetOfficialvisitsMigrationEstimatedCount = (count: number): SuperAgent
 export default {
   stubNomisPrisonerPing,
   stubGetVisitMigrationEstimatedCount,
-  stubGetSentencingMigrationEstimatedCount,
   stubGetIncidentsMigrationEstimatedCount,
   stubGetAppointmentsMigrationEstimatedCount,
   stubGetVisitRoomUsage,
@@ -767,7 +677,6 @@ export default {
   stubGetAppointmentCounts,
   stubGetAppointmentCountsErrors,
   stubGetPrisonersMigrationEstimatedCount,
-  stubGetContactPersonMigrationEstimatedCount,
   stubGetVisitslotsMigrationEstimatedCount,
   stubGetPrisonBalanceMigrationEstimatedCount,
   stubGetPrisonerBalanceMigrationEstimatedCount,

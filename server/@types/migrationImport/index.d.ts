@@ -372,26 +372,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/sentencing': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Starts a sentencing migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
-     */
-    post: operations['migrateSentencing']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/migrate/refresh/{migrationId}': {
     parameters: {
       query?: never
@@ -536,26 +516,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/corporate': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Starts a organisation migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
-     */
-    post: operations['migrateCorporate']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/migrate/core-person': {
     parameters: {
       query?: never
@@ -570,46 +530,6 @@ export interface paths {
      * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateCorePerson']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/migrate/contactperson': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Starts a prisoner restriction migration. The entity type is determined by the migration filter
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
-     */
-    post: operations['migrateContactPerson']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/migrate/contact-person-profile-details': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Starts a contact person profile details migration
-     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
-     */
-    post: operations['migrateContactPerson_1']
     delete?: never
     options?: never
     head?: never
@@ -958,12 +878,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1020,12 +936,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1033,48 +945,6 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['VisitsMigrationFilter']
-      properties: {
-        [key: string]: unknown
-      }
-    }
-    /** @description Filter specifying what should be migrated from NOMIS to Sentencing service */
-    SentencingMigrationFilter: {
-      /**
-       * Format: date
-       * @description Only include Sentencing entity issued on or after this date
-       * @example 2020-03-23
-       */
-      fromDate?: string
-      /**
-       * Format: date
-       * @description Only include Sentencing entity issued before or on this date
-       * @example 2020-03-24
-       */
-      toDate?: string
-    }
-    MigrationContextSentencingMigrationFilter: {
-      /** @enum {string} */
-      type:
-        | 'ACTIVITIES'
-        | 'ALLOCATIONS'
-        | 'APPOINTMENTS'
-        | 'CORE_PERSON'
-        | 'COURT_SENTENCING'
-        | 'EXTERNAL_MOVEMENTS'
-        | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
-        | 'PRISON_BALANCE'
-        | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
-        | 'VISITS'
-        | 'OFFICIAL_VISITS'
-        | 'VISIT_SLOTS'
-      migrationId: string
-      /** Format: int64 */
-      estimatedCount: number
-      body: components['schemas']['SentencingMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -1097,12 +967,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1132,12 +998,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1179,12 +1041,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1221,12 +1079,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1256,12 +1110,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1300,12 +1150,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1313,49 +1159,6 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['CourtSentencingMigrationFilter']
-      properties: {
-        [key: string]: unknown
-      }
-    }
-    /** @description Filter specifying what should be migrated from NOMIS to DPS */
-    OrganisationsMigrationFilter: {
-      /**
-       * Format: date
-       * @description Only include Organisations created on or after this date
-       * @example 2020-03-23
-       */
-      fromDate?: string
-      /**
-       * Format: date
-       * @description Only include Organisations created before or on this date
-       * @example 2020-03-24
-       */
-      toDate?: string
-    }
-    MigrationContextOrganisationsMigrationFilter: {
-      /** @enum {string} */
-      type:
-        | 'ACTIVITIES'
-        | 'ALLOCATIONS'
-        | 'APPOINTMENTS'
-        | 'CORE_PERSON'
-        | 'COURT_SENTENCING'
-        | 'EXTERNAL_MOVEMENTS'
-        | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
-        | 'PRISON_BALANCE'
-        | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
-        | 'VISITS'
-        | 'OFFICIAL_VISITS'
-        | 'VISIT_SLOTS'
-      migrationId: string
-      /** Format: int64 */
-      estimatedCount: number
-      body: components['schemas']['OrganisationsMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -1385,12 +1188,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1398,85 +1197,6 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['CorePersonMigrationFilter']
-      properties: {
-        [key: string]: unknown
-      }
-    }
-    /** @description Filter specifying what should be migrated from NOMIS to DPS */
-    PrisonerRestrictionMigrationFilter: {
-      /**
-       * Format: date
-       * @description Only include restrictions created on or after this date
-       * @example 2020-03-23
-       */
-      fromDate?: string
-      /**
-       * Format: date
-       * @description Only include restrictions created before or on this date
-       * @example 2020-03-24
-       */
-      toDate?: string
-    }
-    MigrationContextPrisonerRestrictionMigrationFilter: {
-      /** @enum {string} */
-      type:
-        | 'ACTIVITIES'
-        | 'ALLOCATIONS'
-        | 'APPOINTMENTS'
-        | 'CORE_PERSON'
-        | 'COURT_SENTENCING'
-        | 'EXTERNAL_MOVEMENTS'
-        | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
-        | 'PRISON_BALANCE'
-        | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
-        | 'VISITS'
-        | 'OFFICIAL_VISITS'
-        | 'VISIT_SLOTS'
-      migrationId: string
-      /** Format: int64 */
-      estimatedCount: number
-      body: components['schemas']['PrisonerRestrictionMigrationFilter']
-      properties: {
-        [key: string]: unknown
-      }
-    }
-    /** @description Filter specifying what should be migrated from NOMIS to DPS */
-    ContactPersonProfileDetailsMigrationFilter: {
-      /**
-       * @description Only migrate a single prisoner - used for testing
-       * @example A1234BC
-       */
-      prisonerNumber?: string
-    }
-    MigrationContextContactPersonProfileDetailsMigrationFilter: {
-      /** @enum {string} */
-      type:
-        | 'ACTIVITIES'
-        | 'ALLOCATIONS'
-        | 'APPOINTMENTS'
-        | 'CORE_PERSON'
-        | 'COURT_SENTENCING'
-        | 'EXTERNAL_MOVEMENTS'
-        | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
-        | 'PRISON_BALANCE'
-        | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
-        | 'VISIT_BALANCE'
-        | 'VISITS'
-        | 'OFFICIAL_VISITS'
-        | 'VISIT_SLOTS'
-      migrationId: string
-      /** Format: int64 */
-      estimatedCount: number
-      body: components['schemas']['ContactPersonProfileDetailsMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -1511,12 +1231,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1558,12 +1274,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1611,12 +1323,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1677,12 +1385,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -1714,12 +1418,8 @@ export interface components {
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
-        | 'ORGANISATIONS'
-        | 'PERSONALRELATIONSHIPS'
-        | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
-        | 'SENTENCING_ADJUSTMENTS'
         | 'VISITS'
         | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
@@ -2413,108 +2113,6 @@ export interface operations {
       }
     }
   }
-  migrateVisitBalance: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['VisitBalanceMigrationFilter']
-      }
-    }
-    responses: {
-      /** @description Migration process started */
-      202: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['MigrationContextVisitBalanceMigrationFilter']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Incorrect permissions to start migration */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Migration already in progress */
-      409: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  migrateSentencing: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['SentencingMigrationFilter']
-      }
-    }
-    responses: {
-      /** @description Migration process started */
-      202: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['MigrationContextSentencingMigrationFilter']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Incorrect permissions to start migration */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Migration already in progress */
-      409: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
   refresh: {
     parameters: {
       query?: never
@@ -2879,57 +2477,6 @@ export interface operations {
       }
     }
   }
-  migrateCorporate: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['OrganisationsMigrationFilter']
-      }
-    }
-    responses: {
-      /** @description Migration process started */
-      202: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['MigrationContextOrganisationsMigrationFilter']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Incorrect permissions to start migration */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Migration already in progress */
-      409: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
   migrateCorePerson: {
     parameters: {
       query?: never
@@ -2972,99 +2519,6 @@ export interface operations {
       }
       /** @description Migration already in progress */
       409: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  migrateContactPerson: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['PrisonerRestrictionMigrationFilter']
-      }
-    }
-    responses: {
-      /** @description Migration process started */
-      202: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['MigrationContextPrisonerRestrictionMigrationFilter']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Incorrect permissions to start migration */
-      403: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Migration already in progress */
-      409: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-    }
-  }
-  migrateContactPerson_1: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['ContactPersonProfileDetailsMigrationFilter']
-      }
-    }
-    responses: {
-      /** @description Migration process started */
-      202: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['MigrationContextContactPersonProfileDetailsMigrationFilter']
-        }
-      }
-      /** @description Unauthorized to access this endpoint */
-      401: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** @description Incorrect permissions to start migration */
-      403: {
         headers: {
           [name: string]: unknown
         }
@@ -3496,12 +2950,8 @@ export interface operations {
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
-          | 'ORGANISATIONS'
-          | 'PERSONALRELATIONSHIPS'
-          | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
-          | 'SENTENCING_ADJUSTMENTS'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
@@ -3553,12 +3003,8 @@ export interface operations {
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
-          | 'ORGANISATIONS'
-          | 'PERSONALRELATIONSHIPS'
-          | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
-          | 'SENTENCING_ADJUSTMENTS'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
@@ -3619,12 +3065,8 @@ export interface operations {
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
-          | 'ORGANISATIONS'
-          | 'PERSONALRELATIONSHIPS'
-          | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
-          | 'SENTENCING_ADJUSTMENTS'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
@@ -3676,12 +3118,8 @@ export interface operations {
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
-          | 'ORGANISATIONS'
-          | 'PERSONALRELATIONSHIPS'
-          | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
-          | 'SENTENCING_ADJUSTMENTS'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
@@ -3733,12 +3171,8 @@ export interface operations {
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
-          | 'ORGANISATIONS'
-          | 'PERSONALRELATIONSHIPS'
-          | 'PERSONALRELATIONSHIPS_PROFILEDETAIL'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
-          | 'SENTENCING_ADJUSTMENTS'
           | 'VISITS'
           | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'

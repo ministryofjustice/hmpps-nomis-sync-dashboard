@@ -17,16 +17,11 @@ import logger from '../../logger'
 import ActivitiesNomisMigrationClient from './activitiesNomisMigrationClient'
 import AllocationsNomisMigrationClient from './allocationsNomisMigrationClient'
 import AppointmentsNomisMigrationClient from './appointmentsNomisMigrationClient'
-import ContactPersonNomisMigrationClient from './contactPersonNomisMigrationClient'
-import ContactPersonNomisPrisonerClient from './contactPersonNomisPrisonerClient'
-import ContactPersonProfileDetailsNomisMigrationClient from './contactPersonProfileDetailsNomisMigrationClient'
-import ContactPersonProfileDetailsNomisPrisonerClient from './contactPersonProfileDetailsNomisPrisonerClient'
 import CorePersonNomisMigrationClient from './corePersonNomisMigrationClient'
 import VisitslotsNomisMigrationClient from './visitslotsNomisMigrationClient'
 import VisitslotsNomisPrisonerClient from './visitslotsNomisPrisonerClient'
 import CourtSentencingNomisMigrationClient from './courtSentencingNomisMigrationClient'
 import IncidentsNomisMigrationClient from './incidentsNomisMigrationClient'
-import SentencingNomisMigrationClient from './sentencingNomisMigrationClient'
 import VisitsNomisMigrationClient from './visitsNomisMigrationClient'
 import NomisPrisonerClient from './nomisPrisonerClient'
 import MappingClient from './mappingClient'
@@ -55,12 +50,6 @@ export const dataAccess = () => {
     activitiesNomisMigrationClient: new ActivitiesNomisMigrationClient(hmppsAuthClient),
     allocationsNomisMigrationClient: new AllocationsNomisMigrationClient(hmppsAuthClient),
     appointmentsNomisMigrationClient: new AppointmentsNomisMigrationClient(hmppsAuthClient),
-    contactPersonNomisMigrationClient: new ContactPersonNomisMigrationClient(hmppsAuthClient),
-    contactPersonNomisPrisonerClient: new ContactPersonNomisPrisonerClient(hmppsAuthClient),
-    contactPersonProfileDetailsNomisMigrationClient: new ContactPersonProfileDetailsNomisMigrationClient(
-      hmppsAuthClient,
-    ),
-    contactPersonProfileDetailsNomisPrisonerClient: new ContactPersonProfileDetailsNomisPrisonerClient(hmppsAuthClient),
     corePersonNomisMigrationClient: new CorePersonNomisMigrationClient(hmppsAuthClient),
     visitslotsNomisMigrationClient: new VisitslotsNomisMigrationClient(hmppsAuthClient),
     visitslotsNomisPrisonerClient: new VisitslotsNomisPrisonerClient(hmppsAuthClient),
@@ -69,7 +58,6 @@ export const dataAccess = () => {
     nomisMigrationClient: new NomisMigrationClient(hmppsAuthClient),
     nomisPrisonerClient: new NomisPrisonerClient(hmppsAuthClient),
     mappingClient: new MappingClient(hmppsAuthClient),
-    sentencingNomisMigrationClient: new SentencingNomisMigrationClient(hmppsAuthClient),
     prisonBalanceNomisMigrationClient: new PrisonBalanceNomisMigrationClient(hmppsAuthClient),
     prisonBalanceNomisPrisonerClient: new PrisonBalanceNomisPrisonerClient(hmppsAuthClient),
     prisonerBalanceNomisMigrationClient: new PrisonerBalanceNomisMigrationClient(hmppsAuthClient),

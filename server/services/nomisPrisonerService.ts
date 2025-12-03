@@ -24,11 +24,6 @@ export default class NomisPrisonerService {
     return this.nomisPrisonerClient.getVisitMigrationEstimatedCount(filter, context)
   }
 
-  // TODO currently only dealing with adjustments, to be expanded with other sentencing entities
-  async getSentencingMigrationEstimatedCount(filter: GetAdjustmentsByFilter, context: Context): Promise<number> {
-    return this.nomisPrisonerClient.getSentencingMigrationEstimatedCount(filter, context)
-  }
-
   async getAppointmentsMigrationEstimatedCount(filter: GetAdjustmentsByFilter, context: Context): Promise<number> {
     return this.nomisPrisonerClient.getAppointmentsMigrationEstimatedCount(filter, context)
   }

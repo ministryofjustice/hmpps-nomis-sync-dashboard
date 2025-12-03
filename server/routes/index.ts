@@ -2,15 +2,12 @@ import { Router } from 'express'
 
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
 import visitRoomMappingMigrationRouter from './visitMigration/visitRoomMappingMigrationRouter'
-import sentencingMigrationRoutes from './sentencingMigration/sentencingMigrationRouter'
 import activitiesMigrationRoutes from './activitiesMigration/activitiesMigrationRouter'
 import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
 import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSentencingMigrationRouter'
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
 import corePersonMigrationRoutes from './corePersonMigration/corePersonMigrationRouter'
-import contactPersonMigrationRoutes from './contactPersonMigration/contactPersonMigrationRouter'
-import contactPersonProfileDetailsMigrationRoutes from './contactPersonMigration/contactPersonProfileDetailsMigration/contactPersonProfileDetailsMigrationRouter'
 import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
 import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrationRouter'
 import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
@@ -42,13 +39,6 @@ const dashboards: Dashboard[] = [
     heading: 'Visits migration',
     href: '/visits-migration',
     roles: [MIGRATE_VISITS_ROLE, MIGRATE_NOMIS_SYSCON],
-    enabled: true,
-  },
-  {
-    id: 'sentencing-migration',
-    heading: 'Sentencing migration',
-    href: '/sentencing-migration',
-    roles: [MIGRATE_SENTENCING_ROLE, MIGRATE_NOMIS_SYSCON],
     enabled: true,
   },
   {
@@ -97,20 +87,6 @@ const dashboards: Dashboard[] = [
     id: 'incidents-migration',
     heading: 'Incidents migration',
     href: '/incidents-migration',
-    roles: [MIGRATE_NOMIS_SYSCON],
-    enabled: true,
-  },
-  {
-    id: 'contactperson-migration',
-    heading: 'Prisoner Restriction migration',
-    href: '/contactperson-migration',
-    roles: [MIGRATE_NOMIS_SYSCON],
-    enabled: true,
-  },
-  {
-    id: 'contactperson-profiledetails-migration',
-    heading: 'Contact Person Profile Details migration',
-    href: '/contactperson-profiledetails-migration',
     roles: [MIGRATE_NOMIS_SYSCON],
     enabled: true,
   },
@@ -166,15 +142,12 @@ export default function routes(services: Services): Router {
 
   router.use('/visits-migration', visitMigrationRoutes(services))
   router.use('/visits-room-mappings', visitRoomMappingMigrationRouter(services))
-  router.use('/sentencing-migration', sentencingMigrationRoutes(services))
   router.use('/activities-migration', activitiesMigrationRoutes(services))
   router.use('/allocations-migration', allocationsMigrationRoutes(services))
   router.use('/appointments-migration', appointmentsMigrationRoutes(services))
   router.use('/court-sentencing-migration', courtSentencingMigrationRoutes(services))
   router.use('/incidents-migration', incidentsMigrationRoutes(services))
   router.use('/coreperson-migration', corePersonMigrationRoutes(services))
-  router.use('/contactperson-migration', contactPersonMigrationRoutes(services))
-  router.use('/contactperson-profiledetails-migration', contactPersonProfileDetailsMigrationRoutes(services))
   router.use('/visitslots-migration', visitslotsMigrationRoutes(services))
   router.use('/prison-balance-migration', prisonBalanceMigrationRoutes(services))
   router.use('/prisoner-balance-migration', prisonerBalanceMigrationRoutes(services))
