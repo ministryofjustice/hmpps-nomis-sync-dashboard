@@ -131,7 +131,7 @@ export default class MovementsMigrationController {
       | where AppRoleName == 'hmpps-prisoner-from-nomis-migration'
       | where TimeGenerated between (${startDateQuery} .. ${endDateQuery})
       | where Properties.migrationId startswith '${migrationId}'
-      | where Name startswith 'temporary-absence-migration'
+      | where Name startswith 'temporary-absences-migration'
       ${failedQuery}
     `
   }
