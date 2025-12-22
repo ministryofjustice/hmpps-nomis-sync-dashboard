@@ -1,7 +1,7 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 
-const stubActivitiesApiPing = (): SuperAgentRequest =>
+const stubPing = (): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -91,7 +91,7 @@ const stubGetDpsPrisonRegimeErrors = (): SuperAgentRequest =>
   })
 
 export default {
-  stubActivitiesApiPing,
+  stubPing,
   stubGetDpsPrisonRollout,
   stubGetDpsPrisonRolloutErrors,
   stubGetDpsPayBands,

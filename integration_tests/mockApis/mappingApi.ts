@@ -39,7 +39,7 @@ const stubAddVisitsRoomMapping = (prisonId: string): SuperAgentRequest =>
     },
   })
 
-const stubMappingApiPing = (): SuperAgentRequest =>
+const stubPing = (): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -55,5 +55,5 @@ const stubMappingApiPing = (): SuperAgentRequest =>
 export default {
   stubGetVisitRoomMappings,
   stubAddVisitsRoomMapping,
-  stubMappingApiPing,
+  stubPing,
 }
