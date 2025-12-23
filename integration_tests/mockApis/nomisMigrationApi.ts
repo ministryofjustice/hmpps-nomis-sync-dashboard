@@ -43,7 +43,7 @@ export const migrationHistory: MigrationHistory[] = [
   },
 ]
 
-const stubNomisMigrationPing = (): SuperAgentRequest =>
+const stubPing = (): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -123,7 +123,7 @@ const stubGetMigrationHistory = ({
   history = migrationHistory,
 }: {
   migrationType: string
-  history: MigrationHistory[]
+  history?: MigrationHistory[]
 }): SuperAgentRequest =>
   stubFor({
     request: {
@@ -142,19 +142,19 @@ const stubGetMigrationHistory = ({
 const stubGetMigration = ({
   migrationId,
   migrationType,
-  filter = null,
+  filter = '',
   migrated = 12091,
   failed = 123,
-  whenEnded = null,
+  whenEnded = '',
   status = 'STARTED',
 }: {
   migrationType: string
   migrationId: string
-  filter: string
-  migrated: number
-  failed: number
-  whenEnded: string
-  status: string
+  filter?: string
+  migrated?: number
+  failed?: number
+  whenEnded?: string
+  status?: string
 }): SuperAgentRequest =>
   stubFor({
     request: {
@@ -191,9 +191,9 @@ const stubGetMigrationCompleted = ({
 }: {
   migrationType: string
   migrationId: string
-  migrated: number
-  failed: number
-  whenEnded: string
+  migrated?: number
+  failed?: number
+  whenEnded?: string
   filter: string
 }): SuperAgentRequest =>
   stubGetMigration({
@@ -216,10 +216,10 @@ const stubGetActiveMigration = ({
 }: {
   migrationType: string
   migrationId: string
-  migrated: number
-  failed: number
-  stillToBeProcessed: number
-  status: string
+  migrated?: number
+  failed?: number
+  stillToBeProcessed?: number
+  status?: string
 }): SuperAgentRequest =>
   stubFor({
     request: {
@@ -279,7 +279,7 @@ const stubGetFailuresWithMigrationType = ({
   failures = defaultFailures,
 }: {
   migrationType: string
-  failures: unknown
+  failures?: unknown
 }): SuperAgentRequest =>
   stubFor({
     request: {
@@ -303,7 +303,7 @@ const stubGetFailureCountWithMigrationType = ({
   failures = 153,
 }: {
   migrationType: string
-  failures: number
+  failures?: number
 }): SuperAgentRequest =>
   stubFor({
     request: {
@@ -343,7 +343,7 @@ const noMessageFailures = {
 }
 
 export default {
-  stubNomisMigrationPing,
+  stubPing,
   stubGetMigrationHistory,
   stubGetMigration,
   stubGetMigrationCompleted,

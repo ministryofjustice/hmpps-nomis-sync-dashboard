@@ -1,7 +1,7 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 
-const stubNomisPrisonerPing = (): SuperAgentRequest =>
+const stubPing = (): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -652,7 +652,7 @@ const stubGetOfficialvisitsMigrationEstimatedCount = (count: number): SuperAgent
   })
 
 export default {
-  stubNomisPrisonerPing,
+  stubPing,
   stubGetVisitMigrationEstimatedCount,
   stubGetIncidentsMigrationEstimatedCount,
   stubGetAppointmentsMigrationEstimatedCount,
