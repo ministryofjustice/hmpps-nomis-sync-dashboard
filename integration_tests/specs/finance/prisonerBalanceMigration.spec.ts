@@ -11,7 +11,7 @@ import prisonerBalanceMigrationHistory from '../../mockApis/nomisPrisonerBalance
 import MigrationFailuresPage from '../../pages/migrationFailuresPage'
 
 const migrationType: string = 'PRISONER_BALANCE'
-const migrationTypeName: string = 'Prisoner Balance'
+const migrationTypeName: string = 'Prisoner balance'
 
 test.describe('Prisoner Balance Migration Homepage', () => {
   test.afterEach(async () => {

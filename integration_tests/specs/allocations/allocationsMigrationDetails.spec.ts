@@ -6,26 +6,25 @@ import nomisMigrationApi from '../../mockApis/nomisMigrationApi'
 import IndexPage from '../../pages/indexPage'
 import MigrationDetailsPage from '../../pages/migrationDetailsPage'
 
-const migrationType: string = 'PRISON_BALANCE'
-const migrationTypeName: string = 'Prison balance'
+const migrationType: string = 'ALLOCATIONS'
+const migrationTypeName: string = 'Allocations'
 
-test.describe('Prison Balance Migration Details', () => {
+test.describe('Allocations Migration Details', () => {
   const migrationId = '2022-03-28T14:28:04'
   test.afterEach(async () => {
     await resetStubs()
   })
   test.describe('while migration is in progress', () => {
     test.beforeEach(async ({ page }) => {
-      await login(page)
+      await login(page, { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
       const indexPage = await IndexPage.verifyOnPage(page)
       await indexPage.migrationLink(migrationTypeName).click()
 
       await nomisMigrationApi.stubGetActiveMigration({ migrationType, migrationId })
       await nomisMigrationApi.stubGetMigration({ migrationType, migrationId, filter: '{"prisonId":"MDI"}' })
     })
-
-    test('should show details for a migration in progress', async ({ page }) => {
-      await page.goto(`/prison-balance-migration/details?migrationId=${migrationId}`)
+    test('should details for a migration in progress', async ({ page }) => {
+      await page.goto(`/allocations-migration/details?migrationId=${migrationId}`)
       const migrationDetailsPage = await MigrationDetailsPage.verifyOnPage(migrationTypeName, page)
       await expect(migrationDetailsPage.status).toContainText('STARTED')
       await expect(migrationDetailsPage.ended).toContainText('-')
@@ -45,9 +44,8 @@ test.describe('Prison Balance Migration Details', () => {
       await nomisMigrationApi.stubGetActiveMigrationCompleted({ migrationType, migrationId })
       await nomisMigrationApi.stubGetMigrationCompleted({ migrationType, migrationId, filter: '{"prisonId":"MDI"}' })
     })
-
     test('should details for a migration in progress', async ({ page }) => {
-      await page.goto(`/prison-balance-migration/details?migrationId=${migrationId}`)
+      await page.goto(`/allocations-migration/details?migrationId=${migrationId}`)
       const migrationDetailsPage = await MigrationDetailsPage.verifyOnPage(migrationTypeName, page)
       await expect(migrationDetailsPage.status).toContainText('COMPLETED')
       await expect(migrationDetailsPage.ended).toContainText('-')

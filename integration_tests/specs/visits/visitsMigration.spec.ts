@@ -3,7 +3,6 @@ import { expect, test } from '@playwright/test'
 import { login, resetStubs } from '../../testUtils'
 
 import MigrationPage from '../../pages/migrationPage'
-import StartMigrationPage from '../../pages/startMigrationPage'
 import AuthErrorPage from '../../pages/authErrorPage'
 import nomisMigrationApi from '../../mockApis/nomisMigrationApi'
 import IndexPage from '../../pages/indexPage'
@@ -22,24 +21,25 @@ test.describe('Visit Migration Homepage', () => {
     test.beforeEach(async ({ page }) => {
       await nomisMigrationApi.stubGetMigrationHistory({ migrationType, history: visitsMigrationHistory })
       await login(page, { roles: ['ROLE_MIGRATE_VISITS'] })
-      const indexPage = await IndexPage.verifyOnPage(page)
-      await indexPage.migrationLinkWithId('visits', migrationTypeName).click()
     })
 
     test('should see migrate visits tile', async ({ page }) => {
-      const migrationPage = await MigrationPage.verifyOnPage(migrationTypeName, page)
-      await expect(migrationPage.startNewMigration).toBeVisible()
+      const indexPage = await IndexPage.verifyOnPage(page)
+      await expect(indexPage.migrationLink(migrationTypeName)).toBeVisible()
     })
+
     test('should be able to navigate to the visits migration home page', async ({ page }) => {
-      const migrationPage = await MigrationPage.verifyOnPage(migrationTypeName, page)
-      await migrationPage.startNewMigration.click()
-      await StartMigrationPage.verifyOnPage(migrationTypeName, page)
+      const indexPage = await IndexPage.verifyOnPage(page)
+      await indexPage.migrationLink(migrationTypeName).click()
+      await MigrationPage.verifyOnPage(migrationTypeName, page)
     })
 
     test('should display list of migrations', async ({ page }) => {
       await nomisMigrationApi.stubGetNoFailuresWithMigrationType({ migrationType })
       await nomisMigrationApi.stubGetFailureCountWithMigrationType({ migrationType })
 
+      const indexPage = await IndexPage.verifyOnPage(page)
+      await indexPage.migrationLink(migrationTypeName).click()
       const migrationPage = await MigrationPage.verifyOnPage(migrationTypeName, page)
 
       const row0 = migrationPage.migrationResultsRow(0)
@@ -97,6 +97,8 @@ test.describe('Visit Migration Homepage', () => {
     })
 
     test('will validate the dates when filtering', async ({ page }) => {
+      const indexPage = await IndexPage.verifyOnPage(page)
+      await indexPage.migrationLink(migrationTypeName).click()
       const migrationPage = await VisitsMigrationPage.verifyOnPage(migrationTypeName, page)
 
       await migrationPage.fromDateTime.fill('invalid')

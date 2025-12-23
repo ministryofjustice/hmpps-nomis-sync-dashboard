@@ -19,7 +19,7 @@ test.describe('Visit Migration Details', () => {
     test.beforeEach(async ({ page }) => {
       await login(page)
       const indexPage = await IndexPage.verifyOnPage(page)
-      await indexPage.migrationLinkWithId('visits', migrationTypeName).click()
+      await indexPage.migrationLink(migrationTypeName).click()
 
       await nomisMigrationApi.stubGetActiveMigration({ migrationType, migrationId })
       await nomisMigrationApi.stubGetMigration({
@@ -45,7 +45,7 @@ test.describe('Visit Migration Details', () => {
     test.beforeEach(async ({ page }) => {
       await login(page)
       const indexPage = await IndexPage.verifyOnPage(page)
-      await indexPage.migrationLinkWithId('visits', migrationTypeName).click()
+      await indexPage.migrationLink(migrationTypeName).click()
 
       await nomisMigrationApi.stubGetActiveMigrationCompleted({ migrationType, migrationId })
       await nomisMigrationApi.stubGetMigrationCompleted({

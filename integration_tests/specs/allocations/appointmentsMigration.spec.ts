@@ -6,28 +6,26 @@ import MigrationPage from '../../pages/migrationPage'
 import AuthErrorPage from '../../pages/authErrorPage'
 import nomisMigrationApi from '../../mockApis/nomisMigrationApi'
 import IndexPage from '../../pages/indexPage'
-import prisonBalanceMigrationHistory from '../../mockApis/nomisPrisonBalanceMigrationApi'
 import MigrationFailuresPage from '../../pages/migrationFailuresPage'
+import { appointmentsMigrationHistory } from '../../mockApis/nomisAppointmentsMigrationApi'
 
-const migrationType: string = 'PRISON_BALANCE'
-const migrationTypeName: string = 'Prison balance'
+const migrationType: string = 'APPOINTMENTS'
+const migrationTypeName: string = 'Appointments'
 
-test.describe('Prison Balance Migration Homepage', () => {
+test.describe('Appointment Migration Homepage', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
-  test.describe('With MIGRATE_NOMIS_SYSCON role', () => {
+  test.describe('With MIGRATE_APPOINTMENTS role', () => {
     test.beforeEach(async ({ page }) => {
-      await nomisMigrationApi.stubGetMigrationHistory({ migrationType, history: prisonBalanceMigrationHistory })
-      await login(page)
+      await nomisMigrationApi.stubGetMigrationHistory({ migrationType, history: appointmentsMigrationHistory })
+      await login(page, { roles: ['ROLE_MIGRATE_APPOINTMENTS'] })
     })
-
-    test('should see migrate prison balance tile', async ({ page }) => {
+    test('should see migrate appointments tile', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await expect(indexPage.migrationLink(migrationTypeName)).toBeVisible()
     })
-
-    test('should be able to navigate to the prison balance migration home page', async ({ page }) => {
+    test('should be able to navigate to the appointments migration home page', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await indexPage.migrationLink(migrationTypeName).click()
       await MigrationPage.verifyOnPage(migrationTypeName, page)
@@ -35,7 +33,7 @@ test.describe('Prison Balance Migration Homepage', () => {
 
     test('should display list of migrations', async ({ page }) => {
       await nomisMigrationApi.stubGetNoFailuresWithMigrationType({ migrationType })
-      await nomisMigrationApi.stubGetFailureCountWithMigrationType({ migrationType })
+      await nomisMigrationApi.stubGetNoFailuresWithMigrationType({ migrationType })
 
       const indexPage = await IndexPage.verifyOnPage(page)
       await indexPage.migrationLink(migrationTypeName).click()
@@ -50,7 +48,9 @@ test.describe('Prison Balance Migration Homepage', () => {
       await expect(row0.getByTestId('migratedCount')).toHaveText('0')
       await expect(row0.getByTestId('failedCount')).toHaveText('0')
       await expect(row0.getByTestId('estimatedCount')).toHaveText('0')
-      await expect(row0.getByTestId('filterPrisonId')).toHaveText('HEI')
+      await expect(row0.getByTestId('filterPrisonIds')).toBeHidden()
+      await expect(row0.getByTestId('filterToDate')).toBeHidden()
+      await expect(row0.getByTestId('filterFromDate')).toHaveText('4 March 2022')
       await expect(row0.getByTestId('progress-link')).toBeHidden()
       await expect(row0.getByTestId('failures-link')).toBeHidden()
       await expect(row0.getByTestId('already-migrated-link')).toBeHidden()
@@ -63,7 +63,9 @@ test.describe('Prison Balance Migration Homepage', () => {
       await expect(row1.getByTestId('migratedCount')).toHaveText('1')
       await expect(row1.getByTestId('failedCount')).toHaveText('162794')
       await expect(row1.getByTestId('estimatedCount')).toHaveText('205630')
-      await expect(row1.getByTestId('filterPrisonId')).toBeHidden()
+      await expect(row1.getByTestId('filterPrisonIds')).toBeHidden()
+      await expect(row1.getByTestId('filterToDate')).toBeHidden()
+      await expect(row1.getByTestId('filterFromDate')).toBeHidden()
       await expect(row1.getByTestId('progress-link')).toHaveText('View progress')
       await expect(row1.getByTestId('failures-link')).toHaveText('View failures')
       await expect(row1.getByTestId('already-migrated-link')).toHaveText('View Insights')
@@ -75,7 +77,9 @@ test.describe('Prison Balance Migration Homepage', () => {
       await expect(row2.getByTestId('status')).toHaveText('COMPLETED')
       await expect(row2.getByTestId('migratedCount')).toHaveText('0')
       await expect(row2.getByTestId('failedCount')).toHaveText('4')
-      await expect(row2.getByTestId('filterPrisonId')).toBeHidden()
+      await expect(row2.getByTestId('filterPrisonIds')).toHaveText('MDI,SWI')
+      await expect(row2.getByTestId('filterToDate')).toHaveText('17 April 2022')
+      await expect(row2.getByTestId('filterFromDate')).toBeHidden()
       await expect(row2.getByTestId('estimatedCount')).toHaveText('4')
       await expect(row2.getByTestId('progress-link')).toBeHidden()
       await expect(row2.getByTestId('failures-link')).toHaveText('View failures')
@@ -87,18 +91,17 @@ test.describe('Prison Balance Migration Homepage', () => {
     })
   })
 
-  test.describe('Without MIGRATE_NOMIS_SYSCON role', () => {
+  test.describe('Without MIGRATE_APPOINTMENTS role', () => {
     test.beforeEach(async ({ page }) => {
       await nomisMigrationApi.stubGetMigrationHistory({ migrationType })
-      await login(page, { roles: ['ROLE_MIGRATE_SOMETHING_ELSE'] })
+      await login(page, { roles: ['ROLE_MIGRATE_PRISONERS'] })
     })
-
-    test('should not see migrate prison balance tile', async ({ page }) => {
+    test('should not see migrate appointments tile', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await expect(indexPage.migrationLink(migrationTypeName)).toBeHidden()
     })
-    test('should not be able to navigate directly to the prison balance migration page', async ({ page }) => {
-      await page.goto('/prison-balance-migration')
+    test('should not be able to navigate directly to the appointments migration page', async ({ page }) => {
+      await page.goto('/appointments-migration')
       await AuthErrorPage.verifyOnPage(page)
     })
   })

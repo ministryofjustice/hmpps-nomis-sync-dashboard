@@ -41,6 +41,7 @@ export default defineConfig({
     ...devices['Desktop Chrome'],
     testIdAttribute: 'data-qa',
     baseURL: 'http://localhost:3007',
+    permissions: ['clipboard-write', 'clipboard-read'],
   },
 
   /* Configure projects */

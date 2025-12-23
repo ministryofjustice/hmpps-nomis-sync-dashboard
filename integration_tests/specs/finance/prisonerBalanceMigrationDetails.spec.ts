@@ -7,7 +7,7 @@ import IndexPage from '../../pages/indexPage'
 import MigrationDetailsPage from '../../pages/migrationDetailsPage'
 
 const migrationType: string = 'PRISONER_BALANCE'
-const migrationTypeName: string = 'Prisoner Balance'
+const migrationTypeName: string = 'Prisoner balance'
 
 test.describe('Prisoner Balance Migration Details', () => {
   const migrationId = '2022-03-28T14:28:04'
