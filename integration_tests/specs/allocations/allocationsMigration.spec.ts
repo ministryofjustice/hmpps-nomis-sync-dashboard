@@ -6,28 +6,26 @@ import MigrationPage from '../../pages/migrationPage'
 import AuthErrorPage from '../../pages/authErrorPage'
 import nomisMigrationApi from '../../mockApis/nomisMigrationApi'
 import IndexPage from '../../pages/indexPage'
-import prisonBalanceMigrationHistory from '../../mockApis/nomisPrisonBalanceMigrationApi'
-import MigrationFailuresPage from '../../pages/migrationFailuresPage'
+import { allocationsMigrationHistory } from '../../mockApis/nomisAllocationsMigrationApi'
 
-const migrationType: string = 'PRISON_BALANCE'
-const migrationTypeName: string = 'Prison balance'
+const migrationType: string = 'ALLOCATIONS'
+const migrationTypeName: string = 'Allocations'
 
-test.describe('Prison Balance Migration Homepage', () => {
+test.describe('Allocations Migration Homepage', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
-  test.describe('With MIGRATE_NOMIS_SYSCON role', () => {
+  test.describe('With MIGRATE_ACTIVITIES role', () => {
     test.beforeEach(async ({ page }) => {
-      await nomisMigrationApi.stubGetMigrationHistory({ migrationType, history: prisonBalanceMigrationHistory })
-      await login(page)
+      await nomisMigrationApi.stubGetMigrationHistory({ migrationType, history: allocationsMigrationHistory })
+      await login(page, { roles: ['ROLE_MIGRATE_ACTIVITIES'] })
     })
 
-    test('should see migrate prison balance tile', async ({ page }) => {
+    test('should see migrate allocations tile', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await expect(indexPage.migrationLink(migrationTypeName)).toBeVisible()
     })
-
-    test('should be able to navigate to the prison balance migration home page', async ({ page }) => {
+    test('should be able to navigate to the allocations migration home page', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await indexPage.migrationLink(migrationTypeName).click()
       await MigrationPage.verifyOnPage(migrationTypeName, page)
@@ -35,7 +33,7 @@ test.describe('Prison Balance Migration Homepage', () => {
 
     test('should display list of migrations', async ({ page }) => {
       await nomisMigrationApi.stubGetNoFailuresWithMigrationType({ migrationType })
-      await nomisMigrationApi.stubGetFailureCountWithMigrationType({ migrationType })
+      await nomisMigrationApi.stubGetNoFailuresWithMigrationType({ migrationType })
 
       const indexPage = await IndexPage.verifyOnPage(page)
       await indexPage.migrationLink(migrationTypeName).click()
@@ -50,8 +48,8 @@ test.describe('Prison Balance Migration Homepage', () => {
       await expect(row0.getByTestId('migratedCount')).toHaveText('0')
       await expect(row0.getByTestId('failedCount')).toHaveText('0')
       await expect(row0.getByTestId('estimatedCount')).toHaveText('0')
-      await expect(row0.getByTestId('filterPrisonId')).toHaveText('HEI')
       await expect(row0.getByTestId('progress-link')).toBeHidden()
+      await expect(row0.getByTestId('all-events-link')).toBeVisible()
       await expect(row0.getByTestId('failures-link')).toBeHidden()
       await expect(row0.getByTestId('already-migrated-link')).toBeHidden()
 
@@ -63,10 +61,10 @@ test.describe('Prison Balance Migration Homepage', () => {
       await expect(row1.getByTestId('migratedCount')).toHaveText('1')
       await expect(row1.getByTestId('failedCount')).toHaveText('162794')
       await expect(row1.getByTestId('estimatedCount')).toHaveText('205630')
-      await expect(row1.getByTestId('filterPrisonId')).toBeHidden()
       await expect(row1.getByTestId('progress-link')).toHaveText('View progress')
-      await expect(row1.getByTestId('failures-link')).toHaveText('View failures')
-      await expect(row1.getByTestId('already-migrated-link')).toHaveText('View Insights')
+      await expect(row0.getByTestId('all-events-link')).toBeVisible()
+      await expect(row1.getByTestId('failures-link')).toHaveText('View failures in App Insights')
+      await expect(row1.getByTestId('already-migrated-link')).toBeHidden()
 
       const row2 = migrationPage.migrationResultsRow(2)
       await expect(row2.getByTestId('migration-id')).toHaveText('2022-03-15T11:00:35')
@@ -74,31 +72,28 @@ test.describe('Prison Balance Migration Homepage', () => {
       await expect(row2.getByTestId('whenEnded')).toHaveText('15 March 2022 - 11:00')
       await expect(row2.getByTestId('status')).toHaveText('COMPLETED')
       await expect(row2.getByTestId('migratedCount')).toHaveText('0')
-      await expect(row2.getByTestId('failedCount')).toHaveText('4')
-      await expect(row2.getByTestId('filterPrisonId')).toBeHidden()
+      await expect(row2.getByTestId('failedCount')).toHaveText('3')
       await expect(row2.getByTestId('estimatedCount')).toHaveText('4')
       await expect(row2.getByTestId('progress-link')).toBeHidden()
-      await expect(row2.getByTestId('failures-link')).toHaveText('View failures')
-      await expect(row2.getByTestId('already-migrated-link')).toBeHidden()
-
-      await row1.getByTestId('failures-link').click()
-
-      await MigrationFailuresPage.verifyOnPage(migrationTypeName, page)
+      await expect(row0.getByTestId('all-events-link')).toBeVisible()
+      await expect(row2.getByTestId('failures-link')).toHaveText('View failures in App Insights')
+      await expect(row2.getByTestId('already-migrated-link')).toHaveText(
+        'View already migrated activities in AppInsights',
+      )
     })
   })
 
-  test.describe('Without MIGRATE_NOMIS_SYSCON role', () => {
+  test.describe('Without MIGRATE_ALLOCATINS role', () => {
     test.beforeEach(async ({ page }) => {
       await nomisMigrationApi.stubGetMigrationHistory({ migrationType })
-      await login(page, { roles: ['ROLE_MIGRATE_SOMETHING_ELSE'] })
+      await login(page, { roles: ['ROLE_MIGRATE_PRISONERS'] })
     })
-
-    test('should not see migrate prison balance tile', async ({ page }) => {
+    test('should not see migrate allocations tile', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await expect(indexPage.migrationLink(migrationTypeName)).toBeHidden()
     })
-    test('should not be able to navigate directly to the prison balance migration page', async ({ page }) => {
-      await page.goto('/prison-balance-migration')
+    test('should not be able to navigate directly to the allocations migration page', async ({ page }) => {
+      await page.goto('/allocations-migration')
       await AuthErrorPage.verifyOnPage(page)
     })
   })

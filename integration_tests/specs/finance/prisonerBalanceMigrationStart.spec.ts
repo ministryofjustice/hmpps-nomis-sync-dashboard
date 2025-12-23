@@ -12,7 +12,7 @@ import StartMigrationPreviewPage from '../../pages/startMigrationPreviewPage'
 import StartMigrationConfirmationPage from '../../pages/startMigrationConfirmationPage'
 
 const migrationType: string = 'PRISONER_BALANCE'
-const migrationTypeName: string = 'Prisoner Balance'
+const migrationTypeName: string = 'Prisoner balance'
 
 test.describe('Prisoner Balance Migration Start', () => {
   test.afterEach(async () => {

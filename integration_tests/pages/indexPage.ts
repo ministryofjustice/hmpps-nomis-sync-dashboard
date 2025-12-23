@@ -16,12 +16,9 @@ export default class IndexPage extends AbstractPage {
     return indexPage
   }
 
-  link = (migration: string): Locator => this.page.getByRole('link', { name: `${migration}` })
+  link = (migration: string): Locator => this.page.getByRole('link', { name: `${migration}`, exact: true })
 
   migrationLink = (migration: string): Locator => this.link(`${migration} migration`)
-
-  migrationLinkWithId = (testId: string, migration: string): Locator =>
-    this.page.getByTestId(`${testId}-migration`).getByRole('link', { name: `${migration} migration` })
 }
 //
 // headerUserName = (): PageElement => cy.get('[data-qa=header-user-name]')

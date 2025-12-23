@@ -26,7 +26,7 @@ test.describe('Visits Migration Start', () => {
       await login(page)
       const indexPage = await IndexPage.verifyOnPage(page)
       await nomisMigrationApi.stubGetMigrationHistory({ migrationType, history: visitsMigrationHistory })
-      await indexPage.migrationLinkWithId('visits', migrationTypeName).click()
+      await indexPage.migrationLink(migrationTypeName).click()
     })
 
     test('can navigate to start migration page', async ({ page }) => {
