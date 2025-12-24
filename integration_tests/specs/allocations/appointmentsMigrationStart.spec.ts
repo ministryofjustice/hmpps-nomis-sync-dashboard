@@ -177,14 +177,12 @@ test.describe('Appointments Migration Start', () => {
     })
 
     test('Should allow copy of APPOINTMENTS missing pay bands', async ({ page }) => {
-      await setupPreviewPage(page)
-      await expect(page.locator('#copy-appointment-counts-confirmed')).toContainClass('govuk-visually-hidden')
-      await expect(page.locator('#copy-appointment-counts-failed')).toContainClass('govuk-visually-hidden')
-      await page.locator('#nomisAppointmentCounts').getByRole('link').click()
+      const previewPage = await setupPreviewPage(page)
 
-      const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
-      expect(clipboardContent).toEqual('Prison, Event Sub Type, Future appointment?, Count,\n    MSI, ACCA, false, 20,')
-      await expect(page.locator('#copy-appointment-counts-confirmed')).not.toContainClass('govuk-visually-hidden')
+      await previewPage.testCopyToClipboard(
+        'nomisAppointmentCounts',
+        'Prison, Event Sub Type, Future appointment?, Count,\n    MSI, ACCA, false, 20,',
+      )
     })
   })
 })
