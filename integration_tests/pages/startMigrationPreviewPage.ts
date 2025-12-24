@@ -43,4 +43,17 @@ export default class StartMigrationPreviewPage extends AbstractPage {
   getFieldRow = (field: string) => this.page.getByTestId(field).locator('../..')
 
   getChangeLink = (field: string) => this.page.getByTestId(field)
+
+  testCopyToClipboard = async (fieldId: string, expected: string) => {
+    const field = this.page.locator(`#${fieldId}`)
+    await expect(field).toBeVisible()
+
+    await expect(field.getByText('OK')).toContainClass('govuk-visually-hidden')
+    await expect(field.getByText('Fail')).toContainClass('govuk-visually-hidden')
+    await field.getByRole('link').click()
+
+    const clipboardContent = await this.page.evaluate(() => navigator.clipboard.readText())
+    expect(clipboardContent).toEqual(expected)
+    await expect(field.getByText('OK')).not.toContainClass('govuk-visually-hidden')
+  }
 }
