@@ -35,7 +35,7 @@ test.describe('Core Person Religion Migration Start', () => {
 
     test('Preview of migration will be shown prior to starting a migration', async ({ page }) => {
       await nomisMigrationApi.stubStartMigration({
-        domain: 'core-person',
+        domain: 'core-person/religion',
         response: {
           migrationId: '2022-03-23T11:11:56',
           estimatedCount: 100_988,

@@ -82,7 +82,7 @@ export default class CorePersonReligionMigrationController {
   }
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
-    const result = await this.corePersonMigrationService.startMigration(context(res))
+    const result = await this.corePersonMigrationService.startReligionMigration(context(res))
     req.session.startCorePersonMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startCorePersonMigrationForm.migrationId = result.migrationId
     res.redirect('/coreperson-religion-migration/start/confirmation')
