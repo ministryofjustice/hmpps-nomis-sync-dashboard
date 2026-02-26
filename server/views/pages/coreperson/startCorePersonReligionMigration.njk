@@ -4,8 +4,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% set pageTitle = applicationName + " - Start a Core Person migration" %}
-{% set backLinkHref = "/coreperson-migration" %}
+{% set pageTitle = applicationName + " - Start a Core Person religion migration" %}
+{% set backLinkHref = "/coreperson-religion-migration" %}
 
 {% block content %}
 
@@ -21,15 +21,15 @@
     <div class="govuk-width-container">
       <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Core Person migration</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Core Person religion migration</h1>
             </div>
 
             <div class="govuk-grid-column-two-thirds">
-                <form action="/coreperson-migration/start" method="post" novalidate>
+                <form action="/coreperson-religion-migration/start" method="post" novalidate>
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     {% call govukFieldset({
                         legend: {
-                            text: "Enter the filter details for the Core Person entities you want to migrate (this is left in ready for filtering)",
+                            text: "Enter the filter details for the Core Person religion entities you want to migrate (this is left in ready for filtering)",
                             classes: "govuk-fieldset__legend--m",
                             isPageHeading: false
                         }
@@ -42,12 +42,12 @@
                                 value: "startMigration",
                                 attributes: { 'data-qa': 'continue-button' }
                             }) }}
-                            <a class="govuk-link" href="/coreperson-migration">Cancel</a>
+                            <a class="govuk-link" href="/coreperson-religion-migration">Cancel</a>
                         </div>
                     {% endcall %}
                 </form>
             </div>
-        </div>      
+        </div>
     </div>
   </main>
 

@@ -7,8 +7,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
-{% set pageTitle = applicationName + " - Start a Core Person migration - preview" %}
-{% set backLinkHref = "/coreperson-migration/amend" %}
+{% set pageTitle = applicationName + " - Start a Core Person religion migration - preview" %}
+{% set backLinkHref = "/coreperson-religion-migration/amend" %}
 
 {% block content %}
 
@@ -24,7 +24,7 @@
         <div class="govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full">
-                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Core Person migration - preview</h1>
+                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Core Person religion migration - preview</h1>
                 </div>
                 <div class="govuk-grid-column-two-thirds">
                     {% if form.estimatedCount %}
@@ -42,7 +42,7 @@
                     {% if form.dlqCount > 0 %}
                         {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear these before starting the migration{% endset %}
                         {% set html %}
-                        <form action="/coreperson-migration/start/delete-failures" method="post" novalidate>
+                        <form action="/coreperson-religion-migration/start/delete-failures" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                         <p>If you are sure all previous failures have been successfully understood and processed, you can permanently delete any record of these errors</p>
                         <div class="govuk-button-group">
@@ -76,7 +76,7 @@
                     }) }}
 
 
-                    <form action="/coreperson-migration/start/preview" method="post" novalidate>
+                    <form action="/coreperson-religion-migration/start/preview" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
                         <div class="govuk-button-group">
@@ -87,7 +87,7 @@
                                 attributes: { 'data-qa': 'start-migration-button' },
                                 preventDoubleClick: true
                             }) }}
-                            <a class="govuk-link" href="/coreperson-migration">Cancel</a>
+                            <a class="govuk-link" href="/coreperson-religion-migration">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -109,7 +109,7 @@
             actions: {
                 items: [
                     {
-                        href: "/coreperson-migration/amend",
+                        href: "/coreperson-religion-migration/amend",
                         text: "Change",
                         visuallyHiddenText: label,
                         attributes: { 'data-qa': dataQa }

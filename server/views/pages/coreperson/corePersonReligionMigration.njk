@@ -4,18 +4,18 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
-{% set pageTitle = applicationName + " - Core Person migration" %}
+{% set pageTitle = applicationName + " - Core Person religion migration" %}
 {% set backLinkHref = "/" %}
 
 {% block content %}
 
   <div class="govuk-grid-row govuk-body">
-    <h1 class="govuk-heading-l">Core Person migration</h1>
+    <h1 class="govuk-heading-l">Core Person religion migration</h1>
 
     <div>
       {{ govukButton({
         text: "Start new migration",
-        href: "/coreperson-migration/start",
+        href: "/coreperson-religion-migration/start",
         isStartButton: true,
         classes: "float-right"
       }) }}
@@ -57,7 +57,7 @@
                   <div class="govuk-grid-row govuk-!-margin-bottom-2">
                     <div class="govuk-grid-column-full">
                       <a data-qa="progress-link" class="govuk-link"
-                         href="/coreperson-migration/details?migrationId={{ u.migrationId }}">View progress</a>
+                         href="/coreperson-religion-migration/details?migrationId={{ u.migrationId }}">View progress</a>
                     </div>
                   </div>
                 {% endif %}
@@ -83,7 +83,7 @@
                   {% if u.recordsFailed > 0 %}
                     <div class="govuk-grid-column-one-third">
                       <a data-qa="failures-link" class="govuk-link"
-                         href="/coreperson-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
+                         href="/coreperson-religion-migration/failures?migrationId={{ u.migrationId }}">View failures</a>
                     </div>
                   {% endif %}
                 </div>

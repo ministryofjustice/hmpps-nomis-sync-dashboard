@@ -7,14 +7,14 @@ import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import { alreadyMigratedLogAnalyticsLink, messageLogAnalyticsLink } from '../../utils/logAnalyticsUrlBuilder'
 
-export default class CorePersonMigrationController {
+export default class CorePersonReligionMigrationController {
   constructor(
     private readonly corePersonMigrationService: CorePersonNomisMigrationService,
     private readonly nomisPrisonerService: NomisPrisonerService,
     private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  private migrationType: string = 'CORE_PERSON'
+  private migrationType: string = 'CORE_PERSON_RELIGION'
 
   async getMigrations(_: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
@@ -22,12 +22,12 @@ export default class CorePersonMigrationController {
     const decoratedMigrations = migrations.map(history => ({
       ...history,
       applicationInsightsLink: alreadyMigratedLogAnalyticsLink(
-        'Will not migrate the nomis core person',
+        'Will not migrate the nomis core person religion',
         history.whenStarted,
         history.whenEnded,
       ),
     }))
-    res.render('pages/coreperson/corePersonMigration', {
+    res.render('pages/coreperson/corePersonReligionMigration', {
       migrations: decoratedMigrations,
     })
   }
@@ -41,7 +41,7 @@ export default class CorePersonMigrationController {
         applicationInsightsLink: messageLogAnalyticsLink(message),
       })),
     }
-    res.render('pages/coreperson/corePersonMigrationFailures', { failures: failuresDecorated })
+    res.render('pages/coreperson/corePersonReligionMigrationFailures', { failures: failuresDecorated })
   }
 
   async startNewMigration(req: Request, res: Response): Promise<void> {
@@ -50,7 +50,7 @@ export default class CorePersonMigrationController {
   }
 
   async startMigration(req: Request, res: Response): Promise<void> {
-    res.render('pages/coreperson/startCorePersonMigration', {
+    res.render('pages/coreperson/startCorePersonReligionMigration', {
       form: req.session.startCorePersonMigrationForm,
       errors: req.flash('errors'),
     })
@@ -65,11 +65,11 @@ export default class CorePersonMigrationController {
 
     req.session.startCorePersonMigrationForm.estimatedCount = count.toLocaleString()
     req.session.startCorePersonMigrationForm.dlqCount = dlqCountString.toLocaleString()
-    res.redirect('/coreperson-migration/start/preview')
+    res.redirect('/coreperson-religion-migration/start/preview')
   }
 
   async startMigrationPreview(req: Request, res: Response): Promise<void> {
-    res.render('pages/coreperson/startCorePersonMigrationPreview', {
+    res.render('pages/coreperson/startCorePersonReligionMigrationPreview', {
       form: req.session.startCorePersonMigrationForm,
     })
   }
@@ -85,11 +85,11 @@ export default class CorePersonMigrationController {
     const result = await this.corePersonMigrationService.startMigration(context(res))
     req.session.startCorePersonMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.startCorePersonMigrationForm.migrationId = result.migrationId
-    res.redirect('/coreperson-migration/start/confirmation')
+    res.redirect('/coreperson-religion-migration/start/confirmation')
   }
 
   async startMigrationConfirmation(req: Request, res: Response): Promise<void> {
-    res.render('pages/coreperson/startCorePersonMigrationConfirmation', {
+    res.render('pages/coreperson/startCorePersonReligionMigrationConfirmation', {
       form: req.session.startCorePersonMigrationForm,
     })
   }
@@ -97,7 +97,7 @@ export default class CorePersonMigrationController {
   async migrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/coreperson/corePersonMigrationDetails', {
+    res.render('pages/coreperson/corePersonReligionMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
   }
@@ -106,7 +106,7 @@ export default class CorePersonMigrationController {
     const { migrationId }: { migrationId: string } = req.body
     await this.nomisMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/coreperson/corePersonMigrationDetails', {
+    res.render('pages/coreperson/corePersonReligionMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
   }
