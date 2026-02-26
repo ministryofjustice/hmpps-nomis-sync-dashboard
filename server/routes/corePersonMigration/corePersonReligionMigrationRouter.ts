@@ -2,7 +2,7 @@ import express, { Router } from 'express'
 
 import CorePersonNomisMigrationService from '../../services/coreperson/corePersonNomisMigrationService'
 import NomisPrisonerService from '../../services/nomisPrisonerService'
-import CorePersonMigrationController from './corePersonMigrationController'
+import CorePersonReligionMigrationController from './corePersonReligionMigrationController'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 import { MIGRATE_NOMIS_SYSCON } from '../../authentication/roles'
@@ -24,7 +24,7 @@ export default function routes({
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware([MIGRATE_NOMIS_SYSCON]))
 
-  const migrationController = new CorePersonMigrationController(
+  const migrationController = new CorePersonReligionMigrationController(
     corePersonNomisMigrationService,
     nomisPrisonerService,
     nomisMigrationService,

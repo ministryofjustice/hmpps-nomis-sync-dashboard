@@ -7,7 +7,7 @@ import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrat
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
 import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSentencingMigrationRouter'
 import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
-import corePersonMigrationRoutes from './corePersonMigration/corePersonMigrationRouter'
+import corePersonReligionMigrationRoutes from './corePersonMigration/corePersonReligionMigrationRouter'
 import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
 import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrationRouter'
 import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
@@ -77,9 +77,9 @@ const dashboards: Dashboard[] = [
     enabled: true,
   },
   {
-    id: 'coreperson-migration',
-    heading: 'Core Person migration',
-    href: '/coreperson-migration',
+    id: 'coreperson-religion-migration',
+    heading: 'Core Person religion migration',
+    href: '/coreperson-religion-migration',
     roles: [MIGRATE_NOMIS_SYSCON],
     enabled: true,
   },
@@ -147,7 +147,7 @@ export default function routes(services: Services): Router {
   router.use('/appointments-migration', appointmentsMigrationRoutes(services))
   router.use('/court-sentencing-migration', courtSentencingMigrationRoutes(services))
   router.use('/incidents-migration', incidentsMigrationRoutes(services))
-  router.use('/coreperson-migration', corePersonMigrationRoutes(services))
+  router.use('/coreperson-religion-migration', corePersonReligionMigrationRoutes(services))
   router.use('/visitslots-migration', visitslotsMigrationRoutes(services))
   router.use('/prison-balance-migration', prisonBalanceMigrationRoutes(services))
   router.use('/prisoner-balance-migration', prisonerBalanceMigrationRoutes(services))
