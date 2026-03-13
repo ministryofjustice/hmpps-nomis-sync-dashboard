@@ -30,7 +30,7 @@
     "npm": "^11"
   },
   "dependencies": {
-    "@ministryofjustice/frontend": "8.0.1",
+    "@ministryofjustice/frontend": "9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^1.0.2",
     "@ministryofjustice/hmpps-monitoring": "^1.0.2",
     "@ministryofjustice/hmpps-rest-client": "^1.1.0",
@@ -43,7 +43,7 @@
     "csrf-sync": "^4.2.1",
     "express": "5.2.1",
     "express-session": "^1.19.0",
-    "govuk-frontend": "5.14.0",
+    "govuk-frontend": "6.1.0",
     "helmet": "^8.1.0",
     "http-errors": "^2.0.1",
     "jquery": "3.7.1",
@@ -83,7 +83,7 @@
     "@types/validatorjs": "^3.15.5",
     "audit-ci": "^7.1.0",
     "del": "8.0.1",
-    "esbuild": "0.27.3",
+    "esbuild": "0.27.4",
     "esbuild-plugin-copy": "^2.1.1",
     "esbuild-plugin-manifest": "^1.0.5",
     "esbuild-sass-plugin": "^3.7.0",
