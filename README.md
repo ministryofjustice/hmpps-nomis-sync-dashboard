@@ -1,4 +1,7 @@
 # NOMIS Synchronisation and Migration Dashboard
+
+[![Ministry of Justice Repository Compliance Badge](https://github-community.service.justice.gov.uk/repository-standards/api/hmpps-nomis-sync-dashboard/badge?style=flat)](https://github-community.service.justice.gov.uk/repository-standards/hmpps-nomis-sync-dashboard)
+
 Dashboard providing overview and management of nomis migration and synchronisation
 
 ## Running the app
