@@ -6,6 +6,7 @@ generic-service:
 
   ingress:
     host: nomis-sync-dashboard-dev.hmpps.service.justice.gov.uk
+    className: "default-non-prod"
 
   env:
     INGRESS_URL: "https://nomis-sync-dashboard-dev.hmpps.service.justice.gov.uk"
