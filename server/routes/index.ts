@@ -120,7 +120,7 @@ const dashboards: Dashboard[] = [
   },
   {
     id: 'movements-migration',
-    heading: 'Temporary Absence migration',
+    heading: 'Temporary Absence repair migration',
     href: '/movements-migration',
     roles: [MIGRATE_NOMIS_SYSCON],
     enabled: true,
