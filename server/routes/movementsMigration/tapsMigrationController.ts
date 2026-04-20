@@ -6,16 +6,16 @@ import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import { buildUrlNoTimespan } from '../../utils/logAnalyticsUrlBuilder'
 import MovementsNomisPrisonerService from '../../services/movements/movementsNomisPrisonerService'
-import MovementsNomisMigrationService from '../../services/movements/movementsNomisMigrationService'
+import TapsNomisMigrationService from '../../services/movements/tapsNomisMigrationService'
 import { MigrationHistory } from '../../@types/migration'
 
 interface Filter {
   prisonerNumber?: string
 }
 
-export default class MovementsMigrationController {
+export default class TapsMigrationController {
   constructor(
-    private readonly movementsNomisMigrationService: MovementsNomisMigrationService,
+    private readonly tapsNomisMigrationService: TapsNomisMigrationService,
     private readonly movementsNomisPrisonerService: MovementsNomisPrisonerService,
     private readonly nomisMigrationService: NomisMigrationService,
   ) {}
@@ -25,18 +25,18 @@ export default class MovementsMigrationController {
   async getMigrations(_: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
-    const decoratedMigrations = migrations.map(MovementsMigrationController.withFilter).map(history => ({
+    const decoratedMigrations = migrations.map(TapsMigrationController.withFilter).map(history => ({
       ...history,
-      applicationInsightsAllLink: MovementsMigrationController.applicationInsightsUrl(
-        MovementsMigrationController.migrationsApplicationInsightsQuery(
+      applicationInsightsAllLink: TapsMigrationController.applicationInsightsUrl(
+        TapsMigrationController.migrationsApplicationInsightsQuery(
           history.migrationId,
           history.whenStarted,
           history.whenEnded,
           false,
         ),
       ),
-      applicationInsightsFailuresLink: MovementsMigrationController.applicationInsightsUrl(
-        MovementsMigrationController.migrationsApplicationInsightsQuery(
+      applicationInsightsFailuresLink: TapsMigrationController.applicationInsightsUrl(
+        TapsMigrationController.migrationsApplicationInsightsQuery(
           history.migrationId,
           history.whenStarted,
           history.whenEnded,
@@ -44,7 +44,7 @@ export default class MovementsMigrationController {
         ),
       ),
     }))
-    res.render('pages/movements/movementsMigration', {
+    res.render('pages/taps/tapsMigration', {
       migrations: decoratedMigrations,
     })
   }
@@ -55,7 +55,7 @@ export default class MovementsMigrationController {
   }
 
   async startMigration(req: Request, res: Response): Promise<void> {
-    res.render('pages/movements/startMovementsMigration', {
+    res.render('pages/taps/startTapsMigration', {
       form: req.session.prisonerFilteredMigrationForm,
       errors: req.flash('errors'),
     })
@@ -71,11 +71,11 @@ export default class MovementsMigrationController {
 
     req.session.prisonerFilteredMigrationForm.estimatedCount = count.toLocaleString()
     req.session.prisonerFilteredMigrationForm.dlqCount = dlqCountString.toLocaleString()
-    res.redirect('/movements-migration/start/preview')
+    res.redirect('/taps-migration/start/preview')
   }
 
   async startMigrationPreview(req: Request, res: Response): Promise<void> {
-    res.render('pages/movements/startMovementsMigrationPreview', {
+    res.render('pages/taps/startTapsMigrationPreview', {
       form: req.session.prisonerFilteredMigrationForm,
     })
   }
@@ -89,14 +89,14 @@ export default class MovementsMigrationController {
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
     const filter = req.session.prisonerFilteredMigrationForm
-    const result = await this.movementsNomisMigrationService.startMigration(filter, context(res))
+    const result = await this.tapsNomisMigrationService.startMigration(filter, context(res))
     req.session.prisonerFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.prisonerFilteredMigrationForm.migrationId = result.migrationId
-    res.redirect('/movements-migration/start/confirmation')
+    res.redirect('/taps-migration/start/confirmation')
   }
 
   async startMigrationConfirmation(req: Request, res: Response): Promise<void> {
-    res.render('pages/movements/startMovementsMigrationConfirmation', {
+    res.render('pages/taps/startTapsMigrationConfirmation', {
       form: req.session.prisonerFilteredMigrationForm,
     })
   }
@@ -104,7 +104,7 @@ export default class MovementsMigrationController {
   async migrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/movements/movementsMigrationDetails', {
+    res.render('pages/taps/tapsMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
   }
@@ -113,7 +113,7 @@ export default class MovementsMigrationController {
     const { migrationId }: { migrationId: string } = req.body
     await this.nomisMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/movements/movementsMigrationDetails', {
+    res.render('pages/taps/tapsMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
   }

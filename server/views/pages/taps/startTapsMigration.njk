@@ -5,7 +5,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% set pageTitle = applicationName + " - Start a Temporary Absence repair migration" %}
-{% set backLinkHref = "/movements-migration" %}
+{% set backLinkHref = "/taps-migration" %}
 
 {% block content %}
 
@@ -25,7 +25,7 @@
             </div>
 
             <div class="govuk-grid-column-two-thirds">
-                <form action="/movements-migration/start" method="post" novalidate>
+                <form action="/taps-migration/start" method="post" novalidate>
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     {% call govukFieldset({
                         legend: {
@@ -56,7 +56,7 @@
                                 value: "startMigration",
                                 attributes: { 'data-qa': 'continue-button' }
                             }) }}
-                            <a class="govuk-link" href="/movements-migration">Cancel</a>
+                            <a class="govuk-link" href="/taps-migration">Cancel</a>
                         </div>
                     {% endcall %}
                 </form>

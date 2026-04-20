@@ -8,7 +8,7 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% set pageTitle = applicationName + " - Start a Temporary Absence repair migration - preview" %}
-{% set backLinkHref = "/movements-migration/amend" %}
+{% set backLinkHref = "/taps-migration/amend" %}
 
 {% block content %}
 
@@ -42,7 +42,7 @@
                     {% if form.dlqCount > 0 %}
                         {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear these before starting the migration{% endset %}
                         {% set html %}
-                        <form action="/movements-migration/start/delete-failures" method="post" novalidate>
+                        <form action="/taps-migration/start/delete-failures" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                         <p>If you are sure all previous failures have been successfully understood and processed, you can permanently delete any record of these errors</p>
                         <div class="govuk-button-group">
@@ -75,7 +75,7 @@
                     }) }}
 
 
-                    <form action="/movements-migration/start/preview" method="post" novalidate>
+                    <form action="/taps-migration/start/preview" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
                         <div class="govuk-button-group">
@@ -86,7 +86,7 @@
                                 attributes: { 'data-qa': 'start-migration-button' },
                                 preventDoubleClick: true
                             }) }}
-                            <a class="govuk-link" href="/movements-migration">Cancel</a>
+                            <a class="govuk-link" href="/taps-migration">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -108,7 +108,7 @@
             actions: {
                 items: [
                     {
-                        href: "/movements-migration/amend",
+                        href: "/taps-migration/amend",
                         text: "Change",
                         visuallyHiddenText: label,
                         attributes: { 'data-qa': dataQa }

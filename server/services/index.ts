@@ -17,7 +17,7 @@ import AppointmentsNomisMigrationService from './appointments/appointmentsNomisM
 import CourtSentencingNomisMigrationService from './courtSentencing/courtSentencingNomisMigrationService'
 import IncidentsNomisMigrationService from './incidents/incidentsNomisMigrationService'
 import VisitsNomisMigrationService from './visits/visitsNomisMigrationService'
-import MovementsNomisMigrationService from './movements/movementsNomisMigrationService'
+import TapsNomisMigrationService from './movements/tapsNomisMigrationService'
 import MovementsNomisPrisonerService from './movements/movementsNomisPrisonerService'
 import OfficialvisitsNomisMigrationService from './officialvisits/officialvisitsNomisMigrationService'
 import OfficialvisitsNomisPrisonerService from './officialvisits/officialvisitsNomisPrisonerService'
@@ -42,7 +42,7 @@ export const services = () => {
     prisonerBalanceNomisMigrationClient,
     prisonerBalanceNomisPrisonerClient,
     visitsNomisMigrationClient,
-    movementsNomisMigrationClient,
+    tapsNomisMigrationClient,
     movementsNomisPrisonerClient,
     officialvisitsNomisMigrationClient,
     officialvisitsNomisPrisonerClient,
@@ -67,7 +67,7 @@ export const services = () => {
     prisonerBalanceNomisMigrationService: new PrisonerBalanceNomisMigrationService(prisonerBalanceNomisMigrationClient),
     prisonerBalanceNomisPrisonerService: new PrisonerBalanceNomisPrisonerService(prisonerBalanceNomisPrisonerClient),
     visitsNomisMigrationService: new VisitsNomisMigrationService(visitsNomisMigrationClient),
-    movementsNomisMigrationService: new MovementsNomisMigrationService(movementsNomisMigrationClient),
+    tapsNomisMigrationService: new TapsNomisMigrationService(tapsNomisMigrationClient),
     movementsNomisPrisonerService: new MovementsNomisPrisonerService(movementsNomisPrisonerClient),
     officialvisitsNomisMigrationService: new OfficialvisitsNomisMigrationService(officialvisitsNomisMigrationClient),
     officialvisitsNomisPrisonerService: new OfficialvisitsNomisPrisonerService(officialvisitsNomisPrisonerClient),
