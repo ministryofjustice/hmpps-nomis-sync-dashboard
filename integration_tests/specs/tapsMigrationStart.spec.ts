@@ -14,7 +14,7 @@ import nomisPrisonerApi from '../mockApis/nomisPrisonerApi'
 const migrationType: string = 'EXTERNAL_MOVEMENTS'
 const migrationTypeName: string = 'Temporary Absence repair'
 
-test.describe('Movements Migration Start', () => {
+test.describe('Taps Migration Start', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
@@ -90,8 +90,8 @@ test.describe('Movements Migration Start', () => {
       await expect(indexPage.migrationLink(migrationTypeName)).toBeHidden()
     })
 
-    test('should not be able to navigate directly to the movements migration page', async ({ page }) => {
-      await page.goto('/movements-migration')
+    test('should not be able to navigate directly to the taps migration page', async ({ page }) => {
+      await page.goto('/taps-migration')
       await AuthErrorPage.verifyOnPage(page)
     })
   })
