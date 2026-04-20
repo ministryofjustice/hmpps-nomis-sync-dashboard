@@ -72,6 +72,130 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prisoners/{offenderNo}/official-visits/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Recreates a visit in DPS from the visit in NOMIS for the specified prisoner
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    put: operations['repairVisitsFromNomis']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/booking-id/{bookingId}/court-sentencing/court-cases/{caseId}/status/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Synchronise NOMIS case status to DPS replacing the existing DPS cases
+     * @description Used cases in DPS have become out of sync with NOMIS and NOMIS is the source of truth, so emergency use only.Requires PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    put: operations['prisonerCourtCasesStatusRepair']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{offenderNo}/booking-id/{bookingId}/court-sentencing/court-cases/{caseId}/sentences/{sentenceSeq}/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replicate a sentence update event from NOMIS to DPS for a specific sentence
+     * @description Used when a sentence update event has been missed. Requires PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    put: operations['prisonerSentenceUpdateRepair']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prison/{prisonId}/prisoners/{offenderNo}/official-visits/{nomisVisitId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Updates a visit in DPS from the visit in NOMIS, will create or update visitors as required
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    put: operations['updateOfficialVisitFromNomis']
+    /**
+     * Create a visit in DPS from the visit in NOMIS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['createOfficialVisitFromNomis']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/migrate/taps/repair/{prisonerNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Repair all TAP applications, schedules and movements for a single prisoner
+     * @description Resyncs a single prisoner to DPS. For prisoners with lots of movements this could be a lengthy process - maybe up to 2 minutes.
+     */
+    put: operations['repairPrisonerTaps']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/migrate/external-movements/repair/{prisonerNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Repair all TAP applications, schedules and movements for a single prisoner
+     * @description Resyncs a single prisoner to DPS. For prisoners with lots of movements this could be a lengthy process - maybe up to 2 minutes.
+     */
+    put: operations['repairPrisoner']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/migrate/activities/{migrationId}/move-start-dates': {
     parameters: {
       query?: never
@@ -112,6 +236,30 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/transactions/{transactionId}/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Resynchronises all associated transactions for the given transaction from NOMIS to DPS.
+     *             This is for prison (GL) or prisoner (offender) transactions.
+     *             It will create the transaction in dps if it doesn't exist, or update it if it already exists.
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS,
+     *            so emergency use only.
+     *            Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['repairTransaction']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisons/{prisonId}/prison-balance/repair': {
     parameters: {
       query?: never
@@ -125,7 +273,7 @@ export interface paths {
      * Resynchronises account balances for the given prison (Nomis prisonId) from NOMIS to DPS
      * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
-    post: operations['repairPrisonerBalance']
+    post: operations['repairPrisonBalance']
     delete?: never
     options?: never
     head?: never
@@ -146,6 +294,27 @@ export interface paths {
      * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairVisitBalance']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/{prisonNumber}/core-person/religion/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Resynchronises an offender's religion for the given prisoner from NOMIS to DPS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS,
+     *           so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['repairReligion']
     delete?: never
     options?: never
     head?: never
@@ -185,7 +354,7 @@ export interface paths {
      * Resynchronises account balances for the given prisoner number from NOMIS to DPS
      * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
-    post: operations['repairPrisonerBalance_1']
+    post: operations['repairPrisonerBalance']
     delete?: never
     options?: never
     head?: never
@@ -232,6 +401,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prisoners/{offenderNo}/booking-id/{bookingId}/court-sentencing/sentences/{sentenceSeq}/terms/{termSeq}/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Replicate a sentence term insert event from NOMIS to DPS for a specific sentence term
+     * @description Used when a sentence term insert event has been missed (or the term has been mistakenly deleted) and the term is missing in DPS. Requires PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['prisonerSentenceTermInsertRepair']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisoners/{offenderNo}/alerts/resynchronise': {
     parameters: {
       query?: never
@@ -266,6 +455,26 @@ export interface paths {
      * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPrisonerBalanceId']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prisoners/booking-id/{bookingId}/update/sentencing-adjustments/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Resynchronises existing adjustments for the given booking from NOMIS back to DPS
+     * @description Used when an update has not be detected so new adjustments have not been update to DPS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['repairAdjustments']
     delete?: never
     options?: never
     head?: never
@@ -332,6 +541,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/organisation/{organisationId}/resynchronise': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Resynchronises organisation and addresses from NOMIS back to DPS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['repairOrganisation']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/migrate/visitslots': {
     parameters: {
       query?: never
@@ -345,7 +574,7 @@ export interface paths {
      * Starts a visit slots migration. This migration has no filter
      * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
-    post: operations['startMigration']
+    post: operations['startVisitSlotsMigration']
     delete?: never
     options?: never
     head?: never
@@ -366,6 +595,26 @@ export interface paths {
      * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateVisits']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/migrate/taps': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Starts a tap full repair
+     * @description Starts an asynchronous migration process to repair TAPs for all prisoners. This has been repurposed from the TAP migration. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b> ot <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
+     */
+    post: operations['migrateTaps']
     delete?: never
     options?: never
     head?: never
@@ -449,7 +698,7 @@ export interface paths {
      * Starts an official visit migration. This migration currently has no filter
      * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
-    post: operations['startMigration_1']
+    post: operations['startOfficialVisitsMigration']
     delete?: never
     options?: never
     head?: never
@@ -496,6 +745,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/migrate/csras': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Starts a CSRA migration.
+     * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
+     */
+    post: operations['startCsraMigration']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/migrate/court-sentencing': {
     parameters: {
       query?: never
@@ -516,7 +785,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/migrate/core-person': {
+  '/migrate/core-person/religion': {
     parameters: {
       query?: never
       header?: never
@@ -526,10 +795,10 @@ export interface paths {
     get?: never
     put?: never
     /**
-     * Starts a core person migration. The entity type is determined by the migration filter
+     * Starts a religion migration. This migration has no filter
      * @description Starts an asynchronous migration process. This operation will return immediately and the migration will be performed asynchronously. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
-    post: operations['migrateCorePerson']
+    post: operations['startReligionsMigration']
     delete?: never
     options?: never
     head?: never
@@ -650,6 +919,22 @@ export interface paths {
      * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairIncident']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/csras/migrate/{offenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['createCsras']
     delete?: never
     options?: never
     head?: never
@@ -783,7 +1068,7 @@ export interface paths {
      * Gets all (max 100) the dlq messages for the specified migration type
      * @description Requires role <b>ROLE_PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
-    get: operations['getDlqMessages_1']
+    get: operations['getDlqMessagesByMigrationType']
     put?: never
     post?: never
     /**
@@ -840,7 +1125,9 @@ export interface paths {
     trace?: never
   }
 }
+
 export type webhooks = Record<string, never>
+
 export interface components {
   schemas: {
     ErrorResponse: {
@@ -860,6 +1147,82 @@ export interface components {
       /** Format: int32 */
       messagesFoundCount: number
     }
+    CodeDescription: {
+      code: string
+      description: string
+    }
+    ContactRelationship: {
+      relationshipType: components['schemas']['CodeDescription']
+      contactType: components['schemas']['CodeDescription']
+    }
+    NomisAudit: {
+      /** Format: date-time */
+      createDatetime: string
+      createUsername: string
+      createDisplayName?: string
+      modifyUserId?: string
+      modifyDisplayName?: string
+      /** Format: date-time */
+      modifyDatetime?: string
+      /** Format: date-time */
+      auditTimestamp?: string
+      auditUserId?: string
+      auditModuleName?: string
+      auditClientUserId?: string
+      auditClientIpAddress?: string
+      auditClientWorkstationName?: string
+      auditAdditionalInfo?: string
+    }
+    OfficialVisitResponse: {
+      /** Format: int64 */
+      visitId: number
+      /** Format: int64 */
+      visitSlotId: number
+      prisonId: string
+      offenderNo: string
+      /** Format: int64 */
+      bookingId: number
+      currentTerm: boolean
+      /** Format: date-time */
+      startDateTime: string
+      /** Format: date-time */
+      endDateTime: string
+      /** Format: int64 */
+      internalLocationId: number
+      visitStatus: components['schemas']['CodeDescription']
+      visitors: components['schemas']['OfficialVisitor'][]
+      audit: components['schemas']['NomisAudit']
+      visitOutcome?: components['schemas']['CodeDescription']
+      cancellationReason?: components['schemas']['CodeDescription']
+      prisonerAttendanceOutcome?: components['schemas']['CodeDescription']
+      prisonerSearchType?: components['schemas']['CodeDescription']
+      visitorConcernText?: string
+      commentText?: string
+      overrideBanStaffUsername?: string
+      visitOrder?: components['schemas']['VisitOrder']
+    }
+    OfficialVisitor: {
+      /** Format: int64 */
+      id: number
+      /** Format: int64 */
+      personId: number
+      firstName: string
+      lastName: string
+      leadVisitor: boolean
+      assistedVisit: boolean
+      relationships: components['schemas']['ContactRelationship'][]
+      audit: components['schemas']['NomisAudit']
+      /** Format: date */
+      dateOfBirth?: string
+      visitorAttendanceOutcome?: components['schemas']['CodeDescription']
+      cancellationReason?: components['schemas']['CodeDescription']
+      eventStatus?: components['schemas']['CodeDescription']
+      commentText?: string
+    }
+    VisitOrder: {
+      /** Format: int64 */
+      number: number
+    }
     /**
      * @description The new start date for all activities
      * @example 2023-01-01
@@ -874,7 +1237,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -932,7 +1296,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -945,6 +1310,38 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['VisitsMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
+    }
+    /** @description Filter specifying what should be migrated from NOMIS to DPS */
+    TapMigrationFilter: {
+      /**
+       * @description Only migrate a single prisoner - used for testing
+       * @example A1234BC
+       */
+      prisonerNumber?: string
+    }
+    MigrationContextTapMigrationFilter: {
+      /** @enum {string} */
+      type:
+        | 'ACTIVITIES'
+        | 'ALLOCATIONS'
+        | 'APPOINTMENTS'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
+        | 'COURT_SENTENCING'
+        | 'EXTERNAL_MOVEMENTS'
+        | 'INCIDENTS'
+        | 'PRISON_BALANCE'
+        | 'PRISONER_BALANCE'
+        | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: components['schemas']['TapMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -963,7 +1360,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -994,7 +1392,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1037,7 +1436,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1075,7 +1475,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1106,7 +1507,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1119,6 +1521,38 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['ExternalMovementsMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
+    }
+    /** @description Filter specifying who should be migrated from NOMIS to DPS */
+    PrisonerMigrationFilter: {
+      /**
+       * @description Only migrate these specific prisoners
+       * @example A1234AA,B1234BB
+       */
+      offenderNos?: string[]
+    }
+    MigrationContextPrisonerMigrationFilter: {
+      /** @enum {string} */
+      type:
+        | 'ACTIVITIES'
+        | 'ALLOCATIONS'
+        | 'APPOINTMENTS'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
+        | 'COURT_SENTENCING'
+        | 'EXTERNAL_MOVEMENTS'
+        | 'INCIDENTS'
+        | 'PRISON_BALANCE'
+        | 'PRISONER_BALANCE'
+        | 'VISITS'
+        | 'OFFICIAL_VISITS'
+        | 'VISIT_SLOTS'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: components['schemas']['PrisonerMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -1146,7 +1580,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1159,44 +1594,6 @@ export interface components {
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['CourtSentencingMigrationFilter']
-      properties: {
-        [key: string]: unknown
-      }
-    }
-    /** @description Filter specifying what should be migrated from NOMIS to DPS */
-    CorePersonMigrationFilter: {
-      /**
-       * Format: date
-       * @description Only include Persons created on or after this date
-       * @example 2020-03-23
-       */
-      fromDate?: string
-      /**
-       * Format: date
-       * @description Only include Persons created before or on this date
-       * @example 2020-03-24
-       */
-      toDate?: string
-    }
-    MigrationContextCorePersonMigrationFilter: {
-      /** @enum {string} */
-      type:
-        | 'ACTIVITIES'
-        | 'ALLOCATIONS'
-        | 'APPOINTMENTS'
-        | 'CORE_PERSON'
-        | 'COURT_SENTENCING'
-        | 'EXTERNAL_MOVEMENTS'
-        | 'INCIDENTS'
-        | 'PRISON_BALANCE'
-        | 'PRISONER_BALANCE'
-        | 'VISITS'
-        | 'OFFICIAL_VISITS'
-        | 'VISIT_SLOTS'
-      migrationId: string
-      /** Format: int64 */
-      estimatedCount: number
-      body: components['schemas']['CorePersonMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -1227,7 +1624,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1270,7 +1668,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1319,7 +1718,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1335,6 +1735,68 @@ export interface components {
       properties: {
         [key: string]: unknown
       }
+    }
+    CsraQuestionDto: {
+      code: string
+      description?: string
+      responses: components['schemas']['CsraResponseDto'][]
+    }
+    CsraResponseDto: {
+      code: string
+      answer?: string
+      comment?: string
+    }
+    CsraReviewDetailDto: {
+      code: string
+      description?: string
+      questions: components['schemas']['CsraQuestionDto'][]
+    }
+    CsraReviewDto: {
+      /** Format: int64 */
+      bookingId: number
+      /** Format: int32 */
+      sequenceNumber: number
+      /** Format: date */
+      assessmentDate: string
+      /** @enum {string} */
+      assessmentType: 'CSRF' | 'CSRH' | 'CSRDO' | 'CSR' | 'CSR1' | 'CSRREV'
+      /** @enum {string} */
+      calculatedLevel?: 'STANDARD' | 'PEND' | 'LOW' | 'MED' | 'HI'
+      score: number
+      /** @enum {string} */
+      status: 'I' | 'A' | 'P'
+      /** Format: int64 */
+      staffId: number
+      /** @enum {string} */
+      committeeCode?: 'GOV' | 'MED' | 'OCA' | 'RECP' | 'REVIEW' | 'SECSTATE' | 'SECUR'
+      /** Format: date */
+      nextReviewDate?: string
+      comment?: string
+      placementPrisonId?: string
+      /** Format: date-time */
+      createdDateTime: string
+      createdBy: string
+      /** @enum {string} */
+      reviewLevel?: 'STANDARD' | 'PEND' | 'LOW' | 'MED' | 'HI'
+      /** @enum {string} */
+      approvedLevel?: 'STANDARD' | 'PEND' | 'LOW' | 'MED' | 'HI'
+      /** Format: date */
+      evaluationDate?: string
+      /** @enum {string} */
+      evaluationResultCode?: 'APP' | 'REJ'
+      /** @enum {string} */
+      reviewCommitteeCode?: 'GOV' | 'MED' | 'OCA' | 'RECP' | 'REVIEW' | 'SECSTATE' | 'SECUR'
+      reviewCommitteeComment?: string
+      reviewPlacementPrisonId?: string
+      reviewComment?: string
+      reviewDetails: components['schemas']['CsraReviewDetailDto'][]
+    }
+    MigrationResult: {
+      dpsCsraId: string
+      /** Format: int64 */
+      nomisBookingId: number
+      /** Format: int32 */
+      nomisSequence: number
     }
     DlqMessage: {
       body: {
@@ -1381,7 +1843,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1414,7 +1877,8 @@ export interface components {
         | 'ACTIVITIES'
         | 'ALLOCATIONS'
         | 'APPOINTMENTS'
-        | 'CORE_PERSON'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
         | 'INCIDENTS'
@@ -1450,6 +1914,7 @@ export interface components {
       appearanceTime?: string
       outcomeDispositionCode?: string
       outcomeConvictionFlag?: boolean
+      nomisAppearanceTypeCode?: string
     }
     CourtCaseLegacyData: {
       caseReferences: components['schemas']['CaseReferenceLegacyData'][]
@@ -1477,10 +1942,10 @@ export interface components {
       courtCode: string
       /** Format: date */
       appearanceDate: string
-      /** Format: uuid */
-      appearanceTypeUuid: string
       legacyData: components['schemas']['CourtAppearanceLegacyData']
       charges: components['schemas']['MigrationCreateCharge'][]
+      /** Format: uuid */
+      appearanceTypeUuid?: string
     }
     MigrationCreateCourtCase: {
       /** Format: int64 */
@@ -1555,7 +2020,9 @@ export interface components {
   headers: never
   pathItems: never
 }
+
 export type $defs = Record<string, never>
+
 export interface operations {
   'syncContactPersonProfileDetail-0E7RQCE': {
     parameters: {
@@ -1667,6 +2134,287 @@ export interface operations {
         }
         content: {
           '*/*': components['schemas']['PurgeQueueResult']
+        }
+      }
+    }
+  }
+  repairVisitsFromNomis: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit details recreated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['OfficialVisitResponse'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  prisonerCourtCasesStatusRepair: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+        bookingId: number
+        caseId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  prisonerSentenceUpdateRepair: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+        bookingId: number
+        caseId: number
+        sentenceSeq: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  updateOfficialVisitFromNomis: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+        prisonId: string
+        nomisVisitId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit details updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Visit mapping not found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createOfficialVisitFromNomis: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+        prisonId: string
+        nomisVisitId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit details created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['OfficialVisitResponse']
+        }
+      }
+      /** @description Visit mapping already exists */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  repairPrisonerTaps: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The prisoner to resync */
+        prisonerNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner re-synchronised */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner not found in NOMIS */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  repairPrisoner: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description The prisoner to resync */
+        prisonerNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner re-synchronised */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Prisoner not found in NOMIS */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
@@ -1791,7 +2539,27 @@ export interface operations {
       }
     }
   }
-  repairPrisonerBalance: {
+  repairTransaction: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        transactionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  repairPrisonBalance: {
     parameters: {
       query?: never
       header?: never
@@ -1831,6 +2599,26 @@ export interface operations {
       }
     }
   }
+  repairReligion: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
   repairPrisonerRestrictions: {
     parameters: {
       query?: never
@@ -1851,7 +2639,7 @@ export interface operations {
       }
     }
   }
-  repairPrisonerBalance_1: {
+  repairPrisonerBalance: {
     parameters: {
       query?: never
       header?: never
@@ -1915,6 +2703,29 @@ export interface operations {
       }
     }
   }
+  prisonerSentenceTermInsertRepair: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+        bookingId: number
+        sentenceSeq: number
+        termSeq: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
   repairAlerts: {
     parameters: {
       query?: never
@@ -1948,6 +2759,26 @@ export interface operations {
     responses: {
       /** @description No Content */
       204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  repairAdjustments: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        bookingId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
         headers: {
           [name: string]: unknown
         }
@@ -2015,7 +2846,27 @@ export interface operations {
       }
     }
   }
-  startMigration: {
+  repairOrganisation: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        organisationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  startVisitSlotsMigration: {
     parameters: {
       query?: never
       header?: never
@@ -2104,6 +2955,48 @@ export interface operations {
       }
       /** @description Migration already in progress */
       409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  migrateTaps: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TapMigrationFilter']
+      }
+    }
+    responses: {
+      /** @description Full TAP repair process started */
+      202: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['MigrationContextTapMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
         headers: {
           [name: string]: unknown
         }
@@ -2282,7 +3175,7 @@ export interface operations {
       }
     }
   }
-  startMigration_1: {
+  startOfficialVisitsMigration: {
     parameters: {
       query?: never
       header?: never
@@ -2426,6 +3319,57 @@ export interface operations {
       }
     }
   }
+  startCsraMigration: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonerMigrationFilter']
+      }
+    }
+    responses: {
+      /** @description Migration process started */
+      202: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['MigrationContextPrisonerMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Migration already in progress */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   migrateCourtSentencing: {
     parameters: {
       query?: never
@@ -2477,18 +3421,14 @@ export interface operations {
       }
     }
   }
-  migrateCorePerson: {
+  startReligionsMigration: {
     parameters: {
       query?: never
       header?: never
       path?: never
       cookie?: never
     }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CorePersonMigrationFilter']
-      }
-    }
+    requestBody?: never
     responses: {
       /** @description Migration process started */
       202: {
@@ -2496,7 +3436,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          'application/json': components['schemas']['MigrationContextCorePersonMigrationFilter']
+          'application/json': components['schemas']['MigrationContextObject']
         }
       }
       /** @description Unauthorized to access this endpoint */
@@ -2761,6 +3701,8 @@ export interface operations {
       query?: {
         /** @description if true, will attempt to create a new incident */
         createIncident?: boolean
+        /** @description if true, will ignore the Nomis Agency Services Switch - so will always repair to DPS */
+        overrideAgencySwitch?: boolean
       }
       header?: never
       path: {
@@ -2776,6 +3718,32 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+    }
+  }
+  createCsras: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CsraReviewDto'][]
+      }
+    }
+    responses: {
+      /** @description Created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['MigrationResult'][]
+        }
       }
     }
   }
@@ -2946,7 +3914,8 @@ export interface operations {
           | 'ACTIVITIES'
           | 'ALLOCATIONS'
           | 'APPOINTMENTS'
-          | 'CORE_PERSON'
+          | 'CORE_PERSON_RELIGION'
+          | 'CSRA'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
@@ -2999,7 +3968,8 @@ export interface operations {
           | 'ACTIVITIES'
           | 'ALLOCATIONS'
           | 'APPOINTMENTS'
-          | 'CORE_PERSON'
+          | 'CORE_PERSON_RELIGION'
+          | 'CSRA'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
@@ -3061,7 +4031,8 @@ export interface operations {
           | 'ACTIVITIES'
           | 'ALLOCATIONS'
           | 'APPOINTMENTS'
-          | 'CORE_PERSON'
+          | 'CORE_PERSON_RELIGION'
+          | 'CSRA'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
@@ -3104,7 +4075,7 @@ export interface operations {
       }
     }
   }
-  getDlqMessages_1: {
+  getDlqMessagesByMigrationType: {
     parameters: {
       query?: never
       header?: never
@@ -3114,7 +4085,8 @@ export interface operations {
           | 'ACTIVITIES'
           | 'ALLOCATIONS'
           | 'APPOINTMENTS'
-          | 'CORE_PERSON'
+          | 'CORE_PERSON_RELIGION'
+          | 'CSRA'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'
@@ -3167,7 +4139,8 @@ export interface operations {
           | 'ACTIVITIES'
           | 'ALLOCATIONS'
           | 'APPOINTMENTS'
-          | 'CORE_PERSON'
+          | 'CORE_PERSON_RELIGION'
+          | 'CSRA'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
           | 'INCIDENTS'

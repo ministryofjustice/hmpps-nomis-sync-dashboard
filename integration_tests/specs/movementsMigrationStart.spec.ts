@@ -12,7 +12,7 @@ import IndexPage from '../pages/indexPage'
 import nomisPrisonerApi from '../mockApis/nomisPrisonerApi'
 
 const migrationType: string = 'EXTERNAL_MOVEMENTS'
-const migrationTypeName: string = 'Temporary Absence'
+const migrationTypeName: string = 'Temporary Absence repair'
 
 test.describe('Movements Migration Start', () => {
   test.afterEach(async () => {
@@ -34,7 +34,7 @@ test.describe('Movements Migration Start', () => {
     })
     test('Preview of migration will be shown and changes allowed prior to starting a migration', async ({ page }) => {
       await nomisMigrationApi.stubStartMigration({
-        domain: 'external-movements',
+        domain: 'taps',
         response: {
           migrationId: '2022-03-23T11:11:56',
           estimatedCount: 100_988,

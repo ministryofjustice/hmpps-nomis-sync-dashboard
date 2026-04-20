@@ -17,7 +17,7 @@ export default class MovementsNomisMigrationClient extends RestClient {
     logger.info(`starting a migration`)
     return this.post<MigrationContextMovementsMigrationFilter>(
       {
-        path: `/migrate/external-movements`,
+        path: `/migrate/taps`,
         data: filter,
       },
       asSystem(context.username),

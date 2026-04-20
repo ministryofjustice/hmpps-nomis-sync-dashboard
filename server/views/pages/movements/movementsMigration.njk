@@ -5,23 +5,27 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-{% set pageTitle = applicationName + " - Temporary Absence migration" %}
+{% set pageTitle = applicationName + " - Temporary Absence repair migration" %}
 {% set backLinkHref = "/" %}
 
 {% block content %}
 
   <div class="govuk-grid-row govuk-body">
-    <h1 class="govuk-heading-l">Temporary Absence migration</h1>
+    <h1 class="govuk-heading-l">Temporary Absence repair migration</h1>
 
     <div>
       {% set migrationInstructionsHtml %}
+        <p>The TAP migration has already been done and will not be performed again. This migration now calls the repair
+         endpoint which sends all NOMIS TAP details to DPS which will then perform patch update. This is useful if we
+         change the sync rules and need to resynchronise lots of prisoners - if there are too many to do manually then
+         we'd run this repair migration</p>
         <p>To test, enter a prisoner number and start the migration. Then check that the prisoner's temporary absence
          applications, schedules, movements and unscheduled movements were copied to DPS successfully.</p>
         <p>For a full run, leave the prisoner number field empty and start a migration. This will migrate all NOMIS
           prisoners.</p>
       {% endset %}
       {{ govukDetails({
-        summaryText: "How do I run a Contact Person Profile Details migration?",
+        summaryText: "How do I run a Temporary Absence repair migration?",
         html: migrationInstructionsHtml
       }) }}
       {{ govukButton({
