@@ -7,6 +7,8 @@ Dashboard providing overview and management of nomis migration and synchronisati
 ## Running the app
 The easiest way to run the app is to use docker compose to create the service and all dependencies.
 
+The production image now uses the `hmpps-node:24-alpine-runtime` base image and starts with `node dist/server.js` directly, so npm is not present in the final runtime stage.
+
 `docker compose pull`
 
 `docker compose up`
@@ -24,19 +26,25 @@ To start the main services excluding the example typescript template app:
 
 `docker compose up --scale=app=0`
 
-Install dependencies using `npm install`, ensuring you are using `node v18.x` and `npm v9.x`
+Create an environment file by copying `.env.example` -> `.env`
+Environment variables set in here will be available when running `start:dev`
 
-Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the github action build config.
+Install dependencies using `npm run setup`, ensuring you are using `node v24`
 
-And then, to build the assets and start the app with nodemon:
+Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder
+to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json`
+and the github pipeline build config.
+
+And then, to build the assets and start the app with esbuild:
 
 `npm run start:dev`
 
 ### Run linter
 
-`npm run lint`
+- `npm run lint` runs `eslint`.
+- `npm run typecheck` runs the TypeScript compiler `tsc`.
 
-### Run tests
+### Run unit tests
 
 `npm run test`
 
@@ -48,9 +56,9 @@ For local running, start a test db and wiremock instance by:
 
 Then run the server in test mode by:
 
-`npm run start-feature` (or `npm run start-feature:dev` to run with nodemon)
+`npm run start-feature` (or `npm run start-feature:dev` to run with auto-restart on changes)
 
-After first install ensure playwright is initialised: 
+After first install ensure playwright is initialised:
 
 `npm run int-test-init:ci`
 
