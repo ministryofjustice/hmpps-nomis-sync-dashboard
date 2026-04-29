@@ -130,7 +130,7 @@ const dashboards: Dashboard[] = [
 export default function routes(services: Services): Router {
   const router = Router()
 
-  router.get('/', (req, res, _) => {
+  router.get('/', (req, res, _next) => {
     const roles = extractRoles(res)
     res.render('pages/index', {
       dashboards: dashboards.filter(
