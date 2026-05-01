@@ -10,8 +10,6 @@ export type SentencingMigrationFilter = components['schemas']['SentencingMigrati
 export type MigrationContextSentencingMigrationFilter =
   components['schemas']['MigrationContextSentencingMigrationFilter']
 
-export type IncidentsMigrationFilter = components['schemas']['IncidentsMigrationFilter']
-export type MigrationContextIncidentsMigrationFilter = components['schemas']['MigrationContextIncidentsMigrationFilter']
 export type MigrationContextCorePersonMigrationFilter =
   components['schemas']['MigrationContextCorePersonMigrationFilter']
 

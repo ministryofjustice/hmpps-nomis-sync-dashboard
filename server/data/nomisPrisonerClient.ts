@@ -18,8 +18,6 @@ import {
   FindPayRateWithUnknownIncentiveResponse,
   FindActivitiesWithoutScheduleRulesResponse,
   AppointmentCountsResponse,
-  PageIncidentIdResponse,
-  GetIncidentIdsByFilter,
 } from '../@types/nomisPrisoner'
 import logger from '../../logger'
 import type { ActivitiesMigrationFilter, AppointmentsMigrationFilter } from '../@types/migration'
@@ -87,18 +85,6 @@ export default class NomisPrisonerClient extends RestClient {
       {
         path: `/prisoners/ids/all`,
         query: { size: 1 },
-      },
-      asSystem(context.username),
-    )
-    return response.totalElements
-  }
-
-  async getIncidentsMigrationEstimatedCount(filter: GetIncidentIdsByFilter, context: Context): Promise<number> {
-    logger.info(`getting details for incidents migration  estimated count`)
-    const response = await this.get<PageIncidentIdResponse>(
-      {
-        path: `/incidents/ids`,
-        query: { ...filter, size: 1 },
       },
       asSystem(context.username),
     )

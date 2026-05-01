@@ -21,7 +21,6 @@ import CorePersonNomisMigrationClient from './corePersonNomisMigrationClient'
 import VisitslotsNomisMigrationClient from './visitslotsNomisMigrationClient'
 import VisitslotsNomisPrisonerClient from './visitslotsNomisPrisonerClient'
 import CourtSentencingNomisMigrationClient from './courtSentencingNomisMigrationClient'
-import IncidentsNomisMigrationClient from './incidentsNomisMigrationClient'
 import VisitsNomisMigrationClient from './visitsNomisMigrationClient'
 import NomisPrisonerClient from './nomisPrisonerClient'
 import MappingClient from './mappingClient'
@@ -54,7 +53,6 @@ export const dataAccess = () => {
     visitslotsNomisMigrationClient: new VisitslotsNomisMigrationClient(hmppsAuthClient),
     visitslotsNomisPrisonerClient: new VisitslotsNomisPrisonerClient(hmppsAuthClient),
     courtSentencingNomisMigrationClient: new CourtSentencingNomisMigrationClient(hmppsAuthClient),
-    incidentsNomisMigrationClient: new IncidentsNomisMigrationClient(hmppsAuthClient),
     nomisMigrationClient: new NomisMigrationClient(hmppsAuthClient),
     nomisPrisonerClient: new NomisPrisonerClient(hmppsAuthClient),
     mappingClient: new MappingClient(hmppsAuthClient),

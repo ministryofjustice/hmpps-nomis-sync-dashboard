@@ -6,7 +6,6 @@ import activitiesMigrationRoutes from './activitiesMigration/activitiesMigration
 import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
 import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSentencingMigrationRouter'
-import incidentsMigrationRoutes from './incidentsMigration/incidentsMigrationRouter'
 import corePersonReligionMigrationRoutes from './corePersonMigration/corePersonReligionMigrationRouter'
 import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
 import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrationRouter'
@@ -16,11 +15,11 @@ import officialvisitsMigrationRoutes from './officialvisitsMigration/officialvis
 
 import {
   extractRoles,
-  MIGRATE_SENTENCING_ROLE,
-  MIGRATE_VISITS_ROLE,
   MIGRATE_ACTIVITIES_ROLE,
   MIGRATE_APPOINTMENTS_ROLE,
   MIGRATE_NOMIS_SYSCON,
+  MIGRATE_SENTENCING_ROLE,
+  MIGRATE_VISITS_ROLE,
 } from '../authentication/roles'
 
 import type { Services } from '../services'
@@ -84,13 +83,6 @@ const dashboards: Dashboard[] = [
     enabled: true,
   },
   {
-    id: 'incidents-migration',
-    heading: 'Incidents migration',
-    href: '/incidents-migration',
-    roles: [MIGRATE_NOMIS_SYSCON],
-    enabled: true,
-  },
-  {
     id: 'visitslots-migration',
     heading: 'Visit Slots migration',
     href: '/visitslots-migration',
@@ -146,7 +138,6 @@ export default function routes(services: Services): Router {
   router.use('/allocations-migration', allocationsMigrationRoutes(services))
   router.use('/appointments-migration', appointmentsMigrationRoutes(services))
   router.use('/court-sentencing-migration', courtSentencingMigrationRoutes(services))
-  router.use('/incidents-migration', incidentsMigrationRoutes(services))
   router.use('/coreperson-religion-migration', corePersonReligionMigrationRoutes(services))
   router.use('/visitslots-migration', visitslotsMigrationRoutes(services))
   router.use('/prison-balance-migration', prisonBalanceMigrationRoutes(services))

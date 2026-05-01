@@ -10,7 +10,6 @@ import {
   FindPayRateWithUnknownIncentiveResponse,
   FindActivitiesWithoutScheduleRulesResponse,
   AppointmentCountsResponse,
-  GetIncidentIdsByFilter,
 } from '../@types/nomisPrisoner'
 import { Context } from './context'
 import type { ActivitiesMigrationFilter, AppointmentsMigrationFilter } from '../@types/migration'
@@ -34,10 +33,6 @@ export default class NomisPrisonerService {
 
   async getCorePersonMigrationEstimatedCount(context: Context): Promise<number> {
     return this.nomisPrisonerClient.getCorePersonMigrationEstimatedCount(context)
-  }
-
-  async getIncidentsMigrationEstimatedCount(filter: GetIncidentIdsByFilter, context: Context): Promise<number> {
-    return this.nomisPrisonerClient.getIncidentsMigrationEstimatedCount(filter, context)
   }
 
   async getVisitRooms(prisonId: string, futureVisits: boolean, context: Context): Promise<VisitRoomCountResponse[]> {

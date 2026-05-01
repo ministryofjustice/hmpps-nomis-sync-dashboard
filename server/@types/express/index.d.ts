@@ -87,11 +87,6 @@ declare module 'express-session' {
     prisonIds?: string
   }
 
-  interface StartIncidentsMigrationForm extends MigrationForm {
-    fromDate?: string
-    toDate?: string
-  }
-
   interface StartDateFilteredMigrationForm extends MigrationForm {
     fromDate?: string
     toDate?: string
@@ -115,7 +110,6 @@ declare module 'express-session' {
     startAppointmentsMigrationForm: StartAppointmentsMigrationForm
     startCourtSentencingMigrationForm: StartCourtSentencingMigrationForm
     startCorePersonMigrationForm: StartCorePersonMigrationForm
-    startIncidentsMigrationForm: StartIncidentsMigrationForm
     endMigratedActivitiesResult: EndMigratedActivitiesResult
     startDateFilteredMigrationForm: StartDateFilteredMigrationForm
     prisonFilteredMigrationForm: PrisonFilteredMigrationForm
