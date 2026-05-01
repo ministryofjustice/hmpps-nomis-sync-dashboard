@@ -15,7 +15,6 @@ import ActivitiesNomisMigrationService from './activities/activitiesNomisMigrati
 import AllocationsNomisMigrationService from './allocations/allocationsNomisMigrationService'
 import AppointmentsNomisMigrationService from './appointments/appointmentsNomisMigrationService'
 import CourtSentencingNomisMigrationService from './courtSentencing/courtSentencingNomisMigrationService'
-import IncidentsNomisMigrationService from './incidents/incidentsNomisMigrationService'
 import VisitsNomisMigrationService from './visits/visitsNomisMigrationService'
 import TapsNomisMigrationService from './movements/tapsNomisMigrationService'
 import MovementsNomisPrisonerService from './movements/movementsNomisPrisonerService'
@@ -36,7 +35,6 @@ export const services = () => {
     mappingClient,
     nomisMigrationClient,
     nomisPrisonerClient,
-    incidentsNomisMigrationClient,
     prisonBalanceNomisMigrationClient,
     prisonBalanceNomisPrisonerClient,
     prisonerBalanceNomisMigrationClient,
@@ -61,7 +59,6 @@ export const services = () => {
     visitslotsNomisMigrationService: new VisitslotsNomisMigrationService(visitslotsNomisMigrationClient),
     visitslotsNomisPrisonerService: new VisitslotsNomisPrisonerService(visitslotsNomisPrisonerClient),
     courtSentencingNomisMigrationService: new CourtSentencingNomisMigrationService(courtSentencingNomisMigrationClient),
-    incidentsNomisMigrationService: new IncidentsNomisMigrationService(incidentsNomisMigrationClient),
     prisonBalanceNomisMigrationService: new PrisonBalanceNomisMigrationService(prisonBalanceNomisMigrationClient),
     prisonBalanceNomisPrisonerService: new PrisonBalanceNomisPrisonerService(prisonBalanceNomisPrisonerClient),
     prisonerBalanceNomisMigrationService: new PrisonerBalanceNomisMigrationService(prisonerBalanceNomisMigrationClient),
