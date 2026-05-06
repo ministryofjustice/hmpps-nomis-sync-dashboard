@@ -96,7 +96,7 @@ export default class ActivitiesMigrationController {
 
   async postStartActivitiesMigration(req: Request, res: Response): Promise<void> {
     req.session.startActivitiesMigrationForm = { ...trimForm(req.body) }
-
+    req.session.startActivitiesMigrationForm = req.session.startActivitiesMigrationForm || {}
     const errors = startActivitiesMigrationValidator(req.session.startActivitiesMigrationForm)
 
     if (errors.length > 0) {
@@ -112,6 +112,7 @@ export default class ActivitiesMigrationController {
   }
 
   async previewChecks(req: Request, res: Response, errors: Express.ValidationError[]): Promise<void> {
+    req.session.startActivitiesMigrationForm = req.session.startActivitiesMigrationForm || {}
     const { prisonId } = req.session.startActivitiesMigrationForm
     const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
     await Promise.all([
@@ -318,6 +319,7 @@ export default class ActivitiesMigrationController {
   }
 
   async postStartActivitiesMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.startActivitiesMigrationForm = req.session.startActivitiesMigrationForm || {}
     const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
 
     const result = await this.activitiesNomisMigrationService.startActivitiesMigration(filter, context(res))
@@ -468,7 +470,7 @@ export default class ActivitiesMigrationController {
     filterNomisActivityEndDate?: string
     filterCourseActivityId?: number
   } {
-    const filter: Filter = JSON.parse(migration.filter)
+    const filter: Filter = migration.filter ? JSON.parse(migration.filter) : {}
     const filterPrisonId = filter.prisonId
     const filterActivityStartDate = filter.activityStartDate
     const filterNomisActivityEndDate = filter.nomisActivityEndDate

@@ -64,6 +64,7 @@ export default class PrisonerBalanceMigrationController {
 
   async postStartMigration(req: Request, res: Response): Promise<void> {
     req.session.prisonFilteredMigrationForm = { ...trimForm(req.body) }
+    req.session.prisonFilteredMigrationForm = req.session.prisonFilteredMigrationForm || {}
 
     const errors = startMigrationValidator(req.session.prisonFilteredMigrationForm)
 
@@ -96,6 +97,7 @@ export default class PrisonerBalanceMigrationController {
   }
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.prisonFilteredMigrationForm = req.session.prisonFilteredMigrationForm || {}
     const filter = req.session.prisonFilteredMigrationForm
     const result = await this.prisonerBalanceMigrationService.startMigration(filter, context(res))
     req.session.prisonFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
@@ -129,7 +131,7 @@ export default class PrisonerBalanceMigrationController {
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
     filterPrisonId?: string
   } {
-    const filter: Filter = JSON.parse(migration.filter)
+    const filter: Filter = migration.filter ? JSON.parse(migration.filter) : {}
     const filterPrisonId = filter.prisonId
     return {
       ...migration,

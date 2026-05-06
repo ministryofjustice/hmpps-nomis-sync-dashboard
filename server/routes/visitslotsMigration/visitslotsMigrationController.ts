@@ -58,6 +58,7 @@ export default class VisitslotsMigrationController {
 
   async postStartMigration(req: Request, res: Response): Promise<void> {
     req.session.noFilterMigrationForm = { ...trimForm(req.body) }
+    req.session.noFilterMigrationForm = req.session.noFilterMigrationForm || {}
     const count = await this.visitslotsNomisPrisonerService.getMigrationEstimatedCount(context(res))
     const dlqCountString = await this.nomisMigrationService.getFailureCount(this.migrationType, context(res))
     logger.info(`${dlqCountString} failures found`)
@@ -81,6 +82,7 @@ export default class VisitslotsMigrationController {
   }
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.noFilterMigrationForm = req.session.noFilterMigrationForm || {}
     const result = await this.visitslotsNomisMigrationService.startMigration(context(res))
     req.session.noFilterMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.noFilterMigrationForm.migrationId = result.migrationId

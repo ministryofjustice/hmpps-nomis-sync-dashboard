@@ -22,7 +22,7 @@ export const buildUrlNoTimespan = (query: string) => `${urlWithQuery(query)}/lim
 export const alreadyMigratedLogAnalyticsLink = (
   messageSnippet: string,
   startedDate: string,
-  endedDate: string,
+  endedDate?: string,
 ): string =>
   buildUrlNoTimespan(
     `AppTraces
@@ -59,4 +59,4 @@ export const migrationsLogAnalyticsLink = (
       ${failedQuery}`)
 }
 
-const toISODateTime = (localDateTime: string): string => moment(localDateTime).toISOString()
+const toISODateTime = (localDateTime?: string): string => moment(localDateTime).toISOString()

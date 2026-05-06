@@ -37,7 +37,7 @@ export default class RoomMappingController {
     })
   }
 
-  getPrison(req: Request, res: Response): void {
+  getPrison(_req: Request, res: Response): void {
     res.render('pages/visits/roomMappingPrison', { futureVisits: true, errors: [] })
   }
 

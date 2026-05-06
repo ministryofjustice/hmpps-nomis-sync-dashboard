@@ -63,6 +63,7 @@ export default class TapsMigrationController {
 
   async postStartMigration(req: Request, res: Response): Promise<void> {
     req.session.prisonerFilteredMigrationForm = { ...trimForm(req.body) }
+    req.session.prisonerFilteredMigrationForm = req.session.prisonerFilteredMigrationForm || {}
 
     const filter = req.session.prisonerFilteredMigrationForm
     const count = await this.movementsNomisPrisonerService.getMigrationEstimatedCount(filter, context(res))
@@ -88,6 +89,7 @@ export default class TapsMigrationController {
   }
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.prisonerFilteredMigrationForm = req.session.prisonerFilteredMigrationForm || {}
     const filter = req.session.prisonerFilteredMigrationForm
     const result = await this.tapsNomisMigrationService.startMigration(filter, context(res))
     req.session.prisonerFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
@@ -147,7 +149,7 @@ export default class TapsMigrationController {
   private static withFilter(migration: MigrationHistory): MigrationHistory & {
     filterPrisonerNumber?: string
   } {
-    const filter: Filter = JSON.parse(migration.filter)
+    const filter: Filter = migration.filter ? JSON.parse(migration.filter) : {}
     const filterPrisonerNumber = filter.prisonerNumber
     return {
       ...migration,

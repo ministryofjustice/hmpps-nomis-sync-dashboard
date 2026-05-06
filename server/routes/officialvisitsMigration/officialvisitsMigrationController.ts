@@ -59,6 +59,7 @@ export default class OfficialvisitsMigrationController {
 
   async postStartMigration(req: Request, res: Response): Promise<void> {
     req.session.dateRangeAndPrisonFilterMigrationForm = { ...trimForm(req.body) }
+    req.session.dateRangeAndPrisonFilterMigrationForm = req.session.dateRangeAndPrisonFilterMigrationForm || {}
 
     const errors = startMigrationValidator(req.session.dateRangeAndPrisonFilterMigrationForm)
 
@@ -67,7 +68,7 @@ export default class OfficialvisitsMigrationController {
       res.redirect('/officialvisits-migration/amend')
     } else {
       const filter = req.session.dateRangeAndPrisonFilterMigrationForm
-      const prisonIds = filter.prisonIds.split(',')
+      const prisonIds = filter.prisonIds?.split(',') || []
       const count = await this.nomisPrisonerService.getMigrationEstimatedCount(
         { prisonIds, fromDate: filter.fromDate, toDate: filter.toDate },
         context(res),
@@ -95,8 +96,9 @@ export default class OfficialvisitsMigrationController {
   }
 
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.dateRangeAndPrisonFilterMigrationForm = req.session.dateRangeAndPrisonFilterMigrationForm || {}
     const filter = req.session.dateRangeAndPrisonFilterMigrationForm
-    const prisonIds = filter.prisonIds.split(',')
+    const prisonIds = filter.prisonIds?.split(',') || []
     const result = await this.officialvisitsNomisMigrationService.startMigration(
       { prisonIds, fromDate: filter.fromDate, toDate: filter.toDate },
       context(res),
