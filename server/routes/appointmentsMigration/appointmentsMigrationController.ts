@@ -62,6 +62,10 @@ export default class AppointmentsMigrationController {
 
   async postStartAppointmentsMigration(req: Request, res: Response): Promise<void> {
     req.session.startAppointmentsMigrationForm = { ...trimForm(req.body) }
+    req.session.startAppointmentsMigrationForm = req.session.startAppointmentsMigrationForm || {
+      prisonsNotSwitchedOnNomis: [],
+      appointmentCounts: [],
+    }
     const errors = startAppointmentsMigrationValidator(req.session.startAppointmentsMigrationForm)
 
     if (errors.length > 0) {
@@ -77,6 +81,10 @@ export default class AppointmentsMigrationController {
   }
 
   async previewChecks(req: Request, res: Response, errors: Express.ValidationError[]): Promise<void> {
+    req.session.startAppointmentsMigrationForm = req.session.startAppointmentsMigrationForm || {
+      prisonsNotSwitchedOnNomis: [],
+      appointmentCounts: [],
+    }
     const filter = AppointmentsMigrationController.toFilter(req.session.startAppointmentsMigrationForm)
     await Promise.all([
       this.nomisPrisonerService.getAppointmentsMigrationEstimatedCount(filter, context(res)).catch(error => {
@@ -104,6 +112,10 @@ export default class AppointmentsMigrationController {
           return []
         }),
     ]).then(([estimatedCount, dlqCount, inactiveNomisPrisons, appointmentCounts]) => {
+      req.session.startAppointmentsMigrationForm = req.session.startAppointmentsMigrationForm || {
+        prisonsNotSwitchedOnNomis: [],
+        appointmentCounts: [],
+      }
       req.session.startAppointmentsMigrationForm.estimatedCount = estimatedCount.toLocaleString()
       req.session.startAppointmentsMigrationForm.dlqCount = dlqCount.toLocaleString()
       req.session.startAppointmentsMigrationForm.prisonsNotSwitchedOnNomis = inactiveNomisPrisons
@@ -162,6 +174,10 @@ export default class AppointmentsMigrationController {
   }
 
   async postStartAppointmentsMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.startAppointmentsMigrationForm = req.session.startAppointmentsMigrationForm || {
+      prisonsNotSwitchedOnNomis: [],
+      appointmentCounts: [],
+    }
     const filter = AppointmentsMigrationController.toFilter(req.session.startAppointmentsMigrationForm)
 
     const result = await this.appointmentsNomisMigrationService.startAppointmentsMigration(filter, context(res))
