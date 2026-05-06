@@ -1,4 +1,4 @@
-import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient, SanitisedError } from '@ministryofjustice/hmpps-rest-client'
 import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
@@ -26,22 +26,15 @@ export default class ActivitiesNomisMigrationClient extends RestClient {
 
   async endMigratedActivities(context: Context, migrationId: string): Promise<string> {
     logger.info(`Ending NOMIS activities for migrationId=${migrationId}`)
-    try {
-      await this.put<void>(
-        {
-          path: `/migrate/activities/${migrationId}/end`,
-        },
-        asSystem(context.username),
-      )
-    } catch (e) {
-      switch (e.responseStatus) {
-        case 404:
-          return 'Not found'
-        default:
-          return 'Error'
-      }
-    }
-    return 'OK'
+    return this.put<void | null>(
+      {
+        path: `/migrate/activities/${migrationId}/end`,
+        errorHandler: this.handleNotFoundError,
+      },
+      asSystem(context.username),
+    )
+      .then(result => (result !== null ? 'OK' : 'Not found'))
+      .catch(_reason => 'Error')
   }
 
   async moveStartDate(context: Context, migrationId: string, newActivityStartDate: string): Promise<string[]> {
@@ -53,5 +46,17 @@ export default class ActivitiesNomisMigrationClient extends RestClient {
       },
       asSystem(context.username),
     )
+  }
+
+  private handleNotFoundError<Response, ErrorData>(
+    path: string,
+    method: string,
+    error: SanitisedError<ErrorData>,
+  ): Response | null {
+    if (error.responseStatus === 404) {
+      logger.info(`Returned null for 404 not found when calling ${this.name}: ${path}`)
+      return null
+    }
+    return this.handleError<Response, ErrorData>(path, method, error)
   }
 }

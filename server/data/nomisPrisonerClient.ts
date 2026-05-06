@@ -1,5 +1,5 @@
 import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
-import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient, SanitisedError } from '@ministryofjustice/hmpps-rest-client'
 
 import {
   GetVisitsByFilter,
@@ -39,7 +39,7 @@ export default class NomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.totalElements
+    return response.totalElements || 0
   }
 
   // TODO currently only dealing with adjustments, to be expanded with other sentencing entities
@@ -52,7 +52,7 @@ export default class NomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.totalElements
+    return response.totalElements || 0
   }
 
   async getAppointmentsMigrationEstimatedCount(filter: GetAdjustmentsByFilter, context: Context): Promise<number> {
@@ -64,7 +64,7 @@ export default class NomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.totalElements
+    return response.totalElements || 0
   }
 
   async getCourtSentencingMigrationEstimatedCount(filter: GetCourtCaseIdsByFilter, context: Context): Promise<number> {
@@ -76,7 +76,7 @@ export default class NomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.totalElements
+    return response.totalElements || 0
   }
 
   async getCorePersonMigrationEstimatedCount(context: Context): Promise<number> {
@@ -88,7 +88,7 @@ export default class NomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.totalElements
+    return response.totalElements || 0
   }
 
   async getVisitRooms(prisonId: string, futureVisits: boolean, context: Context): Promise<VisitRoomCountResponse[]> {
@@ -110,20 +110,13 @@ export default class NomisPrisonerClient extends RestClient {
   }
 
   async checkServiceAgencySwitch(agencyId: string, serviceName: string, context: Context): Promise<boolean> {
-    try {
-      await this.get<void>(
-        {
-          path: `/agency-switches/${serviceName}/agency/${agencyId}`,
-        },
-        asSystem(context.username),
-      )
-    } catch (error) {
-      if (error.responseStatus === 404) {
-        return false
-      }
-      throw error
-    }
-    return true
+    return this.get<void | null>(
+      {
+        path: `/agency-switches/${serviceName}/agency/${agencyId}`,
+        errorHandler: this.handleNotFoundError,
+      },
+      asSystem(context.username),
+    ).then(result => result !== null)
   }
 
   async createServiceAgencySwitch(agencyId: string, serviceName: string, context: Context): Promise<void> {
@@ -148,7 +141,7 @@ export default class NomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.totalElements
+    return response.totalElements || 0
   }
 
   async getAllocationsMigrationEstimatedCount(filter: GetAllocationsByFilter, context: Context): Promise<number> {
@@ -160,7 +153,7 @@ export default class NomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.totalElements
+    return response.totalElements || 0
   }
 
   async findActivitiesSuspendedAllocations(
@@ -247,5 +240,17 @@ export default class NomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
+  }
+
+  private handleNotFoundError<Response, ErrorData>(
+    path: string,
+    method: string,
+    error: SanitisedError<ErrorData>,
+  ): Response | null {
+    if (error.responseStatus === 404) {
+      logger.info(`Returned null for 404 not found when calling ${this.name}: ${path}`)
+      return null
+    }
+    return this.handleError<Response, ErrorData>(path, method, error)
   }
 }

@@ -317,31 +317,31 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.session.startActivitiesMigrationForm.estimatedCount).toBe('10')
-        expect(req.session.startActivitiesMigrationForm.dlqCount).toBe('20')
-        expect(req.session.startActivitiesMigrationForm.incentiveLevelIds.sort()).toEqual(['STD', 'ENT'].sort())
-        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnNomis).toEqual(true)
-        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(true)
-        expect(req.session.startActivitiesMigrationForm.dpsPayBandsExist).toEqual(true)
-        expect(req.session.startActivitiesMigrationForm.dpsPrisonRegimeExists).toEqual(true)
-        expect(req.session.startActivitiesMigrationForm.suspendedAllocations).toEqual([
+        expect(req.session.startActivitiesMigrationForm?.estimatedCount).toBe('10')
+        expect(req.session.startActivitiesMigrationForm?.dlqCount).toBe('20')
+        expect(req.session.startActivitiesMigrationForm?.incentiveLevelIds?.sort()).toEqual(['STD', 'ENT'].sort())
+        expect(req.session.startActivitiesMigrationForm?.prisonSwitchedOnNomis).toEqual(true)
+        expect(req.session.startActivitiesMigrationForm?.prisonSwitchedOnDps).toEqual(true)
+        expect(req.session.startActivitiesMigrationForm?.dpsPayBandsExist).toEqual(true)
+        expect(req.session.startActivitiesMigrationForm?.dpsPrisonRegimeExists).toEqual(true)
+        expect(req.session.startActivitiesMigrationForm?.suspendedAllocations).toEqual([
           `Activity Description, Activity ID, Prisoner Number,`,
           `Kitchens AM, 12346, A1234AA,`,
           `Kitchens PM, 12345, A1234AA,`,
           `Kitchens PM, 12345, B1234BB,`,
         ])
-        expect(req.session.startActivitiesMigrationForm.allocationsMissingPayBands).toEqual([
+        expect(req.session.startActivitiesMigrationForm?.allocationsMissingPayBands).toEqual([
           `Activity Description, Activity ID, Prisoner Number, Incentive Level,`,
           `Kitchens AM, 12346, A1234AA, BAS,`,
           `Kitchens PM, 12345, A1234AA, STD,`,
           `Kitchens PM, 12345, B1234BB, STD,`,
         ])
-        expect(req.session.startActivitiesMigrationForm.payRatesUnknownIncentive).toEqual([
+        expect(req.session.startActivitiesMigrationForm?.payRatesUnknownIncentive).toEqual([
           `Activity Description, Activity ID, Pay Band Code, Incentive Level,`,
           `Kitchens AM, 12346, 6, BAS,`,
           `Kitchens PM, 12345, 5, STD,`,
         ])
-        expect(req.session.startActivitiesMigrationForm.activitiesWithoutScheduleRules).toEqual([
+        expect(req.session.startActivitiesMigrationForm?.activitiesWithoutScheduleRules).toEqual([
           `Activity Description, Activity ID,`,
           `Kitchens AM, 12346,`,
           `Kitchens PM, 12345,`,
@@ -370,7 +370,7 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(false)
+        expect(req.session.startActivitiesMigrationForm?.prisonSwitchedOnDps).toEqual(false)
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
 
@@ -395,7 +395,7 @@ describe('activitiesMigrationController', () => {
           nomisPrisonerService,
           activitiesService,
         ).postStartActivitiesMigration(req, res)
-        expect(req.session.startActivitiesMigrationForm.prisonSwitchedOnDps).toEqual(true)
+        expect(req.session.startActivitiesMigrationForm?.prisonSwitchedOnDps).toEqual(true)
         expect(res.redirect).toHaveBeenCalledWith('/activities-migration/start/preview')
       })
     })
