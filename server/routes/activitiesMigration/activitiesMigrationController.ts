@@ -113,7 +113,7 @@ export default class ActivitiesMigrationController {
 
   async previewChecks(req: Request, res: Response, errors: Express.ValidationError[]): Promise<void> {
     req.session.startActivitiesMigrationForm = req.session.startActivitiesMigrationForm || {}
-    const { prisonId } = req.session.startActivitiesMigrationForm
+    const { prisonId = '' } = req.session.startActivitiesMigrationForm
     const filter = ActivitiesMigrationController.toFilter(req.session.startActivitiesMigrationForm)
     await Promise.all([
       this.nomisPrisonerService.getActivitiesMigrationEstimatedCount(filter, context(res)).catch(error => {
@@ -142,7 +142,7 @@ export default class ActivitiesMigrationController {
         return 'Error checking ACTIVITY feature switch'
       }),
 
-      this.activitiesService.getRolloutPrison(prisonId, context(res)).catch((error): RolloutPrisonPlan => {
+      this.activitiesService.getRolloutPrison(prisonId, context(res)).catch((error): RolloutPrisonPlan | null => {
         errors.push({
           text: `Failed to check if prison ${prisonId} is switched on in DPS due to error: ${error.message}`,
           href: '',
@@ -158,7 +158,7 @@ export default class ActivitiesMigrationController {
         return null
       }),
 
-      this.activitiesService.checkPrisonRegimeExists(prisonId, context(res)).catch((error): boolean => {
+      this.activitiesService.checkPrisonRegimeExists(prisonId, context(res)).catch((error): boolean | null => {
         errors.push({
           text: `Failed to check if prison ${prisonId} has slot times configured in DPS due to error: ${error.message}`,
           href: '',
@@ -219,6 +219,7 @@ export default class ActivitiesMigrationController {
         nomisPayRatesUnknownIncentive,
         nomisActivitiesWithoutScheduleRules,
       ]) => {
+        req.session.startActivitiesMigrationForm = req.session.startActivitiesMigrationForm || {}
         req.session.startActivitiesMigrationForm.estimatedCount = estimatedCount.toLocaleString()
         req.session.startActivitiesMigrationForm.dlqCount = dlqCount.toLocaleString()
         req.session.startActivitiesMigrationForm.incentiveLevelIds = incentiveLevels.map(
@@ -365,7 +366,7 @@ export default class ActivitiesMigrationController {
 
     req.session.moveActivityStartDateForm = {
       migrationId,
-      activityStartDate: history.filterActivityStartDate,
+      activityStartDate: history.filterActivityStartDate || '',
       newActivityStartDate: '',
     }
     await this.moveStartDate(req, res)
@@ -381,6 +382,11 @@ export default class ActivitiesMigrationController {
 
   async postMoveStartDate(req: Request, res: Response): Promise<void> {
     req.session.moveActivityStartDateForm = { ...trimForm(req.body) }
+    req.session.moveActivityStartDateForm = req.session.moveActivityStartDateForm || {
+      migrationId: '',
+      activityStartDate: '',
+      newActivityStartDate: '',
+    }
 
     const validationErrors = moveActivityStartDateValidator(req.session.moveActivityStartDateForm)
     if (validationErrors.length > 0) {
@@ -389,29 +395,31 @@ export default class ActivitiesMigrationController {
       return
     }
 
-    try {
-      const warnings = await this.activitiesNomisMigrationService.moveStartDate(
+    await this.activitiesNomisMigrationService
+      .moveStartDate(
         context(res),
         req.session.moveActivityStartDateForm.migrationId,
         req.session.moveActivityStartDateForm.newActivityStartDate,
       )
-      if (warnings.length > 0) {
-        warnings.unshift('Move date succeeded but with the following warnings from DPS:')
-        req.flash(
-          'warnings',
-          warnings.map(warning => ({ href: '', text: warning })),
-        )
-      }
-      res.redirect('/activities-migration')
-    } catch (error) {
-      req.flash('errors', [{ href: '', text: `${error.message}: ${error.data.message}` }])
-      res.redirect('/activities-migration/move-start-date/amend')
-    }
+      .then(warnings => {
+        if (warnings.length > 0) {
+          warnings.unshift('Move date succeeded but with the following warnings from DPS:')
+          req.flash(
+            'warnings',
+            warnings.map(warning => ({ href: '', text: warning })),
+          )
+        }
+        res.redirect('/activities-migration')
+      })
+      .catch(error => {
+        req.flash('errors', [{ href: '', text: `${error.message}: ${error.data.message}` }])
+        res.redirect('/activities-migration/move-start-date/amend')
+      })
   }
 
   private static toFilter(form: StartActivitiesMigrationForm): ActivitiesMigrationFilter {
     return {
-      prisonId: form.prisonId,
+      prisonId: form.prisonId || '',
       activityStartDate: form.activityStartDate,
       courseActivityId: form.courseActivityId,
     }
@@ -456,7 +464,7 @@ export default class ActivitiesMigrationController {
     `
   }
 
-  private static toISODateTime(localDateTime: string): string {
+  private static toISODateTime(localDateTime?: string): string {
     return moment(localDateTime).toISOString()
   }
 
