@@ -80,6 +80,7 @@ export default class VisitsMigrationController {
 
   async postStartVisitMigration(req: Request, res: Response): Promise<void> {
     req.session.startVisitsMigrationForm = { ...trimForm(req.body) }
+    req.session.startVisitsMigrationForm = req.session.startVisitsMigrationForm || {}
 
     const errors = startVisitsMigrationValidator(req.session.startVisitsMigrationForm)
 
@@ -114,6 +115,7 @@ export default class VisitsMigrationController {
   }
 
   async postStartVisitMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.startVisitsMigrationForm = req.session.startVisitsMigrationForm || {}
     const filter = VisitsMigrationController.toFilter(req.session.startVisitsMigrationForm)
 
     const result = await this.visitsNomisMigrationService.startVisitsMigration(filter, context(res))
@@ -165,11 +167,11 @@ export default class VisitsMigrationController {
     }
   }
 
-  private static asArray(value: string | string[]): string[] {
+  private static asArray(value?: string | string[]): string[] {
     if (typeof value === 'string') {
       return value.split(',').map((v: string) => v.trim())
     }
-    return value
+    return value === undefined || value === null ? [] : value
   }
 
   parseFilter(req: Request): MigrationViewFilter {
@@ -187,7 +189,7 @@ export default class VisitsMigrationController {
     filterToDate?: string
     filterFromDate?: string
   } {
-    const filter: Filter = JSON.parse(migration.filter)
+    const filter: Filter = migration.filter ? JSON.parse(migration.filter) : {}
     const filterPrisonIds = filter.prisonIds?.join()
     const filterVisitTypes = filter.visitTypes?.join()
     const filterToDate = filter.toDateTime

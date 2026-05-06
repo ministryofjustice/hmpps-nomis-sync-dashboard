@@ -20,6 +20,6 @@ export default class PrisonerBalanceNomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.page.totalElements
+    return response.page?.totalElements || 0
   }
 }

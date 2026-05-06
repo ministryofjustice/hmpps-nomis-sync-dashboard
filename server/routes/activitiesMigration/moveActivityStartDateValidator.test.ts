@@ -40,7 +40,7 @@ describe('moveActivityStartDateValidator', () => {
     const form: MoveActivityStartDateForm = {
       migrationId: 'any',
       activityStartDate: moment().add(1, 'days').format('YYYY-MM-DD'),
-      newActivityStartDate: null,
+      newActivityStartDate: '',
     }
 
     expect(validate(form)).toContainEqual({ href: '#newActivityStartDate', text: 'Enter a date.' })

@@ -62,7 +62,6 @@ export default class AppointmentsMigrationController {
 
   async postStartAppointmentsMigration(req: Request, res: Response): Promise<void> {
     req.session.startAppointmentsMigrationForm = { ...trimForm(req.body) }
-
     const errors = startAppointmentsMigrationValidator(req.session.startAppointmentsMigrationForm)
 
     if (errors.length > 0) {
@@ -216,11 +215,11 @@ export default class AppointmentsMigrationController {
     }
   }
 
-  private static asArray(value: string | string[]): string[] {
+  private static asArray(value?: string | string[]): string[] {
     if (typeof value === 'string') {
       return value.split(',').map((v: string) => v.trim())
     }
-    return value
+    return value === undefined || value === null ? [] : value
   }
 
   private static messageApplicationInsightsQuery(message: { messageId: string }): string {
@@ -230,7 +229,7 @@ export default class AppointmentsMigrationController {
     | order by timestamp desc`
   }
 
-  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate: string): string {
+  private static alreadyMigratedApplicationInsightsQuery(startedDate: string, endedDate?: string): string {
     return `traces
     | where cloud_RoleName == 'hmpps-prisoner-from-nomis-migration'
     | where message contains 'Will not migrate the appointment since it is migrated already,'
@@ -240,7 +239,7 @@ export default class AppointmentsMigrationController {
     | summarize dcount(message)`
   }
 
-  private static toISODateTime(localDateTime: string): string {
+  private static toISODateTime(localDateTime?: string): string {
     return moment(localDateTime).toISOString()
   }
 
@@ -253,7 +252,7 @@ export default class AppointmentsMigrationController {
     filterToDate?: string
     filterFromDate?: string
   } {
-    const filter: Filter = JSON.parse(migration.filter)
+    const filter: Filter = migration.filter ? JSON.parse(migration.filter) : {}
     const filterPrisonIds = filter.prisonIds?.join()
     const filterToDate = filter.toDate
     const filterFromDate = filter.fromDate

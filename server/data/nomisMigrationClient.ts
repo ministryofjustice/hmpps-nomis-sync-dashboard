@@ -71,9 +71,9 @@ export default class NomisMigrationClient extends RestClient {
     return {
       history,
       currentProgress: {
-        recordsFailed: inProgressMigration.recordsFailed,
-        recordsMigrated: inProgressMigration.migrationId === migrationId ? inProgressMigration.recordsMigrated : 0,
-        recordsToBeProcessed: inProgressMigration.toBeProcessedCount,
+        recordsFailed: inProgressMigration.recordsFailed || 0,
+        recordsMigrated: inProgressMigration.migrationId === migrationId ? inProgressMigration.recordsMigrated || 0 : 0,
+        recordsToBeProcessed: inProgressMigration.toBeProcessedCount || 0,
       },
     }
   }

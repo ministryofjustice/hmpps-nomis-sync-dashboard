@@ -76,6 +76,7 @@ export default class AllocationsMigrationController {
 
   async postStartAllocationsMigration(req: Request, res: Response): Promise<void> {
     req.session.startAllocationsMigrationForm = { ...trimForm(req.body) }
+    req.session.startAllocationsMigrationForm = req.session.startAllocationsMigrationForm || {}
 
     const errors = startAllocationsMigrationValidator(req.session.startAllocationsMigrationForm)
 
@@ -108,6 +109,7 @@ export default class AllocationsMigrationController {
   }
 
   async postStartAllocationsMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.startAllocationsMigrationForm = req.session.startAllocationsMigrationForm || {}
     const filter = AllocationsMigrationController.toFilter(req.session.startAllocationsMigrationForm)
 
     const result = await this.allocationsNomisMigrationService.startAllocationsMigration(filter, context(res))
@@ -141,13 +143,13 @@ export default class AllocationsMigrationController {
 
   private static toFilter(form: StartAllocationsMigrationForm): AllocationsMigrationFilter {
     return {
-      prisonId: form.prisonId,
+      prisonId: form.prisonId || '',
       courseActivityId: form.courseActivityId,
       activityStartDate: form.activityStartDate,
     }
   }
 
-  private static fullMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
+  private static fullMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate?: string): string {
     const startDateQuery = `datetime(${this.toISODateTime(startedDate)})`
     const endDateQuery = endedDate ? `datetime(${this.toISODateTime(endedDate)})` : `now()`
     return `customEvents
@@ -158,7 +160,7 @@ export default class AllocationsMigrationController {
     `.trim()
   }
 
-  private static alreadyMigratedAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
+  private static alreadyMigratedAppInsightsQuery(migrationId: string, startedDate: string, endedDate?: string): string {
     return `${this.fullMigrationAppInsightsQuery(migrationId, startedDate, endedDate)}
       | where name endswith 'ignored'
       | join kind=leftouter (
@@ -172,7 +174,7 @@ export default class AllocationsMigrationController {
     `
   }
 
-  private static failedMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate: string): string {
+  private static failedMigrationAppInsightsQuery(migrationId: string, startedDate: string, endedDate?: string): string {
     return `${this.fullMigrationAppInsightsQuery(migrationId, startedDate, endedDate)}
       | where (name endswith 'failed' or name endswith 'error')
       | join kind=leftouter (
@@ -186,7 +188,7 @@ export default class AllocationsMigrationController {
     `
   }
 
-  private static toISODateTime(localDateTime: string): string {
+  private static toISODateTime(localDateTime?: string): string {
     return moment(localDateTime).toISOString()
   }
 
@@ -199,7 +201,7 @@ export default class AllocationsMigrationController {
     filterCourseActivityId?: number
     filterActivityStartDate?: string
   } {
-    const filter: Filter = JSON.parse(migration.filter)
+    const filter: Filter = migration.filter ? JSON.parse(migration.filter) : {}
     const filterPrisonId = filter.prisonId
     const filterCourseActivityId = filter.courseActivityId
     const filterActivityStartDate = filter.activityStartDate

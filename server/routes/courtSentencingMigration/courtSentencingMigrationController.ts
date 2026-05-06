@@ -56,6 +56,7 @@ export default class CourtSentencingMigrationController {
 
   async postStartCourtSentencingMigration(req: Request, res: Response): Promise<void> {
     req.session.startCourtSentencingMigrationForm = { ...trimForm(req.body) }
+    req.session.startCourtSentencingMigrationForm = req.session.startCourtSentencingMigrationForm || {}
 
     const errors = startCourtSentencingMigrationValidator(req.session.startCourtSentencingMigrationForm)
 
@@ -88,6 +89,7 @@ export default class CourtSentencingMigrationController {
   }
 
   async postStartCourtSentencingMigrationPreview(req: Request, res: Response): Promise<void> {
+    req.session.startCourtSentencingMigrationForm = req.session.startCourtSentencingMigrationForm || {}
     const filter = CourtSentencingMigrationController.toFilter(req.session.startCourtSentencingMigrationForm)
 
     const result = await this.courtSentencingNomisMigrationService.startCourtSentencingMigration(filter, context(res))
@@ -144,7 +146,7 @@ export default class CourtSentencingMigrationController {
     filterToDate?: string
     filterFromDate?: string
   } {
-    const filter: Filter = JSON.parse(migration.filter)
+    const filter: Filter = migration.filter ? JSON.parse(migration.filter) : {}
     const filterPrisonIds = filter.prisonIds?.join()
     const filterToDate = filter.toDate
     const filterFromDate = filter.fromDate
