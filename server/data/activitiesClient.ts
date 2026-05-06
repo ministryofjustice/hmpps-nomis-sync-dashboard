@@ -1,4 +1,4 @@
-import { asSystem, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { asSystem, RestClient, SanitisedError } from '@ministryofjustice/hmpps-rest-client'
 import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
 import logger from '../../logger'
@@ -30,19 +30,24 @@ export default class ActivitiesClient extends RestClient {
   }
 
   async checkPrisonRegimeExists(prisonId: string, context: Context): Promise<boolean> {
-    try {
-      await this.get<PrisonPayBand[]>(
-        {
-          path: `/prison/prison-regime/${prisonId}`,
-        },
-        asSystem(context.username),
-      )
-    } catch (error) {
-      if (error.responseStatus === 404) {
-        return false
-      }
-      throw error
+    return this.get<PrisonPayBand[] | null>(
+      {
+        path: `/prison/prison-regime/${prisonId}`,
+        errorHandler: this.handleNotFoundError,
+      },
+      asSystem(context.username),
+    ).then(result => result !== null)
+  }
+
+  private handleNotFoundError<Response, ErrorData>(
+    path: string,
+    method: string,
+    error: SanitisedError<ErrorData>,
+  ): Response | null {
+    if (error.responseStatus === 404) {
+      logger.info(`Returned null for 404 not found when calling ${this.name}: ${path}`)
+      return null
     }
-    return true
+    return this.handleError<Response, ErrorData>(path, method, error)
   }
 }

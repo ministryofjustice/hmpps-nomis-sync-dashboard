@@ -32,8 +32,8 @@ Validator.register(
 
 Validator.register(
   'after',
-  (date: string, params: string): boolean => {
-    const val1 = date
+  (date: string | number | boolean, params: string): boolean => {
+    const val1 = date.toString()
     const val2 = params.split(',')[0]
 
     if (!isISO8601(val1, { strict: true }) || !isISO8601(val2, { strict: true })) return false

@@ -20,6 +20,6 @@ export default class MovementsNomisPrisonerClient extends RestClient {
       },
       asSystem(context.username),
     )
-    return response.totalElements
+    return response.totalElements || 0
   }
 }

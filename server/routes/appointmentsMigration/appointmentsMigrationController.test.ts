@@ -220,7 +220,7 @@ describe('appointmentsMigrationController', () => {
           nomisPrisonerService,
         ).postStartAppointmentsMigration(req, res)
 
-        expect(req.session.startAppointmentsMigrationForm.prisonsNotSwitchedOnNomis).toEqual(['MDI', 'WWI'])
+        expect(req.session.startAppointmentsMigrationForm?.prisonsNotSwitchedOnNomis).toEqual(['MDI', 'WWI'])
       })
 
       it('should not show NOMIS feature switch warning', async () => {
@@ -236,7 +236,7 @@ describe('appointmentsMigrationController', () => {
           nomisPrisonerService,
         ).postStartAppointmentsMigration(req, res)
 
-        expect(req.session.startAppointmentsMigrationForm.prisonsNotSwitchedOnNomis).toEqual([])
+        expect(req.session.startAppointmentsMigrationForm?.prisonsNotSwitchedOnNomis).toEqual([])
       })
     })
   })

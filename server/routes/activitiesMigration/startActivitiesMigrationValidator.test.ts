@@ -50,7 +50,7 @@ describe('startActivitiesMigrationValidator', () => {
   it('should reject missing activity start date', () => {
     const form: StartActivitiesMigrationForm = {
       ...validForm,
-      activityStartDate: null,
+      activityStartDate: undefined,
     }
 
     expect(validate(form)).toContainEqual({ href: '#activityStartDate', text: 'Enter a date.' })

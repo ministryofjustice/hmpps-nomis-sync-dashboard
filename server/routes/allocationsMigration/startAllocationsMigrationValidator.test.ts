@@ -50,7 +50,7 @@ describe('startAllocationsMigrationValidator', () => {
   it('should reject missing activity start date', () => {
     const form: StartAllocationsMigrationForm = {
       ...validForm,
-      activityStartDate: null,
+      activityStartDate: undefined,
     }
 
     expect(validate(form)).toContainEqual({ href: '#activityStartDate', text: 'Enter a date.' })
