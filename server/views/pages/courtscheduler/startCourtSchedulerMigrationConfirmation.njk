@@ -1,14 +1,14 @@
 {% extends "../../partials/layout.njk" %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-{% set pageTitle = applicationName + " - Temporary Absences migration started" %}
-{% set backLinkHref = "/taps-migration" %}
+{% set pageTitle = applicationName + " - Court Scheduler migration started" %}
+{% set backLinkHref = "/court-scheduler-migration" %}
 
 {% block content %}
 
   <main class="govuk-body">
     <div class="govuk-width-container">
-      <h1 class="govuk-heading-l govuk-!-margin-top-7">Temporary Absences migration started</h1>
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Court Scheduler migration started</h1>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
@@ -20,14 +20,14 @@
         {% endset %}
 
         {{ govukPanel({
-          titleText: "Temporary Absence repair migration has successfully started",
+          titleText: "Court Scheduler repair / migration has successfully started",
           html: html
         }) }}
       </div>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <a data-qa="details-link" href="/taps-migration/details?migrationId={{form.migrationId}}">View migration status</a>
+        <a data-qa="details-link" href="/court-scheduler-migration/details?migrationId={{form.migrationId}}">View migration status</a>
       </div>
     </div>
   </main>

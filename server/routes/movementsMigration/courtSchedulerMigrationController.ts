@@ -6,37 +6,37 @@ import { context } from '../../services/context'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import { buildUrlNoTimespan } from '../../utils/logAnalyticsUrlBuilder'
 import MovementsNomisPrisonerService from '../../services/movements/movementsNomisPrisonerService'
-import TapsNomisMigrationService from '../../services/movements/tapsNomisMigrationService'
+import CourtSchedulerNomisMigrationService from '../../services/movements/courtSchedulerNomisMigrationService'
 import { MigrationHistory } from '../../@types/migration'
 
 interface Filter {
   prisonerNumber?: string
 }
 
-export default class TapsMigrationController {
+export default class CourtSchedulerMigrationController {
   constructor(
-    private readonly tapsNomisMigrationService: TapsNomisMigrationService,
+    private readonly courtSchedulerNomisMigrationService: CourtSchedulerNomisMigrationService,
     private readonly movementsNomisPrisonerService: MovementsNomisPrisonerService,
     private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  private migrationType: string = 'EXTERNAL_MOVEMENTS'
+  private migrationType: string = 'COURT_SCHEDULER'
 
   async getMigrations(_: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
 
-    const decoratedMigrations = migrations.map(TapsMigrationController.withFilter).map(history => ({
+    const decoratedMigrations = migrations.map(CourtSchedulerMigrationController.withFilter).map(history => ({
       ...history,
-      applicationInsightsAllLink: TapsMigrationController.applicationInsightsUrl(
-        TapsMigrationController.migrationsApplicationInsightsQuery(
+      applicationInsightsAllLink: CourtSchedulerMigrationController.applicationInsightsUrl(
+        CourtSchedulerMigrationController.migrationsApplicationInsightsQuery(
           history.migrationId,
           history.whenStarted,
           history.whenEnded,
           false,
         ),
       ),
-      applicationInsightsFailuresLink: TapsMigrationController.applicationInsightsUrl(
-        TapsMigrationController.migrationsApplicationInsightsQuery(
+      applicationInsightsFailuresLink: CourtSchedulerMigrationController.applicationInsightsUrl(
+        CourtSchedulerMigrationController.migrationsApplicationInsightsQuery(
           history.migrationId,
           history.whenStarted,
           history.whenEnded,
@@ -44,7 +44,7 @@ export default class TapsMigrationController {
         ),
       ),
     }))
-    res.render('pages/taps/tapsMigration', {
+    res.render('pages/courtScheduler/courtSchedulerMigration', {
       migrations: decoratedMigrations,
     })
   }
@@ -55,7 +55,7 @@ export default class TapsMigrationController {
   }
 
   async startMigration(req: Request, res: Response): Promise<void> {
-    res.render('pages/taps/startTapsMigration', {
+    res.render('pages/courtScheduler/startCourtSchedulerMigration', {
       form: req.session.prisonerFilteredMigrationForm,
       errors: req.flash('errors'),
     })
@@ -72,11 +72,11 @@ export default class TapsMigrationController {
 
     req.session.prisonerFilteredMigrationForm.estimatedCount = count.toLocaleString()
     req.session.prisonerFilteredMigrationForm.dlqCount = dlqCountString.toLocaleString()
-    res.redirect('/taps-migration/start/preview')
+    res.redirect('/court-scheduler-migration/start/preview')
   }
 
   async startMigrationPreview(req: Request, res: Response): Promise<void> {
-    res.render('pages/taps/startTapsMigrationPreview', {
+    res.render('pages/courtScheduler/startCourtSchedulerMigrationPreview', {
       form: req.session.prisonerFilteredMigrationForm,
     })
   }
@@ -91,14 +91,14 @@ export default class TapsMigrationController {
   async postStartMigrationPreview(req: Request, res: Response): Promise<void> {
     req.session.prisonerFilteredMigrationForm = req.session.prisonerFilteredMigrationForm || {}
     const filter = req.session.prisonerFilteredMigrationForm
-    const result = await this.tapsNomisMigrationService.startMigration(filter, context(res))
+    const result = await this.courtSchedulerNomisMigrationService.startMigration(filter, context(res))
     req.session.prisonerFilteredMigrationForm.estimatedCount = result.estimatedCount.toLocaleString()
     req.session.prisonerFilteredMigrationForm.migrationId = result.migrationId
-    res.redirect('/taps-migration/start/confirmation')
+    res.redirect('/court-scheduler-migration/start/confirmation')
   }
 
   async startMigrationConfirmation(req: Request, res: Response): Promise<void> {
-    res.render('pages/taps/startTapsMigrationConfirmation', {
+    res.render('pages/courtScheduler/startCourtSchedulerMigrationConfirmation', {
       form: req.session.prisonerFilteredMigrationForm,
     })
   }
@@ -106,7 +106,7 @@ export default class TapsMigrationController {
   async migrationDetails(req: Request, res: Response): Promise<void> {
     const { migrationId } = req.query as { migrationId: string }
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/taps/tapsMigrationDetails', {
+    res.render('pages/courtScheduler/courtSchedulerMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
   }
@@ -115,7 +115,7 @@ export default class TapsMigrationController {
     const { migrationId }: { migrationId: string } = req.body
     await this.nomisMigrationService.cancelMigration(migrationId, context(res))
     const migration = await this.nomisMigrationService.getMigration(migrationId, context(res))
-    res.render('pages/taps/tapsMigrationDetails', {
+    res.render('pages/courtScheduler/courtSchedulerMigrationDetails', {
       migration: { ...migration, history: migration.history },
     })
   }
@@ -133,7 +133,7 @@ export default class TapsMigrationController {
       | where AppRoleName == 'hmpps-prisoner-from-nomis-migration'
       | where TimeGenerated between (${startDateQuery} .. ${endDateQuery})
       | where Properties.migrationId startswith '${migrationId}'
-      | where Name startswith 'temporary-absences-migration'
+      | where Name startswith 'court-scheduler-migration'
       ${failedQuery}
     `
   }

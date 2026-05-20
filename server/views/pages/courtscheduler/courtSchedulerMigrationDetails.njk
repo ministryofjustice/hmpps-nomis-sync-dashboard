@@ -3,14 +3,14 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-{% set pageTitle = applicationName + " - Temporary Absence repair migration details" %}
-{% set backLinkHref = "/taps-migration" %}
+{% set pageTitle = applicationName + " - Court Scheduler repair / migration details" %}
+{% set backLinkHref = "/court-scheduler-migration" %}
 
 {% block content %}
 
   <main class="govuk-body">
     <div class="govuk-width-container">
-      <h1 class="govuk-heading-l govuk-!-margin-top-7">Temporary Absence repair migration details</h1>
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Court Scheduler repair / migration details</h1>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
@@ -132,14 +132,14 @@
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <form action="/taps-migration/cancel" method="post" novalidate>
+        <form action="/court-scheduler-migration/cancel" method="post" novalidate>
             <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
             <input type="hidden" name="migrationId" value="{{ migration.history.migrationId }}"/>
 
             <div class="govuk-button-group">
               {{ govukButton({
                 text: "Refresh",
-                href: '/taps-migration/details?migrationId=' + migration.history.migrationId,
+                href: '/court-scheduler-migration/details?migrationId=' + migration.history.migrationId,
                 classes: "govuk-button--secondary"
               }) }}
               {% if  migration.history.status != 'COMPLETED'  %}

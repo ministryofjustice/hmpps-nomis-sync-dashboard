@@ -7,8 +7,8 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
-{% set pageTitle = applicationName + " - Start a Temporary Absence repair migration - preview" %}
-{% set backLinkHref = "/taps-migration/amend" %}
+{% set pageTitle = applicationName + " - Start a Court Scheduler repair / migration - preview" %}
+{% set backLinkHref = "/court-scheduler-migration/amend" %}
 
 {% block content %}
 
@@ -24,7 +24,7 @@
         <div class="govuk-width-container">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full">
-                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Temporary Absence repair migration - preview</h1>
+                    <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Court Scheduler repair / migration - preview</h1>
                 </div>
                 <div class="govuk-grid-column-two-thirds">
                     {% if form.estimatedCount %}
@@ -42,7 +42,7 @@
                     {% if form.dlqCount > 0 %}
                         {% set dlqText %}There are {{ form.dlqCount }} messages on the migration dead letter queue. Please clear these before starting the migration{% endset %}
                         {% set html %}
-                        <form action="/taps-migration/start/delete-failures" method="post" novalidate>
+                        <form action="/court-scheduler-migration/start/delete-failures" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
                         <p>If you are sure all previous failures have been successfully understood and processed, you can permanently delete any record of these errors</p>
                         <div class="govuk-button-group">
@@ -75,7 +75,7 @@
                     }) }}
 
 
-                    <form action="/taps-migration/start/preview" method="post" novalidate>
+                    <form action="/court-scheduler-migration/start/preview" method="post" novalidate>
                         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
                         <div class="govuk-button-group">
@@ -86,7 +86,7 @@
                                 attributes: { 'data-qa': 'start-migration-button' },
                                 preventDoubleClick: true
                             }) }}
-                            <a class="govuk-link" href="/taps-migration">Cancel</a>
+                            <a class="govuk-link" href="/court-scheduler-migration">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -108,7 +108,7 @@
             actions: {
                 items: [
                     {
-                        href: "/taps-migration/amend",
+                        href: "/court-scheduler-migration/amend",
                         text: "Change",
                         visuallyHiddenText: label,
                         attributes: { 'data-qa': dataQa }

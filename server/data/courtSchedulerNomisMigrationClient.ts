@@ -5,9 +5,9 @@ import logger from '../../logger'
 import { MigrationContextMovementsMigrationFilter, MovementsMigrationFilter } from '../@types/migration'
 import { Context } from '../services/context'
 
-export default class TapsNomisMigrationClient extends RestClient {
+export default class CourtSchedulerNomisMigrationClient extends RestClient {
   constructor(authenticationClient: AuthenticationClient) {
-    super('Taps Nomis MigrationHistory API Client', config.apis.nomisMigration, logger, authenticationClient)
+    super('Court Scheduler Nomis MigrationHistory API Client', config.apis.nomisMigration, logger, authenticationClient)
   }
 
   async startMigration(
@@ -17,7 +17,7 @@ export default class TapsNomisMigrationClient extends RestClient {
     logger.info(`starting a migration`)
     return this.post<MigrationContextMovementsMigrationFilter>(
       {
-        path: `/migrate/taps`,
+        path: `/migrate/court-scheduler`,
         data: filter,
       },
       asSystem(context.username),

@@ -10,7 +10,7 @@ import corePersonReligionMigrationRoutes from './corePersonMigration/corePersonR
 import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
 import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrationRouter'
 import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
-import tapsMigrationRoutes from './movementsMigration/tapsMigrationRouter'
+import courtSchedulerMigrationRoutes from './movementsMigration/courtSchedulerMigrationRouter'
 import officialvisitsMigrationRoutes from './officialvisitsMigration/officialvisitsMigrationRouter'
 
 import {
@@ -111,9 +111,9 @@ const dashboards: Dashboard[] = [
     enabled: true,
   },
   {
-    id: 'taps-migration',
-    heading: 'Temporary Absence repair migration',
-    href: '/taps-migration',
+    id: 'court-scheduler-migration',
+    heading: 'Court Scheduler repair / migration',
+    href: '/court-scheduler-migration',
     roles: [MIGRATE_NOMIS_SYSCON],
     enabled: true,
   },
@@ -142,7 +142,7 @@ export default function routes(services: Services): Router {
   router.use('/visitslots-migration', visitslotsMigrationRoutes(services))
   router.use('/prison-balance-migration', prisonBalanceMigrationRoutes(services))
   router.use('/prisoner-balance-migration', prisonerBalanceMigrationRoutes(services))
-  router.use('/taps-migration', tapsMigrationRoutes(services))
+  router.use('/court-scheduler-migration', courtSchedulerMigrationRoutes(services))
   router.use('/officialvisits-migration', officialvisitsMigrationRoutes(services))
 
   return router

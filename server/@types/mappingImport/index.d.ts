@@ -4,87 +4,7358 @@
  */
 
 export interface paths {
+  '/mapping/transactions/merge/from/{oldOffenderNo}/to/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replaces all occurrences of the 'from' id with the 'to' id in the mapping table
+     * @description Used for update after a prisoner number merge. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateTransactionMappingsByNomisId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/merge/booking-id/{bookingId}/to/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * For all transactions with the given booking id in the mapping table, sets the offender no to the given 'to' id
+     * @description Used for update after a booking has been moved from one offender to another. Returns the affected transactions. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateTransactionMappingsByBookingId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/schedule': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Updates a mapping for a single scheduled tap
+     * @description Updates a mapping for a single scheduled tap. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateTapScheduleMapping']
+    /**
+     * Creates a mapping for a single scheduled tap
+     * @description Creates a mapping for a single scheduled tap. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createTapScheduleMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/movement': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Updates a mapping for a single tap movement
+     * @description Updates a mapping for a single tap movement. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateTapMovementMapping']
+    /**
+     * Creates a mapping for a single tap movement
+     * @description Creates a mapping for a single tap movement. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createTapMovementMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/move-booking/{bookingId}/from/{fromOffenderNo}/to/{toOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Move all mappings for a booking from one offender to another
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['movePrisonerBookingMappings']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/migrate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Creates all mappings for prisoner temporary absences which are all migrated at the same time
+     * @description Creates mappings for prisoner temporary absences including movement applications, scheduled movements and movements. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['createPrisonerTapMappings']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/punishments': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Creates a new set of adjudication punishment mapping and deletes ones no longer required
+     * @description Creates a record of a DPS punishment id and NOMIS bookingId and sanction sequence. The ones that require deleting are removed NOMIS id. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updatePunishmentBatchMappings']
+    /**
+     * Creates a new set of adjudication punishment mapping
+     * @description Creates a record of a DPS punishment id and NOMIS bookingId and sanction sequence. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPunishmentBatchMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations/update-list/from/{oldOffenderNo}/to/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Updates mappings in list
+     * @description Updates mappings for a given list of non-association pairs. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateMappingsInList']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations/non-association-id/{nonAssociationId}/sequence/{newSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Sets sequence of a non-association to a new value
+     * @description This is used to avoid duplicate errors in merges where both the old and the new prisoner number have non-associations with a 3rd party. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['resetSequence']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations/merge/from/{oldOffenderNo}/to/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replaces all occurrences of the 'from' id with the 'to' id in the mapping table
+     * @description Used for update after a prisoner number merge. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateNonAssociationMappingsByNomisId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras/merge/from/{oldOffenderNo}/to/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replaces all occurrences of the 'from' id with the 'to' id in the mapping table
+     * @description Used for update after a prisoner number merge. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateCsraMappingsByNomisId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras/merge/booking-id/{bookingId}/to/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * For all CSRAs with the given booking id in the mapping table, sets the offender no to the given 'to' id
+     * @description Used for update after a booking has been moved from one offender to another. Returns the affected CSRAs. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateCsraMappingsByBookingId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-charges': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Creates a new set of court charge mapping and deletes ones no longer required
+     * @description Creates a record of a DPS court charge id and NOMIS court charge id. The ones that require deleting are removed by NOMIS id. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['courtChargeBatchUpdateMappings']
+    /**
+     * Creates a new single charge mapping
+     * @description Creates a mapping between nomis offender charge ID and DPS charge ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCourtChargeMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases/update-create': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Updates all court case hierarchical mappings maintaining the DPS id and creates additional mappings
+     * @description Updates all the mappings between nomis Court Case ID and DPS Court Case ID. Also maps child entities: Court appearances and charges. New ones that have been requested to be created will also be created. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateAndCreateMappingByNomisId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases/replace': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replaces all court case hierarchical mappings maintaining the DPS id
+     * @description Replaces all the mappings between nomis Court Case ID and DPS Court Case ID. Also maps child entities: Court appearances and charges. Where a mapping does not exist for the DPS id it will create one. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['replaceOrCreateMappingByDpsId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-scheduler/migrate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Creates all mappings for prisoner court movements which are all migrated at the same time
+     * @description Creates mappings for prisoner court movements. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['createPrisonerCourtSchedulerMappings']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/merge/from/{oldOffenderNo}/to/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replaces all occurrences of the 'from' id with the 'to' id in the mapping table
+     * @description Used for update after a prisoner number merge. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateCaseNoteMappingsByNomisId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/merge/booking-id/{bookingId}/to/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * For all case notes with the given booking id in the mapping table, sets the offender no to the given 'to' id
+     * @description Used for update after a booking has been moved from one offender to another. Returns the affected case notes. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateCaseNotesMappingsByBookingId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/alerts/{offenderNo}/merge': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Replaces a set of new alert mappings for a prisoner and removes mappings for the removed prisoner record
+     * @description Replaces the mappings between all the nomis alert ids and dps alert id. Any mappings on the removed prisoner record are deleted. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['replaceMappingsForPrisonerAfterMerge']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/alerts/{offenderNo}/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets all alert mappings for a prisoner
+     * @description Gets all the mapping between nomis alert ids and dps alert id related to specific prisoner created either via migration or synchronisation. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAlertsMappingsForPrisoner']
+    /**
+     * Replaces a set of new alert mapping for a prisoner
+     * @description Replaces the mappings between all the nomis alert ids and dps alert id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['replaceMappingsForPrisoner']
+    /**
+     * Creates a set of new alert mapping for a prisoner
+     * @description Creates a mapping between all the nomis alert ids and dps alert id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAlertsMappingsForPrisoner']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/alerts/nomis-booking-id/{bookingId}/nomis-alert-sequence/{alertSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAlertsMappingByNomisId']
+    /**
+     * updates mapping
+     * @description Updates a mapping by NOMIS id setting a new NOMIS booking Id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateMappingBookingIdByNomisId']
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    /**
+     * Updates an activity mapping
+     * @description Updates a mapping between Nomis and Activities, including both the COURSE_ACTIVITY and COURSE_SCHEDULE. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    put: operations['updateMapping']
+    /**
+     * Creates a new activity mapping
+     * @description Creates a mapping between nomis id and Activity service id. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createActivityMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prison/{prisonId}/room-mappings': {
-    /** Retrieves  room mappings associated with a NOMIS prison id. Requires role NOMIS_VISITS */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get room mappings for a prison
+     * @description Retrieves  room mappings associated with a NOMIS prison id. Requires role NOMIS_DPS_MAPPING__VISITS__RW
+     */
     get: operations['getRoomMappings']
-    /** Creates a new room mapping. Requires role NOMIS_VISITS */
+    put?: never
+    /**
+     * Creates a new room mapping
+     * @description Creates a new room mapping. Requires role NOMIS_DPS_MAPPING__VISITS__RW
+     */
     post: operations['createRoomMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/visits': {
-    /** Creates a new visit and decrements the visit balance. Requires role NOMIS_VISITS */
-    post: operations['createMapping']
-    /** Deletes all rows from the the visit id table. Requires role NOMIS_VISITS */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new visit
+     * @description Creates a new visit and decrements the visit balance. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createVisitMapping']
+    /**
+     * Deletes visit id mappings
+     * @description Deletes all rows from the the visit id table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     delete: operations['deleteVisitIdMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots/visit-slot': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a visit slots mapping
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createVisitSlotMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots/time-slots': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a visit time slots mapping
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createVisitTimeSlotMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a mini tree of visit time slots mappings typically for a migration
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createVisitSlotsMigrationMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-balance-adjustment': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a prisoner visit balance adjustment mapping
+     * @description Creates a prisoner visit balance adjustment mapping. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createVisitBalanceAdjustmentMapping']
+    /**
+     * Deletes all visit balance adjustment mappings
+     * @description Deletes all visit balance adjustment mappings regardless of source.
+     *           This is expected to only ever been used in a non-production environment. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllVisitBalanceAdjustmentMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/nomis-transaction-id': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * get mappings by Nomis id
+     * @description Retrieves multiple mappings by NOMIS transaction id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['getTransactionMappingsByNomisId']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/batch': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a batch of new transaction mappings
+     * @description Creates a mapping between a batch of nomis transaction ids and dps transaction ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createTransactionMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new transaction mapping
+     * @description Creates a mapping between nomis transaction id and dps transaction id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createTransactionMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/application': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a mapping for a single tap application
+     * @description Creates a mapping for a single tap application. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createTapApplicationMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/sentencing/adjustments': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get all paged mappings
+     * @description Retrieve all mappings . Results are paged.
+     */
+    get: operations['getAllSentenceAdjustmentMappings']
+    put?: never
+    /**
+     * Creates a new sentence adjustment mapping
+     * @description Creates a mapping between nomis sentence adjustment ids and Sentencing service id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createSentencingMapping']
+    /**
+     * Deletes sentence adjustment mappings
+     * @description Deletes all rows from the the sentence adjustment mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteSentenceAdjustmentMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/prisoner-balance': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a prisoner account balance mapping
+     * @description Creates a prisoner account balance mapping. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPrisonerMapping']
+    /**
+     * Deletes all prisoner balance mappings
+     * @description Deletes all prisoner balance mappings regardless of source.
+     *           This is expected to only ever been used in a non-production environment. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllPrisonerMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/prison-balance': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a prison account balance mapping
+     * @description Creates a prison account balance mapping. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPrisonMapping']
+    /**
+     * Deletes all prison balance mappings
+     * @description Deletes all prison balance mappings regardless of source.
+     *           This is expected to only ever been used in a non-production environment. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllPrisonMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/visitor': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a visitor mapping typically for synchronisation
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createVisitorMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/visit': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a visit mapping typically for synchronisation
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createOfficialVisitMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/replace-by-nomis-ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a mini tree of visit mappings typically for a repair. Any existing mappings for the supplied NOMIS Ids will be deleted first, so this assumes the DPS Ids are all new
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['recreateOfficialVisitsByNomisIdMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a mini tree of visit mappings typically for a migration
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createOfficialVisitsMigrationMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new Non-association mapping
+     * @description Creates a mapping between a Nomis non-association and non-association instance id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createNonAssociationsMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/locations': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new Location mapping
+     * @description Creates a mapping between a Nomis location id and a DPS location id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createLocationMapping']
+    /**
+     * Deletes location mappings.
+     * @description Deletes all rows from the locations mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteLocationMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/incidents': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new Incident Report mapping
+     * @description Creates a mapping between a Nomis incident report id and DPS Incident report id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createIncidentMapping']
+    /**
+     * Deletes incident mappings.
+     * @description Deletes all rows from the incidents mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteIncidentMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/incentives': {
-    /** Creates a mapping between nomis Incentive ids and Incentive service id. Requires ROLE_NOMIS_INCENTIVES */
-    post: operations['createMapping_1']
-    /** Deletes all rows from the the incentive mapping table. Requires role NOMIS_INCENTIVES */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new incentive mapping
+     * @description Creates a mapping between nomis Incentive ids and Incentive service id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createIncentiveMapping']
+    /**
+     * Deletes incentive mappings
+     * @description Deletes all rows from the the incentive mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     delete: operations['deleteIncentiveMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/hearings': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new hearing mapping
+     * @description Creates a record of a DPS hearing Id and a NOMIS hearing Id . Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createHearingsMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras/{offenderNo}/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets all CSRA mappings for a prisoner
+     * @description Gets all the mappings between Nomis CSRAs and DPS CSRAs related to specific prisoner created either via migration or synchronisation. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCsraMappingsForPrisoner']
+    put?: never
+    /**
+     * Creates a set of new CSRA mappings for a prisoner
+     * @description Creates a mapping between all the nomis CSRA ids and dps CSRA ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCsraMappingsForPrisoner']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras/batch': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a batch of new CSRA mappings
+     * @description Creates a mapping between a batch of nomis CSRA ids and dps CSRA ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCsraMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new CSRA mapping
+     * @description Creates a mapping between Nomis booking & sequence, and DPS CSRA id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCsraMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/reviews': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new CSIP Review mapping
+     * @description Creates a mapping between a Nomis CSIP review id and DPS CSIP review id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createReviewMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/plans': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new CSIP Plan mapping
+     * @description Creates a mapping between a Nomis CSIP plan id and DPS CSIP plan id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPlanMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/interviews': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new CSIP Interview mapping
+     * @description Creates a mapping between a Nomis CSIP interview id and DPS CSIP interview id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createInterviewMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/factors': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new CSIP Factor mapping
+     * @description Creates a mapping between a Nomis CSIP factor id and DPS CSIP factor id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createFactorMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/children/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Adds new child mappings to a CSIP Report
+     * @description Adds child csip mappings. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createChildMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/attendees': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new CSIP Attendee mapping
+     * @description Creates a mapping between a Nomis CSIP attendee id and DPS CSIP attendee id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAttendeeMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new CSIP Report mapping along with any associated children
+     * @description Creates a mapping between a Nomis CSIP report id and DPS CSIP report id and all its children. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createMappingWithChildren']
+    /**
+     * Deletes CSIP mappings.
+     * @description Deletes all rows from the csip mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllCSIPMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new CSIP Report mapping
+     * @description Creates a mapping between a Nomis CSIP report id and DPS CSIP report id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCSIPMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentences/nomis-sentence-ids/get-list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * get sentence mappings by NOMIS sentence IDs
+     * @description Retrieves mappings for a list of NOMIS sentence IDs. Any mappings not found will be missing but the response will still be a 200. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['getSentenceMappingsByNomisIds']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentences/dps-sentence-ids/get-list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * get sentence mappings by DPS sentence IDs
+     * @description Retrieves mappings for a list of DPS sentence IDs. Any mappings noty found will be missing but the response will still be a 200. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['getSentenceMappingsByDpsIds']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentences': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new sentence hierarchical mapping
+     * @description Creates a mapping between nomis sentence ID (booking id and sentence seq) and DPS Sentence ID. Also maps child charge entities. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createSentenceMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentence-terms': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new sentence term mapping
+     * @description Creates a mapping between nomis sentence term (booking id, term seq and sentence seq) and DPS term (period length) ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createSentenceTermMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/prisoner/{offenderNo}/court-cases': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates new court case hierarchical mappings for an offender during migration.
+     * @description Creates mappings between nomis Court Case ID and DPS Court Case ID for an offender. Only used by migration. Also maps child entities: Court appearances and charges. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createMigrationMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases/nomis-case-ids/get-list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Retrieves list of the case mappings using the supplied NOMIS case ids
+     * @description Requires role <b>NOMIS_MAPPING_API__SYNCHRONISATION__RW</b>
+     */
+    post: operations['getCaseMappingByNomisIs']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases/delete-by-dps-ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Deletes court case hierarchical mappings by DPS IDs
+     * @description Deletes court case hierarchical mappings by DPS IDs. Also maps child entities: Court appearances and charges. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['deleteAllCourtSentencingMappingByDpsId']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new court case hierarchical mapping
+     * @description Creates a mapping between nomis Court Case ID and DPS Court Case ID. Also maps child entities: Court appearances and charges. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCourtSentencingMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-appearances/recall': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates new court appearance recall mappings
+     * @description Creates mappings between nomis Court appearance IDs and DPS Recall ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCourtAppearanceRecallMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-appearances/nomis-court-appearance-ids/get-list': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Retrieves list of the court appearance mappings using the supplied NOMIS case ids
+     * @description Requires role <b>NOMIS_MAPPING_API__SYNCHRONISATION__RW</b>
+     */
+    post: operations['getCourtAppearanceMappingsByNomisIn']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-appearances': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new court appearance mapping
+     * @description Creates a mapping between nomis Court appearance ID and DPS Court appearance ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCourtAppearanceMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-scheduler/schedule': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a mapping for a single court schedule
+     * @description Creates a mapping for a single court schedule. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCourtScheduleMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-scheduler/movement': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a mapping for a single court movement
+     * @description Creates a mapping for a single court movement. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCourtMovementMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/web': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates web mappings for synchronisation
+     * @description Creates mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createWebMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/phone': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates phone mappings for synchronisation
+     * @description Creates mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPhoneMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/organisation': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged corporate mappings by migration id
+     * @description Retrieve all corporate mappings. Results are paged. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAllCorporateMappings']
+    put?: never
+    /**
+     * Creates corporate mappings for synchronisation
+     * @description Creates mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createOrganisationMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/email': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates email mappings for synchronisation
+     * @description Creates mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createEmailMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/address-phone': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates address phone mappings for synchronisation
+     * @description Creates mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAddressPhoneMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/address': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates address mappings for synchronisation
+     * @description Creates mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAddressMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/profile': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a core person profile mapping
+     * @description Creates a core person profile mapping typically when syncing a newly created profile item to DPS.
+     *           Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createProfileMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/migrate': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a tree of core person mappings typically for a migration
+     * @description Creates a tree of core person mappings typically for a migration between NOMIS ids and cpr ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCorePersonMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person-religion/replace': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Replaces a list of religion mappings.
+     * @description Creates a list of religion mappings and removes the previous supplied set.
+     *           This does not add or remove any data from any associated parent CorePersonReligionMapping entry.
+     *           Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['replaceMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person-religion/religion': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a religion mapping
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createReligionMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person-religion': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a mini tree of religion mappings typically for a migration
+     * @description Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createReligionMigrationMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/replace/prisoner/{offenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Replaces a list of contact related mappings.
+     * @description Creates a list of contact and contact restrictions mappings and removes the previous supplied set. Used typically for a prisoner merge in NOMIS. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['replacePrisonerMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/replace/prisoner-restrictions/{retainedOffenderNo}/replaces/{removedOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Replace prisoner restriction mappings for an offender and removes any for the removed offender
+     * @description Deletes all existing prisoner restriction mappings for the given retained offender number and removed offender number and creates new mappings from the provided list. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['replacePrisonerRestrictionAfterMergeMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/replace/prisoner-restrictions/{offenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Replace prisoner restriction mappings for an offender
+     * @description Deletes all existing prisoner restriction mappings for the given offender number and creates new mappings from the provided list. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['replacePrisonerRestrictionMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/replace/person/{personId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Replaces a list of person related mappings.
+     * @description Creates a list of person mappings and removes the previous supplied set. Used typically for a person repair in NOMIS. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['replacePersonMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/prisoner-restriction': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates prisoner restriction mappings for synchronisation
+     * @description Creates prisoner restriction mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPrisonerRestrictionMapping']
+    /**
+     * Deletes all prisoner restriction mappings
+     * @description Deletes all prisoner restriction mappings regardless of source. This is expected to only ever been used in a non-production environment. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllPrisonerRestrictionMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/phone': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates person phone mappings for synchronisation
+     * @description Creates person phone mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPersonPhoneMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/person-restriction': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates person restriction mappings for synchronisation
+     * @description Creates person restriction mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_PERSONS
+     */
+    post: operations['createPersonRestrictionMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/person': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged person mappings by migration id
+     * @description Retrieve all person mappings. Results are paged. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAllPersonMappings']
+    put?: never
+    /**
+     * Creates person mappings for synchronisation
+     * @description Creates person mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPersonMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/identifier': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates person identifier mappings for synchronisation
+     * @description Creates person identifier mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPersonIdentifierMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/employment': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates person employment mappings for synchronisation
+     * @description Creates person employment mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPersonEmploymentMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/email': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates person email mappings for synchronisation
+     * @description Creates person email mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPersonEmailMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/contact-restriction': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates person contact restriction mappings for synchronisation
+     * @description Creates person contact restriction mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPersonContactRestrictionMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/contact': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates person contact mappings for synchronisation
+     * @description Creates person contact mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPersonContactMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/address': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates person address mappings for synchronisation
+     * @description Creates person address mappings for synchronisation between NOMIS ids and dps ids. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createPersonAddressMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/nomis-casenote-id': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * get mappings by Nomis id
+     * @description Retrieves multiple mappings by NOMIS case note id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['getCaseNotesMappingsByNomisId']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/batch': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a batch of new casenote mappings
+     * @description Creates a mapping between a batch of nomis casenote ids and dps casenote id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCaseNotesMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new casenote mapping
+     * @description Creates a mapping between nomis casenote id and dps casenote id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createCaseNotesMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/appointments': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new appointment mapping
+     * @description Creates a mapping between nomis id and Appointment instance id. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAppointmentMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/allocations/migration': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new allocation migration mapping
+     * @description Creates a mapping between nomis allocation id and Actvities allocation id. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAllocationMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/alerts/batch': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a batch of new alert mappings
+     * @description Creates a mapping between a batch of nomis alert ids and dps alert id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAlertsMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/alerts': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get all paged mappings
+     * @description Retrieve all mappings. Results are paged.
+     */
+    get: operations['getAlertsMappings']
+    put?: never
+    /**
+     * Creates a new alert mapping
+     * @description Creates a mapping between nomis alert ids and dps alert id. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAlertsMapping']
+    /**
+     * Deletes all alert mappings
+     * @description Deletes all alert mappings regardless of source. This is expected to only ever been used in a non-production environment. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllAlertsMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/adjudications/delete-mappings': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Delete all mappings related to a specific adjudication
+     * @description Delete mapping entries created for a specific adjudication and associated hearings and punishments
+     */
+    post: operations['deleteMappingsForAdjudication']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/adjudications/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new adjudication mapping along with associated hearings and punishments
+     * @description Creates a record of a adjudication number, hearing and punishment. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAllMappings']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/adjudications': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new adjudication mapping
+     * @description Creates a record of a adjudication number. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createAdjudicationsMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities/migration': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Creates a new activity migration mapping
+     * @description Creates a mapping between nomis id and up to 2 Activity service ids. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    post: operations['createActivityMigrationMapping']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/sentences/nomis': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Retrieves list of the DPS sentence ids from the supplied NOMIS sentence ids
+     * @description Requires role <b>NOMIS_DPS_MAPPING__SENTENCE__R</b> or <b>NOMIS_MAPPING_API__SYNCHRONISATION__RW</b>
+     */
+    post: operations['getSentenceMappingByNomisIs']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/locations/nomis': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Retrieves all the DPS location ids from the supplied NOMIS internal location ids
+     * @description Requires role <b>NOMIS_DPS_MAPPING__LOCATIONS__R</b> or <b>NOMIS_MAPPING_API__SYNCHRONISATION__RW</b>
+     */
+    post: operations['getAllLocationMappingsByNomisIds']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/locations/dps': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Retrieves all the NOMIS location ids from the supplied DPS location ids
+     * @description Requires role <b>NOMIS_DPS_MAPPING__LOCATIONS__R</b> or <b>NOMIS_MAPPING_API__SYNCHRONISATION__RW</b>
+     */
+    post: operations['getAllLocationMappingsByDpsIds']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prison/{prisonId}/room/nomis-room-id/{nomisRoomDescription}': {
-    /** Retrieves a room mapping by NOMIS prison id and NOMIS room id. Requires role NOMIS_VISITS */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get room mapping
+     * @description Retrieves a room mapping by NOMIS prison id and NOMIS room id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     get: operations['getRoomMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/visits/vsipId/{vsipId}': {
-    /** Retrieves a mapping by VSIP id. Requires role NOMIS_VISITS */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by VSIP id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     get: operations['getVisitMappingGivenVsipId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/visits/nomisId/{nomisId}': {
-    /** Retrieves a mapping by NOMIS id. Requires role NOMIS_VISITS */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     get: operations['getVisitMappingGivenNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/visits/migration-id/{migrationId}': {
-    /** Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged. */
-    get: operations['getMigratedVisitMappingsByMigrationId']
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getVisitMigratedVisitMappingsByMigrationId']
+    put?: never
+    post?: never
+    /**
+     * Delete mapping entries for the given migration id
+     * @description Delete mapping entries created during a single migration for visits only
+     */
+    delete: operations['deleteVisitIdMappingsByMigrationId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/visits/migrated/latest': {
-    /** Requires role NOMIS_VISITS */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     get: operations['getLatestMigratedVisitMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots/visit-slot/nomis-id/{nomisId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get visit slot mapping by nomis visit slot id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitSlotMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes visit slot mapping by nomis visit slot id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteVisitSlotMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots/visit-slot/dps-id/{dpsId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get visit slot mapping by dps id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitSlotMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots/time-slots/nomis-prison-id/{nomisPrisonId}/nomis-day-of-week/{nomisDayOfWeek}/nomis-slot-sequence/{nomisSlotSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get visit time slot mapping by nomis prison id, day of week and sequence
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitTimeSlotMappingByNomisIds']
+    put?: never
+    post?: never
+    /**
+     * Deletes visit time slot mapping by nomis prison id, day of week and sequence
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteVisitTimeSlotMappingByNomisIds']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots/time-slots/dps-id/{dpsId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get visit time slot mapping by DPS id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitTimeSlotMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged visit time slot mappings by migration id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitTimeSlotMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-balance-adjustment/nomis-id/{nomisVisitBalanceAdjustmentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get prisoner visit balance adjustment mapping by Nomis visit balance adjustment id
+     * @description Retrieves the prisoner visit balance adjustment mapping by Nomis visit balance adjustment id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitBalanceAdjustmentMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-balance-adjustment/dps-id/{dpsId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get visit balance adjustments mappings by DPS id
+     * @description Retrieves a list of visit balance adjustment mappings by DPS id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitBalanceAdjustmentMappingsByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes visit balance adjustment mappings
+     * @description Deletes visit balance adjustment mappings by DPS id. Multiple rows may be deleted. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteVisitBalanceAdjustmentMappingsByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/{offenderNo}/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets all transaction mappings for a prisoner
+     * @description Gets all the mappings between nomis transaction ids and dps transaction ids related to specific prisoner created either via migration or synchronisation. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTransactionMappingsForPrisoner']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/nomis-transaction-id/{transactionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTransactionMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/migration-id/{migrationId}/count-by-prisoner': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get count of mappings by migration id grouped by prisoner */
+    get: operations['getTransactionMappingsByMigrationIdGroupByPrisoner']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLatestMigratedTransactionMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/dps-transaction-id/{dpsTransactionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieves mapping by DPS id
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTransactionMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes mapping
+     * @description Deletes mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteTransactionMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/{prisonerNumber}/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets all mappings for prisoner temporary absences
+     * @description Gets mappings for prisoner temporary absences including movement applications, scheduled movements and movements. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAllPrisonerMappingIds']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/schedule/nomis-id/{nomisEventId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a mapping for a single scheduled tap by NOMIS event ID
+     * @description Gets a mapping for a single scheduled tap by NOMIS event ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTapScheduleMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a mapping for a single scheduled tap by NOMIS event ID
+     * @description Deletes a mapping for a single scheduled tap by NOMIS event ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteTapScheduleMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/schedule/nomis-address-id/{nomisAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Finds tap schedules by NOMIS address ID
+     * @description Finds tap schedules by NOMIS address ID after the passed date. If no date is passed the default value is today. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['findTapScheduleMappingsByNomisAddressId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/schedule/dps-id/{dpsId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a mapping for a single scheduled tap by DPS event ID
+     * @description Gets a mapping for a single scheduled tap by DPS event ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTapScheduleMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/movement/nomis-id/{bookingId}/{movementSeq}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a mapping for a single tap movement by NOMIS booking ID and movement sequence
+     * @description Gets a mapping for a single tap movement by NOMIS booking ID and movement sequence. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTapMovementMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a mapping for a single tap movement by NOMIS booking ID and movement sequence
+     * @description Deletes a mapping for a single tap movement by NOMIS booking ID and movement sequence. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteTapMovementMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/movement/dps-id/{dpsId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a mapping for a single tap movement by DPS ID
+     * @description Gets a mapping for a single tap movement by DPS ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTapMovementMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/move-booking/{bookingId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get all mappings for a booking
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonerBookingMappings']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a page of temporary absence migration mappings, which is just the prisoner numbers that have been migrated.
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTapMappingsCount']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/application/nomis-id/{nomisApplicationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a mapping for a single tap application by NOMIS ID
+     * @description Gets a mapping for a single tap application by NOMIS ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTapApplicationMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a mapping for a single tap application by NOMIS ID
+     * @description Deletes a mapping for a single tap application by NOMIS ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteTapApplicationByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/taps/application/dps-id/{dpsAuthorisationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a mapping for a single tap application by DPS ID
+     * @description Gets a mapping for a single tap application by DPS ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getTapApplicationSyncMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/sentencing/adjustments/nomis-adjustment-category/{nomisAdjustmentCategory}/nomis-adjustment-id/{nomisAdjustmentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getSentenceAdjustmentMappingGivenNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/sentencing/adjustments/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getMigratedSentenceAdjustmentMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/sentencing/adjustments/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLatestMigratedSentenceAdjustmentMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/sentencing/adjustments/adjustment-id/{adjustmentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by Sentencing adjustment id (from the sentencing domain). Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getSentencingAdjustmentMapping']
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific Sentence Adjustment mapping by sentence adjustment Id
+     * @description Deletes the Sentence Adjustment mapping. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteSentenceAdjustmentMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/punishments/{dpsPunishmentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by DPS punishment id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPunishmentsMappingGivenDpsId']
+    put?: never
+    post?: never
+    /**
+     * Delete mapping
+     * @description Deletes a mapping by DPS punishment id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePunishmentsMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/punishments/nomis-booking-id/{nomisBookingId}/nomis-sanction-sequence/{nomisSanctionSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS booking id and sanction sequence. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPunishmentsMappingGivenNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/prisoner-balance/nomis-id/{nomisRootOffenderId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get prisoner balance mapping by Nomis rootOffenderId
+     * @description Retrieves the prisoner balance mapping by Nomis rootOffenderId. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonerMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/prisoner-balance/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged Prisoner balance mappings by migration id
+     * @description Retrieve all Prisoner balance mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonerMappingByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/prisoner-balance/dps-id/{dpsId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get prisoner balance mapping by DPS id
+     * @description Retrieves the prisoner balance mapping by DPS id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonerMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a Prisoner balance mapping
+     * @description Deletes a Prisoner balance mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePrisonerMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/prison-balance/nomis-id/{nomisId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get prison balance mapping by Nomis ID (Prison ID)
+     * @description Retrieves the prison balance mapping by Nomis ID. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/prison-balance/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged Prison balance mappings by migration id
+     * @description Retrieve all Prison balance mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonMappingByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/prison-balance/dps-id/{dpsId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get prison balance mapping by DPS id
+     * @description Retrieves the prison balance mapping by DPS id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a Prison balance mapping
+     * @description Deletes a Prison balance mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePrisonMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/visitor/nomis-id/{nomisVisitorId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets visitor mapping by nomis visitor id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitorMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete an official visitor mapping by NOMIS ID
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteOfficialVisitorMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/visitor/dps-id/{dpsVisitorId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets visitor mapping by DPS visitor id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitorMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/visit/nomis-id/{nomisVisitId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets visit mapping by nomis visit id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete an official visit mapping by NOMIS ID
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteOfficialVisitMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/visit/dps-id/{dpsVisitId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets visit mapping by dps visit id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getVisitMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged visit mappings by migration id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getOfficialVisitMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations/non-association-id/{nonAssociationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by Non-Association Id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getNonAssociationMappingGivenNonAssociationId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific non-association mapping by nonAssociationId
+     * @description Deletes the non-association from the mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteNonAssociationMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getNonAssociationMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLatestMigratedNonAssociationMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations/first-offender-no/{firstOffenderNo}/second-offender-no/{secondOffenderNo}/type-sequence/{typeSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by firstOffenderNo, secondOffenderNo and Nomis type sequence. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getNonAssociationMappingGivenNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/non-associations/find/common-between/{oldOffenderNo}/and/{newOffenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Find third parties where mappings exist with both offenders
+     * @description Gets any third party offenders where NAs exist with both the old and the new.
+     *           This info is needed to check whether a merge will succeed or hit an index constraint. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getNonAssociationMappingsOfMerge']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/locations/nomis/{nomisLocationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by Nomis location id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLocationMappingGivenNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/locations/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getLocationMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/locations/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLocationLatestMigratedMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/locations/dps/{dpsLocationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by DPS Location Id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLocationMappingGivenDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/incidents/nomis-incident-id/{nomisIncidentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by nomisIncidentId. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getIncidentMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/incidents/nomis-incident-id': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get a list of mappings for Nomis Incident id
+     * @description Retrieves matching mappings for a list of NOMIS Incident ids. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getIncidentMappingsByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/incidents/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getMigratedMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/incidents/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getMappingForLatestMigrated']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/incidents/dps-incident-id/{dpsIncidentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by DPS Incident Id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getIncidentMappingByDPSId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific incident mapping by DPS incident id
+     * @description Deletes the incident from the mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteIncidentMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/incentives/nomis-booking-id/{bookingId}/nomis-incentive-sequence/{incentiveSequence}': {
-    /** Retrieves a mapping by NOMIS id. Requires role ROLE_NOMIS_INCENTIVES */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     get: operations['getIncentiveMappingGivenNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/incentives/migration-id/{migrationId}': {
-    /** Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged. */
-    get: operations['getMigratedVisitMappingsByMigrationId_1']
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getIncentiveMigratedVisitMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/incentives/migrated/latest': {
-    /** Requires role READ_MAPPING, UPDATE_MAPPING or ADMIN_MAPPING */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role READ_MAPPING, UPDATE_MAPPING or ADMIN_MAPPING
+     */
     get: operations['getLatestMigratedIncentiveMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/mapping/incentives/incentive-id/{incentiveId}': {
-    /** Retrieves a mapping by Incentive id. Requires role ROLE_NOMIS_INCENTIVES */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by Incentive id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     get: operations['getIncentiveMappingGivenIncentiveId']
-    /** Deletes the incentive mapping table. Requires role NOMIS_INCENTIVES */
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific incentive mappings by incentiveId
+     * @description Deletes the incentive mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
     delete: operations['deleteIncentiveMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/hearings/nomis/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS hearing Id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getHearingsMappingGivenNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/hearings/dps/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by DPS hearing Id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getHearingsMappingGivenDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific mapping by DPS hearing id
+     * @description Deletes the mapping table row. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteHearingsMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras/migration-id/{migrationId}/count-by-prisoner': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get count of mappings by migration id grouped by prisoner */
+    get: operations['getCsraMappingsByMigrationIdGroupByPrisoner']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLatestMigratedCsraMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras/dps-csra-id/{dpsCsraId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping given DPS id
+     * @description Retrieves mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCsraMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a mapping
+     * @description Deletes mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCsraMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csras/booking-id/{bookingId}/sequence/{sequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCsraMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes mapping
+     * @description Deletes a mapping by Nomis id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCsraMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/reviews/nomis-csip-review-id/{nomisCSIPReviewId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Review mapping
+     * @description Retrieves a CSIP Review mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPReviewMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/reviews/dps-csip-review-id/{dpsCSIPReviewId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Review mapping
+     * @description Retrieves a csip review mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPReviewMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes CSIP Review mapping
+     * @description Deletes a CSIP Review mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCSIPReviewMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/plans/nomis-csip-plan-id/{nomisCSIPPlanId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Plan mapping
+     * @description Retrieves a CSIP Plan mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPPlanMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/plans/dps-csip-plan-id/{dpsCSIPPlanId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Plan mapping
+     * @description Retrieves a csip plan mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPPlanMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes CSIP Plan mapping
+     * @description Deletes a CSIP Plan mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCSIPPlanMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/nomis-csip-id/{nomisCSIPId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by nomisCSIPId. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/nomis-csip-id': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get a list of mappings for Nomis CSIP Report ids
+     * @description Retrieves matching mappings for a list of NOMIS CSIP report ids. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPMappingsByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getCSIPMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLatestMigratedCSIPMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/interviews/nomis-csip-interview-id/{nomisCSIPInterviewId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Interview mapping
+     * @description Retrieves a CSIP Interview mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPInterviewMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/interviews/dps-csip-interview-id/{dpsCSIPInterviewId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Interview mapping
+     * @description Retrieves a csip interview mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPInterviewMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes CSIP Interview mapping
+     * @description Deletes a CSIP Interview mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCSIPInterviewMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/factors/nomis-csip-factor-id/{nomisCSIPFactorId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Factor mapping
+     * @description Retrieves a CSIP Factor mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPFactorMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/factors/dps-csip-factor-id/{dpsCSIPFactorId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Factor mapping
+     * @description Retrieves a csip factor mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPFactorMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes CSIP Factor mapping
+     * @description Deletes a CSIP Factor mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCSIPFactorMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/dps-csip-id/{csipId}/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get full mapping
+     * @description Retrieves a mapping by DPS CSIP Report Id and all associated child mappings. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAllMappingsByDPSId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/dps-csip-id/{csipId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by DPS CSIP Id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPMappingByDPSId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/attendees/nomis-csip-attendee-id/{nomisCSIPAttendeeId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Attendee mapping
+     * @description Retrieves a CSIP Attendee mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPAttendeeMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/attendees/dps-csip-attendee-id/{dpsCSIPAttendeeId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get CSIP Attendee mapping
+     * @description Retrieves a csip attendee mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCSIPAttendeeMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes CSIP Attendee mapping
+     * @description Deletes a CSIP Attendee mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCSIPAttendeeMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentences/nomis-booking-id/{bookingId}/nomis-sentence-sequence/{sentenceSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get sentence mapping
+     * @description Retrieves a mapping by nomis id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtSentenceMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a sentence mapping
+     * @description Deletes a sentence mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteSentenceMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentences/dps-sentence-id/{sentenceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get sentence mapping
+     * @description Retrieves a mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getSentenceMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentence-terms/nomis-booking-id/{bookingId}/nomis-sentence-sequence/{sentenceSequence}/nomis-term-sequence/{termSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get sentence term mapping
+     * @description Retrieves a mapping by nomis id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getSentenceTermMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a sentence term mapping
+     * @description Deletes a sentence term mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteSentenceTermMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentence-terms/dps-term-id/{termId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get sentence term mapping
+     * @description Retrieves a mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getSentenceTermMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/prisoner/{offenderNo}/migration-summary': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get court sentencing migration summary for offender
+     * @description Retrieves the migration summary for and offender using the Nomis Prison Number (Offender number). The presence of this record indicated that the offender's court sentencing data has been migrated. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtSentencingMigrationData']
+    put?: never
+    post?: never
+    /**
+     * delete court sentencing migration summary for offender
+     * @description Deletes the migration summary for and offender using the Nomis Prison Number (Offender number). The presence of this record indicated that the offender's court sentencing data has been migrated. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtSentencingMigrationData']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/prisoner/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged offender migration summary by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getCourtSentencingMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-charges/nomis-court-charge-id/{courtChargeId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get court charge mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtChargeMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-charges/dps-court-charge-id/{courtChargeId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get court charge mapping
+     * @description Retrieves a mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtChargeMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases/nomis-court-case-id/{courtCaseId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get court case mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtSentencingMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases/dps-court-case-id/{courtCaseId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get court case mapping
+     * @description Retrieves a mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtSentencingMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-appearances/nomis-court-appearance-id/{courtAppearanceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get court appearance mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtAppearanceMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-appearances/dps-recall-id/{recallId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get court appearance recall mappings
+     * @description Retrieves mappings by DPS recall id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtAppearanceRecallMappingsByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes court appearance recall mappings
+     * @description Deletes court appearance recall mappings by DPS recall id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtAppearanceRecallMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-appearances/dps-court-appearance-id/{courtAppearanceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get court appearance mapping
+     * @description Retrieves a mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtAppearanceMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-scheduler/{prisonerNumber}/ids': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets all court scheduler mappings for a prisoner
+     * @description Gets all court scheduler mappings for a prisoner including schedules and movements. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAllCourtSchedulerPrisonerMappingIds']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-scheduler/schedule/nomis-id/{nomisEventId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a mapping for a single court schedule by NOMIS event ID
+     * @description Gets a mapping for a single court schedule by NOMIS event ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtScheduleMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a mapping for a single court schedule by NOMIS event ID
+     * @description Deletes a mapping for a single court schedule by NOMIS event ID. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtScheduleMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-scheduler/movement/nomis-id/{nomisBookingId}/{nomisMovementSeq}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets a mapping for a single court movement by NOMIS booking ID / movement seq.
+     * @description Gets a mapping for a single court movement by NOMIS booking ID / movement seq. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtMovementMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-scheduler/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a page of court schduler migration mappings, which is just the prisoner numbers that have been migrated.
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCourtSchedulerMappingsCount']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/web/nomis-internet-address-id/{nomisWebId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get web mapping by nomis web Id
+     * @description Retrieves the web mapping by NOMIS Web Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getWebMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete web mapping by nomis web Id
+     * @description Deletes the web mapping by NOMIS Web Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteWebMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/web/dps-web-id/{dpsWebId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get web mapping by dps web address Id
+     * @description Retrieves the  mapping by DPS Web Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getWebMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Delete web mapping by dps web Id
+     * @description Deletes the web mapping by DPS Web Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteWebMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/phone/nomis-phone-id/{nomisPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get phone mapping by nomis phone Id
+     * @description Retrieves the phone mapping by NOMIS Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCorporatePhoneMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete phone mapping by nomis phone Id
+     * @description Deletes the phone mapping by NOMIS Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePhoneMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/phone/dps-phone-id/{dpsPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get phone mapping by dps  phone Id
+     * @description Retrieves the  mapping by DPS Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPhoneMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Delete phone mapping by dps phone Id
+     * @description Deletes the phone mapping by DPS Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePhoneMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/organisation/nomis-corporate-id/{nomisCorporateId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get corporate mapping by nomis corporate Id
+     * @description Retrieves the corporate mapping by NOMIS Corporate Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCorporateMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes corporate mapping by nomis corporate Id
+     * @description Deletes the corporate mapping by NOMIS Corporate Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCorporateMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/organisation/dps-organisation-id/{dpsOrganisationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get corporate mapping by dps organisation Id
+     * @description Retrieves the corporate mapping by DPS organisation Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCorporateMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes corporate mapping by dps organisation Id
+     * @description Deletes the corporate mapping by DPS Organisation Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCorporateMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/email/nomis-internet-address-id/{nomisEmailId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get email mapping by nomis email Id
+     * @description Retrieves the email mapping by NOMIS Email Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getEmailMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete email mapping by nomis email Id
+     * @description Deletes the email mapping by NOMIS Email Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteEmailMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/email/dps-email-id/{dpsEmailId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get email mapping by dps  email Id
+     * @description Retrieves the  mapping by DPS Email Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getEmailMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Delete email mapping by dps email Id
+     * @description Deletes the email mapping by DPS Email Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteEmailMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/address/nomis-address-id/{nomisAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get address mapping by nomis address Id
+     * @description Retrieves the address mapping by NOMIS Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCorporateAddressMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes address mapping by nomis address Id
+     * @description Deletes the address mapping by NOMIS Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAddressMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/address/dps-address-id/{dpsAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get address mapping by dps address Id
+     * @description Retrieves the address mapping by DPS Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAddressMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes address mapping by dps address Id
+     * @description Deletes the address mapping by DPS Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAddressMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/address-phone/nomis-phone-id/{nomisPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get address phone mapping by nomis phone Id
+     * @description Retrieves the addressPhone mapping by NOMIS phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAddressPhoneMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes address phone mapping by nomis phone Id
+     * @description Deletes the address phone mapping by NOMIS phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAddressPhoneMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/address-phone/dps-address-phone-id/{dpsAddressPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get address phone mapping by dps address phone Id
+     * @description Retrieves the address mapping by DPS Address Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAddressPhoneMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/profile/cpr-id/{cprId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a core person profile mapping by cpr Id
+     * @description Retrieves the core person profile mapping.
+     *           Note this Id may refer to one of several tables in the CPR service, e.g. Disability, sexual orientation etc.
+     *           Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getProfileMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/profile/booking/{bookingId}/type/{profileType}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a core person profile mapping by booking Id and Nomis profile type
+     * @description Retrieves the core person profile mapping.
+     *           Note this can retrieve a CPR Id which may refer to one of several tables in the CPR service, e.g. Disability, sexual orientation etc.
+     *           Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getProfileMappingByNomisIds']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/phone/nomis-phone-id/{nomisPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a core person phone mapping by nomis phone Id
+     * @description Retrieves the coreperson phone mapping by NOMIS Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCorePersonPhoneMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/phone/cpr-phone-id/{cprPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get core person phone mapping by cpr phone Id
+     * @description Retrieves the core person phone mapping by CPR Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPhoneMappingByCprId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/person/nomis-prison-number/{nomisPrisonNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person mapping by nomis prison number
+     * @description Retrieves the core person mapping by Nomis Prison Number (Offender number). Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonMappingByNomisPrisonNumber']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/person/cpr-id/{cprId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get core person mapping by cpr core person Id
+     * @description Retrieves the person mapping by CPR Core Person Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonMappingByCprId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged core person mappings by migration id
+     * @description Retrieve all core person mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/email/nomis-email-address-id/{nomisEmailAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a core person email mapping by nomis email address Id
+     * @description Retrieves the core person email mapping by NOMIS Email/Internet Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCorePersonEmailMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/email/cpr-email-address-id/{cprEmailAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a core person email mapping by cpr email address Id
+     * @description Retrieves the core person email mapping by CPR Email Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCorePersonEmailMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/address/nomis-address-id/{nomisAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get a core person address mapping by nomis address Id
+     * @description Retrieves the core person address mapping by NOMIS Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCorePersonAddressMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person/address/cpr-address-id/{cprAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person address mapping by cpr core person address Id
+     * @description Retrieves the person address mapping by CPR Core Person Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAddressMappingByCprId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person-religion/religions/nomis-prison-number/{nomisPrisonNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get religions mapping by nomis prison number
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getReligionsMappingByNomisPrisonNumber']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person-religion/religion/nomis-id/{nomisId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get religion mapping by nomis religion id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getReligionMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes religion mapping by nomis religion id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteReligionMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person-religion/religion/cpr-id/{cprId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get religion mapping by cpr id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getReligionMappingByCprId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person-religion/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged religions mappings by migration id
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getReligionsMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/prisoner-restrictions/prisoners/{offenderNo}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get all prisoner restriction mappings for a particular offender number
+     * @description Retrieves all prisoner restriction mappings for the given offender number. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonerRestrictionMappingsByOffenderNo']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/prisoner-restriction/nomis-prisoner-restriction-id/{nomisPrisonerRestrictionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get prisoner restriction mapping by nomis prisoner restriction Id
+     * @description Retrieves the prisoner restriction mapping by NOMIS Prisoner Restriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonerRestrictionMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete prisoner restriction mapping by nomis prisoner restriction Id
+     * @description Delete the prisoner restriction mapping by NOMIS Prisoner Restriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePrisonerRestrictionMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/prisoner-restriction/dps-prisoner-restriction-id/{dpsPrisonerRestrictionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get prisoner restriction mapping by dps prisoner restriction Id
+     * @description Retrieves the prisoner restriction mapping by DPS Prisoner Restriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPrisonerRestrictionMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Delete prisoner restriction mapping by DPS prisoner restriction Id
+     * @description Delete the prisoner restriction mapping by DPS Prisoner Restriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePrisonerRestrictionMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/phone/nomis-phone-id/{nomisPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person phone mapping by nomis phone Id
+     * @description Retrieves the person phone mapping by NOMIS Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonPhoneMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete person phone mapping by nomis phone Id
+     * @description Delete the person phone mapping by NOMIS Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonPhoneMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/phone/dps-contact-phone-id/{dpsContactPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person phone mapping by dps contact phone Id
+     * @description Retrieves the person phone mapping by DPS Contact Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonPhoneMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/phone/dps-contact-address-phone-id/{dpsContactAddressPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person mapping by dps contact address phone Id
+     * @description Retrieves the person phone mapping by DPS Contact Address Phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonAddressPhoneMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/person/nomis-person-id/{nomisPersonId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person mapping by nomis person Id
+     * @description Retrieves the person a mapping by NOMIS Person Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes person mapping by nomis person Id
+     * @description Deletes the person a mapping by NOMIS Person Id, NB any child mappings e.g. peron address mappings remain untouched and should be removed separately. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/person/dps-contact-id/{dpsContactId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person mapping by dps contact Id
+     * @description Retrieves the person mapping by DPS Contact Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Delete person mapping by dps contact Id
+     * @description Delete the person mapping by DPS Contact Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/person-restriction/nomis-person-restriction-id/{nomisPersonRestrictionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person restriction mapping by nomis person restriction Id
+     * @description Retrieves the person restriction mapping by NOMIS Person Restriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonRestrictionMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete person restriction mapping by nomis person restriction Id
+     * @description Delete the person restriction mapping by NOMIS Person Restriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonRestrictionMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/person-restriction/dps-contact-restriction-id/{dpsContactRestrictionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person contact restriction mapping by dps contact restriction Id
+     * @description Retrieves the person contact restriction mapping by DPS contact restriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonRestrictionMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/identifier/nomis-person-id/{nomisPersonId}/nomis-sequence-number/{nomisSequenceNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person identifier mapping by nomis person id and sequence
+     * @description Retrieves the person identifier mapping by NOMIS person id and NOMIS sequence number. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonIdentifierMappingByNomisIds']
+    put?: never
+    post?: never
+    /**
+     * Delete person identifier mapping by nomis person id and sequence
+     * @description Delete the person identifier mapping by NOMIS person id and NOMIS sequence number. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonIdentifierMappingByNomisIds']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/identifier/dps-contact-identifier-id/{dpsContactIdentifierId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get contact identifier mapping by dps contact identifier Id
+     * @description Retrieves the person identifier mapping by DPS Contact Identifier Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonIdentifierMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/employment/nomis-person-id/{nomisPersonId}/nomis-sequence-number/{nomisSequenceNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person employment mapping by nomis person id and sequence
+     * @description Retrieves the person employment mapping by NOMIS person id and NOMIS sequence number. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonEmploymentMappingByNomisIds']
+    put?: never
+    post?: never
+    /**
+     * Delete person employment mapping by nomis person id and sequence
+     * @description Delete the person employment mapping by NOMIS person id and NOMIS sequence number. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonEmploymentMappingByNomisIds']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/employment/dps-contact-employment-id/{dpsContactEmploymentId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get contact employment mapping by dps contact employment Id
+     * @description Retrieves the person employment mapping by DPS Contact Employment Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonEmploymentMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/email/nomis-internet-address-id/{nomisInternetAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person email mapping by nomis internet address Id
+     * @description Retrieves the person email mapping by NOMIS Email/Internet Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonEmailMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete person email mapping by nomis internet address Id
+     * @description Delete the person email mapping by NOMIS Email/Internet Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonEmailMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/email/dps-contact-email-id/{dpsContactEmailId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get contact email mapping by dps contact email Id
+     * @description Retrieves the person email mapping by DPS Contact Email Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonEmailMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/contact/nomis-contact-id/{nomisContactId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person contact mapping by nomis contact Id
+     * @description Retrieves the person contact mapping by NOMIS Contact Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonContactMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete person contact mapping by nomis contact Id
+     * @description Deletes the person contact mapping by NOMIS Contact Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonContactMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/contact/dps-prisoner-contact-id/{dpsPrisonerContactId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person contact mapping by dps prisoner contact Id
+     * @description Retrieves the person contact mapping by DPS Prisoner Contact Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonContactMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/contact-restriction/nomis-contact-restriction-id/{nomisContactRestrictionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person contact restriction mapping by nomis contact Id
+     * @description Retrieves the person contact restriction mapping by NOMIS ContactRestriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonContactRestrictionMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete person contact restriction mapping by nomis contact Id
+     * @description Delete the person contact restriction mapping by NOMIS ContactRestriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonContactRestrictionMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/contact-restriction/dps-prisoner-contact-restriction-id/{dpsPrisonerContactRestrictionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person contact restriction mapping by dps prisoner contact restriction Id
+     * @description Retrieves the person contact restriction mapping by DPS prisoner contact restriction Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonContactRestrictionMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/address/nomis-address-id/{nomisAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person address mapping by nomis contact Id
+     * @description Retrieves the person address mapping by NOMIS Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonAddressMappingByNomisId']
+    put?: never
+    post?: never
+    /**
+     * Delete person address mapping by nomis contact Id
+     * @description Delete the person address mapping by NOMIS Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deletePersonAddressMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/contact-person/address/dps-contact-address-id/{dpsContactAddressId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get person address mapping by dps contact address Id
+     * @description Retrieves the person address mapping by DPS Contact Address Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getPersonAddressMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/{offenderNo}/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Gets all case note mappings for a prisoner
+     * @description Gets all the mappings between nomis case note ids and dps case note ids related to specific prisoner created either via migration or synchronisation. Requires NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCaseNotesMappingsForPrisoner']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/nomis-casenote-id/{caseNoteId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCaseNotesMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/migration-id/{migrationId}/count-by-prisoner': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** Get count of mappings by migration id grouped by prisoner */
+    get: operations['getCaseNotesMappingsByMigrationIdGroupByPrisoner']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLatestMigratedCaseNoteMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/dps-casenote-id/{dpsCaseNoteId}/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get multiple mappings
+     * @description Retrieves mappings by DPS id. In case of past merges, there could be > 1 nomis id per dps id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getCaseNotesMappingsByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/appointments/nomis-event-id/{eventId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by nomis event id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getMappingGivenEventId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/appointments/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getMigratedAppointmentMappingsByMigrationId']
+    put?: never
+    post?: never
+    /**
+     * Delete appointment mapping entries for the supplied migration id
+     * @description To be used when re-running migrations. Note this will not touch any appointments, just the mappings.
+     */
+    delete: operations['deleteAppointmentMigrationMappingsByMigrationId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/appointments/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLatestMigratedAppointmentMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/appointments/appointment-instance-id/{appointmentInstanceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by appointment instance id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAppointmentMappingGivenId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/allocations/migration/nomis-allocation-id/{nomisAllocationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping for an allocation migration
+     * @description Retrieves an allocation migration mapping by the nomis id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAllocationMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/allocations/migration/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all allocation migration mappings for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getMigratedAllocationMappings']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/allocations/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for an allocation migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAllocationLatestMigratedMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/alerts/migration-id/{migrationId}/grouped-by-prisoner': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged mappings by migration id grouped by prisoner
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run) grouped by prisoner. Results are paged.
+     */
+    get: operations['getAlertsMappingsByMigrationIdGroupByPrisoner']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/alerts/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getAlertsMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/alerts/dps-alert-id/{dpsAlertId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAlertsMappingByDpsId']
+    put?: never
+    post?: never
+    /**
+     * Deletes mapping
+     * @description Deletes a mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAlertsMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/adjudications/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getMigratedAdjudicationMappingsByMigrationId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/adjudications/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getLatestMigratedAdjudicationMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/adjudications/charge-number/{chargeNumber}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by DPS charge number. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAdjudicationsMappingGivenNomisId']
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific mapping by DPS charge number
+     * @description Deletes the mapping table row. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAdjudicationsMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/adjudications/adjudication-number/{adjudicationNumber}/charge-sequence/{chargeSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by NOMIS adjudication number and charge sequence. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getAdjudicationsMappingGivenDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities/schedules/scheduled-instance-id/{scheduledInstanceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get scheduled instance mapping
+     * @description Retrieves a mapping by scheduled instance id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getScheduleInstanceMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities/migration/nomis-course-activity-id/{courseActivityId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping for an activity migration
+     * @description Retrieves an activity migration mapping by course activity id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getActivityMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities/migration/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get paged mappings by migration id
+     * @description Retrieve all activity migration mappings for the given migration id (identifies a single migration run). Results are paged.
+     */
+    get: operations['getMigratedActivityMappings']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities/migration/migrated/latest': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get the latest mapping for a migration
+     * @description Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getActivityLatestMigratedMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities/migration-count/migration-id/{migrationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get number of activities migrated
+     * @description Gets the number of activities migrated, ignoring those saved but with no corresponding DPS activity that weren't migrated.
+     */
+    get: operations['getMigratedActivityCount']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities/activity-schedule-id/{activityScheduleId}/scheduled-instance-id/{scheduledInstanceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get scheduled instance mapping
+     * @description Retrieves a mapping by activity schedule id and scheduled instance id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getScheduleMapping']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/activities/activity-schedule-id/{activityScheduleId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * get mapping
+     * @description Retrieves a mapping by activity schedule id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    get: operations['getActivityMappingGivenId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/sentences/nomis/booking-id/{nomisBookingId}/sentence-sequence/{nomisSentenceSequence}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieves the DPS Sentence id from the NOMIS booking and sentence sequence
+     * @description Requires role <b>NOMIS_DPS_MAPPING__SENTENCE__R</b> or <b>NOMIS_MAPPING_API__SYNCHRONISATION__RW</b>
+     */
+    get: operations['getSentenceMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/locations/nomis/{nomisLocationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieves the DPS location id from the NOMIS internal location id
+     * @description Requires role <b>NOMIS_DPS_MAPPING__LOCATIONS__R</b> or <b>NOMIS_MAPPING_API__SYNCHRONISATION__RW</b>
+     */
+    get: operations['getLocationMappingByNomisId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/api/locations/dps/{dpsLocationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Retrieves the NOMIS location id from the DPS location id
+     * @description Requires role <b>NOMIS_DPS_MAPPING__LOCATIONS__R</b> or <b>NOMIS_MAPPING_API__SYNCHRONISATION__RW</b>
+     */
+    get: operations['getLocationMappingByDpsId']
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   '/prison/{prisonId}/room-mappings/nomis-room-id/{nomisRoomDescription}': {
-    /** Removes room mapping given the prison and nomis room description. Requires role NOMIS_VISITS */
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a room mapping
+     * @description Removes room mapping given the prison and nomis room description. Requires role NOMIS_DPS_MAPPING__VISITS__RW
+     */
     delete: operations['deleteRoomMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/visit-slots/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Delete all visit slot and time slot mappings
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllVisitSlotsMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/transactions/nomis-transaction-id/{nomisTransactionId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes mapping
+     * @description Deletes a mapping by Nomis id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteTransactionMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/schedules/max-nomis-schedule-id/{maxCourseScheduleId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Delete all mappings with a nomis schedule id greater than the given value
+     * @description Used to delete mappings records in preprod that have been copied from prod but don't have any NOMIS data.
+     */
+    delete: operations['deleteCourseSchedulesAfterId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/official-visits/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Delete all official visit mappings
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllOfficialVisitsMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/locations/nomis/{locationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific location mapping by Nomis location id
+     * @description Deletes the location from the mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteMappingGivenNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/locations/dps/{locationId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific location mapping by DPS location id
+     * @description Deletes the location from the mapping table. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteMappingGivenDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/dps-csip-id/{dpsCSIPId}/children': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes all child mappings for a CSIP Report by DPS id
+     * @description Deletes all child mappings associated with a specific CSIP report mapping by DPS CSIP Report id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteChildMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/csip/dps-csip-id/{dpsCSIPId}/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific CSIP report mapping by DPS CSIP id and its associated children
+     * @description Deletes a mapping by DPS id and any children. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCSIPMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentences/dps-sentence-id/{dpsSentenceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a sentence mapping
+     * @description Deletes a sentence mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteSentenceMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/sentence-terms/dps-term-id/{dpsTermId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a sentence term mapping
+     * @description Deletes a sentence term mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteSentenceTermMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/cut-off-date/{cutoffDateTime}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * delete all mappings
+     * @description Deletes all mappings created after the given date time. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllMappingsAfterDate']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-charges/nomis-court-charge-id/{nomisCourtChargeId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes court charge mapping
+     * @description Deletes a court charge mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtChargeMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases/nomis-court-case-id/{nomisCourtCaseId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes court case mapping
+     * @description Deletes a court case mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtSentencingMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-cases/dps-court-case-id/{dpsCourtCaseId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes court case mapping
+     * @description Deletes a court case mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtSentencingMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-appearances/nomis-court-appearance-id/{nomisCourtAppearanceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes court appearance mapping
+     * @description Deletes a court appearance mapping by NOMIS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtAppearanceMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/court-appearances/dps-court-appearance-id/{dpsCourtAppearanceId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes court appearances mapping
+     * @description Deletes a court appearances mapping by DPS id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtAppearanceMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-sentencing/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * delete all mappings
+     * @description Deletes all mappings, typically used before repeating a migration. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllCourtSentencingMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/court-scheduler/movement/nomis-id/{bookingId}/{movementSeq}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a mapping for a single court movement by NOMIS booking ID and movement sequence
+     * @description Deletes a mapping for a single court movement by NOMIS booking ID and movement sequence. Requires ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCourtMovementMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/corporate/address-phone/dps-address-phone-id/{dpsPhoneId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes address phone mapping by dps phone Id
+     * @description Deletes the address phone mapping by DPS phone Id. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAddressPhoneMappingByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person-religion/all': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Delete all religions and religion mappings
+     * @description Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllReligionMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/core-person': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes all core person mappings
+     * @description Deletes all core person mappings regardless of source. This includes person and address. This is expected to only ever been used in a non-production environment. Requires role ROLE_NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAllCorePersonMappings']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/nomis-casenote-id/{nomisCaseNoteId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes mapping
+     * @description Deletes a mapping by Nomis id. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCaseNotesMappingByNomisId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/casenotes/dps-casenote-id/{dpsCaseNoteId}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes mapping
+     * @description Deletes mapping by DPS id (there could be more than one nomis id if a merge has taken place). Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteCaseNotesMappingsByDpsId']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/mapping/appointments/appointment-instance-id/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /**
+     * Deletes a specific mapping by appointment instance id
+     * @description Deletes the mapping table row. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW
+     */
+    delete: operations['deleteAppointmentMapping']
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
 }
-
+export type webhooks = Record<string, never>
 export interface components {
   schemas: {
+    ErrorResponse: {
+      /** Format: int32 */
+      status: number
+      errorCode?: string | null
+      userMessage?: string | null
+      developerMessage?: string | null
+      moreInfo?: string | null
+    }
+    /** @description Transaction mapping */
+    TransactionMappingDto: {
+      /** @description Transaction id in DPS */
+      dpsTransactionId: string
+      /**
+       * Format: int64
+       * @description Transaction id in Nomis
+       */
+      nomisTransactionId: number
+      /** @description Prisoner number in Nomis */
+      offenderNo?: string | null
+      /**
+       * Format: int64
+       * @description Nomis booking id
+       */
+      nomisBookingId: number | null
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Mapping for a single scheduled movement */
+    TapScheduleMappingDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /**
+       * Format: int64
+       * @description The NOMIS ID of the booking
+       * @example 12345
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The NOMIS event id
+       */
+      nomisEventId: number
+      /**
+       * Format: uuid
+       * @description The DPS scheduled movement id
+       */
+      dpsOccurrenceId: string
+      /**
+       * @description The source of the mapping
+       * @example NOMIS_CREATED
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * Format: int64
+       * @description The NOMIS address id
+       */
+      nomisAddressId?: number | null
+      /** @description The NOMIS address owner class */
+      nomisAddressOwnerClass?: string | null
+      /** @description The DPS address */
+      dpsAddressText: string
+      /**
+       * Format: int64
+       * @description The DPS address unique ID
+       */
+      dpsUprn?: number | null
+      /** @description The DPS description */
+      dpsDescription?: string | null
+      /** @description The DPS postcode */
+      dpsPostcode?: string | null
+      /**
+       * @description The DPS address
+       * @example 2021-07-05T10:35:17
+       */
+      eventTime: string
+    }
+    /** @description Mappings for a single external movement */
+    TapMovementMappingDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /**
+       * Format: int64
+       * @description The NOMIS ID of the booking
+       * @example 12345
+       */
+      bookingId: number
+      /**
+       * Format: int32
+       * @description The NOMIS movement sequence number
+       */
+      nomisMovementSeq: number
+      /**
+       * Format: uuid
+       * @description The DPS external movement id
+       */
+      dpsMovementId: string
+      /**
+       * @description The source of the mapping
+       * @example NOMIS_CREATED
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * Format: int64
+       * @description The NOMIS address id
+       */
+      nomisAddressId?: number | null
+      /** @description The NOMIS address owner class */
+      nomisAddressOwnerClass?: string | null
+      /** @description The DPS address */
+      dpsAddressText: string
+      /** @description The DPS description */
+      dpsDescription?: string | null
+      /** @description The DPS postcode */
+      dpsPostcode?: string | null
+      /**
+       * Format: int64
+       * @description The DPS address unique ID
+       */
+      dpsUprn?: number | null
+    }
+    /** @description Mappings for a single temporary absence application and its children */
+    TapApplicationMappingsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS temporary absence application id
+       */
+      nomisApplicationId: number
+      /**
+       * Format: uuid
+       * @description The DPS temporary absence application id
+       */
+      dpsAuthorisationId: string
+      /** @description All scheduled movement mappings */
+      schedules: components['schemas']['TapScheduleMappingsDto'][]
+      /** @description All actual external movement mappings */
+      movements: components['schemas']['TapMovementMappingsDto'][]
+    }
+    /** @description Mappings for a prisoner booking's entire temporary absence history */
+    TapBookingMappingsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS ID of the booking
+       * @example 12345
+       */
+      bookingId: number
+      /** @description Mappings for a single temporary absence application */
+      applications: components['schemas']['TapApplicationMappingsDto'][]
+      /** @description Mappings for unscheduled external movements, e.g. no application */
+      unscheduledMovements: components['schemas']['TapMovementMappingsDto'][]
+    }
+    /** @description Mapping for a single external movement */
+    TapMovementMappingsDto: {
+      /**
+       * Format: int32
+       * @description The NOMIS movement sequence
+       */
+      nomisMovementSeq: number
+      /**
+       * Format: uuid
+       * @description The DPS movement id
+       */
+      dpsMovementId: string
+      /**
+       * Format: int64
+       * @description The NOMIS address id
+       */
+      nomisAddressId?: number | null
+      /** @description The NOMIS address owner class */
+      nomisAddressOwnerClass?: string | null
+      /** @description The DPS address */
+      dpsAddressText: string
+      /** @description The DPS address description */
+      dpsDescription?: string | null
+      /** @description The DPS postcode */
+      dpsPostcode?: string | null
+    }
+    /** @description Mappings for a prisoner's entire temporary absence history */
+    TapPrisonerMappingsDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /** @description The mappings for each booking */
+      bookings: components['schemas']['TapBookingMappingsDto'][]
+      /**
+       * @description The migration unique identifier
+       * @example 2025-08-11T15:34:43
+       */
+      migrationId: string
+      /**
+       * @description The created time of the mappings
+       * @example 2025-08-11T15:34:43
+       */
+      whenCreated?: string | null
+    }
+    /** @description Mapping for a single scheduled movement */
+    TapScheduleMappingsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS scheduled movement id
+       */
+      nomisEventId: number
+      /**
+       * Format: uuid
+       * @description The DPS scheduled movement id
+       */
+      dpsOccurrenceId: string
+      /**
+       * Format: int64
+       * @description The NOMIS address id
+       */
+      nomisAddressId?: number | null
+      /** @description The NOMIS address owner class */
+      nomisAddressOwnerClass?: string | null
+      /** @description The DPS address */
+      dpsAddressText: string
+      /** @description The DPS address description */
+      dpsDescription?: string | null
+      /** @description The DPS postcode */
+      dpsPostcode?: string | null
+      /**
+       * @description The scheduled event time
+       * @example 2021-07-05T10:35:17
+       */
+      eventTime: string
+    }
+    /** @description Batch of Adjudication punishment (aka award) mappings to create and delete */
+    AdjudicationPunishmentBatchUpdateMappingDto: {
+      /** @description Adjudication punishment mapping */
+      punishmentsToCreate: components['schemas']['AdjudicationPunishmentMappingDto'][]
+      punishmentsToDelete: components['schemas']['AdjudicationPunishmentNomisIdDto'][]
+    }
+    /** @description Adjudication punishment (aka award) mapping */
+    AdjudicationPunishmentMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       * @example 123456
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description NOMIS sanction sequence
+       * @example 4
+       */
+      nomisSanctionSequence: number
+      /**
+       * @description DPS punishment id
+       * @example 123456
+       */
+      dpsPunishmentId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default ADJUDICATION_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'ADJUDICATION_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description ID of mapping identified by the NOMIS id for an adjudication punishment (aka award) mapping */
+    AdjudicationPunishmentNomisIdDto: {
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       * @example 123456
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description NOMIS sanction sequence
+       * @example 4
+       */
+      nomisSanctionSequence: number
+    }
+    /** @description CSRA mapping */
+    CsraMappingDto: {
+      /** @description CSRA id in DPS */
+      dpsCsraId: string
+      /**
+       * Format: int64
+       * @description Nomis booking id
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description Nomis sequence within booking
+       */
+      nomisSequence: number
+      /** @description Prisoner number in Nomis */
+      offenderNo: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Batch of Court Charge mappings to create and delete */
+    CourtChargeBatchUpdateMappingDto: {
+      /** @description Court Charge mappings to create */
+      courtChargesToCreate: components['schemas']['CourtChargeMappingDto'][]
+      /** @description Court Charge mappings to delete */
+      courtChargesToDelete: components['schemas']['CourtChargeNomisIdDto'][]
+    }
+    /** @description Offender Charge mapping */
+    CourtChargeMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS offender charge id
+       * @example 123456
+       */
+      nomisCourtChargeId: number
+      /**
+       * @description DPS offender charge id
+       * @example 123456
+       */
+      dpsCourtChargeId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default DPS_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description ID of mapping identified by the NOMIS id for a Court Charge mapping */
+    CourtChargeNomisIdDto: {
+      /**
+       * Format: int64
+       * @description NOMIS court charge id
+       * @example 123456
+       */
+      nomisCourtChargeId: number
+    }
+    /** @description Court appearance mapping */
+    CourtAppearanceMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS court appearance id
+       * @example 123456
+       */
+      nomisCourtAppearanceId: number
+      /**
+       * @description DPS court appearance id
+       * @example 123456
+       */
+      dpsCourtAppearanceId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default DPS_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Court cases mapping including child entity mapping */
+    CourtCaseBatchMappingDto: {
+      /** @description Mappings */
+      courtCases: components['schemas']['CourtCaseMappingDto'][]
+      /** @description Court Appearance mappings */
+      courtAppearances: components['schemas']['CourtAppearanceMappingDto'][]
+      /** @description Court Charge mappings */
+      courtCharges: components['schemas']['CourtChargeMappingDto'][]
+      /** @description Sentence mappings */
+      sentences: components['schemas']['SentenceMappingDto'][]
+      /** @description Sentence term mappings */
+      sentenceTerms: components['schemas']['SentenceTermMappingDto'][]
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Court cases mapping including child entity mapping for both updating and creating */
+    CourtCaseBatchUpdateAndCreateMappingDto: {
+      /** @description Mappings that need creating */
+      mappingsToCreate: components['schemas']['CourtCaseBatchMappingDto']
+      /** @description Mappings that need creating */
+      mappingsToUpdate: components['schemas']['CourtCaseBatchUpdateMappingDto']
+    }
+    /** @description Court cases mapping including child entity mapping for both updating the NOMIS ID */
+    CourtCaseBatchUpdateMappingDto: {
+      /** @description Mappings */
+      courtCases: components['schemas']['SimpleCourtSentencingIdPair'][]
+      /** @description Court Appearance mappings */
+      courtAppearances: components['schemas']['SimpleCourtSentencingIdPair'][]
+      /** @description Court Charge mappings */
+      courtCharges: components['schemas']['SimpleCourtSentencingIdPair'][]
+      /** @description Sentence mappings */
+      sentences: components['schemas']['CourtSentenceIdPair'][]
+      /** @description Sentence term mappings */
+      sentenceTerms: components['schemas']['CourtSentenceTermIdPair'][]
+    }
+    /** @description Court case mapping */
+    CourtCaseMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS court case id
+       * @example 123456
+       */
+      nomisCourtCaseId: number
+      /**
+       * @description DPS court case id
+       * @example 123456
+       */
+      dpsCourtCaseId: string
+      /**
+       * @description NOMIS offender no/nomisId
+       * @example AA12345
+       */
+      offenderNo?: string | null
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default DPS_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    CourtSentenceIdPair: {
+      fromNomisId: components['schemas']['SentenceId']
+      toNomisId: components['schemas']['SentenceId']
+    }
+    CourtSentenceTermIdPair: {
+      fromNomisId: components['schemas']['SentenceTermId']
+      toNomisId: components['schemas']['SentenceTermId']
+    }
+    SentenceId: {
+      /** Format: int64 */
+      nomisBookingId: number
+      /** Format: int32 */
+      nomisSequence: number
+    }
+    /** @description Sentence mapping */
+    SentenceMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       * @example 123456
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description NOMIS sentence sequence
+       * @example 4
+       */
+      nomisSentenceSequence: number
+      /**
+       * @description DPS sentence id
+       * @example 123456
+       */
+      dpsSentenceId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default DPS_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    SentenceTermId: {
+      nomisSentenceId: components['schemas']['SentenceId']
+      /** Format: int32 */
+      nomisSequence: number
+    }
+    /** @description Sentence term mapping */
+    SentenceTermMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       * @example 123456
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description NOMIS sentence sequence
+       * @example 4
+       */
+      nomisSentenceSequence: number
+      /**
+       * Format: int32
+       * @description NOMIS term sequence
+       * @example 4
+       */
+      nomisTermSequence: number
+      /**
+       * @description DPS sentence id
+       * @example 123456
+       */
+      dpsTermId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default DPS_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    SimpleCourtSentencingIdPair: {
+      /** Format: int64 */
+      fromNomisId: number
+      /** Format: int64 */
+      toNomisId: number
+    }
+    /** @description Mappings for a single court movement */
+    BookingCourtMovementMappingsDto: {
+      /**
+       * Format: int32
+       * @description The NOMIS movement sequence
+       */
+      nomisMovementSeq: number
+      /**
+       * Format: uuid
+       * @description The DPS court movement ID
+       */
+      dpsCourtMovementId: string
+    }
+    /** @description Mappings for a single court schedule */
+    BookingCourtScheduleMappingsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS court schedule ID
+       */
+      nomisEventId: number
+      /**
+       * Format: uuid
+       * @description The DPS court appearance ID
+       */
+      dpsCourtAppearanceId: string
+      /** @description Mappings for court movements belonging to this court schedule */
+      movements: components['schemas']['BookingCourtMovementMappingsDto'][]
+    }
+    /** @description Mappings for a prisoner booking's entire court movement history */
+    CourtSchedulerBookingMappingsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS ID of the booking
+       * @example 12345
+       */
+      bookingId: number
+      /** @description Mappings for a single court schedule */
+      courtSchedules: components['schemas']['BookingCourtScheduleMappingsDto'][]
+      /** @description Mappings for unscheduled court movements */
+      unscheduledMovements: components['schemas']['BookingCourtMovementMappingsDto'][]
+    }
+    /** @description Mappings for a prisoner's entire court movement history */
+    CourtSchedulerPrisonerMappingsDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      offenderNo: string
+      /** @description The mappings for each booking */
+      bookings: components['schemas']['CourtSchedulerBookingMappingsDto'][]
+      /**
+       * @description The migration unique identifier
+       * @example 2025-08-11T15:34:43
+       */
+      migrationId: string
+      /**
+       * @description The created time of the mappings
+       * @example 2025-08-11T15:34:43
+       */
+      whenCreated?: string | null
+    }
+    /** @description Case note mapping */
+    CaseNoteMappingDto: {
+      /** @description Case note id in DPS */
+      dpsCaseNoteId: string
+      /**
+       * Format: int64
+       * @description Case note id in Nomis
+       */
+      nomisCaseNoteId: number
+      /** @description Prisoner number in Nomis */
+      offenderNo: string
+      /**
+       * Format: int64
+       * @description Nomis booking id
+       */
+      nomisBookingId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description NOMIS to Alert mapping IDs */
+    AlertMappingIdDto: {
+      /** @description DPS alert id */
+      dpsAlertId: string
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       */
+      nomisBookingId: number
+      /**
+       * Format: int64
+       * @description NOMIS alert sequence
+       */
+      nomisAlertSequence: number
+    }
+    MergedPrisonerAlertMappingsDto: {
+      /** @description Prisoner whose mappings need removing */
+      removedOffenderNo: string
+      /** @description Mappings for a prisoner after the merge */
+      prisonerMapping: components['schemas']['PrisonerAlertMappingsDto']
+    }
+    /** @description Mappings for a prisoner created during migration */
+    PrisonerAlertMappingsDto: {
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+      /** @description Mapping IDs */
+      mappings: components['schemas']['AlertMappingIdDto'][]
+    }
+    /** @description NOMIS to Alert mapping */
+    AlertMappingDto: {
+      /** @description DPS alert id */
+      dpsAlertId: string
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       */
+      nomisBookingId: number
+      /**
+       * Format: int64
+       * @description NOMIS alert sequence
+       */
+      nomisAlertSequence: number
+      /** @description Prisoner number */
+      offenderNo: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Update mapping NOMIS Ids */
+    NomisMappingIdUpdate: {
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       */
+      bookingId: number
+    }
+    /** @description NOMIS to Activity schedule mapping */
+    ActivityMappingDto: {
+      /**
+       * Format: int64
+       * @description Activity schedule id
+       */
+      activityScheduleId: number
+      /**
+       * Format: int64
+       * @description Activity id
+       */
+      activityId?: number | null
+      /**
+       * Format: int64
+       * @description NOMIS course activity id
+       */
+      nomisCourseActivityId: number
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'NOMIS_CREATED' | 'ACTIVITY_CREATED'
+      /** @description Scheduled instance to course schedule mappings */
+      scheduledInstanceMappings: components['schemas']['ActivityScheduleMappingDto'][]
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description NOMIS to Activity schedule mapping */
+    ActivityScheduleMappingDto: {
+      /**
+       * Format: int64
+       * @description Activity scheduled instance id
+       */
+      scheduledInstanceId: number
+      /**
+       * Format: int64
+       * @description NOMIS course schedule id
+       */
+      nomisCourseScheduleId: number
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'ACTIVITY_CREATED' | 'ACTIVITY_UPDATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
     /** @description Create room mapping request */
     CreateRoomMappingDto: {
       /** @description VSIP room id */
       vsipId: string
       /** @description nomis room description (unique within prison) */
       nomisRoomDescription: string
-      /** @description open or closed indicator */
+      /** @description open or closed indicator, default is false */
       isOpen: boolean
-    }
-    ErrorResponse: {
-      /** Format: int32 */
-      status: number
-      /** Format: int32 */
-      errorCode?: number
-      userMessage?: string
-      developerMessage?: string
-      moreInfo?: string
     }
     /** @description NOMIS to VSIP Visit Id mapping */
     VisitMappingDto: {
@@ -96,7 +7367,7 @@ export interface components {
       /** @description VSIP visit id */
       vsipId: string
       /** @description Label (a timestamp for migrated ids) */
-      label?: string
+      label?: string | null
       /**
        * @description Mapping type
        * @enum {string}
@@ -104,6 +7375,373 @@ export interface components {
       mappingType: 'MIGRATED' | 'ONLINE'
       /**
        * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    DuplicateErrorContentObject: {
+      duplicate: unknown
+      existing: unknown
+    }
+    DuplicateMappingErrorResponse: {
+      moreInfo: components['schemas']['DuplicateErrorContentObject']
+      /** @enum {string} */
+      status:
+        | '100 CONTINUE'
+        | '101 SWITCHING_PROTOCOLS'
+        | '102 PROCESSING'
+        | '103 EARLY_HINTS'
+        | '200 OK'
+        | '201 CREATED'
+        | '202 ACCEPTED'
+        | '203 NON_AUTHORITATIVE_INFORMATION'
+        | '204 NO_CONTENT'
+        | '205 RESET_CONTENT'
+        | '206 PARTIAL_CONTENT'
+        | '207 MULTI_STATUS'
+        | '208 ALREADY_REPORTED'
+        | '226 IM_USED'
+        | '300 MULTIPLE_CHOICES'
+        | '301 MOVED_PERMANENTLY'
+        | '302 FOUND'
+        | '303 SEE_OTHER'
+        | '304 NOT_MODIFIED'
+        | '307 TEMPORARY_REDIRECT'
+        | '308 PERMANENT_REDIRECT'
+        | '400 BAD_REQUEST'
+        | '401 UNAUTHORIZED'
+        | '402 PAYMENT_REQUIRED'
+        | '403 FORBIDDEN'
+        | '404 NOT_FOUND'
+        | '405 METHOD_NOT_ALLOWED'
+        | '406 NOT_ACCEPTABLE'
+        | '407 PROXY_AUTHENTICATION_REQUIRED'
+        | '408 REQUEST_TIMEOUT'
+        | '409 CONFLICT'
+        | '410 GONE'
+        | '411 LENGTH_REQUIRED'
+        | '412 PRECONDITION_FAILED'
+        | '413 CONTENT_TOO_LARGE'
+        | '413 PAYLOAD_TOO_LARGE'
+        | '414 URI_TOO_LONG'
+        | '415 UNSUPPORTED_MEDIA_TYPE'
+        | '416 REQUESTED_RANGE_NOT_SATISFIABLE'
+        | '417 EXPECTATION_FAILED'
+        | '418 I_AM_A_TEAPOT'
+        | '421 MISDIRECTED_REQUEST'
+        | '422 UNPROCESSABLE_CONTENT'
+        | '422 UNPROCESSABLE_ENTITY'
+        | '423 LOCKED'
+        | '424 FAILED_DEPENDENCY'
+        | '425 TOO_EARLY'
+        | '426 UPGRADE_REQUIRED'
+        | '428 PRECONDITION_REQUIRED'
+        | '429 TOO_MANY_REQUESTS'
+        | '431 REQUEST_HEADER_FIELDS_TOO_LARGE'
+        | '451 UNAVAILABLE_FOR_LEGAL_REASONS'
+        | '500 INTERNAL_SERVER_ERROR'
+        | '501 NOT_IMPLEMENTED'
+        | '502 BAD_GATEWAY'
+        | '503 SERVICE_UNAVAILABLE'
+        | '504 GATEWAY_TIMEOUT'
+        | '505 HTTP_VERSION_NOT_SUPPORTED'
+        | '506 VARIANT_ALSO_NEGOTIATES'
+        | '507 INSUFFICIENT_STORAGE'
+        | '508 LOOP_DETECTED'
+        | '509 BANDWIDTH_LIMIT_EXCEEDED'
+        | '510 NOT_EXTENDED'
+        | '511 NETWORK_AUTHENTICATION_REQUIRED'
+      /** Format: int32 */
+      errorCode: number
+      userMessage: string
+      developerMessage?: string | null
+    }
+    VisitSlotMappingDto: {
+      dpsId: string
+      /** Format: int64 */
+      nomisId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    VisitTimeSlotMappingDto: {
+      dpsId: string
+      nomisPrisonId: string
+      nomisDayOfWeek: string
+      /** Format: int32 */
+      nomisSlotSequence: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    VisitSlotMigrationMappingDto: {
+      dpsId: string
+      /** Format: int64 */
+      nomisId: number
+    }
+    VisitTimeSlotMigrationMappingDto: {
+      dpsId: string
+      nomisPrisonId: string
+      nomisDayOfWeek: string
+      /** Format: int32 */
+      nomisSlotSequence: number
+      visitSlots: components['schemas']['VisitSlotMigrationMappingDto'][]
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    /** @description Prisoner Visit Order Balance mapping */
+    VisitBalanceAdjustmentMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS Visit Balance adjustment ID
+       */
+      nomisVisitBalanceAdjustmentId: number
+      /** @description DPS representation of the offender */
+      dpsId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Mappings for a single temporary absence application */
+    TapApplicationMappingDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /**
+       * Format: int64
+       * @description The NOMIS ID of the booking
+       * @example 12345
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The NOMIS tap application id
+       */
+      nomisApplicationId: number
+      /**
+       * Format: uuid
+       * @description The DPS tap authorisation id
+       */
+      dpsAuthorisationId: string
+      /**
+       * @description The source of the mapping
+       * @example NOMIS_CREATED
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+    }
+    /** @description NOMIS to Sentencing mapping */
+    SentencingAdjustmentMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS Adjustment id
+       */
+      nomisAdjustmentId: number
+      /**
+       * @description NOMIS Adjustment category
+       * @enum {string}
+       */
+      nomisAdjustmentCategory: 'SENTENCE' | 'KEY-DATE'
+      /** @description Adjustment id from sentencing service */
+      adjustmentId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'SENTENCING_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Batch of Adjudication punishment (aka award) mappings */
+    AdjudicationPunishmentBatchMappingDto: {
+      /** @description Adjudication punishment mapping */
+      punishments: components['schemas']['AdjudicationPunishmentMappingDto'][]
+    }
+    /** @description Offender Balance mapping */
+    PrisonerBalanceMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS Root Offender ID
+       * @example 123456
+       */
+      nomisRootOffenderId: number
+      /** @description DPS representation of the offender */
+      dpsId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Prison Balance mapping */
+    PrisonBalanceMappingDto: {
+      /**
+       * @description NOMIS Prison ID
+       * @example MDI
+       */
+      nomisId: string
+      /**
+       * @description DPS representation of the Prison
+       * @example MDI
+       */
+      dpsId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    OfficialVisitorMappingDto: {
+      dpsId: string
+      /** Format: int64 */
+      nomisId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    OfficialVisitMappingDto: {
+      dpsId: string
+      /** Format: int64 */
+      nomisId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    OfficialVisitMigrationMappingDto: {
+      dpsId: string
+      /** Format: int64 */
+      nomisId: number
+      visitors: components['schemas']['VisitorMigrationMappingDto'][]
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    OfficialVisitReplaceMappingDto: {
+      mappings: components['schemas']['OfficialVisitMigrationMappingDto'][]
+    }
+    VisitorMigrationMappingDto: {
+      dpsId: string
+      /** Format: int64 */
+      nomisId: number
+    }
+    /** @description Non-association mapping */
+    NonAssociationMappingDto: {
+      /**
+       * Format: int64
+       * @description Non-Association id
+       */
+      nonAssociationId: number
+      /**
+       * @description First NOMIS Offender No
+       * @example A1234BC
+       */
+      firstOffenderNo: string
+      /**
+       * @description Second NOMIS Offender No
+       * @example D5678EF
+       */
+      secondOffenderNo: string
+      /**
+       * Format: int32
+       * @description NOMIS type sequence
+       */
+      nomisTypeSequence: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'NON_ASSOCIATION_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Location mapping */
+    LocationMappingDto: {
+      /** @description Location id in DPS */
+      dpsLocationId: string
+      /**
+       * Format: int64
+       * @description Location id in Nomis
+       */
+      nomisLocationId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'LOCATION_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Incident mapping */
+    IncidentMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS Incident id
+       */
+      nomisIncidentId: number
+      /** @description DPS Incident id from incident reporting service */
+      dpsIncidentId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
        * @example 2021-07-05T10:35:17
        */
       whenCreated?: string
@@ -126,7 +7764,7 @@ export interface components {
        */
       incentiveId: number
       /** @description Label (a timestamp for migrated ids) */
-      label?: string
+      label?: string | null
       /**
        * @description Mapping type
        * @enum {string}
@@ -137,6 +7775,1070 @@ export interface components {
        * @example 2021-07-05T10:35:17
        */
       whenCreated?: string
+    }
+    /** @description Adjudication mapping (same value for NOMIS and DPS) */
+    AdjudicationMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS Adjudication number
+       * @example 123456
+       */
+      adjudicationNumber: number
+      /**
+       * Format: int32
+       * @description NOMIS Charges sequence
+       * @example 1
+       */
+      chargeSequence: number
+      /**
+       * @description DPS Charges number
+       * @example 123456/1
+       */
+      chargeNumber: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default ADJUDICATION_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'ADJUDICATION_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Adjudication hearing mapping */
+    AdjudicationHearingMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS hearing id
+       * @example 123456
+       */
+      nomisHearingId: number
+      /**
+       * @description DPS hearing id
+       * @example 123456
+       */
+      dpsHearingId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default ADJUDICATION_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'ADJUDICATION_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description NOMIS to Case note mapping IDs */
+    CsraMappingIdDto: {
+      /** @description DPS case note id */
+      dpsCsraId: string
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description NOMIS sequence within booking
+       */
+      nomisSequence: number
+    }
+    /** @description Mappings for a prisoner created during migration */
+    PrisonerCsraMappingsDto: {
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+      /** @description Mapping IDs */
+      mappings: components['schemas']['CsraMappingIdDto'][]
+    }
+    /** @description CSIP Child mapping */
+    CSIPChildMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS CSIP child id
+       */
+      nomisId: number
+      /** @description DPS CSIP child id */
+      dpsId: string
+      /** @description DPS CSIP Report id */
+      dpsCSIPReportId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    CSIPReviewMapping: {
+      dpsCSIPReviewId: string
+      dpsCSIPReportId: string
+      /** Format: int64 */
+      nomisCSIPReviewId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    CSIPPlanMapping: {
+      dpsCSIPPlanId: string
+      dpsCSIPReportId: string
+      /** Format: int64 */
+      nomisCSIPPlanId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    CSIPInterviewMapping: {
+      dpsCSIPInterviewId: string
+      dpsCSIPReportId: string
+      /** Format: int64 */
+      nomisCSIPInterviewId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    CSIPFactorMapping: {
+      dpsCSIPFactorId: string
+      dpsCSIPReportId: string
+      /** Format: int64 */
+      nomisCSIPFactorId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    /** @description Full CSIP mapping */
+    CSIPFullMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS CSIP Report id
+       */
+      nomisCSIPReportId: number
+      /** @description DPS CSIP Report id from DPS CSIP service */
+      dpsCSIPReportId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+      /** @description CSIP Attendee Mappings */
+      attendeeMappings: components['schemas']['CSIPChildMappingDto'][]
+      /** @description CSIP Factor Mappings */
+      factorMappings: components['schemas']['CSIPChildMappingDto'][]
+      /** @description CSIP Interview Mappings */
+      interviewMappings: components['schemas']['CSIPChildMappingDto'][]
+      /** @description CSIP Plan Mappings */
+      planMappings: components['schemas']['CSIPChildMappingDto'][]
+      /** @description CSIP Review Mappings */
+      reviewMappings: components['schemas']['CSIPChildMappingDto'][]
+    }
+    CSIPAttendeeMapping: {
+      dpsCSIPAttendeeId: string
+      dpsCSIPReportId: string
+      /** Format: int64 */
+      nomisCSIPAttendeeId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    /** @description CSIP mapping */
+    CSIPReportMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS CSIP Report id
+       */
+      nomisCSIPReportId: number
+      /** @description CSIP Report id from DPS CSIP service */
+      dpsCSIPReportId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    CSIPMapping: {
+      dpsCSIPId: string
+      /** Format: int64 */
+      nomisCSIPId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    /** @description NOMIS Sentence ID */
+    NomisSentenceId: {
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       * @example 123456
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description NOMIS sentence sequence
+       * @example 4
+       */
+      nomisSentenceSequence: number
+    }
+    SentenceMapping: {
+      dpsSentenceId: string
+      /** Format: int64 */
+      nomisBookingId: number
+      /** Format: int32 */
+      nomisSentenceSequence: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    SentenceTermMapping: {
+      dpsTermId: string
+      /** Format: int64 */
+      nomisBookingId: number
+      /** Format: int32 */
+      nomisSentenceSequence: number
+      /** Format: int32 */
+      nomisTermSequence: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    CourtChargeMapping: {
+      dpsCourtChargeId: string
+      /** Format: int64 */
+      nomisCourtChargeId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    /** @description DPS Ids for Court cases mapping deletion */
+    DpsCourtCaseBatchMappingDto: {
+      /** @description Court case Ids */
+      courtCases: string[]
+      /** @description Court Appearance Ids */
+      courtAppearances: string[]
+      /** @description Court Charge Ids */
+      courtCharges: string[]
+      /** @description Sentence Ids */
+      sentences: string[]
+      /** @description Sentence term Ids */
+      sentenceTerms: string[]
+    }
+    /** @description Court case mapping including child entity mapping */
+    CourtCaseAllMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS court case id
+       * @example 123456
+       */
+      nomisCourtCaseId: number
+      /**
+       * @description DPS court case id
+       * @example 123456
+       */
+      dpsCourtCaseId: string
+      /** @description Court Appearance mappings */
+      courtAppearances: components['schemas']['CourtAppearanceMappingDto'][]
+      /** @description Court Charge mappings */
+      courtCharges: components['schemas']['CourtChargeMappingDto'][]
+      /** @description Sentence mappings */
+      sentences: components['schemas']['SentenceMappingDto'][]
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default DPS_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Court appearance recall mappings */
+    CourtAppearanceRecallMappingsDto: {
+      /**
+       * @description List of NOMIS court appearance ids
+       * @example [
+       *       123456,
+       *       789012
+       *     ]
+       */
+      nomisCourtAppearanceIds: number[]
+      /**
+       * @description DPS recall id
+       * @example 123456
+       */
+      dpsRecallId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default DPS_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED' | null
+      /** @description Mappings that need updating */
+      mappingsToUpdate: components['schemas']['CourtCaseBatchUpdateMappingDto']
+    }
+    CourtAppearanceMapping: {
+      dpsCourtAppearanceId: string
+      /** Format: int64 */
+      nomisCourtAppearanceId: number
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      id: string
+      isNew: boolean
+    }
+    /** @description Mapping for a single court schedule */
+    CourtScheduleMappingDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /**
+       * Format: int64
+       * @description The NOMIS ID of the booking
+       * @example 12345
+       */
+      bookingId: number
+      /**
+       * Format: int64
+       * @description The NOMIS event id
+       */
+      nomisEventId: number
+      /**
+       * Format: uuid
+       * @description The DPS court appearance id
+       */
+      dpsCourtAppearanceId: string
+      /**
+       * @description The source of the mapping
+       * @example NOMIS_CREATED
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+    }
+    /** @description Mapping for a single court movement */
+    CourtMovementMappingDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /**
+       * Format: int64
+       * @description The NOMIS ID of the booking
+       * @example 12345
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description The NOMIS movement sequence number
+       * @example 3
+       */
+      nomisMovementSeq: number
+      /**
+       * Format: uuid
+       * @description The DPS court movement id
+       */
+      dpsCourtMovementId: string
+      /**
+       * @description The source of the mapping
+       * @example NOMIS_CREATED
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'NOMIS_CREATED' | 'DPS_CREATED'
+    }
+    OrganisationsMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    ProfileMappingIdDto: {
+      /** @description CPR profile id */
+      cprId: string
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       */
+      nomisBookingId: number
+      /** @description NOMIS profile type */
+      nomisProfileType: string
+      /** @description NOMIS Prison number aka Offender number */
+      nomisPrisonNumber: string
+      /**
+       * @description Mapping type - currently defaulted to be NOMIS_CREATED
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'CPR_CREATED' | 'NOMIS_CREATED'
+    }
+    ProfileMapping: {
+      /** Format: uuid */
+      cprId: string
+      /** Format: int64 */
+      nomisBookingId: number
+      nomisProfileType: string
+      nomisPrisonNumber: string
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'CPR_CREATED' | 'NOMIS_CREATED'
+      new: boolean
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+      /** Format: uuid */
+      id: string
+      isNew: boolean
+    }
+    /** @description NOMIS to CPR core person mapping IDs */
+    CorePersonMappingIdDto: {
+      /** @description CPR id */
+      cprId: string
+      /** @description NOMIS Prison number aka Offender number */
+      nomisPrisonNumber: string
+    }
+    /** @description Mappings for a Core Person and its associated child entities */
+    CorePersonMappingsDto: {
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'CPR_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+      /** @description Core Person mapping */
+      personMapping: components['schemas']['CorePersonMappingIdDto']
+      /** @description Core Person address mappings */
+      addressMappings: components['schemas']['CorePersonSimpleMappingIdDto'][]
+      /** @description Core Person phone mappings */
+      phoneMappings: components['schemas']['CorePersonPhoneMappingIdDto'][]
+      /** @description Core Person email mappings */
+      emailMappings: components['schemas']['CorePersonSimpleMappingIdDto'][]
+      /** @description Core Person profile mappings */
+      profileMappings: components['schemas']['ProfileMappingIdDto'][]
+    }
+    /** @description NOMIS to CPR phone mapping IDs */
+    CorePersonPhoneMappingIdDto: {
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description CPR id */
+      cprId: string
+      /**
+       * @description CPR phone type
+       * @enum {string}
+       */
+      cprPhoneType: 'ADDRESS' | 'CORE_PERSON'
+    }
+    /** @description NOMIS to CPR simple mapping IDs */
+    CorePersonSimpleMappingIdDto: {
+      /** @description CPR id */
+      cprId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+    }
+    ReligionMigrationMappingDto: {
+      cprId: string
+      /** Format: int64 */
+      nomisId: number
+      nomisPrisonNumber: string
+    }
+    ReligionsMigrationMappingDto: {
+      cprId: string
+      nomisPrisonNumber: string
+      religions: components['schemas']['ReligionMigrationMappingDto'][]
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    ReligionMappingDto: {
+      cprId: string
+      /** Format: int64 */
+      nomisId: number
+      nomisPrisonNumber: string
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    /** @description New and old mappings related to a prisoner */
+    ContactPersonPrisonerMappingsDto: {
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+      /** @description Person contact mapping */
+      personContactMapping: components['schemas']['ContactPersonSimpleMappingIdDto'][]
+      /** @description Person contact restriction mapping */
+      personContactRestrictionMapping: components['schemas']['ContactPersonSimpleMappingIdDto'][]
+      /** @description Person contact mappings to remove */
+      personContactMappingsToRemoveByDpsId: string[]
+      /** @description Person contact restriction mappings to remove */
+      personContactRestrictionMappingsToRemoveByDpsId: string[]
+    }
+    /** @description NOMIS to DPS simple mapping IDs */
+    ContactPersonSimpleMappingIdDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+    }
+    /** @description New and old mappings related to a prisoner's restrictions */
+    PrisonerRestrictionMappingsDto: {
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+      /** @description Restrictions mappings */
+      mappings: components['schemas']['ContactPersonSimpleMappingIdDto'][]
+    }
+    /** @description Mappings for a Person and there associated child entities */
+    ContactPersonMappingsDto: {
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+      /** @description Person mapping */
+      personMapping: components['schemas']['ContactPersonSimpleMappingIdDto']
+      /** @description Person address mapping */
+      personAddressMapping: components['schemas']['ContactPersonSimpleMappingIdDto'][]
+      /** @description Person phone mapping */
+      personPhoneMapping: components['schemas']['ContactPersonPhoneMappingIdDto'][]
+      /** @description Person email mapping */
+      personEmailMapping: components['schemas']['ContactPersonSimpleMappingIdDto'][]
+      /** @description Person employment mapping */
+      personEmploymentMapping: components['schemas']['ContactPersonSequenceMappingIdDto'][]
+      /** @description Person identifier mapping */
+      personIdentifierMapping: components['schemas']['ContactPersonSequenceMappingIdDto'][]
+      /** @description Person restriction mapping */
+      personRestrictionMapping: components['schemas']['ContactPersonSimpleMappingIdDto'][]
+      /** @description Person contact mapping */
+      personContactMapping: components['schemas']['ContactPersonSimpleMappingIdDto'][]
+      /** @description Person contact restriction mapping */
+      personContactRestrictionMapping: components['schemas']['ContactPersonSimpleMappingIdDto'][]
+    }
+    /** @description NOMIS to DPS simple mapping IDs */
+    ContactPersonPhoneMappingIdDto: {
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * @description DPS phone type
+       * @enum {string}
+       */
+      dpsPhoneType: 'ADDRESS' | 'PERSON'
+    }
+    /** @description NOMIS to DPS simple mapping IDs */
+    ContactPersonSequenceMappingIdDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisPersonId: number
+      /**
+       * Format: int64
+       * @description NOMIS sequence
+       */
+      nomisSequenceNumber: number
+    }
+    PrisonerRestrictionMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Prisoner number */
+      offenderNo: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonPhoneMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /**
+       * @description DPS phone type
+       * @enum {string}
+       */
+      dpsPhoneType: 'ADDRESS' | 'PERSON'
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonRestrictionMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonIdentifierMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisPersonId: number
+      /**
+       * Format: int64
+       * @description NOMIS sequence
+       */
+      nomisSequenceNumber: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonEmploymentMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisPersonId: number
+      /**
+       * Format: int64
+       * @description NOMIS sequence
+       */
+      nomisSequenceNumber: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonEmailMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonContactRestrictionMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonContactMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PersonAddressMappingDto: {
+      /** @description DPS id */
+      dpsId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description NOMIS to Appointment mapping */
+    AppointmentMappingDto: {
+      /**
+       * Format: int64
+       * @description Appointment instance id
+       */
+      appointmentInstanceId: number
+      /**
+       * Format: int64
+       * @description NOMIS course activity id
+       */
+      nomisEventId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default APPOINTMENT_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'APPOINTMENT_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description NOMIS to Activities allocation mapping */
+    AllocationMigrationMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS allocation id
+       */
+      nomisAllocationId: number
+      /**
+       * Format: int64
+       * @description Activity allocation id
+       */
+      activityAllocationId: number
+      /**
+       * Format: int64
+       * @description Activity id
+       */
+      activityId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label: string
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description All DPS ids related to mappings that need deleting */
+    AdjudicationDeleteMappingDto: {
+      /**
+       * @description DPS Charge number
+       * @example 123456/1
+       */
+      dpsChargeNumber: string
+      /** @description List of DPS hearing Ids */
+      dpsHearingIds: string[]
+      /** @description List of DPS punishment Ids */
+      dpsPunishmentIds: string[]
+    }
+    /** @description Adjudication mapping for all entities in an adjudication */
+    AdjudicationAllMappingDto: {
+      /** @description Adjudication ID mapping */
+      adjudicationId: components['schemas']['AdjudicationMappingDto']
+      /** @description Adjudication hearing mapping */
+      hearings: components['schemas']['AdjudicationHearingMappingDto'][]
+      /** @description Adjudication punishment mapping */
+      punishments: components['schemas']['AdjudicationPunishmentMappingDto'][]
+      /** @description Label (a timestamp for migrated ids) */
+      label: string
+      /**
+       * @description Mapping type
+       * @default MIGRATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'ADJUDICATION_CREATED' | null
+    }
+    /** @description NOMIS to Activity schedule mapping */
+    ActivityMigrationMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS course activity id
+       */
+      nomisCourseActivityId: number
+      /**
+       * Format: int64
+       * @description Activity id
+       */
+      activityId?: number | null
+      /**
+       * Format: int64
+       * @description 2nd Activity id
+       */
+      activityId2?: number | null
+      /** @description Label (a timestamp for migrated ids) */
+      label: string
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description NOMIS DPS Sentence mapping */
+    NomisDpsSentenceMapping: {
+      /** @description NOMIS sentence key */
+      nomisSentenceId: components['schemas']['NomisSentenceId']
+      /**
+       * @description DPS sentence id
+       * @example f4499772-2e43-4951-861d-04ad86df43fc
+       */
+      dpsSentenceId: string
+    }
+    /** @description NOMIS DPS Location mapping */
+    NomisDpsLocationMapping: {
+      /**
+       * @description Location id in DPS Locations Service
+       * @example f4499772-2e43-4951-861d-04ad86df43fc
+       */
+      dpsLocationId: string
+      /**
+       * Format: int64
+       * @description Internal Location id in NOMIS
+       * @example 2318905
+       */
+      nomisLocationId: number
     }
     /** @description Room mapping request */
     RoomMappingDto: {
@@ -156,446 +8858,18035 @@ export interface components {
       size?: number
       sort?: string[]
     }
+    PageVisitTimeSlotMappingDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['VisitTimeSlotMappingDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    PageableObject: {
+      /** Format: int64 */
+      offset?: number
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      pageSize?: number
+      paged?: boolean
+      /** Format: int32 */
+      pageNumber?: number
+      unpaged?: boolean
+    }
+    SortObject: {
+      empty?: boolean
+      sorted?: boolean
+      unsorted?: boolean
+    }
+    /** @description All mappings for a prisoner created either via migration or synchronisation */
+    AllPrisonerTransactionMappingsDto: {
+      /** @description Mappings */
+      mappings: components['schemas']['TransactionMappingDto'][]
+    }
+    /** @description Mappings for a single temporary absence application and its children */
+    TapApplicationMappingIdsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS temporary absence application id
+       */
+      nomisApplicationId: number
+      /**
+       * Format: uuid
+       * @description The DPS temporary absence application id
+       */
+      dpsAuthorisationId: string
+    }
+    /** @description Mapping for a single external movement */
+    TapMovementMappingIdsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS booking id
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description The NOMIS movement sequence
+       */
+      nomisMovementSeq: number
+      /**
+       * Format: uuid
+       * @description The DPS movement id
+       */
+      dpsMovementId: string
+    }
+    /** @description Mappings for a prisoner's entire temporary absence history */
+    TapPrisonerMappingIdsDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /** @description Mappings for application IDs */
+      applications: components['schemas']['TapApplicationMappingIdsDto'][]
+      /** @description Mappings for schedule IDs */
+      schedules: components['schemas']['TapScheduleMappingIdsDto'][]
+      /** @description Mappings for movement IDs */
+      movements: components['schemas']['TapMovementMappingIdsDto'][]
+    }
+    /** @description Mapping for a single scheduled movement */
+    TapScheduleMappingIdsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS scheduled movement id
+       */
+      nomisEventId: number
+      /**
+       * Format: uuid
+       * @description The DPS scheduled movement id
+       */
+      dpsOccurrenceId: string
+    }
+    /** @description Tap schedule mappings affected by a change of address */
+    FindTapScheduleMappingsForAddressResponse: {
+      /** @description All tap schedule mappings related to the passed NOMIS address ID and date. Note historical sync mappings are not included by default. */
+      scheduleMappings: components['schemas']['TapScheduleMappingDto'][]
+    }
+    /** @description Mappings for a prisoner booking's applications */
+    TapApplicationIdMapping: {
+      /**
+       * Format: int64
+       * @description The NOMIS application ID
+       * @example 12345
+       */
+      applicationId: number
+      /**
+       * Format: uuid
+       * @description The DPS authorisation ID
+       */
+      authorisationId: string
+    }
+    /** @description Mappings for a prisoner's entire temporary absence history */
+    TapMoveBookingMappingDto: {
+      /** @description A list mapping NOMIS application IDs to DPS authorisation IDs */
+      applicationIds: components['schemas']['TapApplicationIdMapping'][]
+      /** @description A list mapping NOMIS movement sequence numbers to DPS movement IDs */
+      movementIds: components['schemas']['TapMovementIdMapping'][]
+    }
+    /** @description Mappings for a prisoner booking's movements */
+    TapMovementIdMapping: {
+      /**
+       * Format: int32
+       * @description The movement's movement sequence
+       */
+      movementSeq: number
+      /**
+       * Format: uuid
+       * @description The DPS movement ID
+       */
+      dpsMovementId: string
+    }
+    PageTapMigrationDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['TapMigrationDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description Mappings for a migration */
+    TapMigrationDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /**
+       * @description The migration unique identifier
+       * @example 2025-08-11T15:34:43
+       */
+      migrationId?: string | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PageMetadata: {
+      /** Format: int64 */
+      size?: number
+      /** Format: int64 */
+      number?: number
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int64 */
+      totalPages?: number
+    }
+    PagedModelPrisonerBalanceMappingDto: {
+      content?: components['schemas']['PrisonerBalanceMappingDto'][]
+      page?: components['schemas']['PageMetadata']
+    }
+    PagedModelPrisonBalanceMappingDto: {
+      content?: components['schemas']['PrisonBalanceMappingDto'][]
+      page?: components['schemas']['PageMetadata']
+    }
+    PageOfficialVisitMappingDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['OfficialVisitMappingDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    PageNonAssociationMappingDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['NonAssociationMappingDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description All mappings for a prisoner created either via migration or synchronisation */
+    AllPrisonerCsraMappingsDto: {
+      /** @description Mappings */
+      mappings: components['schemas']['CsraMappingDto'][]
+    }
+    /** @description Record of Offender Court case migration */
+    CourtSentencingMigrationSummary: {
+      /** @description The prisoner number for the set of mappings */
+      offenderNo: string
+      /**
+       * Format: int32
+       * @description Count of the number of court case mappings migrated
+       */
+      mappingsCount: number
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+      /** @description the migration the offender was migrated in */
+      migrationId?: string | null
+    }
+    PageCourtSentencingMigrationSummary: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['CourtSentencingMigrationSummary'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description Court appearance recall mapping */
+    CourtAppearanceRecallMappingDto: {
+      /**
+       * Format: int64
+       * @description NOMIS court appearance id
+       * @example 123456
+       */
+      nomisCourtAppearanceId: number
+      /**
+       * @description DPS recall id
+       * @example 89442cf5-a22d-4113-b9d8-63daa757c962
+       */
+      dpsRecallId: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @default DPS_CREATED
+       * @enum {string|null}
+       */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED' | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    /** @description Mapping for a single court movement */
+    CourtMovementMappingIdsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS booking id
+       */
+      nomisBookingId: number
+      /**
+       * Format: int32
+       * @description The NOMIS movement sequence
+       */
+      nomisMovementSeq: number
+      /**
+       * Format: uuid
+       * @description The DPS court movement id
+       */
+      dpsCourtMovementId: string
+    }
+    /** @description Mapping for a single court schedule */
+    CourtScheduleMappingIdsDto: {
+      /**
+       * Format: int64
+       * @description The NOMIS court schedule id
+       */
+      nomisEventId: number
+      /**
+       * Format: uuid
+       * @description The DPS court appearance id
+       */
+      dpsCourtAppearanceId: string
+    }
+    /** @description Mappings for a prisoner's entire court schedule history */
+    CourtSchedulerPrisonerMappingIdsDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /** @description Mappings for schedule IDs */
+      schedules: components['schemas']['CourtScheduleMappingIdsDto'][]
+      /** @description Mappings for movement IDs */
+      movements: components['schemas']['CourtMovementMappingIdsDto'][]
+    }
+    /** @description Mappings for a migration */
+    CourtSchedulerMigrationDto: {
+      /**
+       * @description The NOMIS offender number
+       * @example A1234BC
+       */
+      prisonerNumber: string
+      /**
+       * @description The migration unique identifier
+       * @example 2025-08-11T15:34:43
+       */
+      migrationId?: string | null
+      /**
+       * @description Date-time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PageCourtSchedulerMigrationDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['CourtSchedulerMigrationDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    PageOrganisationsMappingDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['OrganisationsMappingDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    ProfileMappingDto: {
+      /** @description CPR profile id */
+      cprId: string
+      /**
+       * Format: int64
+       * @description NOMIS booking id
+       */
+      nomisBookingId: number
+      /** @description NOMIS profile type */
+      nomisProfileType: string
+      /** @description NOMIS Prison number aka Offender number */
+      nomisPrisonNumber: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'CPR_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    CorePersonPhoneMappingDto: {
+      /** @description CPR id */
+      cprId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /**
+       * @description CPR phone type
+       * @enum {string}
+       */
+      cprPhoneType: 'ADDRESS' | 'CORE_PERSON'
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'CPR_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    CorePersonMappingDto: {
+      /** @description CPR id */
+      cprId: string
+      /** @description NOMIS Prison number aka Offender number */
+      nomisPrisonNumber: string
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'CPR_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PageCorePersonMappingDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['CorePersonMappingDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    CorePersonEmailAddressMappingDto: {
+      /** @description CPR id */
+      cprId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'CPR_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    CorePersonAddressMappingDto: {
+      /** @description CPR id */
+      cprId: string
+      /**
+       * Format: int64
+       * @description NOMIS id
+       */
+      nomisId: number
+      /** @description Label (a timestamp for migrated ids) */
+      label?: string | null
+      /**
+       * @description Mapping type
+       * @enum {string}
+       */
+      mappingType: 'MIGRATED' | 'CPR_CREATED' | 'NOMIS_CREATED'
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    ReligionsMappingDto: {
+      cprId: string
+      nomisPrisonNumber: string
+      label?: string | null
+      /** @enum {string} */
+      mappingType: 'MIGRATED' | 'DPS_CREATED' | 'NOMIS_CREATED'
+      /** @example 2021-07-05T10:35:17 */
+      whenCreated?: string
+    }
+    PageReligionsMappingDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['ReligionsMappingDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    PagePersonMappingDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['PersonMappingDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description All mappings for a prisoner created either via migration or synchronisation */
+    AllPrisonerCaseNoteMappingsDto: {
+      /** @description Mappings */
+      mappings: components['schemas']['CaseNoteMappingDto'][]
+    }
+    /** @description All mappings for a prisoner created either via migration or synchronisation */
+    AllPrisonerAlertMappingsDto: {
+      /** @description Mappings */
+      mappings: components['schemas']['AlertMappingDto'][]
+    }
+    PagePrisonerAlertMappingsSummaryDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['PrisonerAlertMappingsSummaryDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
+    /** @description Summary of mappings for a prisoner created during migration */
+    PrisonerAlertMappingsSummaryDto: {
+      /** @description The prisoner number for the set of mappings */
+      offenderNo: string
+      /**
+       * Format: int32
+       * @description Count of the number mappings migrated (does not include subsequent alerts synchronised
+       */
+      mappingsCount: number
+      /**
+       * @description Date time the mapping was created
+       * @example 2021-07-05T10:35:17
+       */
+      whenCreated?: string
+    }
+    PageAlertMappingDto: {
+      /** Format: int64 */
+      totalElements?: number
+      /** Format: int32 */
+      totalPages?: number
+      /** Format: int32 */
+      size?: number
+      content?: components['schemas']['AlertMappingDto'][]
+      /** Format: int32 */
+      number?: number
+      first?: boolean
+      last?: boolean
+      sort?: components['schemas']['SortObject']
+      /** Format: int32 */
+      numberOfElements?: number
+      pageable?: components['schemas']['PageableObject']
+      empty?: boolean
+    }
   }
+  responses: never
+  parameters: never
+  requestBodies: never
+  headers: never
+  pathItems: never
 }
-
+export type $defs = Record<string, never>
 export interface operations {
-  /** Retrieves  room mappings associated with a NOMIS prison id. Requires role NOMIS_VISITS */
-  getRoomMappings: {
+  updateTransactionMappingsByNomisId: {
     parameters: {
+      query?: never
+      header?: never
       path: {
-        /** NOMIS prison Id */
-        prisonId: string
+        /**
+         * @description Old prisoner number to replace
+         * @example A3456KM
+         */
+        oldOffenderNo: string
+        /**
+         * @description New prisoner number to use
+         * @example A3457LZ
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Replacement made, or not present in table */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateTransactionMappingsByBookingId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description The booking id
+         * @example 1234567
+         */
+        bookingId: number
+        /**
+         * @description New prisoner number to use
+         * @example A3457LZ
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Replacement made, or not present in table */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateTapScheduleMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TapScheduleMappingDto']
       }
     }
     responses: {
-      /** Mapping list Returned */
+      /** @description Scheduled movement mapping updated */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createTapScheduleMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TapScheduleMappingDto']
+      }
+    }
+    responses: {
+      /** @description Scheduled movement mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateTapMovementMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TapMovementMappingDto']
+      }
+    }
+    responses: {
+      /** @description Tap movement mapping updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createTapMovementMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TapMovementMappingDto']
+      }
+    }
+    responses: {
+      /** @description Tap movement mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  movePrisonerBookingMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        bookingId: number
+        fromOffenderNo: string
+        toOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Bookings moved */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description We were unable to move the bookings */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description There are no mappings for the booking */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPrisonerTapMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TapPrisonerMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updatePunishmentBatchMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdjudicationPunishmentBatchUpdateMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entries created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description One of the punishment mappings already exist */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  createPunishmentBatchMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdjudicationPunishmentBatchMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entries created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description One of the punishment mappings already exist */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  updateMappingsInList: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Old prisoner number to replace
+         * @example A3456KM
+         */
+        oldOffenderNo: string
+        /**
+         * @description New prisoner number to use
+         * @example A3457LZ
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': string[]
+      }
+    }
+    responses: {
+      /** @description Mappings updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Invalid request */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  resetSequence: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Non-association id
+         * @example 2345678
+         */
+        nonAssociationId: number
+        /**
+         * @description Nomis type sequence to change it to
+         * @example 2
+         */
+        newSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  updateNonAssociationMappingsByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Old prisoner number to replace
+         * @example A3456KM
+         */
+        oldOffenderNo: string
+        /**
+         * @description New prisoner number to use
+         * @example A3457LZ
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Replacement made, or not present in table */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Replacement would result in an NA with both prisoner numbers the same - requires manual intervention */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateCsraMappingsByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Old prisoner number to replace
+         * @example A3456KM
+         */
+        oldOffenderNo: string
+        /**
+         * @description New prisoner number to use
+         * @example A3457LZ
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Replacement made, or not present in table */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateCsraMappingsByBookingId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description The booking id
+         * @example 1234567
+         */
+        bookingId: number
+        /**
+         * @description New prisoner number to use
+         * @example A3457LZ
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Replacement made, or not present in table */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CsraMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  courtChargeBatchUpdateMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtChargeBatchUpdateMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entries created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description One of the court charge mappings already exist */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  createCourtChargeMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtChargeMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtChargeMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  updateAndCreateMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtCaseBatchUpdateAndCreateMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created or replaced */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  replaceOrCreateMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtCaseBatchMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created or replaced */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPrisonerCourtSchedulerMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtSchedulerPrisonerMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateCaseNoteMappingsByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Old prisoner number to replace
+         * @example A3456KM
+         */
+        oldOffenderNo: string
+        /**
+         * @description New prisoner number to use
+         * @example A3457LZ
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Replacement made, or not present in table */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateCaseNotesMappingsByBookingId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description The booking id
+         * @example 1234567
+         */
+        bookingId: number
+        /**
+         * @description New prisoner number to use
+         * @example A3457LZ
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Replacement made, or not present in table */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CaseNoteMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  replaceMappingsForPrisonerAfterMerge: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Retained NOMIS offender no
+         * @example A1234KT
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['MergedPrisonerAlertMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mappings replaced */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAlertsMappingsForPrisoner: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS offender no
+         * @example A1234KT
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mappings for prisoner */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AllPrisonerAlertMappingsDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  replaceMappingsForPrisoner: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS offender no
+         * @example A1234KT
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonerAlertMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mappings replaced */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createAlertsMappingsForPrisoner: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS offender no
+         * @example A1234KT
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonerAlertMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getAlertsMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 12345
+         */
+        bookingId: number
+        /**
+         * @description NOMIS booking id
+         * @example 2
+         */
+        alertSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AlertMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateMappingBookingIdByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 12345
+         */
+        bookingId: number
+        /**
+         * @description NOMIS booking id
+         * @example 2
+         */
+        alertSequence: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NomisMappingIdUpdate']
+      }
+    }
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AlertMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  updateMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ActivityMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry updated */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActivityMappingDto']
+        }
+      }
+      /** @description The request is invalid, see response for details */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description An activity schedule mapping to update could not be found */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createActivityMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ActivityMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Nomis or activity schedule ids already exist */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getRoomMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison Id
+         * @example MDI
+         */
+        prisonId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping list Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['RoomMappingDto'][]
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Creates a new room mapping. Requires role NOMIS_VISITS */
   createRoomMapping: {
     parameters: {
+      query?: never
+      header?: never
       path: {
-        /** NOMIS prison Id */
+        /**
+         * @description NOMIS prison Id
+         * @example MDI
+         */
         prisonId: string
       }
-    }
-    responses: {
-      /** Visit mapping entry created */
-      201: unknown
-      /** mapping for this nomis room and prison already exists */
-      400: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
-      /** Unauthorized to access this endpoint */
-      401: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
-        }
-      }
+      cookie?: never
     }
     requestBody: {
       content: {
         'application/json': components['schemas']['CreateRoomMappingDto']
       }
     }
-  }
-  /** Creates a new visit and decrements the visit balance. Requires role NOMIS_VISITS */
-  createMapping: {
     responses: {
-      /** Visit mapping entry created */
-      201: unknown
-      /** Nomis or VSIP ids already exist */
+      /** @description Visit mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description mapping for this nomis room and prison already exists */
       400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
+    }
+  }
+  createVisitMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
     }
     requestBody: {
       content: {
         'application/json': components['schemas']['VisitMappingDto']
       }
     }
+    responses: {
+      /** @description Visit mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Nomis or VSIP ids already exist */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate visit has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
   }
-  /** Deletes all rows from the the visit id table. Requires role NOMIS_VISITS */
   deleteVisitIdMappings: {
     parameters: {
-      query: {
-        /** if true delete mapping entries created by the migration process only (synchronisation records are unaffected) */
+      query?: {
+        /**
+         * @description if true delete mapping entries created by the migration process only (synchronisation records are unaffected)
+         * @example true
+         */
         onlyMigrated?: boolean
       }
+      header?: never
+      path?: never
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Visit id mappings deleted */
+      /** @description Visit id mappings deleted */
       204: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': { [key: string]: unknown }
+          'application/json': Record<string, never>
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Creates a mapping between nomis Incentive ids and Incentive service id. Requires ROLE_NOMIS_INCENTIVES */
-  createMapping_1: {
+  createVisitSlotMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['VisitSlotMappingDto']
+      }
+    }
     responses: {
-      /** Incentive mapping entry created */
-      201: unknown
-      /** Nomis or Incentive ids already exist */
-      400: {
-        content: {
-          'application/json': components['schemas']['ErrorResponse']
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
         }
+        content?: never
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createVisitTimeSlotMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['VisitTimeSlotMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createVisitSlotsMigrationMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['VisitTimeSlotMigrationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createVisitBalanceAdjustmentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['VisitBalanceAdjustmentMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllVisitBalanceAdjustmentMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTransactionMappingsByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': number[]
+      }
+    }
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createTransactionMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TransactionMappingDto'][]
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createTransactionMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TransactionMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createTapApplicationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['TapApplicationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Application mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAllSentenceAdjustmentMappings: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentencingAdjustmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createSentencingMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SentencingAdjustmentMappingDto']
+      }
+    }
+    responses: {
+      /** @description Sentence adjustment mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Nomis or Sentencing ids already exist */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate sentencing adjustment mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteSentenceAdjustmentMappings: {
+    parameters: {
+      query?: {
+        /**
+         * @description if true delete mapping entries created by the migration process only (synchronisation records are unaffected)
+         * @example true
+         */
+        onlyMigrated?: boolean
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description sentence adjustment mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': Record<string, never>
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPrisonerMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonerBalanceMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllPrisonerMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPrisonMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonBalanceMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllPrisonMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createVisitorMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OfficialVisitorMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createOfficialVisitMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OfficialVisitMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  recreateOfficialVisitsByNomisIdMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OfficialVisitReplaceMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createOfficialVisitsMigrationMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OfficialVisitMigrationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createNonAssociationsMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NonAssociationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate non-association has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createLocationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['LocationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate location has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteLocationMappings: {
+    parameters: {
+      query?: {
+        /**
+         * @description if true delete mapping entries created by the migration process only (synchronisation records are unaffected)
+         * @example true
+         */
+        onlyMigrated?: boolean
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Location mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': Record<string, never>
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createIncidentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['IncidentMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate incident has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteIncidentMappings: {
+    parameters: {
+      query?: {
+        /**
+         * @description if true delete mapping entries created by the migration process only (synchronisation records are unaffected)
+         * @example true
+         */
+        onlyMigrated?: boolean
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Incident mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': Record<string, never>
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createIncentiveMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
     }
     requestBody: {
       content: {
         'application/json': components['schemas']['IncentiveMappingDto']
       }
     }
-  }
-  /** Deletes all rows from the the incentive mapping table. Requires role NOMIS_INCENTIVES */
-  deleteIncentiveMappings: {
-    parameters: {
-      query: {
-        /** if true delete mapping entries created by the migration process only (synchronisation records are unaffected) */
-        onlyMigrated?: boolean
-      }
-    }
     responses: {
-      /** Incentive mappings deleted */
-      204: {
+      /** @description Incentive mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Nomis or Incentive ids already exist */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': { [key: string]: unknown }
+          'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate incentive has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteIncentiveMappings: {
+    parameters: {
+      query?: {
+        /**
+         * @description if true delete mapping entries created by the migration process only (synchronisation records are unaffected)
+         * @example true
+         */
+        onlyMigrated?: boolean
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Incentive mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': Record<string, never>
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Retrieves a room mapping by NOMIS prison id and NOMIS room id. Requires role NOMIS_VISITS */
-  getRoomMapping: {
+  createHearingsMapping: {
     parameters: {
-      path: {
-        /** NOMIS prison Id */
-        prisonId: string
-        /** NOMIS room description */
-        nomisRoomDescription: string
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdjudicationMappingDto']
       }
     }
     responses: {
-      /** Mapping Information Returned */
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Hearing already exists */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCsraMappingsForPrisoner: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS offender no
+         * @example A1234KT
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mappings for prisoner */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AllPrisonerCsraMappingsDto']
+        }
+      }
+    }
+  }
+  createCsraMappingsForPrisoner: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS offender no
+         * @example A1234KT
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonerCsraMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createCsraMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CsraMappingDto'][]
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createCsraMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CsraMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createReviewMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CSIPChildMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPReviewMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate csip has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPlanMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CSIPChildMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPPlanMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate csip has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createInterviewMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CSIPChildMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPInterviewMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate csip has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createFactorMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CSIPChildMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPFactorMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate csip has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createChildMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CSIPFullMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry/entries created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate csip child has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createAttendeeMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CSIPChildMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPAttendeeMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate csip has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createMappingWithChildren: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CSIPFullMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate csip has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllCSIPMappings: {
+    parameters: {
+      query?: {
+        /**
+         * @description if true delete mapping entries created by the migration process only (synchronisation records are unaffected)
+         * @example true
+         */
+        onlyMigrated?: boolean
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CSIP mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': Record<string, never>
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createCSIPMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CSIPReportMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate csip has been rejected. If Error code = 409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getSentenceMappingsByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NomisSentenceId'][]
+      }
+    }
+    responses: {
+      /** @description List of associated mappings */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentenceMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getSentenceMappingsByDpsIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': string[]
+      }
+    }
+    responses: {
+      /** @description List of associated mappings */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentenceMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createSentenceMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SentenceMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentenceMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createSentenceTermMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SentenceTermMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentenceTermMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createMigrationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtCaseBatchMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getCaseMappingByNomisIs: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': number[]
+      }
+    }
+    responses: {
+      /** @description List of NOMIS to DPS Mappings Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtCaseMappingDto'][]
+        }
+      }
+      /** @description The request is invalid, see response for details */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden to this endpoint. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllCourtSentencingMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['DpsCourtCaseBatchMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created or replaced */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createCourtSentencingMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtCaseAllMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createCourtAppearanceRecallMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtAppearanceRecallMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtAppearanceMappingsByNomisIn: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': number[]
+      }
+    }
+    responses: {
+      /** @description List of NOMIS to DPS Mappings Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtCaseMappingDto'][]
+        }
+      }
+      /** @description The request is invalid, see response for details */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden to this endpoint. Requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createCourtAppearanceMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtAppearanceMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtAppearanceMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createCourtScheduleMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtScheduleMappingDto']
+      }
+    }
+    responses: {
+      /** @description Court schedule mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createCourtMovementMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CourtMovementMappingDto']
+      }
+    }
+    responses: {
+      /** @description Court movement mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping already exists. */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createWebMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OrganisationsMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPhoneMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OrganisationsMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getAllCorporateMappings: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Corporate mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageOrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createOrganisationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OrganisationsMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createEmailMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OrganisationsMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createAddressPhoneMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OrganisationsMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createAddressMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['OrganisationsMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createProfileMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ProfileMappingIdDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ProfileMapping']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createCorePersonMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CorePersonMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  replaceMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ReligionsMigrationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings replaced */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createReligionMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ReligionMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createReligionMigrationMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ReligionsMigrationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  replacePrisonerMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ContactPersonPrisonerMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mappings replaced */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  replacePrisonerRestrictionAfterMergeMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Prisoner number
+         * @example A1234BC
+         */
+        retainedOffenderNo: string
+        removedOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonerRestrictionMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Prisoner restriction mappings replaced successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  replacePrisonerRestrictionMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Prisoner number
+         * @example A1234BC
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonerRestrictionMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Prisoner restriction mappings replaced successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  replacePersonMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        personId: number
+      }
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ContactPersonMappingsDto']
+      }
+    }
+    responses: {
+      /** @description Mappings replaced */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPrisonerRestrictionMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PrisonerRestrictionMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllPrisonerRestrictionMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All prisoner restriction mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonPhoneMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonPhoneMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonRestrictionMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonRestrictionMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getAllPersonMappings: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PagePersonMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonIdentifierMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonIdentifierMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonEmploymentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonEmploymentMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonEmailMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonEmailMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonContactRestrictionMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonContactRestrictionMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonContactMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonContactMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createPersonAddressMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PersonAddressMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getCaseNotesMappingsByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': number[]
+      }
+    }
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CaseNoteMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createCaseNotesMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CaseNoteMappingDto'][]
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createCaseNotesMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CaseNoteMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createAppointmentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AppointmentMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Nomis or appointment instance ids already exist */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate incentive has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  createAllocationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AllocationMigrationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Nomis or activity schedule ids already exist */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createAlertsMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AlertMappingDto'][]
+      }
+    }
+    responses: {
+      /** @description Mappings created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getAlertsMappings: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageAlertMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createAlertsMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AlertMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate mapping has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllAlertsMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteMappingsForAdjudication: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdjudicationDeleteMappingDto']
+      }
+    }
+    responses: {
+      /** @description Adjudication mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createAllMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdjudicationAllMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Adjudication with charge sequence already exist */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createAdjudicationsMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdjudicationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Adjudication with charge sequence already exist */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  createActivityMigrationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ActivityMigrationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Mapping entry created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Nomis or activity schedule ids already exist */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getSentenceMappingByNomisIs: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['NomisSentenceId'][]
+      }
+    }
+    responses: {
+      /** @description List of NOMIS to DPS Mappings Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NomisDpsSentenceMapping'][]
+        }
+      }
+      /** @description The request is invalid, see response for details */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden to this endpoint. Requires role NOMIS_DPS_MAPPING__SENTENCE__R or NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAllLocationMappingsByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': number[]
+      }
+    }
+    responses: {
+      /** @description NOMIS to DPS Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NomisDpsLocationMapping'][]
+        }
+      }
+      /** @description The request is invalid, see response for details */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden to this endpoint. Requires role NOMIS_DPS_MAPPING__LOCATIONS__R or NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAllLocationMappingsByDpsIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': string[]
+      }
+    }
+    responses: {
+      /** @description DPS to NOMIS Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NomisDpsLocationMapping'][]
+        }
+      }
+      /** @description The request is invalid, see response for details */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden to this endpoint. Requires role NOMIS_DPS_MAPPING__LOCATIONS__R or NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getRoomMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison Id
+         * @example MDI
+         */
+        prisonId: string
+        /**
+         * @description NOMIS room description
+         * @example HEI_LW01
+         */
+        nomisRoomDescription: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['RoomMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** NOMIS room description does not exist in the mapping table for the given prison */
+      /** @description NOMIS room description does not exist in the mapping table for the given prison */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Retrieves a mapping by VSIP id. Requires role NOMIS_VISITS */
   getVisitMappingGivenVsipId: {
     parameters: {
+      query?: never
+      header?: never
       path: {
-        /** VSIP Id */
+        /**
+         * @description VSIP Id
+         * @example 12345
+         */
         vsipId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Mapping Information Returned */
+      /** @description Mapping Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['VisitMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** VSIP id does not exist in mapping table */
+      /** @description VSIP id does not exist in mapping table */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Retrieves a mapping by NOMIS id. Requires role NOMIS_VISITS */
   getVisitMappingGivenNomisId: {
     parameters: {
+      query?: never
+      header?: never
       path: {
-        /** NOMIS Id */
+        /**
+         * @description NOMIS Id
+         * @example 12345
+         */
+        nomisId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description NOMIS id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitMigratedVisitMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteVisitIdMappingsByMigrationId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit id mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLatestMigratedVisitMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitSlotMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS visit slot id
+         * @example 1234
+         */
+        nomisId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitSlotMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteVisitSlotMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS visit slot id
+         * @example 1234
+         */
+        nomisId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping deleted or does not exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitSlotMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS id
+         * @example 1234
+         */
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitSlotMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitTimeSlotMappingByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison id
+         * @example WWI
+         */
+        nomisPrisonId: string
+        /**
+         * @description NOMIS day of the week
+         * @example MONDAY
+         */
+        nomisDayOfWeek: string
+        /**
+         * @description NOMIS slot sequence
+         * @example 4
+         */
+        nomisSlotSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitTimeSlotMappingDto']
+        }
+      }
+      /** @description Day of week not valid */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteVisitTimeSlotMappingByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison id
+         * @example WWI
+         */
+        nomisPrisonId: string
+        /**
+         * @description NOMIS day of the week
+         * @example MONDAY
+         */
+        nomisDayOfWeek: string
+        /**
+         * @description NOMIS slot sequence
+         * @example 4
+         */
+        nomisSlotSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping deleted or no longer exists */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Day of week not valid */
+      400: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitTimeSlotMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS id
+         * @example 1234
+         */
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitTimeSlotMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitTimeSlotMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit time slots mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageVisitTimeSlotMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitBalanceAdjustmentMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS visit balance adjustment id.
+         * @example 1
+         */
+        nomisVisitBalanceAdjustmentId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit order balance mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitBalanceAdjustmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitBalanceAdjustmentMappingsByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS id
+         * @example A1234BC
+         */
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit balance adjustment mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['VisitBalanceAdjustmentMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteVisitBalanceAdjustmentMappingsByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS id
+         * @example A1234BC
+         */
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTransactionMappingsForPrisoner: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS offender no
+         * @example A1234KT
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mappings for prisoner */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AllPrisonerTransactionMappingsDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTransactionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS transaction id
+         * @example 23456789
+         */
+        transactionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTransactionMappingsByMigrationIdGroupByPrisoner: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': number
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLatestMigratedTransactionMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTransactionMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS transaction id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsTransactionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TransactionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteTransactionMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS transaction id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsTransactionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAllPrisonerMappingIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonerNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner mapping IDs returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TapPrisonerMappingIdsDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTapScheduleMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nomisEventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Scheduled tap mapping returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TapScheduleMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteTapScheduleMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nomisEventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Scheduled tap mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  findTapScheduleMappingsByNomisAddressId: {
+    parameters: {
+      query?: {
+        fromDate?: string
+      }
+      header?: never
+      path: {
+        nomisAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description List of tap schedules returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['FindTapScheduleMappingsForAddressResponse']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTapScheduleMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Scheduled tap mapping returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TapScheduleMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTapMovementMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        bookingId: number
+        movementSeq: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Tap movement mapping returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TapMovementMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteTapMovementMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        bookingId: number
+        movementSeq: number
+      }
+      cookie?: never
+    }
+    requestBody?: {
+      content: {
+        'application/json': components['schemas']['TapMovementMappingDto']
+      }
+    }
+    responses: {
+      /** @description Tap movement mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTapMovementMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Tap movement mapping returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TapMovementMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonerBookingMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        bookingId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Temporary absence mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TapMoveBookingMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTapMappingsCount: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Temporary absence mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageTapMigrationDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTapApplicationMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nomisApplicationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Application mapping returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TapApplicationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteTapApplicationByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nomisApplicationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: {
+      content: {
+        'application/json': components['schemas']['TapApplicationMappingDto']
+      }
+    }
+    responses: {
+      /** @description Application does not exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getTapApplicationSyncMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        dpsAuthorisationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Application mapping returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['TapApplicationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getSentenceAdjustmentMappingGivenNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS Adjustment Id
+         * @example 12345
+         */
+        nomisAdjustmentId: number
+        /**
+         * @description NOMIS Adjustment Type
+         * @example SENTENCE
+         */
+        nomisAdjustmentCategory: 'SENTENCE' | 'KEY-DATE'
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentencingAdjustmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description NOMIS sentence adjustment id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Indicates a duplicate adjustment has been rejected. If Error code = 1409 the body will return a DuplicateErrorResponse */
+      409: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['DuplicateMappingErrorResponse']
+        }
+      }
+    }
+  }
+  getMigratedSentenceAdjustmentMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentencingAdjustmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLatestMigratedSentenceAdjustmentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentencingAdjustmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getSentencingAdjustmentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Sentence Adjustment Id
+         * @example 12345
+         */
+        adjustmentId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentencingAdjustmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description sentence adjustment id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteSentenceAdjustmentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Sentence Adjustment Id (from sentencing domain)
+         * @example 12345
+         */
+        adjustmentId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Sentence Adjustment mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPunishmentsMappingGivenDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS Punishment Id
+         * @example 12345
+         */
+        dpsPunishmentId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AdjudicationPunishmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePunishmentsMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS Punishment Id
+         * @example 12345
+         */
+        dpsPunishmentId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Record deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access denied to this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPunishmentsMappingGivenNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS Booking Id
+         * @example 12345
+         */
+        nomisBookingId: number
+        /**
+         * @description NOMIS sanction sequence
+         * @example 12
+         */
+        nomisSanctionSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AdjudicationPunishmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonerMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS root offender id
+         * @example 123456
+         */
+        nomisRootOffenderId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner balance mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerBalanceMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonerMappingByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner balance mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PagedModelPrisonerBalanceMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonerMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS id
+         * @example A1234BC
+         */
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner balance mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerBalanceMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePrisonerMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS id
+         * @example A1234BC
+         */
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS id
+         * @example MDI
+         */
         nomisId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Mapping Information Returned */
+      /** @description Prison balance mapping data */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': components['schemas']['VisitMappingDto']
+          'application/json': components['schemas']['PrisonBalanceMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** NOMIS id does not exist in mapping table */
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged. */
-  getMigratedVisitMappingsByMigrationId: {
+  getPrisonMappingByMigrationId: {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
       }
+      header?: never
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Mapping page returned */
+      /** @description Prison balance mapping page returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': components['schemas']['VisitMappingDto']
+          'application/json': components['schemas']['PagedModelPrisonBalanceMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Requires role NOMIS_VISITS */
-  getLatestMigratedVisitMapping: {
+  getPrisonMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS id
+         * @example MDI
+         */
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
     responses: {
-      /** Mapping Information Returned */
+      /** @description Prison balance mapping data */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
-          'application/json': components['schemas']['VisitMappingDto']
+          'application/json': components['schemas']['PrisonBalanceMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No mappings found at all for any migration */
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Retrieves a mapping by NOMIS id. Requires role ROLE_NOMIS_INCENTIVES */
+  deletePrisonMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS id
+         * @example MDI
+         */
+        dpsId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitorMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS visitor id
+         * @example 123
+         */
+        nomisVisitorId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OfficialVisitorMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteOfficialVisitorMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS visitor id
+         * @example 123
+         */
+        nomisVisitorId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Official visitor mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitorMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS visitor id
+         * @example 123
+         */
+        dpsVisitorId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OfficialVisitorMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS visit id
+         * @example 123
+         */
+        nomisVisitId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OfficialVisitMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteOfficialVisitMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS visit id
+         * @example 123
+         */
+        nomisVisitId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Official visit mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getVisitMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS visit id
+         * @example 123
+         */
+        dpsVisitId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OfficialVisitMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getOfficialVisitMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Visit mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageOfficialVisitMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getNonAssociationMappingGivenNonAssociationId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Non-association id
+         * @example 2
+         */
+        nonAssociationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NonAssociationMappingDto']
+        }
+      }
+    }
+  }
+  deleteNonAssociationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Non-association Id
+         * @example 12345
+         */
+        nonAssociationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Non-association mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getNonAssociationMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageNonAssociationMappingDto']
+        }
+      }
+    }
+  }
+  getLatestMigratedNonAssociationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NonAssociationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getNonAssociationMappingGivenNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description First offender number
+         * @example A1234BC
+         */
+        firstOffenderNo: string
+        /**
+         * @description Second offender number
+         * @example D5678EF
+         */
+        secondOffenderNo: string
+        /**
+         * @description Nomis type sequence
+         * @example 2
+         */
+        typeSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NonAssociationMappingDto']
+        }
+      }
+    }
+  }
+  getNonAssociationMappingsOfMerge: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Old offender number of merge
+         * @example A1234BC
+         */
+        oldOffenderNo: string
+        /**
+         * @description New offender number of merge
+         * @example D5678EF
+         */
+        newOffenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NonAssociationMappingDto'][]
+        }
+      }
+    }
+  }
+  getLocationMappingGivenNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Nomis location id
+         * @example 12345678
+         */
+        nomisLocationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['LocationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLocationMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['LocationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLocationLatestMigratedMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['LocationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLocationMappingGivenDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS Location id
+         * @example 22345678
+         */
+        dpsLocationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['LocationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getIncidentMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description Nomis Incident Id */
+        nomisIncidentId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['IncidentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Nomis incident id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getIncidentMappingsByNomisId: {
+    parameters: {
+      query: {
+        /**
+         * @description Nomis Incident Id
+         * @example 345
+         */
+        nomisIncidentId: number[]
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['IncidentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getMigratedMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['IncidentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getMappingForLatestMigrated: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['IncidentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getIncidentMappingByDPSId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS Incident id
+         * @example 12345
+         */
+        dpsIncidentId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['IncidentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description DPS Incident id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteIncidentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS Incident Id
+         * @example 4321
+         */
+        dpsIncidentId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Incident mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
   getIncentiveMappingGivenNomisId: {
     parameters: {
+      query?: never
+      header?: never
       path: {
-        /** NOMIS booking ID */
-        bookingId: string
-        /** NOMIS incentive sequence */
-        incentiveSequence: string
+        /**
+         * @description NOMIS booking ID
+         * @example 12345
+         */
+        bookingId: number
+        /**
+         * @description NOMIS incentive sequence
+         * @example 2
+         */
+        incentiveSequence: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Mapping Information Returned */
+      /** @description Mapping Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['IncentiveMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** NOMIS incentive id does not exist in mapping table */
+      /** @description NOMIS incentive id does not exist in mapping table */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Retrieve all mappings of type 'MIGRATED' for the given migration id (identifies a single migration run). Results are paged. */
-  getMigratedVisitMappingsByMigrationId_1: {
+  getIncentiveMigratedVisitMappingsByMigrationId: {
     parameters: {
       query: {
         pageRequest: components['schemas']['Pageable']
       }
+      header?: never
       path: {
-        /** Migration Id */
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
         migrationId: string
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Mapping page returned */
+      /** @description Mapping page returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['IncentiveMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Requires role READ_MAPPING, UPDATE_MAPPING or ADMIN_MAPPING */
   getLatestMigratedIncentiveMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
     responses: {
-      /** Mapping Information Returned */
+      /** @description Mapping Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['IncentiveMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** No mappings found at all for any migration */
+      /** @description No mappings found at all for any migration */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Retrieves a mapping by Incentive id. Requires role ROLE_NOMIS_INCENTIVES */
   getIncentiveMappingGivenIncentiveId: {
     parameters: {
+      query?: never
+      header?: never
       path: {
-        /** Incentive Id */
-        incentiveId: string
+        /**
+         * @description Incentive Id
+         * @example 12345
+         */
+        incentiveId: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Mapping Information Returned */
+      /** @description Mapping Information Returned */
       200: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['IncentiveMappingDto']
         }
       }
-      /** Unauthorized to access this endpoint */
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
-      /** VSIP id does not exist in mapping table */
+      /** @description Incentive id does not exist in mapping table */
       404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Deletes the incentive mapping table. Requires role NOMIS_INCENTIVES */
   deleteIncentiveMapping: {
     parameters: {
+      query?: never
+      header?: never
       path: {
-        /** Incentive Id */
-        incentiveId: string
+        /**
+         * @description Incentive Id
+         * @example 12345
+         */
+        incentiveId: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Incentive mapping deleted */
-      204: never
-      /** Unauthorized to access this endpoint */
+      /** @description Incentive mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
   }
-  /** Removes room mapping given the prison and nomis room description. Requires role NOMIS_VISITS */
-  deleteRoomMapping: {
+  getHearingsMappingGivenNomisId: {
     parameters: {
+      query?: never
+      header?: never
       path: {
-        /** NOMIS prison Id */
-        prisonId: string
-        /** NOMIS room description */
-        nomisRoomDescription: string
+        /**
+         * @description NOMIS hearing id
+         * @example 123
+         */
+        id: number
       }
+      cookie?: never
     }
+    requestBody?: never
     responses: {
-      /** Visit room mapping deleted */
-      204: never
-      /** Unauthorized to access this endpoint */
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AdjudicationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
       401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
         content: {
           'application/json': components['schemas']['ErrorResponse']
         }
       }
     }
-    requestBody: {
+  }
+  getHearingsMappingGivenDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS hearing Id
+         * @example AB345
+         */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AdjudicationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteHearingsMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS Hearing id
+         * @example AB345
+         */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCsraMappingsByMigrationIdGroupByPrisoner: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': number
+        }
+      }
+    }
+  }
+  getLatestMigratedCsraMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CsraMappingDto']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCsraMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSRA id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCsraId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CsraMappingDto']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCsraMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSRA id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCsraId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  getCsraMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 23456789
+         */
+        bookingId: number
+        /**
+         * @description Sequence
+         * @example 3
+         */
+        sequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CsraMappingDto']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCsraMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 23456789
+         */
+        bookingId: number
+        /**
+         * @description Sequence
+         * @example 3
+         */
+        sequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': number
+        }
+      }
+    }
+  }
+  getCSIPReviewMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS CSIP Review id
+         * @example 12345
+         */
+        nomisCSIPReviewId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPReviewMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP review id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPReviewId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCSIPReviewMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Review id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPReviewId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPPlanMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS CSIP Plan id
+         * @example 12345
+         */
+        nomisCSIPPlanId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPPlanMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP plan id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPPlanId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCSIPPlanMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Plan id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPPlanId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description Nomis CSIP Id */
+        nomisCSIPId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPReportMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Nomis csip id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPMappingsByNomisId: {
+    parameters: {
+      query: {
+        /**
+         * @description Nomis CSIP Id
+         * @example 345
+         */
+        nomisCSIPId: number[]
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPReportMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPFullMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLatestMigratedCSIPMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPFullMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPInterviewMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS CSIP Interview id
+         * @example 12345
+         */
+        nomisCSIPInterviewId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPInterviewMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP interview id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPInterviewId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCSIPInterviewMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Interview id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPInterviewId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPFactorMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS CSIP Factor id
+         * @example 12345
+         */
+        nomisCSIPFactorId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPFactorMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP factor id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPFactorId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCSIPFactorMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Factor id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPFactorId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAllMappingsByDPSId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Report Id
+         * @example 12345
+         */
+        csipId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPFullMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description DPS CSIP Report id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPMappingByDPSId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Id
+         * @example 12345
+         */
+        csipId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPReportMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description CSIP id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPAttendeeMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS CSIP Attendee id
+         * @example 12345
+         */
+        nomisCSIPAttendeeId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCSIPAttendeeMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP attendee id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPAttendeeId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CSIPChildMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCSIPAttendeeMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Attendee id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCSIPAttendeeId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtSentenceMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 123432
+         */
+        bookingId: number
+        /**
+         * @description NOMIS sentence sequence
+         * @example 1
+         */
+        sentenceSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentenceMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteSentenceMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 123432
+         */
+        bookingId: number
+        /**
+         * @description NOMIS sentence sequence
+         * @example 1
+         */
+        sentenceSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getSentenceMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS sentence id
+         * @example D123
+         */
+        sentenceId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentenceMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getSentenceTermMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 123432
+         */
+        bookingId: number
+        /**
+         * @description NOMIS sentence sequence
+         * @example 1
+         */
+        sentenceSequence: number
+        /**
+         * @description NOMIS sentence sequence
+         * @example 1
+         */
+        termSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentenceTermMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteSentenceTermMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 123432
+         */
+        bookingId: number
+        /**
+         * @description NOMIS sentence sequence
+         * @example 1
+         */
+        sentenceSequence: number
+        /**
+         * @description NOMIS term sequence
+         * @example 1
+         */
+        termSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getSentenceTermMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS sentence term id
+         * @example D123
+         */
+        termId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['SentenceTermMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtSentencingMigrationData: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison Number aka offender no.
+         * @example A1234BC
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Offender migration summary returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtSentencingMigrationSummary']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No record exists for the offender */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtSentencingMigrationData: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison Number aka offender no.
+         * @example A1234BC
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Offender migration summary deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtSentencingMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageCourtSentencingMigrationSummary']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtChargeMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS court charge id
+         * @example 123
+         */
+        courtChargeId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtChargeMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtChargeMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS court charge id
+         * @example D123
+         */
+        courtChargeId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtChargeMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtSentencingMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS court case id
+         * @example 123
+         */
+        courtCaseId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtCaseMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtSentencingMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS court case id
+         * @example D123
+         */
+        courtCaseId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtCaseMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtAppearanceMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS court appearance id
+         * @example 123
+         */
+        courtAppearanceId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtAppearanceMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtAppearanceRecallMappingsByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS recall id
+         * @example f6ec6d17-a062-4272-9c21-1017b06d556c
+         */
+        recallId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtAppearanceRecallMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtAppearanceRecallMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS recall id
+         * @example f6ec6d17-a062-4272-9c21-1017b06d556c
+         */
+        recallId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mappings Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtAppearanceMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS court appearance id
+         * @example D123
+         */
+        courtAppearanceId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtAppearanceMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAllCourtSchedulerPrisonerMappingIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        prisonerNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner mapping IDs returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtSchedulerPrisonerMappingIdsDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtScheduleMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nomisEventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Court schedule mapping returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtScheduleMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtScheduleMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nomisEventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Court schedule mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtMovementMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        nomisBookingId: number
+        nomisMovementSeq: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Court movement mapping returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CourtMovementMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description The mapping does not exist. */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCourtSchedulerMappingsCount: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Court scheduler mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageCourtSchedulerMigrationDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getWebMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS web id
+         * @example 12345
+         */
+        nomisWebId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Web mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteWebMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS web id
+         * @example 12345
+         */
+        nomisWebId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Delete Web mapping data or does not exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getWebMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS  web id
+         * @example 12345
+         */
+        dpsWebId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteWebMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS web address id
+         * @example 12345
+         */
+        dpsWebId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Delete Web mapping data or does not exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCorporatePhoneMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS phone id
+         * @example 12345
+         */
+        nomisPhoneId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Phone mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePhoneMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS phone id
+         * @example 12345
+         */
+        nomisPhoneId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Delete Phone mapping data or does not exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPhoneMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS  phone id
+         * @example 12345
+         */
+        dpsPhoneId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePhoneMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS phone id
+         * @example 12345
+         */
+        dpsPhoneId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Delete Phone mapping data or does not exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCorporateMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS corporate id
+         * @example 12345
+         */
+        nomisCorporateId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Corporate mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCorporateMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS corporate id
+         * @example 12345
+         */
+        nomisCorporateId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Deletes Corporate mapping data or it doesn't exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCorporateMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS organisation id
+         * @example 12345
+         */
+        dpsOrganisationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Corporate mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCorporateMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS organisation id
+         * @example 12345
+         */
+        dpsOrganisationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Deletes Corporate mapping data or it doesn't exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getEmailMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS email id
+         * @example 12345
+         */
+        nomisEmailId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Email mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteEmailMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS email id
+         * @example 12345
+         */
+        nomisEmailId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Deletes Email mapping data or it doesn't exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getEmailMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS  email id
+         * @example 12345
+         */
+        dpsEmailId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteEmailMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS email id
+         * @example 12345
+         */
+        dpsEmailId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Deletes Email mapping data or it doesn't exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCorporateAddressMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS address id
+         * @example 12345
+         */
+        nomisAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Address mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAddressMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS address id
+         * @example 12345
+         */
+        nomisAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Address mapping data deleted or doesn't exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAddressMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS address id
+         * @example 12345
+         */
+        dpsAddressId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Address mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAddressMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS address id
+         * @example 12345
+         */
+        dpsAddressId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Address mapping data deleted or doesn't exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAddressPhoneMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS phone id
+         * @example 12345
+         */
+        nomisPhoneId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description AddressPhone mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAddressPhoneMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS phone id
+         * @example 12345
+         */
+        nomisPhoneId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Deletes AddressPhone mapping data or it doesn't exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAddressPhoneMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS address phone id
+         * @example 12345
+         */
+        dpsAddressPhoneId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Address mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['OrganisationsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getProfileMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description CPR UUID
+         * @example 12345678-1234-5678-abcd-1234567890ab
+         */
+        cprId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ProfileMappingDto']
+        }
+      }
+    }
+  }
+  getProfileMappingByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Booking id
+         * @example 12345678
+         */
+        bookingId: number
+        /**
+         * @description Nomis profile type
+         * @example SEXO
+         */
+        profileType: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ProfileMappingDto']
+        }
+      }
+    }
+  }
+  getCorePersonPhoneMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS phone id
+         * @example 12345
+         */
+        nomisPhoneId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Core Person phone mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CorePersonPhoneMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPhoneMappingByCprId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description CPR phone id
+         * @example 12345
+         */
+        cprPhoneId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Core Person phone mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CorePersonPhoneMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonMappingByNomisPrisonNumber: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison Number aka offender no.
+         * @example A1234BC
+         */
+        nomisPrisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Core Person mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CorePersonMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonMappingByCprId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description CPR core person id
+         * @example 12345
+         */
+        cprId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CorePersonMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Core Person mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageCorePersonMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCorePersonEmailMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS email address id
+         * @example 12345
+         */
+        nomisEmailAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person email mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CorePersonEmailAddressMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCorePersonEmailMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description CPR email address id
+         * @example 12345
+         */
+        cprEmailAddressId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Email mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CorePersonEmailAddressMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCorePersonAddressMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS address id
+         * @example 12345
+         */
+        nomisAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Core Person address mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CorePersonAddressMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAddressMappingByCprId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description CPR address id
+         * @example 12345
+         */
+        cprAddressId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Address mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CorePersonAddressMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getReligionsMappingByNomisPrisonNumber: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison number
+         * @example A1234BC
+         */
+        nomisPrisonNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ReligionsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getReligionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS religion id
+         * @example 1234
+         */
+        nomisId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ReligionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteReligionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS religion id
+         * @example 1234
+         */
+        nomisId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping deleted or does not exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getReligionMappingByCprId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description CPR id
+         * @example 1234
+         */
+        cprId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ReligionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getReligionsMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Religions mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageReligionsMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonerRestrictionMappingsByOffenderNo: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Offender number
+         * @example A1234BC
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description List of Prisoner Restriction mappings */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerRestrictionMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonerRestrictionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prisoner restriction id
+         * @example 12345
+         */
+        nomisPrisonerRestrictionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner Restriction mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerRestrictionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePrisonerRestrictionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prisoner restriction id
+         * @example 12345
+         */
+        nomisPrisonerRestrictionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner Restriction mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPrisonerRestrictionMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS prisoner restriction id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsPrisonerRestrictionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner Restriction mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PrisonerRestrictionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePrisonerRestrictionMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS prisoner restriction id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsPrisonerRestrictionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Prisoner Restriction mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonPhoneMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS phone id
+         * @example 12345
+         */
+        nomisPhoneId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person phone mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonPhoneMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonPhoneMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS phone id
+         * @example 12345
+         */
+        nomisPhoneId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person phone mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonPhoneMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact phone id
+         * @example 12345
+         */
+        dpsContactPhoneId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Phone mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonPhoneMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonAddressPhoneMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact phone id
+         * @example 12345
+         */
+        dpsContactAddressPhoneId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Phone mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonPhoneMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS person id
+         * @example 12345
+         */
+        nomisPersonId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS person id
+         * @example 12345
+         */
+        nomisPersonId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person mapping data deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact id
+         * @example 12345
+         */
+        dpsContactId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact id
+         * @example 12345
+         */
+        dpsContactId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person mapping data */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonRestrictionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS contact restriction id
+         * @example 12345
+         */
+        nomisPersonRestrictionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Restriction mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonRestrictionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonRestrictionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS contact restriction id
+         * @example 12345
+         */
+        nomisPersonRestrictionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Restriction mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonRestrictionMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact restriction id
+         * @example 12345
+         */
+        dpsContactRestrictionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Restriction mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonRestrictionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonIdentifierMappingByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS person id
+         * @example 12345
+         */
+        nomisPersonId: number
+        /**
+         * @description NOMIS identifier sequence
+         * @example 4
+         */
+        nomisSequenceNumber: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person identifier mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonIdentifierMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonIdentifierMappingByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS person id
+         * @example 12345
+         */
+        nomisPersonId: number
+        /**
+         * @description NOMIS identifier sequence
+         * @example 4
+         */
+        nomisSequenceNumber: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person identifier mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonIdentifierMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact identifier id
+         * @example 12345
+         */
+        dpsContactIdentifierId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Identifier mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonIdentifierMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonEmploymentMappingByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS person id
+         * @example 12345
+         */
+        nomisPersonId: number
+        /**
+         * @description NOMIS employment sequence
+         * @example 4
+         */
+        nomisSequenceNumber: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person employment mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonEmploymentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonEmploymentMappingByNomisIds: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS person id
+         * @example 12345
+         */
+        nomisPersonId: number
+        /**
+         * @description NOMIS employment sequence
+         * @example 4
+         */
+        nomisSequenceNumber: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person employment mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonEmploymentMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact employment id
+         * @example 12345
+         */
+        dpsContactEmploymentId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Employment mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonEmploymentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonEmailMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS email id
+         * @example 12345
+         */
+        nomisInternetAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person email mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonEmailMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonEmailMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS email id
+         * @example 12345
+         */
+        nomisInternetAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person email mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonEmailMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact email id
+         * @example 12345
+         */
+        dpsContactEmailId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Email mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonEmailMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonContactMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS contact id
+         * @example 12345
+         */
+        nomisContactId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Contact mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonContactMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonContactMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS contact id
+         * @example 12345
+         */
+        nomisContactId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Contact mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonContactMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS prisoner contact id
+         * @example 12345
+         */
+        dpsPrisonerContactId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Contact mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonContactMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonContactRestrictionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS contact restriction id
+         * @example 12345
+         */
+        nomisContactRestrictionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person contactRestriction mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonContactRestrictionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonContactRestrictionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS contact restriction id
+         * @example 12345
+         */
+        nomisContactRestrictionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person contact restriction mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonContactRestrictionMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS prisoner contact restriction id
+         * @example 12345
+         */
+        dpsPrisonerContactRestrictionId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Contact Restriction mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonContactRestrictionMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonAddressMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS address id
+         * @example 12345
+         */
+        nomisAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person address mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonAddressMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deletePersonAddressMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS address id
+         * @example 12345
+         */
+        nomisAddressId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person address mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getPersonAddressMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS contact address id
+         * @example 12345
+         */
+        dpsContactAddressId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Person Address mapping data */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PersonAddressMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCaseNotesMappingsForPrisoner: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS offender no
+         * @example A1234KT
+         */
+        offenderNo: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mappings for prisoner */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AllPrisonerCaseNoteMappingsDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCaseNotesMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS case note id
+         * @example 23456789
+         */
+        caseNoteId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CaseNoteMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCaseNotesMappingsByMigrationIdGroupByPrisoner: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': number
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLatestMigratedCaseNoteMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CaseNoteMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getCaseNotesMappingsByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS casenote id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCaseNoteId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['CaseNoteMappingDto'][]
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getMappingGivenEventId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Nomis event Id
+         * @example 700800900
+         */
+        eventId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AppointmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getMigratedAppointmentMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AppointmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAppointmentMigrationMappingsByMigrationId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2023-06-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Appointments migration mapping id mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Insufficient privileges - requires role NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLatestMigratedAppointmentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AppointmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAppointmentMappingGivenId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Appointment instance Id
+         * @example 12345
+         */
+        appointmentInstanceId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AppointmentMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAllocationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Nomis allocation Id
+         * @example 12345
+         */
+        nomisAllocationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AllocationMigrationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getMigratedAllocationMappings: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AllocationMigrationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAllocationLatestMigratedMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AllocationMigrationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAlertsMappingsByMigrationIdGroupByPrisoner: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PagePrisonerAlertMappingsSummaryDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAlertsMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['PageAlertMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAlertsMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS alert id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsAlertId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AlertMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAlertsMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS alert id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsAlertId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getMigratedAdjudicationMappingsByMigrationId: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AdjudicationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLatestMigratedAdjudicationMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AdjudicationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAdjudicationsMappingGivenNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS Charge number
+         * @example 12345/1
+         */
+        chargeNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AdjudicationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAdjudicationsMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Adjudication number
+         * @example 12345
+         */
+        chargeNumber: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getAdjudicationsMappingGivenDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Adjudication number
+         * @example 12345
+         */
+        adjudicationNumber: number
+        /**
+         * @description Charge sequence for offence in this adjudication
+         * @example 1
+         */
+        chargeSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['AdjudicationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getScheduleInstanceMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Scheduled instance Id
+         * @example 67890
+         */
+        scheduledInstanceId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActivityMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getActivityMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Course activity Id
+         * @example 12345
+         */
+        courseActivityId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActivityMigrationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getMigratedActivityMappings: {
+    parameters: {
+      query: {
+        pageRequest: components['schemas']['Pageable']
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActivityMigrationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getActivityLatestMigratedMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActivityMigrationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description No mappings found at all for any migration */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getMigratedActivityCount: {
+    parameters: {
+      query?: {
+        /**
+         * @description Include ignored activities (those with null activity_id), defaults to true
+         * @example false
+         */
+        includeIgnored?: boolean
+      }
+      header?: never
+      path: {
+        /**
+         * @description Migration Id
+         * @example 2020-03-24T12:00:00
+         */
+        migrationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping page returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActivityMigrationMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getScheduleMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Activity schedule Id
+         * @example 12345
+         */
+        activityScheduleId: number
+        /**
+         * @description Scheduled instance Id
+         * @example 67890
+         */
+        scheduledInstanceId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActivityMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getActivityMappingGivenId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Activity schedule Id
+         * @example 12345
+         */
+        activityScheduleId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ActivityMappingDto']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getSentenceMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS booking id
+         * @example 123456
+         */
+        nomisBookingId: number
+        /**
+         * @description NOMIS sentence sequence
+         * @example 4
+         */
+        nomisSentenceSequence: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description NOMIS to DPS Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NomisDpsSentenceMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden to this endpoint. Requires role NOMIS_DPS_MAPPING__SENTENCE__R or NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Sentence id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLocationMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS internal location id
+         * @example 2318905
+         */
+        nomisLocationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description NOMIS to DPS Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NomisDpsLocationMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden to this endpoint. Requires role NOMIS_DPS_MAPPING__LOCATIONS__R or NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  getLocationMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS location UUID
+         * @example 12345678-1234-5678-abcd-1234567890ab
+         */
+        dpsLocationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description DPS to NOMIS Mapping Information Returned */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['NomisDpsLocationMapping']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden to this endpoint. Requires role NOMIS_DPS_MAPPING__LOCATIONS__R or NOMIS_MAPPING_API__SYNCHRONISATION__RW */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Location id does not exist in mapping table */
+      404: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteRoomMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS prison Id
+         * @example MDI
+         */
+        prisonId: string
+        /**
+         * @description NOMIS room description
+         * @example MDI
+         */
+        nomisRoomDescription: string
+      }
+      cookie?: never
+    }
+    requestBody?: {
       content: {
         'application/json': components['schemas']['VisitMappingDto']
+      }
+    }
+    responses: {
+      /** @description Visit room mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllVisitSlotsMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteTransactionMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Nomis transaction id
+         * @example 3344556677
+         */
+        nomisTransactionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourseSchedulesAfterId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Max NOMIS course schedule ID to retain
+         * @example 12345
+         */
+        maxCourseScheduleId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Success */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllOfficialVisitsMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteMappingGivenNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Nomis Location Id
+         * @example 12345678
+         */
+        locationId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Location mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteMappingGivenDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS Location Id
+         * @example 1234abcd-5678-1234-5678-0123456789ab
+         */
+        locationId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Location mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteChildMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Id
+         * @example 4321
+         */
+        dpsCSIPId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CSIP child mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCSIPMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS CSIP Id
+         * @example 4321
+         */
+        dpsCSIPId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description CSIP mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteSentenceMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS sentence id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsSentenceId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteSentenceTermMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS sentence term id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsTermId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllMappingsAfterDate: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description delete all mappings created after this time
+         * @example 2020-03-24T12:00:00
+         */
+        cutoffDateTime: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtChargeMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS court charge id
+         * @example 33
+         */
+        nomisCourtChargeId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtSentencingMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS court case id
+         * @example 33
+         */
+        nomisCourtCaseId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtSentencingMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS court case id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCourtCaseId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtAppearanceMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description NOMIS court appearance id
+         * @example 33
+         */
+        nomisCourtAppearanceId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtAppearanceMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS court appearances id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCourtAppearanceId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllCourtSentencingMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCourtMovementMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        bookingId: number
+        movementSeq: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Court movement mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAddressPhoneMappingByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS phone id
+         * @example 12345
+         */
+        dpsPhoneId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Deletes AddressPhone mapping data or it doesn't exist */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access this endpoint is forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllReligionMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAllCorePersonMappings: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All mappings deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Access forbidden for this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCaseNotesMappingByNomisId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Nomis casenote id
+         * @example 3344556677
+         */
+        nomisCaseNoteId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteCaseNotesMappingsByDpsId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description DPS casenote id
+         * @example edcd118c-41ba-42ea-b5c4-404b453ad58b
+         */
+        dpsCaseNoteId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Forbidden to access this endpoint */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  deleteAppointmentMapping: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /**
+         * @description Appointment instance Id
+         * @example 12345
+         */
+        id: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Mapping deleted */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
       }
     }
   }

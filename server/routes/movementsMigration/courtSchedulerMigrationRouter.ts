@@ -3,24 +3,24 @@ import express, { Router } from 'express'
 import NomisMigrationService from '../../services/nomisMigrationService'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 import { MIGRATE_NOMIS_SYSCON } from '../../authentication/roles'
-import TapsMigrationController from './tapsMigrationController'
+import CourtSchedulerMigrationController from './courtSchedulerMigrationController'
 import MovementsNomisPrisonerService from '../../services/movements/movementsNomisPrisonerService'
-import TapsNomisMigrationService from '../../services/movements/tapsNomisMigrationService'
+import CourtSchedulerNomisMigrationService from '../../services/movements/courtSchedulerNomisMigrationService'
 
 export default function routes({
-  tapsNomisMigrationService,
+  courtSchedulerNomisMigrationService,
   movementsNomisPrisonerService,
   nomisMigrationService,
 }: {
-  tapsNomisMigrationService: TapsNomisMigrationService
+  courtSchedulerNomisMigrationService: CourtSchedulerNomisMigrationService
   movementsNomisPrisonerService: MovementsNomisPrisonerService
   nomisMigrationService: NomisMigrationService
 }): Router {
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware([MIGRATE_NOMIS_SYSCON]))
 
-  const migrationController = new TapsMigrationController(
-    tapsNomisMigrationService,
+  const migrationController = new CourtSchedulerMigrationController(
+    courtSchedulerNomisMigrationService,
     movementsNomisPrisonerService,
     nomisMigrationService,
   )

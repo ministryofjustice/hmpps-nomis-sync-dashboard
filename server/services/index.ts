@@ -16,7 +16,7 @@ import AllocationsNomisMigrationService from './allocations/allocationsNomisMigr
 import AppointmentsNomisMigrationService from './appointments/appointmentsNomisMigrationService'
 import CourtSentencingNomisMigrationService from './courtSentencing/courtSentencingNomisMigrationService'
 import VisitsNomisMigrationService from './visits/visitsNomisMigrationService'
-import TapsNomisMigrationService from './movements/tapsNomisMigrationService'
+import CourtSchedulerNomisMigrationService from './movements/courtSchedulerNomisMigrationService'
 import MovementsNomisPrisonerService from './movements/movementsNomisPrisonerService'
 import OfficialvisitsNomisMigrationService from './officialvisits/officialvisitsNomisMigrationService'
 import OfficialvisitsNomisPrisonerService from './officialvisits/officialvisitsNomisPrisonerService'
@@ -40,7 +40,7 @@ export const services = () => {
     prisonerBalanceNomisMigrationClient,
     prisonerBalanceNomisPrisonerClient,
     visitsNomisMigrationClient,
-    tapsNomisMigrationClient,
+    courtSchedulerNomisMigrationClient,
     movementsNomisPrisonerClient,
     officialvisitsNomisMigrationClient,
     officialvisitsNomisPrisonerClient,
@@ -64,7 +64,7 @@ export const services = () => {
     prisonerBalanceNomisMigrationService: new PrisonerBalanceNomisMigrationService(prisonerBalanceNomisMigrationClient),
     prisonerBalanceNomisPrisonerService: new PrisonerBalanceNomisPrisonerService(prisonerBalanceNomisPrisonerClient),
     visitsNomisMigrationService: new VisitsNomisMigrationService(visitsNomisMigrationClient),
-    tapsNomisMigrationService: new TapsNomisMigrationService(tapsNomisMigrationClient),
+    courtSchedulerNomisMigrationService: new CourtSchedulerNomisMigrationService(courtSchedulerNomisMigrationClient),
     movementsNomisPrisonerService: new MovementsNomisPrisonerService(movementsNomisPrisonerClient),
     officialvisitsNomisMigrationService: new OfficialvisitsNomisMigrationService(officialvisitsNomisMigrationClient),
     officialvisitsNomisPrisonerService: new OfficialvisitsNomisPrisonerService(officialvisitsNomisPrisonerClient),
