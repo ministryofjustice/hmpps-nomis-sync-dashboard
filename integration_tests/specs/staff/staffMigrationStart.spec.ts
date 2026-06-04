@@ -21,7 +21,7 @@ test.describe('Staff Migration Start', () => {
 
   test.describe('With MIGRATE_NOMIS_SYSCON role', () => {
     test.beforeEach(async ({ page }) => {
-      await nomisMigrationApi.stubGetMigrationHistory({ migrationType})
+      await nomisMigrationApi.stubGetMigrationHistory({ migrationType })
       await login(page)
       const indexPage = await IndexPage.verifyOnPage(page)
       await indexPage.migrationLink(migrationTypeName).click()
@@ -52,7 +52,7 @@ test.describe('Staff Migration Start', () => {
       await startMigrationPage.continueButton.click()
 
       const previewPage = await StartMigrationPreviewPage.verifyOnPage(migrationTypeName, page)
-      await expect(previewPage.estimateSummary).toHaveText('Estimated number of Staff entities to be migrated: 100,988',)
+      await expect(previewPage.estimateSummary).toHaveText('Estimated number of Staff entities to be migrated: 100,988')
       await expect(previewPage.dlqWarning).toHaveText(
         'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration',
       )
@@ -85,9 +85,7 @@ test.describe('Staff Migration Start', () => {
       await startMigrationPage.continueButton.click()
 
       const previewPage = await StartMigrationPreviewPage.verifyOnPage(migrationTypeName, page)
-      await expect(previewPage.estimateSummary).toHaveText(
-        'Estimated number of Staff entities to be migrated: 100,988',
-      )
+      await expect(previewPage.estimateSummary).toHaveText('Estimated number of Staff entities to be migrated: 100,988')
       await expect(previewPage.dlqWarning).toHaveText(
         'There are 153 messages on the migration dead letter queue. Please clear these before starting the migration',
       )
