@@ -300,6 +300,27 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/staff/{staffId}/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Resynchronises details for the given staff (Nomis staffId) from NOMIS to DPS
+     * @description Used when an unexpected event has happened in NOMIS that has resulted in the DPS data drifting from NOMIS, so emergency use only.
+     *            Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['repairStaff']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisons/{prisonId}/prison-balance/repair': {
     parameters: {
       query?: never
@@ -2799,6 +2820,26 @@ export interface operations {
       header?: never
       path: {
         transactionId: number
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description No Content */
+      204: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
+  repairStaff: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        staffId: number
       }
       cookie?: never
     }
