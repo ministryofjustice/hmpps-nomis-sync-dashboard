@@ -1,17 +1,18 @@
 import { Router } from 'express'
 
-import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
-import visitRoomMappingMigrationRouter from './visitMigration/visitRoomMappingMigrationRouter'
 import activitiesMigrationRoutes from './activitiesMigration/activitiesMigrationRouter'
 import allocationsMigrationRoutes from './allocationsMigration/allocationsMigrationRouter'
 import appointmentsMigrationRoutes from './appointmentsMigration/appointmentsMigrationRouter'
-import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSentencingMigrationRouter'
 import corePersonReligionMigrationRoutes from './corePersonMigration/corePersonReligionMigrationRouter'
-import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
+import courtSchedulerMigrationRoutes from './movementsMigration/courtSchedulerMigrationRouter'
+import courtSentencingMigrationRoutes from './courtSentencingMigration/courtSentencingMigrationRouter'
+import officialvisitsMigrationRoutes from './officialvisitsMigration/officialvisitsMigrationRouter'
 import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrationRouter'
 import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
-import courtSchedulerMigrationRoutes from './movementsMigration/courtSchedulerMigrationRouter'
-import officialvisitsMigrationRoutes from './officialvisitsMigration/officialvisitsMigrationRouter'
+import staffMigrationRoutes from './staffMigration/staffMigrationRouter'
+import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
+import visitRoomMappingMigrationRouter from './visitMigration/visitRoomMappingMigrationRouter'
+import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
 
 import {
   extractRoles,
@@ -111,6 +112,13 @@ const dashboards: Dashboard[] = [
     enabled: true,
   },
   {
+    id: 'staff-migration',
+    heading: 'Staff migration',
+    href: '/staff-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
     id: 'court-scheduler-migration',
     heading: 'Court Scheduler repair / migration',
     href: '/court-scheduler-migration',
@@ -132,18 +140,19 @@ export default function routes(services: Services): Router {
     })
   })
 
-  router.use('/visits-migration', visitMigrationRoutes(services))
-  router.use('/visits-room-mappings', visitRoomMappingMigrationRouter(services))
   router.use('/activities-migration', activitiesMigrationRoutes(services))
   router.use('/allocations-migration', allocationsMigrationRoutes(services))
   router.use('/appointments-migration', appointmentsMigrationRoutes(services))
-  router.use('/court-sentencing-migration', courtSentencingMigrationRoutes(services))
   router.use('/coreperson-religion-migration', corePersonReligionMigrationRoutes(services))
-  router.use('/visitslots-migration', visitslotsMigrationRoutes(services))
+  router.use('/court-scheduler-migration', courtSchedulerMigrationRoutes(services))
+  router.use('/court-sentencing-migration', courtSentencingMigrationRoutes(services))
+  router.use('/officialvisits-migration', officialvisitsMigrationRoutes(services))
   router.use('/prison-balance-migration', prisonBalanceMigrationRoutes(services))
   router.use('/prisoner-balance-migration', prisonerBalanceMigrationRoutes(services))
-  router.use('/court-scheduler-migration', courtSchedulerMigrationRoutes(services))
-  router.use('/officialvisits-migration', officialvisitsMigrationRoutes(services))
+  router.use('/staff-migration', staffMigrationRoutes(services))
+  router.use('/visits-room-mappings', visitRoomMappingMigrationRouter(services))
+  router.use('/visits-migration', visitMigrationRoutes(services))
+  router.use('/visitslots-migration', visitslotsMigrationRoutes(services))
 
   return router
 }

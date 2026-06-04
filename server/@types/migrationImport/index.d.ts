@@ -461,6 +461,26 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/prisoners/{offenderNo}/booking-id/{bookingId}/court-sentencing/case/{caseId}/sentences/{sentenceSeq}/sentence-level/{sentenceLevel}/sentence-category/{sentenceCategory}/repair': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Replicate a sentence insert event from NOMIS to DPS for a specific sentence
+     * @description Used when a sentence insert event has been missed (or the sentence has been mistakenly deleted) and the sentence is missing in DPS. Requires PRISONER_FROM_NOMIS__UPDATE__RW
+     */
+    post: operations['prisonerSentenceInsertRepair']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/prisoners/{offenderNo}/alerts/resynchronise': {
     parameters: {
       query?: never
@@ -535,6 +555,22 @@ export interface paths {
      * @description Used when a merge has not be detected so new adjustments have not been copied to DPS, so emergency use only. Requires ROLE_PRISONER_FROM_NOMIS__UPDATE__RW
      */
     post: operations['repairPostMergeAdjustments']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/prison-users/migrate/staff': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations['migrateStaff']
     delete?: never
     options?: never
     head?: never
@@ -655,6 +691,28 @@ export interface paths {
      * @description Starts an asynchronous migration process to repair TAPs for all prisoners. This has been repurposed from the TAP migration. Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b> ot <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
      */
     post: operations['migrateTaps']
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/migrate/staff': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Starts a staff migration. This migration currently does nothing with the filter
+     * @description Starts an asynchronous staff migration process.
+     *           This operation will return immediately and the migration will be performed asynchronously.
+     *            Requires role <b>PRISONER_FROM_NOMIS__MIGRATION__RW</b>
+     */
+    post: operations['startStaffMigration']
     delete?: never
     options?: never
     head?: never
@@ -1249,6 +1307,72 @@ export interface components {
       /** Format: date */
       newActivityStartDate: string
     }
+    UserAccessibleCaseloadDps: {
+      username: string
+      caseloadId: string
+      /** Format: date-time */
+      createdTimestamp: string
+      createdBy: string
+    }
+    UserAccountDps: {
+      username: string
+      /** @enum {string} */
+      accountType: 'ADMIN' | 'GENERAL'
+      /** @enum {string} */
+      accountStatus:
+        | 'OPEN'
+        | 'EXPIRED'
+        | 'EXPIRED_GRACE'
+        | 'LOCKED_TIMED'
+        | 'LOCKED'
+        | 'EXPIRED_LOCKED_TIMED'
+        | 'EXPIRED_GRACE_LOCKED_TIMED'
+        | 'EXPIRED_LOCKED'
+        | 'EXPIRED_GRACE_LOCKED'
+      /** Format: date-time */
+      lastLoggedIn?: string
+      activeCaseloadId?: string
+      /** Format: date-time */
+      createDateTime: string
+      createdBy: string
+      /** Format: date-time */
+      lastModifiedDateTime?: string
+      lastModifiedBy?: string
+    }
+    UserDps: {
+      /** Format: int64 */
+      id: number
+      email?: string
+      firstName: string
+      lastName: string
+      /** @enum {string} */
+      status: 'ACTIVE' | 'INACTIVE'
+      /** Format: date-time */
+      createdTimestamp: string
+      createdBy: string
+      /** Format: date-time */
+      modifiedTimestamp?: string
+      modifiedBy?: string
+    }
+    UserMigrationRequestDps: {
+      user: components['schemas']['UserDps']
+      accounts: components['schemas']['UserAccountDps'][]
+      roles?: components['schemas']['UserRoleDps'][]
+      accessibleCaseloads?: components['schemas']['UserAccessibleCaseloadDps'][]
+    }
+    UserRoleDps: {
+      username: string
+      roleCode: string
+      /** Format: date-time */
+      createdTimestamp: string
+      createdBy: string
+    }
+    UserMigrationResponseDps: {
+      /** Format: uuid */
+      userId?: string
+      staffId?: string
+      username?: string[]
+    }
     MigrationContextObject: {
       /** @enum {string} */
       type:
@@ -1260,10 +1384,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1319,10 +1444,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1351,15 +1477,56 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
       estimatedCount: number
       body: components['schemas']['TapMigrationFilter']
+      properties: {
+        [key: string]: unknown
+      }
+    }
+    /** @description Filter specifying what should be migrated from NOMIS to DPS */
+    StaffMigrationFilter: {
+      /**
+       * Format: date
+       * @description Only include visits created after this date. NB this is creation date not the actual visit date
+       * @example 2020-03-23
+       */
+      fromDate?: string
+      /**
+       * Format: date
+       * @description Only include visits created before this date. NB this is creation date not the actual visit date
+       * @example 2020-03-24
+       */
+      toDate?: string
+    }
+    MigrationContextStaffMigrationFilter: {
+      /** @enum {string} */
+      type:
+        | 'ACTIVITIES'
+        | 'ALLOCATIONS'
+        | 'APPOINTMENTS'
+        | 'CORE_PERSON_RELIGION'
+        | 'CSRA'
+        | 'COURT_SCHEDULER'
+        | 'COURT_SENTENCING'
+        | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
+        | 'PRISON_BALANCE'
+        | 'PRISONER_BALANCE'
+        | 'STAFF'
+        | 'VISITS'
+        | 'VISIT_SLOTS'
+      migrationId: string
+      /** Format: int64 */
+      estimatedCount: number
+      body: components['schemas']['StaffMigrationFilter']
       properties: {
         [key: string]: unknown
       }
@@ -1383,10 +1550,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1415,10 +1583,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1459,10 +1628,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1491,10 +1661,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1532,10 +1703,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1564,10 +1736,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1608,10 +1781,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1652,10 +1826,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1702,10 +1877,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       migrationId: string
       /** Format: int64 */
@@ -1827,10 +2003,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       /** @enum {string} */
       status: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
@@ -1861,10 +2038,11 @@ export interface components {
         | 'COURT_SCHEDULER'
         | 'COURT_SENTENCING'
         | 'EXTERNAL_MOVEMENTS'
+        | 'OFFICIAL_VISITS'
         | 'PRISON_BALANCE'
         | 'PRISONER_BALANCE'
+        | 'STAFF'
         | 'VISITS'
-        | 'OFFICIAL_VISITS'
         | 'VISIT_SLOTS'
       /** @enum {string} */
       status?: 'STARTED' | 'COMPLETED' | 'CANCELLED_REQUESTED' | 'CANCELLED'
@@ -2802,6 +2980,31 @@ export interface operations {
       }
     }
   }
+  prisonerSentenceInsertRepair: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        offenderNo: string
+        bookingId: number
+        caseId: number
+        sentenceSeq: number
+        sentenceLevel: string
+        sentenceCategory: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
   repairAlerts: {
     parameters: {
       query?: never
@@ -2879,6 +3082,30 @@ export interface operations {
           [name: string]: unknown
         }
         content?: never
+      }
+    }
+  }
+  migrateStaff: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UserMigrationRequestDps']
+      }
+    }
+    responses: {
+      /** @description Created */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          '*/*': components['schemas']['UserMigrationResponseDps']
+        }
       }
     }
   }
@@ -3073,6 +3300,57 @@ export interface operations {
       }
       /** @description Incorrect permissions to start migration */
       403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+    }
+  }
+  startStaffMigration: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['StaffMigrationFilter']
+      }
+    }
+    responses: {
+      /** @description Migration process started */
+      202: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['MigrationContextStaffMigrationFilter']
+        }
+      }
+      /** @description Unauthorized to access this endpoint */
+      401: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Incorrect permissions to start migration */
+      403: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          'application/json': components['schemas']['ErrorResponse']
+        }
+      }
+      /** @description Migration already in progress */
+      409: {
         headers: {
           [name: string]: unknown
         }
@@ -3919,10 +4197,11 @@ export interface operations {
           | 'COURT_SCHEDULER'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
+          | 'OFFICIAL_VISITS'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
+          | 'STAFF'
           | 'VISITS'
-          | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
       }
       cookie?: never
@@ -3973,10 +4252,11 @@ export interface operations {
           | 'COURT_SCHEDULER'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
+          | 'OFFICIAL_VISITS'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
+          | 'STAFF'
           | 'VISITS'
-          | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
       }
       cookie?: never
@@ -4036,10 +4316,11 @@ export interface operations {
           | 'COURT_SCHEDULER'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
+          | 'OFFICIAL_VISITS'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
+          | 'STAFF'
           | 'VISITS'
-          | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
       }
       cookie?: never
@@ -4090,10 +4371,11 @@ export interface operations {
           | 'COURT_SCHEDULER'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
+          | 'OFFICIAL_VISITS'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
+          | 'STAFF'
           | 'VISITS'
-          | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
       }
       cookie?: never
@@ -4144,10 +4426,11 @@ export interface operations {
           | 'COURT_SCHEDULER'
           | 'COURT_SENTENCING'
           | 'EXTERNAL_MOVEMENTS'
+          | 'OFFICIAL_VISITS'
           | 'PRISON_BALANCE'
           | 'PRISONER_BALANCE'
+          | 'STAFF'
           | 'VISITS'
-          | 'OFFICIAL_VISITS'
           | 'VISIT_SLOTS'
       }
       cookie?: never

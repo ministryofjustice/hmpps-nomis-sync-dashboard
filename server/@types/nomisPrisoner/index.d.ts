@@ -29,6 +29,8 @@ export type GetPrisonerRestrictionByFilter = Omit<
   operations['getPrisonerRestrictionIds']['parameters']['query'],
   'pageRequest'
 >
+export type PagedModelStaffIdResponse = components['schemas']['PagedModelStaffIdResponse']
+
 export type PagedModelVisitTimeSlotIdResponse = components['schemas']['PagedModelVisitTimeSlotIdResponse']
 export type PagedModelVisitIdResponse = components['schemas']['PagedModelVisitIdResponse']
 export type PagedModelLong = components['schemas']['PagedModelLong']
