@@ -6836,7 +6836,46 @@ export interface components {
        * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
        * @enum {string}
        */
-      locationType: 'ADJU' | 'ADMI' | 'APP' | 'AREA' | 'ASSO' | 'BOOT' | 'BOX' | 'CELL' | 'CLAS' | 'EXER' | 'EXTE' | 'FAIT' | 'GROU' | 'HCEL' | 'HOLD' | 'IGRO' | 'INSI' | 'INTE' | 'LAND' | 'LOCA' | 'MEDI' | 'MOVE' | 'OFFI' | 'OUTS' | 'POSI' | 'RESI' | 'ROOM' | 'RTU' | 'SHEL' | 'SPOR' | 'SPUR' | 'STOR' | 'TABL' | 'TRAI' | 'TRRM' | 'VIDE' | 'VISIT' | 'WING' | 'WORK'
+      locationType:
+        | 'ADJU'
+        | 'ADMI'
+        | 'APP'
+        | 'AREA'
+        | 'ASSO'
+        | 'BOOT'
+        | 'BOX'
+        | 'CELL'
+        | 'CLAS'
+        | 'EXER'
+        | 'EXTE'
+        | 'FAIT'
+        | 'GROU'
+        | 'HCEL'
+        | 'HOLD'
+        | 'IGRO'
+        | 'INSI'
+        | 'INTE'
+        | 'LAND'
+        | 'LOCA'
+        | 'MEDI'
+        | 'MOVE'
+        | 'OFFI'
+        | 'OUTS'
+        | 'POSI'
+        | 'RESI'
+        | 'ROOM'
+        | 'RTU'
+        | 'SHEL'
+        | 'SPOR'
+        | 'SPUR'
+        | 'STOR'
+        | 'TABL'
+        | 'TRAI'
+        | 'TRRM'
+        | 'VIDE'
+        | 'VISIT'
+        | 'WING'
+        | 'WORK'
       /**
        * @description Full code hierarchy
        * @example MDI-C-3-015
@@ -7819,13 +7858,35 @@ export interface components {
        * @example CAUTION
        * @enum {string}
        */
-      sanctionType: 'ADA' | 'CAUTION' | 'CC' | 'EXTRA_WORK' | 'EXTW' | 'FORFEIT' | 'OTHER' | 'REMACT' | 'REMWIN' | 'STOP_EARN' | 'STOP_PCT' | 'PP'
+      sanctionType:
+        | 'ADA'
+        | 'CAUTION'
+        | 'CC'
+        | 'EXTRA_WORK'
+        | 'EXTW'
+        | 'FORFEIT'
+        | 'OTHER'
+        | 'REMACT'
+        | 'REMWIN'
+        | 'STOP_EARN'
+        | 'STOP_PCT'
+        | 'PP'
       /**
        * @description The status of the award
        * @example IMMEDIATE
        * @enum {string}
        */
-      sanctionStatus: 'AS_AWARDED' | 'AWARD_RED' | 'IMMEDIATE' | 'PROSPECTIVE' | 'QUASHED' | 'REDAPP' | 'SUSPENDED' | 'SUSPEN_EXT' | 'SUSPEN_RED' | 'SUSP_PROSP'
+      sanctionStatus:
+        | 'AS_AWARDED'
+        | 'AWARD_RED'
+        | 'IMMEDIATE'
+        | 'PROSPECTIVE'
+        | 'QUASHED'
+        | 'REDAPP'
+        | 'SUSPENDED'
+        | 'SUSPEN_EXT'
+        | 'SUSPEN_RED'
+        | 'SUSP_PROSP'
       /**
        * @description Award comment
        * @example GUILTY
@@ -10195,7 +10256,46 @@ export interface components {
        * @description Whether a CELL, VISIT room, Kitchen etc (Ref type ILOC_TYPE)
        * @enum {string}
        */
-      locationType: 'ADJU' | 'ADMI' | 'APP' | 'AREA' | 'ASSO' | 'BOOT' | 'BOX' | 'CELL' | 'CLAS' | 'EXER' | 'EXTE' | 'FAIT' | 'GROU' | 'HCEL' | 'HOLD' | 'IGRO' | 'INSI' | 'INTE' | 'LAND' | 'LOCA' | 'MEDI' | 'MOVE' | 'OFFI' | 'OUTS' | 'POSI' | 'RESI' | 'ROOM' | 'RTU' | 'SHEL' | 'SPOR' | 'SPUR' | 'STOR' | 'TABL' | 'TRAI' | 'TRRM' | 'VIDE' | 'VISIT' | 'WING' | 'WORK'
+      locationType:
+        | 'ADJU'
+        | 'ADMI'
+        | 'APP'
+        | 'AREA'
+        | 'ASSO'
+        | 'BOOT'
+        | 'BOX'
+        | 'CELL'
+        | 'CLAS'
+        | 'EXER'
+        | 'EXTE'
+        | 'FAIT'
+        | 'GROU'
+        | 'HCEL'
+        | 'HOLD'
+        | 'IGRO'
+        | 'INSI'
+        | 'INTE'
+        | 'LAND'
+        | 'LOCA'
+        | 'MEDI'
+        | 'MOVE'
+        | 'OFFI'
+        | 'OUTS'
+        | 'POSI'
+        | 'RESI'
+        | 'ROOM'
+        | 'RTU'
+        | 'SHEL'
+        | 'SPOR'
+        | 'SPUR'
+        | 'STOR'
+        | 'TABL'
+        | 'TRAI'
+        | 'TRRM'
+        | 'VIDE'
+        | 'VISIT'
+        | 'WING'
+        | 'WORK'
       /**
        * @description Prison code of the location
        * @example LEI
