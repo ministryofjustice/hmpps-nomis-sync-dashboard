@@ -11,10 +11,10 @@ import nomisMigrationApi from '../mockApis/nomisMigrationApi'
 import IndexPage from '../pages/indexPage'
 import nomisPrisonerApi from '../mockApis/nomisPrisonerApi'
 
-const migrationType: string = 'CORE_PERSON_RELIGION'
-const migrationTypeName: string = 'Core Person religion'
+const migrationType: string = 'CORE_PERSON_ALIASES_IDENTIFIERS'
+const migrationTypeName: string = 'Core Person Alias and Identifier'
 
-test.describe('Core Person Religion Migration Start', () => {
+test.describe('Core Person Migration Start', () => {
   test.afterEach(async () => {
     await resetStubs()
   })
@@ -35,7 +35,7 @@ test.describe('Core Person Religion Migration Start', () => {
 
     test('Preview of migration will be shown prior to starting a migration', async ({ page }) => {
       await nomisMigrationApi.stubStartMigration({
-        domain: 'core-person/religion',
+        domain: 'core-person/aliases-identifiers',
         response: {
           migrationId: '2022-03-23T11:11:56',
           estimatedCount: 100_988,
@@ -74,13 +74,15 @@ test.describe('Core Person Religion Migration Start', () => {
       await login(page, { roles: ['ROLE_MIGRATE_PRISONERS'] })
     })
 
-    test('should not see migrate core person religion tile', async ({ page }) => {
+    test('should not see migrate core person alias and identifier tile', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await expect(indexPage.migrationLink(migrationTypeName)).toBeHidden()
     })
 
-    test('should not be able to navigate directly to the core person religion migration page', async ({ page }) => {
-      await page.goto('/coreperson-religion-migration')
+    test('should not be able to navigate directly to the core person alias and identifier migration page', async ({
+      page,
+    }) => {
+      await page.goto('/coreperson-migration')
       await AuthErrorPage.verifyOnPage(page)
     })
   })

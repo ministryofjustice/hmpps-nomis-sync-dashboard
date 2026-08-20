@@ -6,7 +6,7 @@ import CorePersonNomisMigrationClient from '../../data/corePersonNomisMigrationC
 export default class CorePersonNomisMigrationService {
   constructor(private readonly corePersonNomisMigrationClient: CorePersonNomisMigrationClient) {}
 
-  async startReligionMigration(context: Context): Promise<MigrationContextCorePersonMigrationFilter> {
-    return this.corePersonNomisMigrationClient.startReligionMigration(context)
+  async startMigration(context: Context): Promise<MigrationContextCorePersonMigrationFilter> {
+    return this.corePersonNomisMigrationClient.startMigration(context)
   }
 }
