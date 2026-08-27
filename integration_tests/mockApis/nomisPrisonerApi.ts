@@ -560,7 +560,7 @@ const stubGetStaffMigrationEstimatedCount = (count: number): SuperAgentRequest =
   stubFor({
     request: {
       method: 'GET',
-      urlPath: '/nomis-prisoner-api/staff/ids',
+      urlPath: '/nomis-prisoner-api/staff/pageIds',
     },
     response: {
       status: 200,
