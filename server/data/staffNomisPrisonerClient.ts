@@ -15,7 +15,7 @@ export default class StaffNomisPrisonerClient extends RestClient {
     logger.info(`getting details for migration estimated count`)
     const response = await this.get<PagedModelStaffIdResponse>(
       {
-        path: `/staff/pageIds`,
+        path: `/staff/pagedIds`,
         query: { size: 1 },
       },
       asSystem(context.username),
