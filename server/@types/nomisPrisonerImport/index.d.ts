@@ -5702,7 +5702,7 @@ export interface paths {
       cookie?: never
     }
     /**
-     * Get the aliases and identifiers for an offender by prison number
+     * Get the addresses and contacts for an offender by prison number
      * @description Retrieves the aliases and offenders for an offender. Requires ROLE_NOMIS_PRISONER_API__SYNCHRONISATION__RW
      */
     get: operations['getOffenderAliasesAndIdentifiers']

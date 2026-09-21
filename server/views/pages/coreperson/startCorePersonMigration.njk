@@ -4,7 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% set pageTitle = applicationName + " - Start a Core Person Alias and Identifier migration" %}
+{% set pageTitle = applicationName + " - Start a Core Person Address and Contact migration" %}
 {% set backLinkHref = "/coreperson-migration" %}
 
 {% block content %}
@@ -21,7 +21,7 @@
     <div class="govuk-width-container">
       <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Core Person Alias and Identifier migration</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-top-7">Start a new Core Person Address and Contact migration</h1>
             </div>
 
             <div class="govuk-grid-column-two-thirds">
@@ -29,7 +29,7 @@
                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     {% call govukFieldset({
                         legend: {
-                            text: "Enter the filter details for the Core Person Alias and Identifier entities you want to migrate (this is left in ready for filtering)",
+                            text: "Enter the filter details for the Core Person Address and Contact entities you want to migrate (this is left in ready for filtering)",
                             classes: "govuk-fieldset__legend--m",
                             isPageHeading: false
                         }

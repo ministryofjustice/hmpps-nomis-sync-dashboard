@@ -14,7 +14,7 @@ export default class CorePersonMigrationController {
     private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  private migrationType: string = 'CORE_PERSON'
+  private migrationType: string = 'CORE_PERSON_ADDRESS_CONTACT'
 
   async getMigrations(_: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
@@ -22,7 +22,7 @@ export default class CorePersonMigrationController {
     const decoratedMigrations = migrations.map(history => ({
       ...history,
       applicationInsightsLink: alreadyMigratedLogAnalyticsLink(
-        'Will not migrate the nomis core person aliases and identifiers',
+        'Will not migrate the nomis core person addresses and contacts',
         history.whenStarted,
         history.whenEnded,
       ),

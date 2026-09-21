@@ -1,14 +1,14 @@
 {% extends "../../partials/layout.njk" %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
-{% set pageTitle = applicationName + " - Core Person Alias and Identifier migration started" %}
+{% set pageTitle = applicationName + " - Core Person Address and Contact migration started" %}
 {% set backLinkHref = "/coreperson-migration" %}
 
 {% block content %}
 
   <main class="govuk-body">
     <div class="govuk-width-container">
-      <h1 class="govuk-heading-l govuk-!-margin-top-7">Core Person Alias and Identifier migration started</h1>
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Core Person Address and Contact migration started</h1>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
@@ -20,7 +20,7 @@
         {% endset %}
 
         {{ govukPanel({
-          titleText: "Core Person Alias and Identifier migration has successfully started",
+          titleText: "Core Person Address and Contact migration has successfully started",
           html: html
         }) }}
       </div>
