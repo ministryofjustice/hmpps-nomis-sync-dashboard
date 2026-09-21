@@ -78,7 +78,7 @@ const dashboards: Dashboard[] = [
   },
   {
     id: 'coreperson-migration',
-    heading: 'Core Person Alias and Identifier migration',
+    heading: 'Core Person Address and Contact migration',
     href: '/coreperson-migration',
     roles: [MIGRATE_NOMIS_SYSCON],
     enabled: true,

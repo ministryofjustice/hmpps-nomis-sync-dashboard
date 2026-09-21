@@ -11,7 +11,7 @@ export default class CorePersonNomisMigrationClient extends RestClient {
   }
 
   async startMigration(context: Context): Promise<MigrationContextCorePersonMigrationFilter> {
-    logger.info(`starting a Alias and Identifier Migration`)
+    logger.info(`starting a Address and Contact Migration`)
     return this.post<MigrationContextCorePersonMigrationFilter>(
       {
         path: `/migrate/core-person`,

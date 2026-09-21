@@ -11,8 +11,8 @@ import nomisMigrationApi from '../mockApis/nomisMigrationApi'
 import IndexPage from '../pages/indexPage'
 import nomisPrisonerApi from '../mockApis/nomisPrisonerApi'
 
-const migrationType: string = 'CORE_PERSON'
-const migrationTypeName: string = 'Core Person Alias and Identifier'
+const migrationType: string = 'CORE_PERSON_ADDRESS_CONTACT'
+const migrationTypeName: string = 'Core Person Address and Contact'
 
 test.describe('Core Person Migration Start', () => {
   test.afterEach(async () => {
@@ -74,12 +74,12 @@ test.describe('Core Person Migration Start', () => {
       await login(page, { roles: ['ROLE_MIGRATE_PRISONERS'] })
     })
 
-    test('should not see migrate core person alias and identifier tile', async ({ page }) => {
+    test('should not see migrate core person address and contact tile', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await expect(indexPage.migrationLink(migrationTypeName)).toBeHidden()
     })
 
-    test('should not be able to navigate directly to the core person alias and identifier migration page', async ({
+    test('should not be able to navigate directly to the core person address and contact migration page', async ({
       page,
     }) => {
       await page.goto('/coreperson-migration')
