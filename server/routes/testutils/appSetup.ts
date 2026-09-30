@@ -11,6 +11,7 @@ import setUpWebSession from '../../middleware/setUpWebSession'
 export const user: HmppsUser = {
   name: 'john smith',
   userId: 'id',
+  userUuid: '11111111-1111-1111-1111-111111111111',
   token: '',
   username: 'user1',
   displayName: 'John Smith',
