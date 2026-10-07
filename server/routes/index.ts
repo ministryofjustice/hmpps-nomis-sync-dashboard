@@ -10,6 +10,7 @@ import officialvisitsMigrationRoutes from './officialvisitsMigration/officialvis
 import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrationRouter'
 import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
 import staffMigrationRoutes from './staffMigration/staffMigrationRouter'
+import advancesMigrationRoutes from './advancesMigration/advancesMigrationRouter'
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
 import visitRoomMappingMigrationRouter from './visitMigration/visitRoomMappingMigrationRouter'
 import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
@@ -46,6 +47,13 @@ const dashboards: Dashboard[] = [
     heading: 'Activities migration',
     href: '/activities-migration',
     roles: [MIGRATE_ACTIVITIES_ROLE, MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'advances-migration',
+    heading: 'Advances migration',
+    href: '/advances-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
     enabled: true,
   },
   {
@@ -141,6 +149,7 @@ export default function routes(services: Services): Router {
   })
 
   router.use('/activities-migration', activitiesMigrationRoutes(services))
+  router.use('/advances-migration', advancesMigrationRoutes(services))
   router.use('/allocations-migration', allocationsMigrationRoutes(services))
   router.use('/appointments-migration', appointmentsMigrationRoutes(services))
   router.use('/coreperson-migration', corePersonMigrationRoutes(services))
