@@ -17,7 +17,7 @@
           <p>
             When a migration is in progress a background service counts all advances that can possibly be migrated and adds each entity to a queue. That initial count is the <b>Estimated</b> number.
             That number does not take into account if any record had previously been migrated. Also, if an entity was created just after the initial calculation it may still be processed.
-            At the beginning of the process the <b>Still to be processed</b> count will go up until it eventually gets close to the <b>Estimated</b> number. The <b>Still to be processed</b> number represents the number of records that still requiring processing. By the end of the process that number will go to zero.
+            At the beginning of the process the <b>Still to be processed</b> count will go up until it eventually gets close to the <b>Estimated</b> number. The <b>Still to be processed</b> number represents the number of records that still require processing. By the end of the process that number will go to zero.
           </p>
           <p>The <b>Migrated</b> number represents the number of records that have successfully migrated in this session. By the end of the process that number should equal the <b>Estimated</b> number if all records found in NOMIS were successfully migrated.</p>
           <p>The <b>Failed</b> number represents the number of records that failed to migrate. A failed record is held in a dead letter queue. It may take a long time before any records that are destined to fail actually appear in this number because they are retried several times, each time going to the back of the queue.</p>
