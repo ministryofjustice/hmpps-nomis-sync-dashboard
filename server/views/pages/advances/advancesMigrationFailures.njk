@@ -12,7 +12,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
           <p>All records that are on the main dead letter queue are displayed. These may include records from other migration runs. If a record that failed at the point of the migration was subsequently fixed (or discarded) then it will no longer be shown on this page.</p>
-          {% if failures.messages %}
+          {% if failures.messages.length %}
             {% set rows = [] %}
             {% for message in failures.messages %}
               {% set cellHtml %}
