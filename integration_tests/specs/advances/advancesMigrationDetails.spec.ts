@@ -6,7 +6,7 @@ import IndexPage from '../../pages/indexPage'
 import MigrationDetailsPage from '../../pages/migrationDetailsPage'
 import prisonerAdvancesMigrationHistory from '../../mockApis/nomisPrisonerAdvancesMigrationApi'
 
-const migrationType = 'PRISONER_ADVANCES'
+const migrationType = 'ADVANCES'
 const migrationTypeName = 'Advances'
 
 test.describe('Advances Migration Details', () => {

@@ -12,7 +12,7 @@ import prisonerAdvancesMigrationHistory from '../../mockApis/nomisPrisonerAdvanc
 import AuthErrorPage from '../../pages/authErrorPage'
 import MigrationFailuresPage from '../../pages/migrationFailuresPage'
 
-const migrationType = 'PRISONER_ADVANCES'
+const migrationType = 'ADVANCES'
 const migrationTypeName = 'Advances'
 
 test.describe('Advances migration', () => {

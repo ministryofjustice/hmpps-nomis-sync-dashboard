@@ -14,7 +14,7 @@ export default class AdvancesMigrationController {
     private readonly nomisMigrationService: NomisMigrationService,
   ) {}
 
-  private migrationType = 'PRISONER_ADVANCES'
+  private migrationType = 'ADVANCES'
 
   async getMigrations(_: Request, res: Response): Promise<void> {
     const { migrations } = await this.nomisMigrationService.getMigrationHistory(this.migrationType, context(res))
