@@ -5,7 +5,7 @@ import nomisMigrationApi from '../../mockApis/nomisMigrationApi'
 import { prisonerAdvancesFailures } from '../../mockApis/nomisPrisonerAdvancesMigrationApi'
 import MigrationFailuresPage from '../../pages/migrationFailuresPage'
 
-const migrationType = 'PRISONER_ADVANCES'
+const migrationType = 'ADVANCES'
 const migrationTypeName = 'Advances'
 
 test.describe('Advances Migration Failures', () => {

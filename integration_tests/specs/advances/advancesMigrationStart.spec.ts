@@ -10,7 +10,7 @@ import nomisMigrationApi from '../../mockApis/nomisMigrationApi'
 import nomisPrisonerApi from '../../mockApis/nomisPrisonerApi'
 import prisonerAdvancesMigrationHistory from '../../mockApis/nomisPrisonerAdvancesMigrationApi'
 
-const migrationType = 'PRISONER_ADVANCES'
+const migrationType = 'ADVANCES'
 const migrationTypeName = 'Advances'
 
 test.describe('Advances Migration Start', () => {
