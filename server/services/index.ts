@@ -12,6 +12,8 @@ import PrisonBalanceNomisPrisonerService from './finance/prisonBalanceNomisPriso
 import PrisonerBalanceNomisMigrationService from './finance/prisonerBalanceNomisMigrationService'
 import PrisonerBalanceNomisPrisonerService from './finance/prisonerBalanceNomisPrisonerService'
 import ActivitiesNomisMigrationService from './activities/activitiesNomisMigrationService'
+import AdvancesNomisMigrationService from './advances/advancesNomisMigrationService'
+import AdvancesNomisPrisonerService from './advances/advancesNomisPrisonerService'
 import AllocationsNomisMigrationService from './allocations/allocationsNomisMigrationService'
 import AppointmentsNomisMigrationService from './appointments/appointmentsNomisMigrationService'
 import CourtSentencingNomisMigrationService from './courtSentencing/courtSentencingNomisMigrationService'
@@ -28,6 +30,8 @@ export const services = () => {
     applicationInfo,
     activitiesClient,
     activitiesNomisMigrationClient,
+    advancesNomisMigrationClient,
+    advancesNomisPrisonerClient,
     allocationsNomisMigrationClient,
     appointmentsNomisMigrationClient,
     corePersonNomisMigrationClient,
@@ -74,6 +78,8 @@ export const services = () => {
     officialvisitsNomisPrisonerService: new OfficialvisitsNomisPrisonerService(officialvisitsNomisPrisonerClient),
     staffNomisMigrationService: new StaffNomisMigrationService(staffNomisMigrationClient),
     staffNomisPrisonerService: new StaffNomisPrisonerService(staffNomisPrisonerClient),
+    advancesNomisMigrationService: new AdvancesNomisMigrationService(advancesNomisMigrationClient),
+    advancesNomisPrisonerService: new AdvancesNomisPrisonerService(advancesNomisPrisonerClient),
   }
 }
 

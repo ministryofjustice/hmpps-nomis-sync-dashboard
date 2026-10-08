@@ -1,6 +1,9 @@
 import { components } from '../migrationImport'
 
-export type MigrationHistory = components['schemas']['MigrationHistory']
+type OpenApiMigrationHistory = components['schemas']['MigrationHistory']
+export type MigrationHistory = Omit<OpenApiMigrationHistory, 'migrationType'> & {
+  migrationType: OpenApiMigrationHistory['migrationType'] | 'PRISONER_ADVANCES'
+}
 export type InProgressMigration = components['schemas']['InProgressMigration']
 
 export type VisitsMigrationFilter = components['schemas']['VisitsMigrationFilter']
@@ -35,7 +38,10 @@ export type RoomMappingsResponse = components['schemas']['VisitRoomUsageResponse
 export type ContactPersonMigrationFilter = components['schemas']['ContactPersonMigrationFilter']
 export type MigrationContextContactPersonMigrationFilter =
   components['schemas']['MigrationContextContactPersonMigrationFilter']
-export type MigrationContextObject = components['schemas']['MigrationContextObject']
+type OpenApiMigrationContextObject = components['schemas']['MigrationContextObject']
+export type MigrationContextObject = Omit<OpenApiMigrationContextObject, 'type'> & {
+  type: OpenApiMigrationContextObject['type'] | 'PRISONER_ADVANCES'
+}
 
 export type PrisonBalanceMigrationFilter = components['schemas']['PrisonBalanceMigrationFilter']
 export type MigrationContextPrisonBalanceMigrationFilter =

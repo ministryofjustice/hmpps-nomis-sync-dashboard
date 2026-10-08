@@ -3,6 +3,7 @@ import { createRedisClient } from './redisClient'
 import config from '../config'
 import logger from '../../logger'
 import ActivitiesNomisMigrationClient from './activitiesNomisMigrationClient'
+import AdvancesNomisMigrationClient from './advancesNomisMigrationClient'
 import AllocationsNomisMigrationClient from './allocationsNomisMigrationClient'
 import AppointmentsNomisMigrationClient from './appointmentsNomisMigrationClient'
 import CorePersonNomisMigrationClient from './corePersonNomisMigrationClient'
@@ -13,6 +14,7 @@ import VisitsNomisMigrationClient from './visitsNomisMigrationClient'
 import NomisPrisonerClient from './nomisPrisonerClient'
 import MappingClient from './mappingClient'
 import ActivitiesClient from './activitiesClient'
+import AdvancesNomisPrisonerClient from './advancesNomisPrisonerClient'
 import NomisMigrationClient from './nomisMigrationClient'
 import MovementsNomisPrisonerClient from './movementsNomisPrisonerClient'
 import CourtSchedulerNomisMigrationClient from './courtSchedulerNomisMigrationClient'
@@ -60,6 +62,8 @@ export const dataAccess = () => {
     officialvisitsNomisPrisonerClient: new OfficialvisitsNomisPrisonerClient(hmppsAuthClient),
     staffNomisMigrationClient: new StaffNomisMigrationClient(hmppsAuthClient),
     staffNomisPrisonerClient: new StaffNomisPrisonerClient(hmppsAuthClient),
+    advancesNomisMigrationClient: new AdvancesNomisMigrationClient(hmppsAuthClient),
+    advancesNomisPrisonerClient: new AdvancesNomisPrisonerClient(hmppsAuthClient),
   }
 }
 

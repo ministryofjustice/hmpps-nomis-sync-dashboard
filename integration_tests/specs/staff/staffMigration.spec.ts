@@ -43,7 +43,6 @@ test.describe('Staff Migration Homepage', () => {
 
       const row0 = migrationPage.migrationResultsRow(0)
       await expect(row0.getByTestId('migration-id')).toHaveText('2022-03-14T10:13:56')
-      await expect(row0.getByTestId('migration-id')).toHaveText('2022-03-14T10:13:56')
       await expect(row0.getByTestId('whenStarted')).toHaveText('14 March 2022 - 10:13')
       await expect(row0.getByTestId('whenEnded')).toHaveText('14 March 2022 - 10:14')
       await expect(row0.getByTestId('status')).toHaveText('COMPLETED')
@@ -79,7 +78,6 @@ test.describe('Staff Migration Homepage', () => {
       await expect(row2.getByTestId('already-migrated-link')).toBeHidden()
 
       await row1.getByTestId('failures-link').click()
-
       await MigrationFailuresPage.verifyOnPage(migrationTypeName, page)
     })
   })
@@ -90,7 +88,7 @@ test.describe('Staff Migration Homepage', () => {
       await login(page, { roles: ['ROLE_MIGRATE_SOMETHING_ELSE'] })
     })
 
-    test('should not see migrate role tile', async ({ page }) => {
+    test('should not see migrate staff tile', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await expect(indexPage.migrationLink(migrationTypeName)).toBeHidden()
     })
