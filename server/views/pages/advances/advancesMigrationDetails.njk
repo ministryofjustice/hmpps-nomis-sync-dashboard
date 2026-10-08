@@ -68,7 +68,7 @@
               href: '/advances-migration/details?migrationId=' + migration.history.migrationId,
               classes: "govuk-button--secondary"
             }) }}
-            {% if migration.history.status != 'COMPLETED' %}
+            {% if migration.history.status == 'STARTED' %}
               {{ govukButton({
                 text: "Cancel migration",
                 classes: "govuk-button--warning",
