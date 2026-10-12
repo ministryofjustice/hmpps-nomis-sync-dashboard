@@ -25,7 +25,6 @@ generic-service:
 
 generic-prometheus-alerts:
   businessHoursOnly: true
-  alertSeverity: syscon-nonprod
 
   elastiCacheAlertsClusterIds:
     cp-e9f6ec889153ff8c-001: "HMPPS NOMIS Sync Dashboard ElastiCache Cluster Node 1"

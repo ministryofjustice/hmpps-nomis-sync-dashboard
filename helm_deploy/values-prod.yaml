@@ -16,7 +16,6 @@ generic-service:
     APPINSIGHTS_COMPONENT: "nomisapi-prod"
 
 generic-prometheus-alerts:
-  alertSeverity: syscon
 
   elastiCacheAlertsClusterIds:
     cp-7c68212ca2b8902c-001: "HMPPS NOMIS Sync Dashboard ElastiCache Cluster Node 1"
