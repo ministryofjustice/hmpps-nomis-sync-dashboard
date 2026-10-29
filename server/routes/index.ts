@@ -11,6 +11,7 @@ import prisonBalanceMigrationRoutes from './financeMigration/prisonBalanceMigrat
 import prisonerBalanceMigrationRoutes from './financeMigration/prisonerBalanceMigrationRouter'
 import staffMigrationRoutes from './staffMigration/staffMigrationRouter'
 import advancesMigrationRoutes from './advancesMigration/advancesMigrationRouter'
+import scheduledPaymentsMigrationRoutes from './scheduledPaymentsMigration/scheduledPaymentsMigrationRouter'
 import visitMigrationRoutes from './visitMigration/visitMigrationRouter'
 import visitRoomMappingMigrationRouter from './visitMigration/visitRoomMappingMigrationRouter'
 import visitslotsMigrationRoutes from './visitslotsMigration/visitslotsMigrationRouter'
@@ -53,6 +54,13 @@ const dashboards: Dashboard[] = [
     id: 'advances-migration',
     heading: 'Advances migration',
     href: '/advances-migration',
+    roles: [MIGRATE_NOMIS_SYSCON],
+    enabled: true,
+  },
+  {
+    id: 'scheduled-payments-migration',
+    heading: 'Scheduled payments migration',
+    href: '/scheduled-payments-migration',
     roles: [MIGRATE_NOMIS_SYSCON],
     enabled: true,
   },
@@ -150,6 +158,7 @@ export default function routes(services: Services): Router {
 
   router.use('/activities-migration', activitiesMigrationRoutes(services))
   router.use('/advances-migration', advancesMigrationRoutes(services))
+  router.use('/scheduled-payments-migration', scheduledPaymentsMigrationRoutes(services))
   router.use('/allocations-migration', allocationsMigrationRoutes(services))
   router.use('/appointments-migration', appointmentsMigrationRoutes(services))
   router.use('/coreperson-migration', corePersonMigrationRoutes(services))

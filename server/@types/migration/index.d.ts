@@ -2,7 +2,7 @@ import { components } from '../migrationImport'
 
 type OpenApiMigrationHistory = components['schemas']['MigrationHistory']
 export type MigrationHistory = Omit<OpenApiMigrationHistory, 'migrationType'> & {
-  migrationType: OpenApiMigrationHistory['migrationType'] | 'ADVANCES'
+  migrationType: OpenApiMigrationHistory['migrationType'] | 'ADVANCES' | 'FINANCE_SCHEDULED_PAYMENTS'
 }
 export type InProgressMigration = components['schemas']['InProgressMigration']
 
@@ -40,7 +40,7 @@ export type MigrationContextContactPersonMigrationFilter =
   components['schemas']['MigrationContextContactPersonMigrationFilter']
 type OpenApiMigrationContextObject = components['schemas']['MigrationContextObject']
 export type MigrationContextObject = Omit<OpenApiMigrationContextObject, 'type'> & {
-  type: OpenApiMigrationContextObject['type'] | 'ADVANCES'
+  type: OpenApiMigrationContextObject['type'] | 'ADVANCES' | 'FINANCE_SCHEDULED_PAYMENTS'
 }
 
 export type PrisonBalanceMigrationFilter = components['schemas']['PrisonBalanceMigrationFilter']
