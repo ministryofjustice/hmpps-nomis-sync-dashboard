@@ -18,7 +18,7 @@ export default class AdvancesNomisPrisonerClient extends RestClient {
     logger.info('getting prisoner advances migration estimated count')
     const response = await this.get<ActiveCountResponse>(
       {
-        path: '/finance/prisoners/advances/active-count',
+        path: '/finance/advances/active-count',
       },
       asSystem(context.username),
     )
