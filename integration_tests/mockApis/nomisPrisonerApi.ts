@@ -581,7 +581,7 @@ const stubGetAdvancesMigrationEstimatedCount = (count: number): SuperAgentReques
   stubFor({
     request: {
       method: 'GET',
-      urlPath: '/nomis-prisoner-api/finance/prisoners/advances/active-count',
+      urlPath: '/nomis-prisoner-api/finance/advances/active-count',
     },
     response: {
       status: 200,
