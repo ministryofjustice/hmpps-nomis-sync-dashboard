@@ -120,7 +120,7 @@ test.describe('Advances migration', () => {
     await nomisPrisonerApi.stubGetAdvancesMigrationEstimatedCount(120)
     await nomisMigrationApi.stubGetFailureCountWithMigrationType({ migrationType, failures: 0 })
     await nomisMigrationApi.stubStartMigration({
-      domain: 'prisoner-advances',
+      domain: 'advances',
       response: {
         migrationId: '2026-10-06T12:00:00',
         estimatedCount: 120,
