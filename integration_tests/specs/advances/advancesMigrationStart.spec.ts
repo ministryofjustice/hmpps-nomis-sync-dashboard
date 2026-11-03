@@ -34,7 +34,7 @@ test.describe('Advances Migration Start', () => {
 
     test('Preview of migration will be shown prior to starting a migration', async ({ page }) => {
       await nomisMigrationApi.stubStartMigration({
-        domain: 'prisoner-advances',
+        domain: 'advances',
         response: {
           migrationId: '2026-10-06T12:00:00',
           estimatedCount: 180_664,
@@ -70,7 +70,7 @@ test.describe('Advances Migration Start', () => {
 
     test('Can clear DLQ when there are messages still present', async ({ page }) => {
       await nomisMigrationApi.stubStartMigration({
-        domain: 'prisoner-advances',
+        domain: 'advances',
         response: {
           migrationId: '2026-10-06T12:00:00',
           estimatedCount: 180_664,
