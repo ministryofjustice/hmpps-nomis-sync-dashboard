@@ -14,7 +14,7 @@ export default class AdvancesNomisMigrationClient extends RestClient {
     logger.info('starting a prisoner advances migration')
     return this.post<MigrationContextObject>(
       {
-        path: '/migrate/prisoner-advances',
+        path: '/migrate/advances',
       },
       asSystem(context.username),
     )
