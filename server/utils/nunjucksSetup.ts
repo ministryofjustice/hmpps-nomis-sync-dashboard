@@ -21,7 +21,7 @@ export default function nunjucksSetup(app: express.Express): nunjucks.Environmen
   let assetManifest: Record<string, string> = {}
 
   try {
-    const assetMetadataPath = path.resolve(__dirname, '../../assets/manifest.json')
+    const assetMetadataPath = path.resolve(__dirname, '../../assets/asset-manifest.json')
     assetManifest = JSON.parse(fs.readFileSync(assetMetadataPath, 'utf8'))
   } catch (e) {
     if (process.env.NODE_ENV !== 'test') {
