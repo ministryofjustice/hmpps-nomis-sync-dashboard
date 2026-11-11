@@ -10,11 +10,12 @@ export default class CorePersonNomisMigrationClient extends RestClient {
     super('Core Person Nomis MigrationHistory API Client', config.apis.nomisMigration, logger, authenticationClient)
   }
 
-  async startMigration(context: Context): Promise<MigrationContextCorePersonMigrationFilter> {
-    logger.info(`starting a Address and Contact Migration`)
+  async startMigration(migrationType: string, context: Context): Promise<MigrationContextCorePersonMigrationFilter> {
+    logger.info(`starting a ${migrationType} Migration`)
     return this.post<MigrationContextCorePersonMigrationFilter>(
       {
         path: `/migrate/core-person`,
+        query: { migrationType },
       },
       asSystem(context.username),
     )
