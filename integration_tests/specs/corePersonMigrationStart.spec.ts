@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 import { login, resetStubs } from '../testUtils'
+import { getMatchingRequests } from '../mockApis/wiremock'
 
 import MigrationPage from '../pages/migrationPage'
 import StartMigrationPage from '../pages/startMigrationPage'
@@ -12,7 +13,8 @@ import IndexPage from '../pages/indexPage'
 import nomisPrisonerApi from '../mockApis/nomisPrisonerApi'
 
 const migrationType: string = 'CORE_PERSON_ADDRESS_CONTACT'
-const migrationTypeName: string = 'Core Person Address and Contact'
+const aliasIdentifierMigrationType: string = 'CORE_PERSON_ALIAS_IDENTIFIER'
+const migrationTypeName: string = 'Core Person'
 
 test.describe('Core Person Migration Start', () => {
   test.afterEach(async () => {
@@ -22,6 +24,7 @@ test.describe('Core Person Migration Start', () => {
   test.describe('With MIGRATE_NOMIS_SYSCON role', () => {
     test.beforeEach(async ({ page }) => {
       await nomisMigrationApi.stubGetMigrationHistory({ migrationType })
+      await nomisMigrationApi.stubGetMigrationHistory({ migrationType: aliasIdentifierMigrationType })
       await login(page)
       const indexPage = await IndexPage.verifyOnPage(page)
       await indexPage.migrationLink(migrationTypeName).click()
@@ -35,7 +38,7 @@ test.describe('Core Person Migration Start', () => {
 
     test('Preview of migration will be shown prior to starting a migration', async ({ page }) => {
       await nomisMigrationApi.stubStartMigration({
-        domain: 'core-person',
+        domain: 'core-person.*',
         response: {
           migrationId: '2022-03-23T11:11:56',
           estimatedCount: 100_988,
@@ -66,6 +69,41 @@ test.describe('Core Person Migration Start', () => {
       await expect(confirmationPage.confirmationMessage).toContainText('2022-03-23T11:11:56')
       await expect(confirmationPage.detailsLink).toHaveText('View migration status')
     })
+
+    test('can start an alias and identifier migration', async ({ page }) => {
+      await nomisMigrationApi.stubStartMigration({
+        domain: 'core-person.*',
+        response: {
+          migrationId: '2022-03-23T11:11:56',
+          estimatedCount: 100_988,
+        },
+      })
+      await nomisMigrationApi.stubGetFailureCountWithMigrationType({ migrationType })
+      await nomisMigrationApi.stubGetFailuresWithMigrationType({ migrationType })
+      await nomisPrisonerApi.stubGetPrisonersMigrationEstimatedCount(100_988)
+
+      const migrationPage = await MigrationPage.verifyOnPage(migrationTypeName, page)
+      await migrationPage.startNewMigration.click()
+
+      const startMigrationPage = await StartMigrationPage.verifyOnPage(migrationTypeName, page)
+      await page.getByLabel('Aliases and identifiers').check()
+      await startMigrationPage.continueButton.click()
+
+      const previewPage = await StartMigrationPreviewPage.verifyOnPage(migrationTypeName, page)
+      await expect(page.getByText('Aliases and identifiers')).toBeVisible()
+      await previewPage.startMigrationButton.click()
+
+      const confirmationPage = await StartMigrationConfirmationPage.verifyOnPage(migrationTypeName, page)
+      await expect(confirmationPage.confirmationMessage).toContainText('Aliases and identifiers')
+
+      const requests = await getMatchingRequests({
+        method: 'POST',
+        urlPathPattern: '/nomis-migration-api/migrate/core-person',
+      })
+      expect(requests.map(request => request.url)).toEqual([
+        `/nomis-migration-api/migrate/core-person?migrationType=${aliasIdentifierMigrationType}`,
+      ])
+    })
   })
 
   test.describe('Without MIGRATE_NOMIS_SYSCON role', () => {
@@ -74,14 +112,12 @@ test.describe('Core Person Migration Start', () => {
       await login(page, { roles: ['ROLE_MIGRATE_PRISONERS'] })
     })
 
-    test('should not see migrate core person address and contact tile', async ({ page }) => {
+    test('should not see migrate core person tile', async ({ page }) => {
       const indexPage = await IndexPage.verifyOnPage(page)
       await expect(indexPage.migrationLink(migrationTypeName)).toBeHidden()
     })
 
-    test('should not be able to navigate directly to the core person address and contact migration page', async ({
-      page,
-    }) => {
+    test('should not be able to navigate directly to the core person migration page', async ({ page }) => {
       await page.goto('/coreperson-migration')
       await AuthErrorPage.verifyOnPage(page)
     })
