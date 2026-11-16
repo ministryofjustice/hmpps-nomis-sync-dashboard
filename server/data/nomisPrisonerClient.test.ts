@@ -13,6 +13,11 @@ describe('NomisPrisonerClient tests', () => {
     fakeNomisPrisonerService = nock(config.apis.nomisPrisoner.url)
   })
 
+  afterAll(() => {
+    nock.cleanAll()
+    nock.restore()
+  })
+
   describe('getVisitMigrationEstimatedCount', () => {
     beforeEach(() => {
       mockAuthenticationClient = {

@@ -16,6 +16,11 @@ describe('VisitsNomisMigrationClient tests', () => {
     nomisMigrationService = new VisitsNomisMigrationClient(mockAuthenticationClient)
   })
 
+  afterAll(() => {
+    nock.cleanAll()
+    nock.restore()
+  })
+
   describe('startVisitsMigration', () => {
     it('will allow minimal filter to be sent', async () => {
       let filter: unknown

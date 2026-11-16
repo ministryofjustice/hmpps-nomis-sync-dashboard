@@ -17,6 +17,11 @@ describe('activitiesService tests', () => {
     activitiesService = new ActivitiesClient(mockAuthenticationClient)
   })
 
+  afterAll(() => {
+    nock.cleanAll()
+    nock.restore()
+  })
+
   describe('Get Rollout Prison', () => {
     it('should return rollout prison details', async () => {
       fakeActivitiesService.get('/rollout/MDI').reply(200, {

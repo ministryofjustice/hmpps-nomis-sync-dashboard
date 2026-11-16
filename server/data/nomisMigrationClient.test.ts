@@ -17,6 +17,11 @@ describe('NomisMigrationClient tests', () => {
     nomisMigrationService = new NomisMigrationClient(mockAuthenticationClient)
   })
 
+  afterAll(() => {
+    nock.cleanAll()
+    nock.restore()
+  })
+
   describe('cancelMigration', () => {
     it('will cancel migration', async () => {
       fakeNomisMigrationService.post('/migrate/cancel/2022-03-23T11:11:56').reply(202, {})
